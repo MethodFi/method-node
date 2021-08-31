@@ -1,0 +1,53 @@
+{
+  "name": "method-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "./node_modules/.bin/rollup -c",
+    "dev": "./node_modules/.bin/rollup -c -w",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "flow": "flow"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MethodFi/method-node.git"
+  },
+  "keywords": [
+    "react",
+    "methodfi",
+    "method-node"
+  ],
+  "author": "mdelcarmen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MethodFi/method-node/issues"
+  },
+  "homepage": "https://github.com/MethodFi/method-node#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.13.14",
+    "@babel/node": "^7.12.6",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-flow": "^7.14.5",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "flow-bin": "^0.148.0",
+    "rollup": "^2.44.0",
+    "rollup-plugin-flow": "^1.1.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  }
+}
