@@ -26,9 +26,11 @@ jobs:
       - name: Install doppler
         run: |
           (curl -Ls https://cli.doppler.com/install.sh || wget -qO- https://cli.doppler.com/install.sh) | sudo sh
+
       - name: Install NPM packages
         run: |
           npm install
+
       - name: Excute mocha tests
         run: |
           doppler run -t ${{ secrets.TEST_DOPPLER_TOKEN }} npm run test
