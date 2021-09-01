@@ -1,8 +1,7 @@
 /* eslint-disable no-undef,no-unused-expressions */
 // @flow
 import chai from 'chai';
-import { MethodClient } from '../../src';
-import { Environments } from '../../src/client/enums';
+import { MethodClient, Environments } from '../../src';
 import type { TElementCreateTokenResponse } from '../../src/lib/elements/types';
 import type { TEntityResponse } from '../../src/lib/entities/types';
 
@@ -24,7 +23,7 @@ describe('Elements - core methods tests', () => {
         email: 'kevin.doyle@gmail.com',
         phone: '+16505555555',
       },
-    });
+    }, { idempotency_key: Math.random().toString() });
   });
 
   describe('elements.createToken', () => {

@@ -1,8 +1,7 @@
 /* eslint-disable no-undef,no-unused-expressions */
 // @flow
 import chai from 'chai';
-import { MethodClient } from '../../src';
-import { Environments } from '../../src/client/enums';
+import { MethodClient, Environments } from '../../src';
 import type { TPaymentResponse } from '../../src/lib/payments/types';
 import type { TAccountResponse } from '../../src/lib/accounts/types';
 import type { TEntityResponse } from '../../src/lib/entities/types';
@@ -56,7 +55,7 @@ describe('Payments - core methods tests', () => {
         source: source_1_response.id,
         destination: destination_1_response.id,
         description: 'MethodNode',
-      });
+      }, { idempotency_key: Math.random().toString() });
 
       (payments_create_response !== null).should.be.true;
     });

@@ -1,8 +1,7 @@
 /* eslint-disable no-undef,no-unused-expressions */
 // @flow
 import chai from 'chai';
-import { MethodClient } from '../../src';
-import { Environments } from '../../src/client/enums';
+import { MethodClient, Environments } from '../../src';
 import type { TReportResponse } from '../../src/lib/reports/types';
 
 chai.should();
@@ -12,13 +11,13 @@ const client = new MethodClient({ key: process.env.TEST_CLIENT_KEY, env: Environ
 describe('Reports - core methods tests', () => {
   let reports_create_response: ?TReportResponse = null;
   let reports_get_response: ?TReportResponse = null;
-  let reports_download_response: ?TReportResponse = null;
+  let reports_download_response: ?string = null;
 
   describe('reports.create', () => {
     it('should successfully create a report.', async () => {
       reports_create_response = await client.reports.create({
         type: 'payments.created.current',
-      });
+      }, { idempotency_key: Math.random().toString() });
 
       (reports_create_response !== null).should.be.true;
     });

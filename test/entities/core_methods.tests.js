@@ -1,8 +1,7 @@
 /* eslint-disable no-undef,no-unused-expressions */
 // @flow
 import chai from 'chai';
-import { MethodClient } from '../../src';
-import { Environments } from '../../src/client/enums';
+import { MethodClient, Environments } from '../../src';
 import type { TEntityResponse } from '../../src/lib/entities/types';
 
 chai.should();
@@ -21,7 +20,7 @@ describe('Entities - core methods tests', () => {
         type: 'individual',
         individual: {},
         metadata: {},
-      });
+      }, { idempotency_key: Math.random().toString() });
 
       (entities_create_response !== null).should.be.true;
     });

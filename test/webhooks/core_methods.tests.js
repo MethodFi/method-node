@@ -1,8 +1,7 @@
 /* eslint-disable no-undef,no-unused-expressions */
 // @flow
 import chai from 'chai';
-import { MethodClient } from '../../src';
-import { Environments } from '../../src/client/enums';
+import { MethodClient, Environments } from '../../src';
 import type { TWebhookResponse } from '../../src/lib/webhooks/types';
 
 chai.should();
@@ -21,7 +20,7 @@ describe('Webhooks - core methods tests', () => {
         type: 'payment.create',
         url: 'https://dev.methodfi.com',
         auth_token: Math.random().toString(),
-      });
+      }, { idempotency_key: Math.random().toString() });
 
       (webhooks_create_response !== null).should.be.true;
     });
