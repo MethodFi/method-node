@@ -1,8 +1,7 @@
 /* eslint-disable no-undef,no-unused-expressions */
 // @flow
 import chai from 'chai';
-import { MethodClient } from '../../src';
-import { Environments } from '../../src/client/enums';
+import { MethodClient, Environments } from '../../src';
 import type { TAccountResponse } from '../../src/lib/accounts/types';
 import type { TEntityResponse } from '../../src/lib/entities/types';
 
@@ -31,7 +30,7 @@ describe('Accounts - core methods tests', () => {
           number: '123456789',
           type: 'checking',
         },
-      });
+      }, { idempotency_key: Math.random().toString() });
 
       (accounts_create_ach_response !== null).should.be.true;
     });
