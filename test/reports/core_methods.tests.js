@@ -12,7 +12,7 @@ const client = new MethodClient({ key: process.env.TEST_CLIENT_KEY, env: Environ
 describe('Reports - core methods tests', () => {
   let reports_create_response: ?TReportResponse = null;
   let reports_get_response: ?TReportResponse = null;
-  let reports_download_response: ?TReportResponse = null;
+  let reports_download_response: ?string = null;
 
   describe('reports.create', () => {
     it('should successfully create a report.', async () => {

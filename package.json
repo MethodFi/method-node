@@ -1,7 +1,7 @@
 {
   "name": "method-node",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node.js library for the Method API",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
