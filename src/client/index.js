@@ -18,7 +18,6 @@ import { Configurations, Environments } from './enums';
 // Types
 import type { TMethodClientConfig } from './types';
 
-
 export default class MethodClient {
   accounts: Accounts;
   elements: Elements;
@@ -32,13 +31,22 @@ export default class MethodClient {
 
   constructor(opts: TMethodClientConfig) {
     const config = Configurations[opts.env || Environments.dev];
-    const key = opts.key;
-    const axios_instance = axios.create({ baseURL: config.base_url, headers: { Authorization: `Bearer ${key}` } });
+    const axios_instance = axios.create({ baseURL: config.base_url, headers: { Authorization: `Bearer ${opts.key}` } });
 
     const response_interceptor = (res) => {
-      if (res.headers['idem-status'] && res.data && res.data.data) {
-        res.data.data.idempotency_status = res.headers['idem-status'];
+      const idempotency_status = res.headers['idem-status'];
+      const idempotency_key = res.config.headers['Idempotency-Key'];
+      const should_attach_idempotency_status = res.data
+        && res.data.data
+        && res.config.method === 'post'
+        && idempotency_status
+        && idempotency_key;
+
+      if (should_attach_idempotency_status) {
+        res.data.data.idempotency_key = idempotency_key;
+        res.data.data.idempotency_status = idempotency_status;
       }
+
       return res;
     };
 

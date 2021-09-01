@@ -11,4 +11,3 @@ export const BINTypes = {
   credit: 'credit',
   debit: 'debit',
 };
-

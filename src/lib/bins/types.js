@@ -1,9 +1,5 @@
 // @flow
-import {
-  BINBrands,
-  BINTypes,
-} from './enums';
-
+import { BINBrands, BINTypes } from './enums';
 
 export type TBINBrands = $Keys<typeof BINBrands>;
 

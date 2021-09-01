@@ -8,7 +8,6 @@ import {
 } from './enums';
 import type { TResourceCreationIdempotencyResponse } from '../../common/types';
 
-
 export type TEntityIndividualTypes = $Keys<typeof EntityIndividualTypes>;
 
 export type TEntityCorporationTypes = $Keys<typeof EntityCorporationTypes>;
@@ -31,6 +30,14 @@ export type TEntityIndividual = {
   dob: ?string,
 };
 
+export type TEntityAddress = {
+  line1: ?string,
+  line2: ?string,
+  city: ?string,
+  state: ?string,
+  zip: ?string,
+};
+
 export type TEntityCorporationOwner = {
   first_name: string,
   last_name: string,
@@ -51,14 +58,6 @@ export type TEntityReceiveOnly = {
   name: string,
   phone: ?string,
   email: ?string,
-};
-
-export type TEntityAddress = {
-  line1: ?string,
-  line2: ?string,
-  city: ?string,
-  state: ?string,
-  zip: ?string,
 };
 
 export type TEntityResponse = TResourceCreationIdempotencyResponse & {

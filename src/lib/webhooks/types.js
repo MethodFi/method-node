@@ -2,7 +2,6 @@
 import { WebhookTypes } from './enums';
 import type { TResourceCreationIdempotencyResponse } from '../../common/types';
 
-
 export type TWebhookTypes = $Keys<typeof WebhookTypes>;
 
 export type TWebhookMetadata = { [string]: any };

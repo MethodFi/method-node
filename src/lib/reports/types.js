@@ -2,7 +2,6 @@
 import { ReportTypes, ReportStatuses } from './enums';
 import type { TResourceCreationIdempotencyResponse } from '../../common/types';
 
-
 export type TReportTypes = $Keys<typeof ReportTypes>;
 
 export type TReportStatuses = $Keys<typeof ReportStatuses>;

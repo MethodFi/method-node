@@ -10,4 +10,3 @@ export const ReportStatuses = {
   processing: 'processing',
   completed: 'completed',
 };
-

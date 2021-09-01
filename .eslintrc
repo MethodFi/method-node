@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "airbnb-base",
+    "plugin:flowtype/recommended"
+  ],
+  "parser": "babel-eslint",
+  "rules": {
+    "no-unused-vars": [1, {"vars": "local", "args": "none"}],
+    "no-param-reassign": 0,
+    "no-use-before-define": ["error", { "functions": false, "classes": true }],
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }],
+    "max-len": ["error", { "code": 150 }],
+    "camelcase": 0,
+    "import/prefer-default-export": 0,
+    "lines-between-class-members": 0,
+    "arrow-body-style": 0
+  },
+  "plugins": [
+    "flowtype"
+  ]
+}

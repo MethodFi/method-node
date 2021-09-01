@@ -10,7 +10,7 @@
   "scripts": {
     "build": "./node_modules/.bin/rollup -c",
     "dev": "./node_modules/.bin/rollup -c -w",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/mocha --exit --timeout 100000 --require ./node_modules/@babel/register ./test/index.js",
     "flow": "flow"
   },
   "repository": {
@@ -41,7 +41,14 @@
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
+    "babel-eslint": "^10.1.0",
+    "chai": "^4.3.4",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-flowtype": "^5.2.0",
+    "eslint-plugin-import": "^2.22.1",
     "flow-bin": "^0.148.0",
+    "mocha": "^8.4.0",
     "rollup": "^2.44.0",
     "rollup-plugin-flow": "^1.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",

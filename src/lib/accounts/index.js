@@ -2,8 +2,8 @@
 import { Axios } from 'axios';
 import type { TResourceCreationConfig, TResourceOptions } from '../../common/types';
 import type { TAccountCreateOptions, TAccountListOptions, TAccountResponse } from './types';
-import { get_idempotency_key } from '../../utils/resource_config';
-import { with_error_handler } from '../../utils/with_error_handler';
+import get_idempotency_key from '../../utils/resource_config';
+import with_error_handler from '../../utils/with_error_handler';
 
 export default class Accounts {
   // $FlowFixMe
@@ -14,21 +14,21 @@ export default class Accounts {
   }
 
   async create(opts: TAccountCreateOptions, config: TResourceCreationConfig = {}): Promise<TAccountResponse> {
-    return await with_error_handler(async () => {
+    return with_error_handler(async () => {
       const headers = { 'Idempotency-Key': get_idempotency_key(opts, config) };
       return (await this.axios_instance.post('/accounts', opts, { headers })).data.data;
     });
   }
 
   async get(account_id: string): Promise<TAccountResponse> {
-    return await with_error_handler(async () => {
+    return with_error_handler(async () => {
       return (await this.axios_instance.get(`/accounts/${account_id}`)).data.data;
     });
   }
 
   async list(opts: TAccountListOptions = {}): Promise<Array<TAccountResponse>> {
-    return await with_error_handler(async () => {
-      return (await this.axios_instance.get('/accounts', {params: opts})).data.data;
+    return with_error_handler(async () => {
+      return (await this.axios_instance.get('/accounts', { params: opts })).data.data;
     });
   }
 }

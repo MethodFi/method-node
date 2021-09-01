@@ -1,9 +1,8 @@
 // @flow
 import { Axios } from 'axios';
 import type { TRoutingNumberResponse } from './types';
-import { with_error_handler } from '../../utils/with_error_handler';
+import with_error_handler from '../../utils/with_error_handler';
 import type { TResourceOptions } from '../../common/types';
-
 
 export default class RoutingNumbers {
   // $FlowFixMe
@@ -14,7 +13,7 @@ export default class RoutingNumbers {
   }
 
   async get(routing_number: string): Promise<TRoutingNumberResponse> {
-    return await with_error_handler(async () => {
+    return with_error_handler(async () => {
       return (await this.axios_instance.get('/routing_numbers', { params: { routing_number } })).data.data;
     });
   }

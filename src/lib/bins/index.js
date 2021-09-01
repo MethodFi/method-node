@@ -1,9 +1,8 @@
 // @flow
 import { Axios } from 'axios';
 import type { TBINResponse } from './types';
-import { with_error_handler } from '../../utils/with_error_handler';
+import with_error_handler from '../../utils/with_error_handler';
 import type { TResourceOptions } from '../../common/types';
-
 
 export default class BINs {
   // $FlowFixMe
@@ -14,7 +13,7 @@ export default class BINs {
   }
 
   async get(bin: string): Promise<TBINResponse> {
-    return await with_error_handler(async () => {
+    return with_error_handler(async () => {
       return (await this.axios_instance.get('/bins', { params: { bin } })).data.data;
     });
   }

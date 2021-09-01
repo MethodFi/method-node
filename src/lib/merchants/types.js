@@ -1,8 +1,5 @@
 // @flow
-import {
-  MerchantTypes,
-} from './enums';
-
+import { MerchantTypes } from './enums';
 
 export type TMerchantTypes = $Keys<typeof MerchantTypes>;
 

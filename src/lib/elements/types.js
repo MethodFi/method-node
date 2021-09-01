@@ -1,8 +1,5 @@
 // @flow
-import {
-  ElementTypes,
-} from './enums';
-
+import { ElementTypes } from './enums';
 
 export type TElementTypes = $Keys<typeof ElementTypes>;
 

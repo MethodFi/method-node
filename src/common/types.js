@@ -2,7 +2,6 @@
 import { Axios } from 'axios';
 import { IdempotencyStatuses } from './enums';
 
-
 export type TIdempotencyStatuses = $Keys<typeof IdempotencyStatuses>;
 
 export type TResourceOptions = {
@@ -16,4 +15,5 @@ export type TResourceCreationConfig = {
 
 export type TResourceCreationIdempotencyResponse = {
   idempotency_status?: TIdempotencyStatuses,
+  idempotency_key?: string,
 };
