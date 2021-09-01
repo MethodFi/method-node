@@ -1,9 +1,6 @@
 // @flow
-import {
-  AccountACHTypes,
-  AccountLiabilityTypes,
-  AccountACHSubTypes,
-} from './enums';
+import { AccountACHTypes, AccountLiabilityTypes, AccountACHSubTypes } from './enums';
+import type { TResourceCreationIdempotencyResponse } from '../../common/types';
 
 export type TAccountMetadata = { [string]: any };
 
@@ -26,7 +23,7 @@ export type TAccountLiability = {
   mask: ?string,
 };
 
-export type TAccountResponse = {
+export type TAccountResponse = TResourceCreationIdempotencyResponse & {
   id: string,
   holder_id: string,
   type: TAccountTypes,

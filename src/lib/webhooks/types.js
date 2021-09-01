@@ -1,14 +1,13 @@
 // @flow
-import {
-  WebhookTypes,
-} from './enums';
+import { WebhookTypes } from './enums';
+import type { TResourceCreationIdempotencyResponse } from '../../common/types';
 
 
 export type TWebhookTypes = $Keys<typeof WebhookTypes>;
 
 export type TWebhookMetadata = { [string]: any };
 
-export type TWebhookResponse = {
+export type TWebhookResponse = TResourceCreationIdempotencyResponse & {
   id: string,
   type: TWebhookTypes,
   url: string,

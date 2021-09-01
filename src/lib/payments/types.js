@@ -1,8 +1,6 @@
 // @flow
-import {
-  PaymentStatuses,
-  PaymentFundStatuses,
-} from './enums';
+import { PaymentStatuses, PaymentFundStatuses } from './enums';
+import type { TResourceCreationIdempotencyResponse } from '../../common/types';
 
 
 export type TPaymentStatuses = $Keys<typeof PaymentStatuses>;
@@ -11,7 +9,7 @@ export type TPaymentFundStatuses = $Keys<typeof PaymentFundStatuses>;
 
 export type TPaymentMetadata = { [string]: any };
 
-export type TPaymentResponse = {
+export type TPaymentResponse = TResourceCreationIdempotencyResponse & {
   id: string,
   source: string,
   destination: string,

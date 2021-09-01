@@ -1,4 +1,8 @@
 // @flow
-import client from './client';
+import MethodClient from './client';
 
-export default client;
+// Errors
+import ResourceError from './errors/resource_error';
+
+
+export { MethodClient, ResourceError };

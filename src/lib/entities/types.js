@@ -6,6 +6,7 @@ import {
   EntityCapabilities,
   EntityStatuses,
 } from './enums';
+import type { TResourceCreationIdempotencyResponse } from '../../common/types';
 
 
 export type TEntityIndividualTypes = $Keys<typeof EntityIndividualTypes>;
@@ -60,7 +61,7 @@ export type TEntityAddress = {
   zip: ?string,
 };
 
-export type TEntityResponse = {
+export type TEntityResponse = TResourceCreationIdempotencyResponse & {
   id: string,
   type: TEntityTypes,
   individual: ?TEntityIndividual,

@@ -12,17 +12,7 @@ import Webhooks from '../lib/webhooks';
 
 export type TEnvironments = $Keys<typeof Environments>;
 
-export type TClientConfig = {
+export type TMethodClientConfig = {
   env: TEnvironments,
   key: string,
-};
-
-export type TClient = {
-  accounts: Accounts,
-  elements: Elements,
-  entities: Entities,
-  merchants: Merchants,
-  payments: Payments,
-  reports: Reports,
-  webhooks: Webhooks,
 };

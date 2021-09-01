@@ -1,7 +1,8 @@
 // @flow
 import { Axios } from 'axios';
-import type { TResourceOptions } from '../types';
+import type { TResourceOptions } from '../../common/types';
 import type { TMerchantListOptions, TMerchantResponse } from './types';
+import { with_error_handler } from '../../utils/with_error_handler';
 
 export default class Merchants {
   // $FlowFixMe
@@ -12,10 +13,14 @@ export default class Merchants {
   }
 
   async get(merchant_id: string): Promise<TMerchantResponse> {
-    return (await this.axios_instance.get(`/merchants/${merchant_id}`)).data.data;
+    return await with_error_handler(async () => {
+      return (await this.axios_instance.get(`/merchants/${merchant_id}`)).data.data;
+    });
   }
 
   async list(opts: TMerchantListOptions = {}): Promise<Array<TMerchantResponse>> {
-    return (await this.axios_instance.get('/merchants', { params: opts })).data.data;
+    return await with_error_handler(async () => {
+      return (await this.axios_instance.get('/merchants', {params: opts})).data.data;
+    });
   }
 }
