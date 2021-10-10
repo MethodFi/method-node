@@ -17,7 +17,7 @@ export interface ILinkElementLinkCreateOpts {
 export interface IElementTokenCreateOpts {
   entity_id: string;
   type: TElementTypes;
-  team_name: string;
+  team_name?: string;
   link?: ILinkElementLinkCreateOpts;
 }
 

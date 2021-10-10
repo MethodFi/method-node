@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "./test-dist",
+    "module": "commonjs",
+    "target": "es5",
+    "allowJs": false
+  },
+  "include": [
+    "./test/**/*"
+  ]
+}

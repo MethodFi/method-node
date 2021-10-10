@@ -57,6 +57,10 @@ export interface ILiabilityCreateOpts extends IAccountCreateOpts {
   }
 }
 
+export interface IAccountListOpts {
+  holder_id?: string;
+}
+
 export default class Account extends Resource {
   constructor(config: Configuration) {
     super('/accounts', config);
@@ -66,8 +70,8 @@ export default class Account extends Resource {
     return super._getWithId<IAccount>(id);
   }
 
-  async list() {
-    return super._list<IAccount>();
+  async list(opts: IAccountListOpts) {
+    return super._list<IAccount, IAccountListOpts>(opts);
   }
 
   async create(data: IACHCreateOpts | ILiabilityCreateOpts) {

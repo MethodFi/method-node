@@ -1,4 +1,3 @@
-// @flow
 import Resource from '../../resource';
 import Configuration from '../../configuration';
 

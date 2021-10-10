@@ -1,13 +1,15 @@
-export const Environments = {
-   production: 'production',
-   sandbox: 'sandbox',
-   dev: 'dev',
-}
-
 type TEnvironments =
   | 'production'
   | 'sandbox'
   | 'dev';
+
+type EnvironmentsMapped = { [key in TEnvironments]: key };
+
+export const Environments: EnvironmentsMapped = {
+   production: 'production',
+   sandbox: 'sandbox',
+   dev: 'dev',
+}
 
 export interface IConfigurationOpts {
   apiKey: string,
