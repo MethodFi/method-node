@@ -1,10 +1,10 @@
 {
   "name": "method-node",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Node.js library for the Method API",
-  "main": "dist/method.ts",
-  "module": "dist/method.mjs",
-  "typings": "dist/method.d.ts",
+  "main": "dist/index.ts",
+  "module": "dist/index.mjs",
+  "typings": "dist/index.d.ts",
   "files": [
     "dist"
   ],
