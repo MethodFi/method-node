@@ -33,7 +33,7 @@ export interface IReport {
   updated_at: string;
 }
 
-export interface TReportCreateOpts {
+export interface IReportCreateOpts {
   type: TReportTypes;
   metadata?: {};
 }
@@ -47,8 +47,8 @@ export default class Report extends Resource {
     return super._getWithId<IReport>(id);
   }
 
-  async create(opts: TReportCreateOpts) {
-    return super._create<IReport, TReportCreateOpts>(opts);
+  async create(opts: IReportCreateOpts) {
+    return super._create<IReport, IReportCreateOpts>(opts);
   }
 
   async download(id: string) {
