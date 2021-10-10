@@ -1,9 +1,0 @@
-require('./entities/core_methods.tests');
-require('./accounts/core_methods.tests');
-require('./payments/core_methods.tests');
-require('./merchants/core_methods.tests');
-require('./webhooks/core_methods.tests');
-require('./bins/core_methods.tests');
-require('./routing_numbers/core_methods.tests');
-require('./elements/core_methods.tests');
-require('./reports/core_methods.tests');

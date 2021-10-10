@@ -12,10 +12,10 @@ npm install --save method-node
 ## Usage
 
 ```jsx
-import { MethodClient, Environments } from 'method-node';
+import { Method, Environments } from 'method-node';
 
-const client = new MethodClient({
-  key: '<API_KEY>',
+const client = new Method({
+  apiKey: '<API_KEY>',
   env: Environments.dev,
 });
 ```
