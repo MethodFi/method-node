@@ -1,12 +1,13 @@
 {
   "name": "method-node",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Node.js library for the Method API",
   "main": "dist/index.ts",
   "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "index.ts"
   ],
   "scripts": {
     "build": "./node_modules/.bin/rollup -c",
