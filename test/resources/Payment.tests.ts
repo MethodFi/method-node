@@ -1,5 +1,5 @@
 import { should } from 'chai';
-import { MethodClient, Environments } from '../../src/method';
+import { MethodClient, Environments } from '../../src';
 import { IEntity } from '../../src/resources/Entity';
 import { IAccount } from '../../src/resources/Account';
 import { IPayment } from '../../src/resources/Payment';

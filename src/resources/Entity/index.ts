@@ -130,9 +130,9 @@ export interface IEntityUpdateOpts {
   individual?: Partial<IEntityIndividual>;
 }
 
-export default class Entity extends Resource {
+export default class Entity extends Resource<void> {
   constructor(config: Configuration) {
-    super('/entities', config);
+    super(config.addPath('entities'));
   }
 
   async create(opts: IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts) {
@@ -140,7 +140,7 @@ export default class Entity extends Resource {
   }
 
   async update(id: string, opts: IEntityUpdateOpts) {
-    return super._update<IEntity, IEntityUpdateOpts>(id, opts);
+    return super._updateWithId<IEntity, IEntityUpdateOpts>(id, opts);
   }
 
   async get(id: string) {

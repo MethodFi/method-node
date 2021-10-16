@@ -1,5 +1,5 @@
 import { should } from 'chai';
-import { MethodClient, Environments, BINBrands } from '../../src/method';
+import { MethodClient, Environments, BINBrands } from '../../src';
 import { IBIN } from '../../src/resources/Bin';
 
 should();

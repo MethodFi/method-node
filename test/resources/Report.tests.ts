@@ -1,5 +1,5 @@
 import { should } from 'chai';
-import { MethodClient, Environments } from '../../src/method';
+import { MethodClient, Environments } from '../../src';
 import { IReport } from '../../src/resources/Report';
 
 should();

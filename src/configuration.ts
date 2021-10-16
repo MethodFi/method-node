@@ -21,13 +21,21 @@ export default class Configuration {
   apiKey: string;
 
   constructor(opts: IConfigurationOpts) {
-    this.validateConfiguration(opts);
+    Configuration._validateConfiguration(opts);
 
     this.baseURL = `https://${opts.env}.methodfi.com`;
     this.apiKey = opts.apiKey;
   }
 
-  private validateConfiguration(opts: IConfigurationOpts): void {
-    // TODO:
+  public addPath(path: string): Configuration {
+    const clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this)
+    clone.baseURL = `${clone.baseURL}/${path}`;
+
+    return clone;
+  }
+
+  private static _validateConfiguration(opts: IConfigurationOpts): void {
+    if (!Environments[opts.env]) throw new Error(`Invalid env: ${opts.env}`);
+    if (!opts.apiKey) throw new Error(`Invalid apiKey: ${opts.apiKey}`);
   }
 }

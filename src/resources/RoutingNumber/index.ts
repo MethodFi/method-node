@@ -29,9 +29,9 @@ export interface IRoutingNumber {
   phone: string | null;
 }
 
-export default class RoutingNumber extends Resource {
+export default class RoutingNumber extends Resource<void> {
   constructor(config: Configuration) {
-    super('/routing_numbers', config);
+    super(config.addPath('routing_numbers'));
   }
 
   async get(routing_number: string) {

@@ -38,9 +38,9 @@ export interface IReportCreateOpts {
   metadata?: {};
 }
 
-export default class Report extends Resource {
+export default class Report extends Resource<void> {
   constructor(config: Configuration) {
-    super('/reports', config);
+    super(config.addPath('reports'));
   }
 
   async get(id: string) {

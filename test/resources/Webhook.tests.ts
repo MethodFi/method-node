@@ -1,5 +1,5 @@
 import { should } from 'chai';
-import { MethodClient, Environments } from '../../src/method';
+import { MethodClient, Environments } from '../../src';
 import { IWebhook } from '../../src/resources/Webhook';
 
 should();

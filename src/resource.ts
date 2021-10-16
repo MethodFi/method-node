@@ -2,12 +2,23 @@ import axios, { AxiosInstance } from 'axios';
 import Configuration from './configuration';
 import { MethodError } from './errors';
 
-export default class Resource {
-  private client: AxiosInstance;
 
-  constructor(path: string, config: Configuration) {
+class ExtensibleFunction<T> extends Function {
+  // @ts-ignore
+  constructor(f): T {
+    return Object.setPrototypeOf(f, new.target.prototype);
+  }
+}
+
+export default class Resource<SubResources> extends ExtensibleFunction<SubResources> {
+  private client: AxiosInstance;
+  protected config: Configuration;
+
+  constructor(config: Configuration) {
+    super((id: string): SubResources => this._call<SubResources>(id));
+    this.config = config;
     this.client = axios.create({
-      baseURL: `${config.baseURL}${path}`,
+      baseURL: config.baseURL,
       headers: { Authorization: `Bearer ${config.apiKey}` },
     });
 
@@ -31,6 +42,14 @@ export default class Resource {
     );
   }
 
+  private _call<SubResources>(id: string): SubResources {
+    throw new Error();
+  }
+
+  protected async _get<Response>(): Promise<Response> {
+    return (await this.client.get('')).data.data;
+  }
+
   protected async _getWithId<Response>(id: string): Promise<Response> {
     return (await this.client.get(`/${id}`)).data.data;
   }
@@ -51,8 +70,12 @@ export default class Resource {
     return (await this.client.post(path, data)).data.data;
   }
 
-  protected async _update<Response, Data>(id: string, data: Data): Promise<Response> {
+  protected async _updateWithId<Response, Data>(id: string, data: Data): Promise<Response> {
     return (await this.client.put(`/${id}`, data)).data.data;
+  }
+
+  protected async _update<Response, Data>(data: Data): Promise<Response> {
+    return (await this.client.put('', data)).data.data;
   }
 
   protected async _delete<Response>(id: string): Promise<Response> {

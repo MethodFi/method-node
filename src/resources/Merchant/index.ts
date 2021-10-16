@@ -69,9 +69,9 @@ export interface IMerchantListOpts {
   'provider_id.finicity'?: string,
 }
 
-export default class Merchant extends Resource {
+export default class Merchant extends Resource<void> {
   constructor(config: Configuration) {
-    super('/merchants', config);
+    super(config.addPath('merchants'));
   }
 
   async get(id: string) {
