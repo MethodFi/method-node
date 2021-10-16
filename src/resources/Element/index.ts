@@ -29,9 +29,9 @@ export interface IElementExchangePublicAccountOpts {
   public_account_token: string;
 }
 
-export default class Element extends Resource {
+export default class Element extends Resource<void> {
   constructor(config: Configuration) {
-    super('/elements', config);
+    super(config.addPath('elements'));
   }
 
   async createToken(opts: IElementTokenCreateOpts) {

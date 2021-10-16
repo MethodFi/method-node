@@ -55,9 +55,9 @@ export interface IPaymentCreateOpts {
   metadata?: {};
 }
 
-export default class Payment extends Resource {
+export default class Payment extends Resource<void> {
   constructor(config: Configuration) {
-    super('/payments', config);
+    super(config.addPath('payments'));
   }
 
   async get(id: string) {

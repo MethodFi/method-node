@@ -1,5 +1,6 @@
 import Resource from '../../resource';
 import Configuration from '../../configuration';
+import Verification from '../Verification';
 
 export const AccountTypes = {
    ach: 'ach',
@@ -61,16 +62,29 @@ export interface IAccountListOpts {
   holder_id?: string;
 }
 
-export default class Account extends Resource {
+class AccountSubResources {
+  verification: Verification;
+
+  constructor(id: string, config: Configuration) {
+    this.verification = new Verification(config.addPath(id));
+  }
+}
+
+export default class Account extends Resource<AccountSubResources> {
   constructor(config: Configuration) {
-    super('/accounts', config);
+    super(config.addPath('accounts'));
+  }
+
+  // @ts-ignore
+  private _call(id): AccountSubResources {
+    return new AccountSubResources(id, this.config);
   }
 
   async get(id: string) {
     return super._getWithId<IAccount>(id);
   }
 
-  async list(opts: IAccountListOpts) {
+  async list(opts?: IAccountListOpts) {
     return super._list<IAccount, IAccountListOpts>(opts);
   }
 

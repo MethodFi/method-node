@@ -26,9 +26,9 @@ export interface IWebhookCreateOpts {
   metadata?: {};
 }
 
-export default class Webhook extends Resource {
+export default class Webhook extends Resource<void> {
   constructor(config: Configuration) {
-    super('/webhooks', config);
+    super(config.addPath('webhooks'));
   }
 
   async get(id: string) {
