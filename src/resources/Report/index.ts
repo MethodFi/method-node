@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
 
 export const ReportTypes = {
@@ -47,8 +47,8 @@ export default class Report extends Resource<void> {
     return super._getWithId<IReport>(id);
   }
 
-  async create(opts: IReportCreateOpts) {
-    return super._create<IReport, IReportCreateOpts>(opts);
+  async create(opts: IReportCreateOpts, requestConfig?: IRequestConfig) {
+    return super._create<IReport, IReportCreateOpts>(opts, requestConfig);
   }
 
   async download(id: string) {

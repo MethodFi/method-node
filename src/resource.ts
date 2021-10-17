@@ -1,7 +1,10 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import Configuration from './configuration';
 import { MethodError } from './errors';
 
+export interface IRequestConfig {
+  idempotency_key?: string;
+}
 
 class ExtensibleFunction<T> extends Function {
   // @ts-ignore
@@ -27,13 +30,42 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
   }
 
   private configureRequestInterceptors(): void {
-    // TODO:
+    this.client.interceptors.request.use((request) => {
+      request.headers['request-start-time'] = Date.now();
+
+      if (this.config.onRequest) {
+        this.config.onRequest({
+          method: request.method.toUpperCase(),
+          idempotency_key: request.headers['Idempotency-Key'] || null,
+          path: new URL(`${request.baseURL}${request.url}`).pathname,
+          request_start_time: request.headers['request-start-time'],
+        });
+      }
+
+      return request;
+    });
   }
 
   private configureResponseInterceptors(): void {
+    const extractResponseEvent = (response: AxiosResponse) => ({
+      request_id: response.headers['idem-request-id'] || null,
+      idempotency_status: response.headers['idem-status'] || null,
+      method: response.config.method.toUpperCase(),
+      path: new URL(`${response.config.baseURL}${response.config.url}`).pathname,
+      status: response.status,
+      request_start_time: response.config.headers['request-start-time'],
+      request_end_time: Date.now(),
+    });
+
     this.client.interceptors.response.use(
-      (response) => response,
+      (response) => {
+        if (this.config.onResponse) this.config.onResponse(extractResponseEvent(response));
+
+        return response;
+      },
       (error) => {
+        if (this.config.onResponse && error.response) this.config.onResponse(extractResponseEvent(error.response));
+
         if (error.response
           && error.response.data
           && error.response.data.data) throw MethodError.generate(error.response.data.data.error);
@@ -62,11 +94,24 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
     return (await this.client.get('', { params })).data.data;
   }
 
-  protected async _create<Response, Data>(data: Data): Promise<Response> {
-    return (await this.client.post('', data)).data.data;
+  protected async _create<Response, Data>(
+    data: Data,
+    requestConfig: IRequestConfig = {},
+  ): Promise<Response> {
+    const _requestConfig = { headers: {} };
+    if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
+
+    return (await this.client.post('', data, _requestConfig)).data.data;
   }
 
-  protected async _createWithSubPath<Response, Data>(path: string, data: Data): Promise<Response> {
+  protected async _createWithSubPath<Response, Data>(
+    path: string,
+    data: Data,
+    requestConfig: IRequestConfig = {},
+  ): Promise<Response> {
+    const _requestConfig = { headers: {} };
+    if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
+
     return (await this.client.post(path, data)).data.data;
   }
 

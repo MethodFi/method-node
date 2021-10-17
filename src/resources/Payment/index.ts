@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
 
 export const PaymentStatuses = {
@@ -68,8 +68,8 @@ export default class Payment extends Resource<void> {
     return super._list<IPayment>();
   }
 
-  async create(opts: IPaymentCreateOpts) {
-    return super._create<IPayment, IPaymentCreateOpts>(opts);
+  async create(opts: IPaymentCreateOpts, requestConfig?: IRequestConfig) {
+    return super._create<IPayment, IPaymentCreateOpts>(opts, requestConfig);
   }
 
   async delete(id: string) {
