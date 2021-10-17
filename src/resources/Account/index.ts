@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
 import Verification from '../Verification';
 
@@ -88,7 +88,7 @@ export default class Account extends Resource<AccountSubResources> {
     return super._list<IAccount, IAccountListOpts>(opts);
   }
 
-  async create(data: IACHCreateOpts | ILiabilityCreateOpts) {
-    return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts>(data);
+  async create(data: IACHCreateOpts | ILiabilityCreateOpts, requestConfing?: IRequestConfig) {
+    return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts>(data, requestConfing);
   }
 }

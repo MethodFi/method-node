@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
 
 export const VerificationStatuses = {
@@ -69,8 +69,14 @@ export default class Verification extends Resource<void> {
     return super._get<IVerification>();
   }
 
-  async create(data: IMXCreateOpts | IPlaidCreateOpts | IMicroDepositsCreateOpts) {
-    return super._create<IVerification, IMXCreateOpts | IPlaidCreateOpts | IMicroDepositsCreateOpts>(data);
+  async create(
+    data: IMXCreateOpts | IPlaidCreateOpts | IMicroDepositsCreateOpts,
+    requestConfig?: IRequestConfig,
+  ) {
+    return super._create<IVerification, IMXCreateOpts | IPlaidCreateOpts | IMicroDepositsCreateOpts>(
+      data,
+      requestConfig,
+    );
   }
 
   async update(data: IMicroDepositsUpdateOpts) {

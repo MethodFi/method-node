@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
 
 export const EntityTypes = {
@@ -135,8 +135,14 @@ export default class Entity extends Resource<void> {
     super(config.addPath('entities'));
   }
 
-  async create(opts: IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts) {
-    return super._create<IEntity, IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts>(opts);
+  async create(
+    opts: IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts,
+    requestConfig?: IRequestConfig,
+  ) {
+    return super._create<IEntity, IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts>(
+      opts,
+      requestConfig,
+    );
   }
 
   async update(id: string, opts: IEntityUpdateOpts) {

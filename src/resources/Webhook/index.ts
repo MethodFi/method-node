@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
 
 export const WebhookTypes = {
@@ -43,7 +43,7 @@ export default class Webhook extends Resource<void> {
     return super._list<IWebhook>();
   }
 
-  async create(opts: IWebhookCreateOpts) {
-    return super._create<IWebhook, IWebhookCreateOpts>(opts);
+  async create(opts: IWebhookCreateOpts, requestConfig?: IRequestConfig) {
+    return super._create<IWebhook, IWebhookCreateOpts>(opts, requestConfig);
   }
 };
