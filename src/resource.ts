@@ -78,6 +78,10 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
     throw new Error();
   }
 
+  protected async _getRaw<Response>(): Promise<Response> {
+    return (await this.client.get('')).data;
+  }
+
   protected async _get<Response>(): Promise<Response> {
     return (await this.client.get('')).data.data;
   }
@@ -128,6 +132,6 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
   }
 
   protected async _download<Response>(id: string): Promise<Response> {
-    return (await this.client.get(`/${id}`)).data;
+    return (await this.client.get(`/${id}/download`)).data;
   }
 }

@@ -88,7 +88,7 @@ export default class Account extends Resource<AccountSubResources> {
     return super._list<IAccount, IAccountListOpts>(opts);
   }
 
-  async create(data: IACHCreateOpts | ILiabilityCreateOpts, requestConfing?: IRequestConfig) {
-    return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts>(data, requestConfing);
+  async create(data: IACHCreateOpts | ILiabilityCreateOpts, requestConfig?: IRequestConfig) {
+    return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts>(data, requestConfig);
   }
 }

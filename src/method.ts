@@ -8,6 +8,7 @@ import Payment from './resources/Payment';
 import Report from './resources/Report';
 import RoutingNumber from './resources/RoutingNumber';
 import Webhook from './resources/Webhook';
+import HealthCheck from './resources/HealthCheck';
 
 export class Method {
   accounts: Account;
@@ -19,6 +20,7 @@ export class Method {
   reports: Report;
   routingNumbers: RoutingNumber;
   webhooks: Webhook;
+  healthcheck: HealthCheck;
 
   constructor(opts: IConfigurationOpts) {
     const config = new Configuration(opts);
@@ -33,5 +35,6 @@ export class Method {
     this.reports = new Report(config);
     this.routingNumbers = new RoutingNumber(config);
     this.webhooks = new Webhook(config);
+    this.healthcheck = new HealthCheck(config);
   }
 }
