@@ -4,11 +4,13 @@ import Configuration from '../../configuration';
 export const WebhookTypes = {
   payment_create: 'payment.create',
   payment_update: 'payment.update',
+  account_verification_sent: 'account_verification.sent',
 }
 
 export type TWebhookTypes =
   | 'payment.create'
-  | 'payment.update';
+  | 'payment.update'
+  | 'account_verification.sent';
 
 export interface IWebhook {
   id: string;

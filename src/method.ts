@@ -8,7 +8,7 @@ import Payment from './resources/Payment';
 import Report from './resources/Report';
 import RoutingNumber from './resources/RoutingNumber';
 import Webhook from './resources/Webhook';
-import HealthCheck from './resources/HealthCheck';
+import HealthCheck, { IPingResponse } from './resources/HealthCheck';
 
 export class Method {
   accounts: Account;
@@ -36,5 +36,9 @@ export class Method {
     this.routingNumbers = new RoutingNumber(config);
     this.webhooks = new Webhook(config);
     this.healthcheck = new HealthCheck(config);
+  }
+
+  public async ping(): Promise<IPingResponse> {
+    return this.healthcheck.get();
   }
 }

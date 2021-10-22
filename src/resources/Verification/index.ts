@@ -59,6 +59,10 @@ export interface IMicroDepositsUpdateOpts {
   micro_deposits: { amounts: number[] };
 }
 
+export interface IMicroDepositsTestAmountsResponse {
+  amounts: number[];
+}
+
 
 export default class Verification extends Resource<void> {
   constructor(config: Configuration) {
@@ -81,5 +85,9 @@ export default class Verification extends Resource<void> {
 
   async update(data: IMicroDepositsUpdateOpts) {
     return super._update<IVerification, IMicroDepositsUpdateOpts>(data);
+  }
+
+  async getTestAmounts() {
+    return super._getWithSubPath<IMicroDepositsTestAmountsResponse>('/amounts');
   }
 }

@@ -90,6 +90,10 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
     return (await this.client.get(`/${id}`)).data.data;
   }
 
+  protected async _getWithSubPath<Response>(path: string): Promise<Response> {
+    return (await this.client.get(path)).data.data;
+  }
+
   protected async _getWithParams<Response, Params = {}>(params: Params): Promise<Response> {
     return (await this.client.get('', { params })).data.data;
   }
