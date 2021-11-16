@@ -20,6 +20,24 @@ export type TAccountSubTypes =
   | 'savings'
   | 'checking';
 
+export const AccountStatuses = {
+  disabled: 'disabled',
+  active: 'active',
+};
+
+export type TAccountStatuses =
+  | 'disabled'
+  | 'active';
+
+export const AccountCapabilities = {
+  payments_receive: 'payments:receive',
+  payments_send: 'payments:send',
+};
+
+export type TAccountCapabilities =
+  | 'payments:receive'
+  | 'payments:send';
+
 export interface IAccountACH {
   routing: string;
   number: string;
@@ -34,6 +52,8 @@ export type IAccountLiability = {
 export interface IAccount {
   id: string;
   holder_id: string;
+  status: TAccountStatuses;
+  capabilities: TAccountCapabilities[];
   type: TAccountTypes;
   ach: IAccountACH | null;
   liability: IAccountLiability | null;

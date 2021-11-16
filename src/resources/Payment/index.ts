@@ -2,19 +2,21 @@ import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
 
 export const PaymentStatuses = {
-   pending: 'pending',
-   sent: 'sent',
-   canceled: 'canceled',
-   returned: 'returned',
-   error: 'error',
+  pending: 'pending',
+  canceled: 'canceled',
+  processing: 'processing',
+  failed: 'failed',
+  sent: 'sent',
+  reversed: 'reversed',
 };
 
 export type TPaymentStatuses =
   | 'pending'
-  | 'sent'
   | 'canceled'
-  | 'returned'
-  | 'error';
+  | 'processing'
+  | 'failed'
+  | 'sent'
+  | 'reversed';
 
 export const PaymentFundStatuses = {
   hold: 'hold',

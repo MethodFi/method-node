@@ -9,7 +9,7 @@ export const EntityTypes = {
    partnership: 'partnership',
    sole_proprietorship: 'sole_proprietorship',
    receive_only: 'receive_only',
-}
+};
 
 export type TEntityTypes =
   | 'individual'
@@ -34,17 +34,13 @@ export type TEntityCapabilities =
 export const EntityStatuses = {
    active: 'active',
    incomplete: 'incomplete',
-   pending: 'pending',
-   blocked: 'blocked',
-   error: 'error',
+   disabled: 'disabled',
 };
 
 export type TEntityStatuses =
   | 'active'
   | 'incomplete'
-  | 'pending'
-  | 'blocked'
-  | 'error';
+  | 'disabled';
 
 export interface IEntityIndividual {
   first_name: string | null;
