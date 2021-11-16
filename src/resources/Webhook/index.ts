@@ -4,13 +4,29 @@ import Configuration from '../../configuration';
 export const WebhookTypes = {
   payment_create: 'payment.create',
   payment_update: 'payment.update',
+  account_create: 'account.create',
+  account_update: 'account.update',
+  entity_update: 'entity.update',
+  entity_create: 'entity.create',
+  account_verification_create: 'account_verification.create',
+  account_verification_update: 'account_verification.update',
+
+  // Deprecated
   account_verification_sent: 'account_verification.sent',
+  account_verification_returned: 'account_verification.returned',
 }
 
 export type TWebhookTypes =
   | 'payment.create'
   | 'payment.update'
-  | 'account_verification.sent';
+  | 'account.create'
+  | 'account.update'
+  | 'entity.update'
+  | 'entity.create'
+  | 'account_verification.create'
+  | 'account_verification.update'
+  | 'account_verification.sent'
+  | 'account_verification.returned';
 
 export interface IWebhook {
   id: string;

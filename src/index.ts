@@ -1,7 +1,7 @@
 export { Method, Method as MethodClient } from './method';
 export { MethodAuthorizationError, MethodInvalidRequestError, MethodInternalError } from './errors';
 export { Environments } from './configuration';
-export { AccountTypes, AccountSubTypes } from './resources/Account';
+export { AccountTypes, AccountSubTypes, AccountStatuses, AccountCapabilities } from './resources/Account';
 export { BINBrands, BINTypes } from './resources/Bin';
 export { ElementTypes } from './resources/Element';
 export { EntityTypes, EntityStatuses, EntityCapabilities } from './resources/Entity';
