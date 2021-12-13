@@ -5,11 +5,13 @@ import Verification from '../Verification';
 export const AccountTypes = {
    ach: 'ach',
    liability: 'liability',
+   clearing: 'clearing',
 }
 
 export type TAccountTypes =
   | 'ach'
-  | 'liability';
+  | 'liability'
+  | 'clearing';
 
 export const AccountSubTypes = {
    savings: 'savings',
@@ -49,6 +51,11 @@ export type IAccountLiability = {
   mask: string;
 };
 
+export type IAccountClearing = {
+  routing: string;
+  number: string;
+};
+
 export interface IAccount {
   id: string;
   holder_id: string;
@@ -57,6 +64,7 @@ export interface IAccount {
   type: TAccountTypes;
   ach: IAccountACH | null;
   liability: IAccountLiability | null;
+  clearing: IAccountClearing | null;
   created_at: string;
   updated_at: string;
   metadata: {} | null;
