@@ -35,6 +35,15 @@ export type TPaymentFundStatuses =
   | 'sent'
   | 'unknown';
 
+export const PaymentTypes = {
+  standard: 'standard',
+  clearing: 'clearing',
+};
+
+export type TPaymentTypes =
+  | 'standard'
+  | 'clearing';
+
 export interface IPayment {
   id: string;
   source: string;
@@ -45,6 +54,8 @@ export interface IPayment {
   fund_status?: TPaymentFundStatuses;
   error: string | null;
   metadata: {} | null;
+  estimated_completion_date: string | null;
+  type: TPaymentTypes;
   created_at: string;
   updated_at: string;
 }
