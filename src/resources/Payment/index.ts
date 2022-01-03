@@ -1,4 +1,4 @@
-import Resource, { IRequestConfig } from '../../resource';
+import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 
 export const PaymentStatuses = {
@@ -22,7 +22,8 @@ export const PaymentFundStatuses = {
   hold: 'hold',
   pending: 'pending',
   requested: 'requested',
-  received: 'received',
+  clearing: 'clearing',
+  failed: 'failed',
   sent: 'sent',
   unknown: 'unknown',
 }
@@ -31,7 +32,8 @@ export type TPaymentFundStatuses =
   | 'hold'
   | 'pending'
   | 'requested'
-  | 'received'
+  | 'clearing'
+  | 'failed'
   | 'sent'
   | 'unknown';
 
@@ -52,7 +54,7 @@ export interface IPayment {
   description: string;
   status: TPaymentStatuses;
   fund_status?: TPaymentFundStatuses;
-  error: string | null;
+  error: IResourceError | null;
   metadata: {} | null;
   estimated_completion_date: string | null;
   type: TPaymentTypes;

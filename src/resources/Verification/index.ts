@@ -1,4 +1,4 @@
-import Resource, { IRequestConfig } from '../../resource';
+import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 
 export const VerificationStatuses = {
@@ -33,6 +33,7 @@ export interface IVerification {
   id: string;
   status: TVerificationStatuses;
   type: TVerificationTypes;
+  error: IResourceError | null;
   initiated_at: string;
   pending_at: string;
   verified_at: string;

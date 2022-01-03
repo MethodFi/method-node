@@ -1,4 +1,4 @@
-import Resource, { IRequestConfig } from '../../resource';
+import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 
 export const EntityTypes = {
@@ -89,6 +89,7 @@ export interface IEntity {
   capabilities: TEntityCapabilities[];
   address: IEntityAddress;
   status: TEntityStatuses;
+  error: IResourceError | null;
   metadata: {} | null;
   created_at: string;
   updated_at: string;
