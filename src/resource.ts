@@ -139,3 +139,10 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
     return (await this.client.get(`/${id}/download`)).data;
   }
 }
+
+export interface IResourceError {
+  type: string;
+  code: number;
+  sub_type: string;
+  message: string;
+}

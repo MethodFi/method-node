@@ -1,4 +1,4 @@
-import Resource, { IRequestConfig } from '../../resource';
+import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 import Verification from '../Verification';
 
@@ -65,6 +65,7 @@ export interface IAccount {
   ach: IAccountACH | null;
   liability: IAccountLiability | null;
   clearing: IAccountClearing | null;
+  error: IResourceError | null;
   created_at: string;
   updated_at: string;
   metadata: {} | null;
