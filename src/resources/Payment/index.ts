@@ -1,5 +1,6 @@
 import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
+import Reversal from '../Reversal';
 
 export const PaymentStatuses = {
   pending: 'pending',
@@ -8,6 +9,8 @@ export const PaymentStatuses = {
   failed: 'failed',
   sent: 'sent',
   reversed: 'reversed',
+  reversal_required: 'reversal_required',
+  reversal_processing: 'reversal_processing',
 };
 
 export type TPaymentStatuses =
@@ -48,6 +51,9 @@ export type TPaymentTypes =
 
 export interface IPayment {
   id: string;
+  reversal_id: string | null;
+  source_trace_id: string | null;
+  destination_trace_id: string | null;
   source: string;
   destination: string;
   amount: number;
@@ -70,9 +76,22 @@ export interface IPaymentCreateOpts {
   metadata?: {};
 }
 
-export default class Payment extends Resource<void> {
+class PaymentSubResources {
+  reversals: Reversal;
+
+  constructor(id: string, config: Configuration) {
+    this.reversals = new Reversal(config.addPath(id));
+  }
+}
+
+export default class Payment extends Resource<PaymentSubResources> {
   constructor(config: Configuration) {
     super(config.addPath('payments'));
+  }
+
+  // @ts-ignore
+  private _call(id): PaymentSubResources {
+    return new PaymentSubResources(id, this.config);
   }
 
   async get(id: string) {
