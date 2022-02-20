@@ -91,6 +91,79 @@ export interface IAccountListOpts {
   holder_id?: string;
 }
 
+export const AccountDetailTypes = {
+  bnpl_loan: 'bnpl_loan',
+  depository: 'depository',
+  student_loan: 'student_loan',
+  credit_card: 'credit_card',
+};
+
+export type TAccountDetailTypes =
+  | 'bnpl_loan'
+  | 'depository'
+  | 'student_loan'
+  | 'credit_card';
+
+export interface IAccountDetailBNPLLoanUpcomingPaymentDue {
+  amount: number;
+  date: string;
+}
+
+export interface IAccountDetailBNPLLoan {
+  name: string | null;
+  reference_id: string;
+  balance: number;
+  purchase_date: string;
+  next_payment_due_date: string | null;
+  total_payments_count: number;
+  payments_made_count: number;
+  remaining_payments_count: number;
+  autopay_enabled: boolean;
+  payoff_progress: number;
+  interest_rate: number;
+  description: string | null;
+  total_cost: number;
+  total_paid: number;
+  status: 'paid_off' | 'refunded' | 'in_progress';
+  upcoming_payments_due: IAccountDetailBNPLLoanUpcomingPaymentDue[];
+}
+
+export interface IAccountDetailDepository {
+  name: string | null;
+  reference_number: string;
+  balance: number;
+}
+
+export interface IAccountDetailCreditCard {
+  name: string | null;
+  reference_number: string;
+  balance: number;
+  last_payment_amount: number;
+  last_payment_date: string | null;
+  next_payment_due_date: string | null;
+  next_payment_minimum_amount: number;
+}
+
+// TODO[mdelcarmen]
+export interface IAccountDetailStudentLoan {}
+
+export interface IAccountDetail {
+  type: TAccountDetailTypes;
+  bnpl_loan: IAccountDetailBNPLLoan | null;
+  depository: IAccountDetailDepository | null;
+  credit_card: IAccountDetailCreditCard | null;
+  student_loan: IAccountDetailStudentLoan | null;
+}
+
+export interface IAccountTransaction {
+  id: string;
+  reference_id: string;
+  date: string;
+  amount: number;
+  status: 'pending' | 'sucess';
+  description: string | null;
+}
+
 class AccountSubResources {
   verification: Verification;
 
@@ -119,5 +192,13 @@ export default class Account extends Resource<AccountSubResources> {
 
   async create(data: IACHCreateOpts | ILiabilityCreateOpts, requestConfig?: IRequestConfig) {
     return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts>(data, requestConfig);
+  }
+
+  async getDetail(id: string) {
+    return super._getWithSubPath<IAccountDetail>(`/${id}/detail`);
+  }
+
+  async getTransactions(id: string) {
+    return super._getWithSubPath<IAccountTransaction[]>(`/${id}/transactions`);
   }
 }
