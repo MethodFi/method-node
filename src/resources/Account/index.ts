@@ -160,7 +160,7 @@ export interface IAccountTransaction {
   reference_id: string;
   date: string;
   amount: number;
-  status: 'pending' | 'sucess';
+  status: 'pending' | 'success';
   description: string | null;
 }
 

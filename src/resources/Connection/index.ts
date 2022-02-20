@@ -11,13 +11,25 @@ export type TConnectionSources =
   | 'plaid'
   | 'mch_5500';
 
+export const ConnectionStatuses = {
+  success: 'success',
+  reauth_required: 'reauth_required',
+  syncing: 'syncing',
+  failed: 'failed',
+};
+
+export type TConnectionStatuses =
+  | 'success'
+  | 'reauth_required'
+  | 'syncing'
+  | 'failed';
 
 export interface IConnection {
   id: string;
   entity_id: string;
   accounts: string[];
-  source: string;
-  status: TConnectionSources
+  source: TConnectionSources;
+  status: TConnectionStatuses;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
