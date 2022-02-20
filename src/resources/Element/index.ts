@@ -26,7 +26,8 @@ export interface IElement {
 }
 
 export interface IElementExchangePublicAccountOpts {
-  public_account_token: string;
+  public_account_token?: string;
+  public_account_tokens?: string[];
 }
 
 export default class Element extends Resource<void> {
@@ -42,6 +43,13 @@ export default class Element extends Resource<void> {
     return super._createWithSubPath<IAccount, IElementExchangePublicAccountOpts>(
       '/accounts/exchange',
       { public_account_token },
+    );
+  }
+
+  async exchangePublicAccountTokens(public_account_tokens: string[]) {
+    return super._createWithSubPath<IAccount, IElementExchangePublicAccountOpts>(
+      '/accounts/exchange',
+      { public_account_tokens },
     );
   }
 };

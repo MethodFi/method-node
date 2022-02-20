@@ -10,6 +10,10 @@ export const WebhookTypes = {
   entity_create: 'entity.create',
   account_verification_create: 'account_verification.create',
   account_verification_update: 'account_verification.update',
+  payment_reversal_create: 'payment_reversal.create',
+  payment_reversal_update: 'payment_reversal.update',
+  connection_create: 'connection.create',
+  connection_update: 'connection.update',
 
   // Deprecated
   account_verification_sent: 'account_verification.sent',
@@ -25,6 +29,10 @@ export type TWebhookTypes =
   | 'entity.create'
   | 'account_verification.create'
   | 'account_verification.update'
+  | 'payment_reversal.create'
+  | 'payment_reversal.update'
+  | 'connection.create'
+  | 'connection.update'
   | 'account_verification.sent'
   | 'account_verification.returned';
 
