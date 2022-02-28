@@ -47,15 +47,30 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
   }
 
   private configureResponseInterceptors(): void {
-    const extractResponseEvent = (response: AxiosResponse) => ({
-      request_id: response.headers['idem-request-id'] || null,
-      idempotency_status: response.headers['idem-status'] || null,
-      method: response.config.method.toUpperCase(),
-      path: new URL(`${response.config.baseURL}${response.config.url}`).pathname,
-      status: response.status,
-      request_start_time: response.config.headers['request-start-time'],
-      request_end_time: Date.now(),
-    });
+    const extractResponseEvent = (response: AxiosResponse) => {
+      const payload = {
+        request_id: response.headers['idem-request-id'] || null,
+        idempotency_status: response.headers['idem-status'] || null,
+        method: response.config.method.toUpperCase(),
+        path: new URL(`${response.config.baseURL}${response.config.url}`).pathname,
+        status: response.status,
+        request_start_time: response.config.headers['request-start-time'],
+        request_end_time: Date.now(),
+        pagination: {
+          page: 1,
+          page_count: 1,
+          page_limit: 1,
+          total_count: 1,
+        },
+      };
+
+      if (response.headers['pagination-page']) payload.pagination.page = Number(response.headers['pagination-page']);
+      if (response.headers['pagination-page-count']) payload.pagination.page = Number(response.headers['pagination-page-count']);
+      if (response.headers['pagination-page-limit']) payload.pagination.page = Number(response.headers['pagination-page-limit']);
+      if (response.headers['pagination-total-count']) payload.pagination.page = Number(response.headers['pagination-total-count']);
+
+      return payload;
+    };
 
     this.client.interceptors.response.use(
       (response) => {

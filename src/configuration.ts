@@ -23,6 +23,13 @@ export type TResponseEventIdemStatuses =
   | 'bypassed'
   | 'replayed';
 
+export interface IResponseEventPagination {
+  page: number;
+  page_limit: number;
+  page_count: number;
+  total_count: number;
+}
+
 export interface IResponseEvent {
   request_id: string | null;
   idempotency_status: TResponseEventIdemStatuses | null;
@@ -31,6 +38,7 @@ export interface IResponseEvent {
   status: number;
   request_start_time: number;
   request_end_time: number;
+  pagination: IResponseEventPagination,
 }
 
 export type TOnRequest = (event: IRequestEvent) => void;

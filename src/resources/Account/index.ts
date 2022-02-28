@@ -88,7 +88,13 @@ export interface ILiabilityCreateOpts extends IAccountCreateOpts {
 }
 
 export interface IAccountListOpts {
-  holder_id?: string;
+  to_date?: string | null;
+  from_date?: string | null;
+  page?: number | string | null;
+  page_limit?: number | string | null;
+  status?: string | null;
+  type?: string | null;
+  holder_id?: string | null;
 }
 
 export const AccountDetailTypes = {

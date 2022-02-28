@@ -76,6 +76,18 @@ export interface IPaymentCreateOpts {
   metadata?: {};
 }
 
+export interface IPaymentListOpts {
+  to_date?: string | null;
+  from_date?: string | null;
+  page?: number | string | null;
+  page_limit?: number | string | null;
+  status?: string | null;
+  type?: string | null;
+  source?: string | null;
+  destination?: string | null;
+  reversal_id?: string | null;
+}
+
 class PaymentSubResources {
   reversals: Reversal;
 
@@ -98,8 +110,8 @@ export default class Payment extends Resource<PaymentSubResources> {
     return super._getWithId<IPayment>(id);
   }
 
-  async list() {
-    return super._list<IPayment>();
+  async list(opts?: IPaymentListOpts) {
+    return super._list<IPayment, IPaymentListOpts>(opts);
   }
 
   async create(opts: IPaymentCreateOpts, requestConfig?: IRequestConfig) {
