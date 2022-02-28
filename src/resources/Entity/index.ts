@@ -127,6 +127,16 @@ export interface IEntityUpdateOpts {
   individual?: Partial<IEntityIndividual>;
 }
 
+export interface IEntityListOpts {
+  to_date?: string | null;
+  from_date?: string | null;
+  page?: number | string | null;
+  page_limit?: number | string | null;
+  status?: string | null;
+  type?: string | null;
+}
+
+
 export default class Entity extends Resource<void> {
   constructor(config: Configuration) {
     super(config.addPath('entities'));
@@ -150,7 +160,7 @@ export default class Entity extends Resource<void> {
     return super._getWithId<IEntity>(id);
   }
 
-  async list() {
-    return super._list<IEntity>();
+  async list(opts?: IEntityListOpts) {
+    return super._list<IEntity>(opts);
   }
 };
