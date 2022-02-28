@@ -153,6 +153,10 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
   protected async _download<Response>(id: string): Promise<Response> {
     return (await this.client.get(`/${id}/download`)).data;
   }
+
+  protected async _postWithId<Response, Data>(id: string, data: Data): Promise<Response> {
+    return (await this.client.post(`/${id}`, data)).data.data;
+  }
 }
 
 export interface IResourceError {

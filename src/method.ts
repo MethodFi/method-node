@@ -10,6 +10,7 @@ import RoutingNumber from './resources/RoutingNumber';
 import Webhook from './resources/Webhook';
 import HealthCheck, { IPingResponse } from './resources/HealthCheck';
 import Connection from './resources/Connection';
+import Simulate from './resources/Simulate';
 
 export class Method {
   accounts: Account;
@@ -23,6 +24,7 @@ export class Method {
   webhooks: Webhook;
   healthcheck: HealthCheck;
   connections: Connection;
+  simulate: Simulate;
 
   constructor(opts: IConfigurationOpts) {
     const config = new Configuration(opts);
@@ -39,6 +41,7 @@ export class Method {
     this.webhooks = new Webhook(config);
     this.healthcheck = new HealthCheck(config);
     this.connections = new Connection(config);
+    this.simulate = new Simulate(config);
   }
 
   public async ping(): Promise<IPingResponse> {
