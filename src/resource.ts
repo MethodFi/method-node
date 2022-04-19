@@ -157,6 +157,18 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
   protected async _postWithId<Response, Data>(id: string, data: Data): Promise<Response> {
     return (await this.client.post(`/${id}`, data)).data.data;
   }
+
+  protected async _createAuthSession<Response>(id: string): Promise<Response> {
+    return (await this.client.post(`/${id}/auth_session`)).data.data;
+  }
+
+  protected async _updateAuthSession<Response, Data>(id: string, data: Data): Promise<Response> {
+    return (await this.client.put(`/${id}/auth_session`, data)).data;
+  }
+
+  protected async _refreshCapabilities<Response>(id: string): Promise<Response> {
+    return (await this.client.post(`/${id}/refresh_capabilities`)).data;
+  }
 }
 
 export interface IResourceError {

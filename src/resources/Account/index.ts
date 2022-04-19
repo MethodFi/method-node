@@ -25,11 +25,15 @@ export type TAccountSubTypes =
 export const AccountStatuses = {
   disabled: 'disabled',
   active: 'active',
+  processing: 'processing',
+  closed: 'closed'
 };
 
 export type TAccountStatuses =
   | 'disabled'
-  | 'active';
+  | 'active'
+  | 'processing'
+  | 'closed';
 
 export const AccountCapabilities = {
   payments_receive: 'payments:receive',
@@ -92,6 +96,7 @@ export interface IAccountListOpts {
   from_date?: string | null;
   page?: number | string | null;
   page_limit?: number | string | null;
+  page_cursor?: string | null;
   status?: string | null;
   type?: string | null;
   holder_id?: string | null;

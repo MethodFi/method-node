@@ -81,6 +81,7 @@ export interface IPaymentListOpts {
   from_date?: string | null;
   page?: number | string | null;
   page_limit?: number | string | null;
+  page_cursor?: string | null;
   status?: string | null;
   type?: string | null;
   source?: string | null;

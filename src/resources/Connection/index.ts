@@ -57,10 +57,6 @@ export default class Connection extends Resource<void> {
     return super._updateWithId<IConnection, IConnectionUpdateOpts>(id, opts);
   }
 
-  async getAccounts(id: string) {
-    return super._getWithSubPath<IAccount[]>(`/${id}/accounts`);
-  }
-
   async getPublicAccountTokens(id: string) {
     return super._getWithSubPath<string[]>(`/${id}/public_account_tokens`);
   }

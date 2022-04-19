@@ -24,12 +24,14 @@ export const EntityCapabilities = {
   payments_send: 'payments:send',
   payments_receive: 'payments:receive',
   payments_limited_send: 'payments:limited-send',
+  data_retrieve: 'data:retrieve'
 };
 
 export type TEntityCapabilities =
   | 'payments:send'
   | 'payments:receive'
-  | 'payments:limited-send';
+  | 'payments:limited-send'
+  | 'data:retrieve';
 
 export const EntityStatuses = {
    active: 'active',
@@ -86,7 +88,8 @@ export interface IEntity {
   individual: IEntityIndividual | null;
   corporation: IEntityCorporation | null;
   receive_only: IEntityReceiveOnly | null;
-  capabilities: TEntityCapabilities[];
+  available_capabilities: TEntityCapabilities[];
+  pending_capabilities: TEntityCapabilities[];
   address: IEntityAddress;
   status: TEntityStatuses;
   error: IResourceError | null;
@@ -132,8 +135,38 @@ export interface IEntityListOpts {
   from_date?: string | null;
   page?: number | string | null;
   page_limit?: number | string | null;
+  page_cursor?: string | null;
   status?: string | null;
   type?: string | null;
+}
+
+export interface IEntityAnswer {
+  id: string,
+  text: string
+}
+
+export interface IEntityQuestion {
+  id: string,
+  text: string | null,
+  answers: IEntityAnswer[]
+}
+
+export interface IEntityQuestionResponse {
+  questions: IEntityQuestion[]
+}
+
+export interface IAnswerOpts {
+  question_id: string,
+  answer_id: string
+}
+
+export interface IEntityUpdateAuthOpts {
+  answers: IAnswerOpts[]
+}
+
+export interface IEntityUpdateAuthResponse {
+  questions: IEntityQuestion[],
+  cxn_id: string | null
 }
 
 
@@ -162,5 +195,17 @@ export default class Entity extends Resource<void> {
 
   async list(opts?: IEntityListOpts) {
     return super._list<IEntity>(opts);
+  }
+
+  async createAuthSession(id: string) {
+    return super._createAuthSession<IEntityQuestionResponse>(id);
+  }
+
+  async updateAuthSession(id: string, opts: IEntityUpdateAuthOpts) {
+    return super._updateAuthSession<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(id, opts)
+  }
+
+  async refreshCapabilities(id: string) {
+    return super._refreshCapabilities<IEntity>(id);
   }
 };
