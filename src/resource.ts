@@ -134,7 +134,6 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
     if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
-
     return (await this.client.post(path, data)).data.data;
   }
 
@@ -144,6 +143,17 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
 
   protected async _update<Response, Data>(data: Data): Promise<Response> {
     return (await this.client.put('', data)).data.data;
+  }
+
+  protected async _updateWithSubPath<Response, Data>(
+    path: string,
+    data: Data,
+    requestConfig: IRequestConfig = {},
+  ): Promise<Response> {
+    const _requestConfig = { headers: {} };
+    if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
+
+    return (await this.client.put(path, data)).data.data;
   }
 
   protected async _delete<Response>(id: string): Promise<Response> {
@@ -156,6 +166,10 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
 
   protected async _postWithId<Response, Data>(id: string, data: Data): Promise<Response> {
     return (await this.client.post(`/${id}`, data)).data.data;
+  }
+
+  protected async _updateAuthSession<Response, Data>(id: string, data: Data): Promise<Response> {
+    return (await this.client.put(`/${id}/auth_session`, data)).data;
   }
 }
 
