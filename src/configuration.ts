@@ -28,6 +28,8 @@ export interface IResponseEventPagination {
   page_limit: number;
   page_count: number;
   total_count: number;
+  page_cursor_next: string | null;
+  page_cursor_prev: string | null;
 }
 
 export interface IResponseEvent {
