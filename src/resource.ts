@@ -134,8 +134,6 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
     if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
-    console.log(path)
-    console.log(data)
     return (await this.client.post(path, data)).data.data;
   }
 
@@ -146,7 +144,7 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
   protected async _update<Response, Data>(data: Data): Promise<Response> {
     return (await this.client.put('', data)).data.data;
   }
-  
+
   protected async _updateWithSubPath<Response, Data>(
     path: string,
     data: Data,
