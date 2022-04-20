@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import Configuration from './configuration';
+import Configuration, { TResponseEventIdemStatuses } from './configuration';
 import { MethodError } from './errors';
 
 export interface IRequestConfig {
@@ -36,9 +36,9 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
       if (this.config.onRequest) {
         this.config.onRequest({
           method: request.method.toUpperCase(),
-          idempotency_key: request.headers['Idempotency-Key'] || null,
+          idempotency_key: request.headers['Idempotency-Key'] as string || null,
           path: new URL(`${request.baseURL}${request.url}`).pathname,
-          request_start_time: request.headers['request-start-time'],
+          request_start_time: request.headers['request-start-time'] as number,
         });
       }
 
@@ -50,24 +50,28 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
     const extractResponseEvent = (response: AxiosResponse) => {
       const payload = {
         request_id: response.headers['idem-request-id'] || null,
-        idempotency_status: response.headers['idem-status'] || null,
+        idempotency_status: response.headers['idem-status'] as TResponseEventIdemStatuses || null,
         method: response.config.method.toUpperCase(),
         path: new URL(`${response.config.baseURL}${response.config.url}`).pathname,
         status: response.status,
-        request_start_time: response.config.headers['request-start-time'],
+        request_start_time: response.config.headers['request-start-time'] as number,
         request_end_time: Date.now(),
         pagination: {
           page: 1,
           page_count: 1,
           page_limit: 1,
           total_count: 1,
+          page_cursor_next: null,
+          page_cursor_prev: null,
         },
       };
 
       if (response.headers['pagination-page']) payload.pagination.page = Number(response.headers['pagination-page']);
-      if (response.headers['pagination-page-count']) payload.pagination.page = Number(response.headers['pagination-page-count']);
-      if (response.headers['pagination-page-limit']) payload.pagination.page = Number(response.headers['pagination-page-limit']);
-      if (response.headers['pagination-total-count']) payload.pagination.page = Number(response.headers['pagination-total-count']);
+      if (response.headers['pagination-page-count']) payload.pagination.page_count = Number(response.headers['pagination-page-count']);
+      if (response.headers['pagination-page-limit']) payload.pagination.page_limit = Number(response.headers['pagination-page-limit']);
+      if (response.headers['pagination-total-count']) payload.pagination.total_count = Number(response.headers['pagination-total-count']);
+      if (response.headers['pagination-page-cursor-next']) payload.pagination.page_cursor_next = response.headers['pagination-page-cursor-next'];
+      if (response.headers['pagination-page-cursor-prev']) payload.pagination.page_cursor_prev = response.headers['pagination-page-cursor-prev'];
 
       return payload;
     };
@@ -166,10 +170,6 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
 
   protected async _postWithId<Response, Data>(id: string, data: Data): Promise<Response> {
     return (await this.client.post(`/${id}`, data)).data.data;
-  }
-
-  protected async _updateAuthSession<Response, Data>(id: string, data: Data): Promise<Response> {
-    return (await this.client.put(`/${id}/auth_session`, data)).data;
   }
 }
 
