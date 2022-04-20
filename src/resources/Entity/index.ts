@@ -88,6 +88,7 @@ export interface IEntity {
   individual: IEntityIndividual | null;
   corporation: IEntityCorporation | null;
   receive_only: IEntityReceiveOnly | null;
+  capabilities: TEntityCapabilities[];
   available_capabilities: TEntityCapabilities[];
   pending_capabilities: TEntityCapabilities[];
   address: IEntityAddress;
@@ -198,14 +199,14 @@ export default class Entity extends Resource<void> {
   }
 
   async createAuthSession(id: string) {
-    return super._createAuthSession<IEntityQuestionResponse>(id);
+    return super._createWithSubPath<IEntityQuestionResponse, {}>(`/${id}/auth_session`, {});
   }
 
   async updateAuthSession(id: string, opts: IEntityUpdateAuthOpts) {
-    return super._updateAuthSession<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(id, opts)
+    return super._updateWithSubPath<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(`/${id}/auth_session`, opts)
   }
 
   async refreshCapabilities(id: string) {
-    return super._refreshCapabilities<IEntity>(id);
+    return super._createWithSubPath<IEntity, {}>(`/${id}/refresh_capabilities`, {});
   }
 };

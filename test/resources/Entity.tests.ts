@@ -4,7 +4,7 @@ import { IEntity, IEntityQuestionResponse } from '../../src/resources/Entity';
 
 should();
 
-const client = new MethodClient({ apiKey: 'process.env.TEST_CLIENT_KEY', env: Environments.dev });
+const client = new MethodClient({ apiKey: process.env.TEST_CLIENT_KEY, env: Environments.dev });
 
 describe('Entities - core methods tests', () => {
   let entities_create_response: IEntity | null = null;
