@@ -19,11 +19,7 @@ describe('Entities - core methods tests', () => {
     it('should successfully create an entity.', async () => {
       entities_create_response = await client.entities.create({
         type: 'individual',
-        individual: {
-          first_name: 'Kevin',
-          last_name: 'Doyle',
-          phone: '+15121231111',
-        },
+        individual: {},
         metadata: {},
       });
 
@@ -43,7 +39,13 @@ describe('Entities - core methods tests', () => {
     it('should successfully update an entity.', async () => {
       entities_update_response = await client.entities.update(
         entities_get_response.id,
-        { individual: { first_name: 'Kevin', last_name: 'Doyle' } },
+        {
+          individual: {
+            first_name: 'Kevin',
+            last_name: 'Doyle',
+            phone: '+15121231111',
+          },
+        },
       );
 
       (entities_update_response !== null).should.be.true;

@@ -19,7 +19,7 @@ describe('Elements - core methods tests', () => {
         last_name: 'Doyle',
         dob: '1930-03-11',
         email: 'kevin.doyle@gmail.com',
-        phone: '+16505555555',
+        phone: '+15121231111',
       },
     });
   });
