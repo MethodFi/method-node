@@ -49,6 +49,20 @@ export type TPaymentTypes =
   | 'standard'
   | 'clearing';
 
+export const PaymentFeeTypes = {
+  total: 'total',
+  markup: 'markup',
+};
+
+export type TPaymentFeeTypes =
+  | 'total'
+  | 'markup';
+
+export interface IPaymentFee {
+  type: TPaymentFeeTypes;
+  amount: number;
+}
+
 export interface IPayment {
   id: string;
   reversal_id: string | null;
@@ -63,6 +77,9 @@ export interface IPayment {
   error: IResourceError | null;
   metadata: {} | null;
   estimated_completion_date: string | null;
+  source_settlement_date: string | null;
+  destination_settlement_date: string | null;
+  fee: IPaymentFee | null
   type: TPaymentTypes;
   created_at: string;
   updated_at: string;
@@ -74,6 +91,7 @@ export interface IPaymentCreateOpts {
   destination: string;
   description: string;
   metadata?: {};
+  fee?: IPaymentFee;
 }
 
 export interface IPaymentListOpts {
