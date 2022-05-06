@@ -18,6 +18,7 @@ export const VerificationTypes = {
   micro_deposits: 'micro_deposits',
   plaid: 'plaid',
   mx: 'mx',
+  teller: 'teller',
   auto_verify: 'auto_verify',
   trusted_provisioner: 'trusted_provisioner',
 };
@@ -52,6 +53,11 @@ export interface IPlaidCreateOpts {
   plaid: { balances: {}, transactions: any[] };
 }
 
+export interface ITellerCreateOpts {
+  type: 'teller';
+  teller: { balances: {}, transactions: any[] };
+}
+
 export interface IMicroDepositsCreateOpts {
   type: 'micro_deposits';
 }
@@ -75,10 +81,10 @@ export default class Verification extends Resource<void> {
   }
 
   async create(
-    data: IMXCreateOpts | IPlaidCreateOpts | IMicroDepositsCreateOpts,
+    data: IMXCreateOpts | IPlaidCreateOpts | IMicroDepositsCreateOpts | ITellerCreateOpts,
     requestConfig?: IRequestConfig,
   ) {
-    return super._create<IVerification, IMXCreateOpts | IPlaidCreateOpts | IMicroDepositsCreateOpts>(
+    return super._create<IVerification, IMXCreateOpts | IPlaidCreateOpts | IMicroDepositsCreateOpts | ITellerCreateOpts>(
       data,
       requestConfig,
     );
