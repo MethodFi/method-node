@@ -1,5 +1,6 @@
 import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
+import EntitySync from "../EntitySync";
 
 export const EntityTypes = {
    individual: 'individual',
@@ -171,9 +172,22 @@ export interface IEntityUpdateAuthResponse {
 }
 
 
-export default class Entity extends Resource<void> {
+class EntitySubResources {
+  syncs: EntitySync;
+
+  constructor(id: string, config: Configuration) {
+    this.syncs = new EntitySync(config.addPath(id));
+  }
+}
+
+export default class Entity extends Resource<EntitySubResources> {
   constructor(config: Configuration) {
     super(config.addPath('entities'));
+  }
+
+  // @ts-ignore
+  private _call(id): EntitySubResources {
+    return new EntitySubResources(id, this.config);
   }
 
   async create(

@@ -1,6 +1,7 @@
 import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 import Verification from '../Verification';
+import AccountSync from "../AccountSync";
 
 export const AccountTypes = {
    ach: 'ach',
@@ -177,9 +178,11 @@ export interface IAccountTransaction {
 
 class AccountSubResources {
   verification: Verification;
+  syncs: AccountSync;
 
   constructor(id: string, config: Configuration) {
     this.verification = new Verification(config.addPath(id));
+    this.syncs = new AccountSync(config.addPath(id));
   }
 }
 
