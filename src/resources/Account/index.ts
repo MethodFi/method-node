@@ -192,7 +192,7 @@ export default class Account extends Resource<AccountSubResources> {
   }
 
   // @ts-ignore
-  private _call(id): AccountSubResources {
+  protected _call(id): AccountSubResources {
     return new AccountSubResources(id, this.config);
   }
 

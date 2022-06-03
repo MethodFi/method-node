@@ -121,7 +121,7 @@ export default class Payment extends Resource<PaymentSubResources> {
   }
 
   // @ts-ignore
-  private _call(id): PaymentSubResources {
+  protected _call(id): PaymentSubResources {
     return new PaymentSubResources(id, this.config);
   }
 
