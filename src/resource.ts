@@ -93,7 +93,7 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
     );
   }
 
-  private _call<SubResources>(id: string): SubResources {
+  protected _call<SubResources>(id: string): SubResources {
     throw new Error();
   }
 

@@ -186,7 +186,7 @@ export default class Entity extends Resource<EntitySubResources> {
   }
 
   // @ts-ignore
-  private _call(id): EntitySubResources {
+  protected _call(id): EntitySubResources {
     return new EntitySubResources(id, this.config);
   }
 
