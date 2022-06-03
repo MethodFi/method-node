@@ -24,7 +24,7 @@ export interface IEntitySyncCreateOpts {
   type: TEntitySyncTypes,
 }
 
-export default class EntitySync extends Resource<void> {
+export default class EntitySync extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('syncs'));
   }

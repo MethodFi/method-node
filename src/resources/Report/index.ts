@@ -38,7 +38,7 @@ export interface IReportCreateOpts {
   metadata?: {};
 }
 
-export default class Report extends Resource<void> {
+export default class Report extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('reports'));
   }

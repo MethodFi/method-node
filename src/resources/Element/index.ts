@@ -30,7 +30,7 @@ export interface IElementExchangePublicAccountOpts {
   public_account_tokens?: string[];
 }
 
-export default class Element extends Resource<void> {
+export default class Element extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('elements'));
   }

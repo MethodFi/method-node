@@ -8,7 +8,7 @@ export interface IPingResponse {
   message: 'pong';
 }
 
-export default class HealthCheck extends Resource<void> {
+export default class HealthCheck extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('ping'));
   }

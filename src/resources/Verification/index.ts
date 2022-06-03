@@ -71,7 +71,7 @@ export interface IMicroDepositsTestAmountsResponse {
 }
 
 
-export default class Verification extends Resource<void> {
+export default class Verification extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('verification'));
   }

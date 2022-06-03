@@ -29,7 +29,7 @@ export interface IRoutingNumber {
   phone: string | null;
 }
 
-export default class RoutingNumber extends Resource<void> {
+export default class RoutingNumber extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('routing_numbers'));
   }

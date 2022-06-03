@@ -176,7 +176,7 @@ export interface IAccountTransaction {
   description: string | null;
 }
 
-class AccountSubResources {
+export class AccountSubResources {
   verification: Verification;
   syncs: AccountSync;
 
@@ -186,12 +186,11 @@ class AccountSubResources {
   }
 }
 
-export default class Account extends Resource<AccountSubResources> {
+export default class Account extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('accounts'));
   }
 
-  // @ts-ignore
   protected _call(id): AccountSubResources {
     return new AccountSubResources(id, this.config);
   }

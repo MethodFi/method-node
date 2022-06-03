@@ -24,7 +24,7 @@ export interface IAccountSyncCreateOpts {
   type: TAccountSyncTypes,
 }
 
-export default class AccountSync extends Resource<void> {
+export default class AccountSync extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('syncs'));
   }

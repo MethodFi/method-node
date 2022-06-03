@@ -3,7 +3,7 @@ import Configuration from '../../configuration';
 import SimulatePayment from '../SimulatePayment';
 
 
-export default class Simulate extends Resource<void> {
+export default class Simulate extends Resource {
   payments: SimulatePayment;
 
   constructor(config: Configuration) {

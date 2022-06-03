@@ -44,7 +44,7 @@ export interface IReversalUpdateOpts {
   description?: string | null;
 }
 
-export default class Reversal extends Resource<void> {
+export default class Reversal extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('reversals'));
   }

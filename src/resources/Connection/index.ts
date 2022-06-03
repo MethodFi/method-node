@@ -40,7 +40,7 @@ export interface IConnectionUpdateOpts {
   status: 'syncing';
 }
 
-export default class Connection extends Resource<void> {
+export default class Connection extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('connections'));
   }

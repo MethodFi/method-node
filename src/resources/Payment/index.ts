@@ -107,7 +107,7 @@ export interface IPaymentListOpts {
   reversal_id?: string | null;
 }
 
-class PaymentSubResources {
+export class PaymentSubResources {
   reversals: Reversal;
 
   constructor(id: string, config: Configuration) {
@@ -115,12 +115,11 @@ class PaymentSubResources {
   }
 }
 
-export default class Payment extends Resource<PaymentSubResources> {
+export default class Payment extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('payments'));
   }
 
-  // @ts-ignore
   protected _call(id): PaymentSubResources {
     return new PaymentSubResources(id, this.config);
   }

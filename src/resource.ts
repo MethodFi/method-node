@@ -1,24 +1,29 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import Configuration, { TResponseEventIdemStatuses } from './configuration';
 import { MethodError } from './errors';
+import { AccountSubResources } from './resources/Account';
+import { PaymentSubResources } from './resources/Payment';
+import { EntitySubResources } from './resources/Entity';
+
+type TSubResources = AccountSubResources | PaymentSubResources | EntitySubResources;
 
 export interface IRequestConfig {
   idempotency_key?: string;
 }
 
-class ExtensibleFunction<T> extends Function {
+class ExtensibleFunction extends Function {
   // @ts-ignore
-  constructor(f): T {
+  constructor(f) {
     return Object.setPrototypeOf(f, new.target.prototype);
   }
 }
 
-export default class Resource<SubResources> extends ExtensibleFunction<SubResources> {
+export default class Resource extends ExtensibleFunction {
   private client: AxiosInstance;
   protected config: Configuration;
 
   constructor(config: Configuration) {
-    super((id: string): SubResources => this._call<SubResources>(id));
+    super((id: string) => this._call(id));
     this.config = config;
     this.client = axios.create({
       baseURL: config.baseURL,
@@ -93,7 +98,7 @@ export default class Resource<SubResources> extends ExtensibleFunction<SubResour
     );
   }
 
-  protected _call<SubResources>(id: string): SubResources {
+  protected _call(id: string): TSubResources  {
     throw new Error();
   }
 

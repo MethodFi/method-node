@@ -36,7 +36,7 @@ export interface IBIN {
   sample_pan: string | null,
 }
 
-export default class Bin extends Resource<void> {
+export default class Bin extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('bins'));
   }
