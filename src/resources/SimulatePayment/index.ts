@@ -8,7 +8,7 @@ export interface ISimulatePaymentUpdateOpts {
   error_code?: number | null;
 }
 
-export default class SimulatePayment extends Resource<void> {
+export default class SimulatePayment extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('payments'));
   }

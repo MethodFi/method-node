@@ -52,7 +52,7 @@ export interface IWebhookCreateOpts {
   metadata?: {};
 }
 
-export default class Webhook extends Resource<void> {
+export default class Webhook extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('webhooks'));
   }

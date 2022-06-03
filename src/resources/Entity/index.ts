@@ -172,7 +172,7 @@ export interface IEntityUpdateAuthResponse {
 }
 
 
-class EntitySubResources {
+export class EntitySubResources {
   syncs: EntitySync;
 
   constructor(id: string, config: Configuration) {
@@ -180,12 +180,11 @@ class EntitySubResources {
   }
 }
 
-export default class Entity extends Resource<EntitySubResources> {
+export default class Entity extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('entities'));
   }
 
-  // @ts-ignore
   protected _call(id): EntitySubResources {
     return new EntitySubResources(id, this.config);
   }
