@@ -168,7 +168,7 @@ export interface IEntityUpdateAuthOpts {
 
 export interface IEntityUpdateAuthResponse {
   questions: IEntityQuestion[],
-  cxn_id: string | null
+  authenticated: boolean,
 }
 
 
