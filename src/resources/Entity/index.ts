@@ -155,6 +155,7 @@ export interface IEntityQuestion {
 
 export interface IEntityQuestionResponse {
   questions: IEntityQuestion[]
+  authenticated: boolean,
 }
 
 export interface IAnswerOpts {

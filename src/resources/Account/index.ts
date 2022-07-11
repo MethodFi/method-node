@@ -23,6 +23,13 @@ export type TAccountSubTypes =
   | 'savings'
   | 'checking';
 
+export const AccountClearingSubTypes = {
+  single_use: 'single_use',
+}
+
+export type TAccountClearingSubTypes =
+    | 'single_use';
+
 export const AccountStatuses = {
   disabled: 'disabled',
   active: 'active',
@@ -89,6 +96,12 @@ export interface ILiabilityCreateOpts extends IAccountCreateOpts {
   liability: {
     mch_id: string,
     account_number: string,
+  }
+}
+
+export interface IClearingCreateOpts extends IAccountCreateOpts {
+  clearing: {
+    type: TAccountClearingSubTypes,
   }
 }
 
@@ -204,7 +217,7 @@ export default class Account extends Resource {
   }
 
   async create(data: IACHCreateOpts | ILiabilityCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts>(data, requestConfig);
+    return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts | IClearingCreateOpts>(data, requestConfig);
   }
 
   async getDetail(id: string) {
