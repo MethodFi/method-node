@@ -1,7 +1,7 @@
 import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 import Verification from '../Verification';
-import AccountSync from "../AccountSync";
+import AccountSync, { IAccountSync } from "../AccountSync";
 
 export const AccountTypes = {
    ach: 'ach',
@@ -103,6 +103,16 @@ export interface IClearingCreateOpts extends IAccountCreateOpts {
   clearing: {
     type: TAccountClearingSubTypes,
   }
+}
+
+export interface IAccountCreateBulkSyncOpts {
+  acc_ids: string[];
+}
+
+export interface IAccountCreateBulkSyncResponse {
+  success: string[];
+  failed: string[];
+  results: IAccountSync[];
 }
 
 export interface IAccountListOpts {
@@ -226,5 +236,12 @@ export default class Account extends Resource {
 
   async getTransactions(id: string) {
     return super._getWithSubPath<IAccountTransaction[]>(`/${id}/transactions`);
+  }
+
+  async bulkSync(acc_ids: string[]) {
+    return super._createWithSubPath<IAccountCreateBulkSyncResponse, IAccountCreateBulkSyncOpts>(
+      '/bulk_sync',
+      { acc_ids },
+    );
   }
 }
