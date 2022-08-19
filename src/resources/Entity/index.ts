@@ -51,6 +51,7 @@ export interface IEntityIndividual {
   phone: string | null;
   email: string | null;
   dob: string | null;
+  ssn?: string,
 }
 
 export interface IEntityAddress {
