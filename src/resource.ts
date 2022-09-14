@@ -27,11 +27,15 @@ export default class Resource extends ExtensibleFunction {
     this.config = config;
     this.client = axios.create({
       baseURL: config.baseURL,
-      headers: { Authorization: `Bearer ${config.apiKey}` },
+      headers: { Authorization: `Bearer ${config.apiKey}`, 'User-Agent': this.getDefaultUserAgent() },
     });
 
     this.configureRequestInterceptors();
     this.configureResponseInterceptors();
+  }
+
+  private getDefaultUserAgent(): string {
+    return `Method-Node/v${require('../package.json').version}`;
   }
 
   private configureRequestInterceptors(): void {
