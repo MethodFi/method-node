@@ -173,6 +173,11 @@ export interface IEntityUpdateAuthResponse {
   authenticated: boolean,
 }
 
+export interface IEntityGetCreditScoreResponse {
+  score: number,
+  updated_at: string,
+}
+
 
 export class EntitySubResources {
   syncs: EntitySync;
@@ -223,5 +228,9 @@ export default class Entity extends Resource {
 
   async refreshCapabilities(id: string) {
     return super._createWithSubPath<IEntity, {}>(`/${id}/refresh_capabilities`, {});
+  }
+
+  async getCreditScore(id: string) {
+    return super._getWithSubPath<IEntityGetCreditScoreResponse>(`/${id}/credit_score`);
   }
 };
