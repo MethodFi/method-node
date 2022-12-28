@@ -3,13 +3,13 @@ import Configuration from '../../configuration';
 import EntitySync from "../EntitySync";
 
 export const EntityTypes = {
-   individual: 'individual',
-   c_corporation: 'c_corporation',
-   s_corporation: 's_corporation',
-   llc: 'llc',
-   partnership: 'partnership',
-   sole_proprietorship: 'sole_proprietorship',
-   receive_only: 'receive_only',
+  individual: 'individual',
+  c_corporation: 'c_corporation',
+  s_corporation: 's_corporation',
+  llc: 'llc',
+  partnership: 'partnership',
+  sole_proprietorship: 'sole_proprietorship',
+  receive_only: 'receive_only',
 };
 
 export type TEntityTypes =
@@ -25,19 +25,21 @@ export const EntityCapabilities = {
   payments_send: 'payments:send',
   payments_receive: 'payments:receive',
   payments_limited_send: 'payments:limited-send',
-  data_retrieve: 'data:retrieve'
+  data_retrieve: 'data:retrieve',
+  data_sync: 'data:sync',
 };
 
 export type TEntityCapabilities =
   | 'payments:send'
   | 'payments:receive'
   | 'payments:limited-send'
-  | 'data:retrieve';
+  | 'data:retrieve'
+  | 'data:sync';
 
 export const EntityStatuses = {
-   active: 'active',
-   incomplete: 'incomplete',
-   disabled: 'disabled',
+  active: 'active',
+  incomplete: 'incomplete',
+  disabled: 'disabled',
 };
 
 export type TEntityStatuses =
@@ -114,11 +116,11 @@ export interface IIndividualCreateOpts extends IEntityCreateOpts {
 
 export interface ICorporationCreateOpts extends IEntityCreateOpts {
   type:
-    | 'c_corporation'
-    | 's_corporation'
-    | 'llc'
-    | 'partnership'
-    | 'sole_proprietorship';
+  | 'c_corporation'
+  | 's_corporation'
+  | 'llc'
+  | 'partnership'
+  | 'sole_proprietorship';
   corporation: Partial<IEntityCorporation>;
 }
 
@@ -178,6 +180,10 @@ export interface IEntityGetCreditScoreResponse {
   updated_at: string,
 }
 
+export interface IEntityWithdrawConsentOpts {
+  type: 'withdraw',
+  reason: 'entity_withdrew_consent' | null,
+}
 
 export class EntitySubResources {
   syncs: EntitySync;
@@ -232,5 +238,12 @@ export default class Entity extends Resource {
 
   async getCreditScore(id: string) {
     return super._getWithSubPath<IEntityGetCreditScoreResponse>(`/${id}/credit_score`);
+  }
+
+  async withdrawConsent(id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
+    return super._createWithSubPath<IEntity, IEntityWithdrawConsentOpts>(
+      `/${id}/consent`,
+      data,
+    );
   }
 };

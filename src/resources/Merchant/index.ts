@@ -2,25 +2,25 @@ import Resource from '../../resource';
 import Configuration from '../../configuration';
 
 export const MerchantTypes = {
-   auto_loan: 'auto_loan',
-   business_loan: 'business_loan',
-   credit_card: 'credit_card',
-   electric_utility: 'electric_utility',
-   home_loan: 'home_loan',
-   insurance: 'insurance',
-   internet_utility: 'internet_utility',
-   loan: 'loan',
-   medical: 'medical',
-   personal_loan: 'personal_loan',
-   student_loan: 'student_loan',
-   telephone_utility: 'telephone_utility',
-   television_utility: 'television_utility',
-   water_utility: 'water_utility',
-   bank: 'bank',
-   home_equity_loan: 'home_equity_loan',
-   mortgage: 'mortgage',
-   utility: 'utility',
-   waste_utility: 'waste_utility',
+  auto_loan: 'auto_loan',
+  business_loan: 'business_loan',
+  credit_card: 'credit_card',
+  electric_utility: 'electric_utility',
+  home_loan: 'home_loan',
+  insurance: 'insurance',
+  internet_utility: 'internet_utility',
+  loan: 'loan',
+  medical: 'medical',
+  personal_loan: 'personal_loan',
+  student_loan: 'student_loan',
+  telephone_utility: 'telephone_utility',
+  television_utility: 'television_utility',
+  water_utility: 'water_utility',
+  bank: 'bank',
+  home_equity_loan: 'home_equity_loan',
+  mortgage: 'mortgage',
+  utility: 'utility',
+  waste_utility: 'waste_utility',
 };
 
 export type TMerchantTypes =
@@ -60,6 +60,8 @@ export interface IMerchant {
   types: TMerchantTypes[];
   account_prefixes: string[];
   provider_ids: IMerchantProviderIds;
+  customized_auth: boolean;
+  is_temp: boolean;
 }
 
 export interface IMerchantListOpts {
