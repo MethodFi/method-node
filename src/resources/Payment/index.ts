@@ -105,6 +105,9 @@ export interface IPaymentListOpts {
   source?: string | null;
   destination?: string | null;
   reversal_id?: string | null;
+  source_holder_id?: string,
+  destination_holder_id?: string,
+  acc_id?: string,
 }
 
 export class PaymentSubResources {
