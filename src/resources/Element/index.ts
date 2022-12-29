@@ -4,21 +4,65 @@ import { IAccount } from '../Account';
 
 export const ElementTypes = {
   link: 'link',
+  auth: 'auth',
 };
 
 export type TElementTypes =
-  | 'link';
+  | 'link'
+  | 'auth';
 
-export interface ILinkElementLinkCreateOpts {
+export type TAuthElementAccountFilterTypes =
+  | 'auto_loan'
+  | 'mortgage'
+  | 'credit_card'
+  | 'loan'
+  | 'student_loan'
+  | 'personal_loan'
+
+export type TAuthElementAccountFilterCapabilities =
+  | 'payments:receive'
+  | 'data:sync';
+
+export type TAuthElementAccountFilterSelectionTypes =
+  | 'single'
+  | 'multiple';
+
+export interface ILinkElementCreateOpts {
   mch_id?: string;
   mask?: string;
 }
 
+export interface IAuthElementAccountFiltersOpts {
+  selection_type?: TAuthElementAccountFilterSelectionTypes;
+  capabilities?: TAuthElementAccountFilterCapabilities[];
+  types?: TAuthElementAccountFilterTypes[];
+}
+
+export interface IAuthElementEntityOpts {
+  type: 'individual';
+  individual: {
+    first_name?: string;
+    last_name?: string;
+    dob?: string;
+    email?: string;
+    phone?: string;
+    phone_verification_type?: 'sms' | 'tos';
+    phone_verification_timestamp?: string;
+  }
+}
+export interface IAuthElementCreateOpts {
+  account_filters?: IAuthElementAccountFiltersOpts;
+  entity?: IAuthElementEntityOpts
+}
+
 export interface IElementTokenCreateOpts {
-  entity_id: string;
+  entity_id?: string;
   type: TElementTypes;
   team_name?: string;
-  link?: ILinkElementLinkCreateOpts;
+  team_logo?: string | null;
+  team_icon?: string | null;
+  link?: ILinkElementCreateOpts;
+  auth?: IAuthElementCreateOpts;
 }
 
 export interface IElement {
