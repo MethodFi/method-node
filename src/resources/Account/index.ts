@@ -240,11 +240,10 @@ export interface IAccountLiabilityCreditBuilder extends IAccountLiabilityLoan { 
 
 export interface IAccountLiabilityCollection extends IAccountLiabilityLoan { }
 
-export interface IAccountLiabilityBusinessLoan extends IAccountLiabilityLoan {
-  name: string | null;
+export interface IAccountLiabilityBusinessLoan {
+  name: string;
   balance: number | null;
   opened_at: string | null;
-  original_loan_amount: number | null;
 }
 export interface IAccountLiabilityInsurance {
   name: string;
