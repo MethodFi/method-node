@@ -104,6 +104,17 @@ export type TTradelineAccountOwnership =
   | 'joint'
   | 'unknown';
 
+export const AccountLiabilityDataSources = {
+  credit_report: 'credit_report',
+  financial_institution: 'financial_institution',
+  unavailable: 'unavailable',
+};
+
+export type TAccountLiabilityDataSources =
+  | 'credit_report'
+  | 'financial_institution'
+  | 'unavailable';
+
 export const AccountLiabilityTypes = {
   student_loan: 'student_loan',
   credit_card: 'credit_card',
@@ -280,6 +291,8 @@ export interface IAccountLiability {
   data_status: TAccountLiabilityDataStatuses;
   data_last_successful_sync: string | null;
   data_status_error: IResourceError | null;
+  data_source: TAccountLiabilityDataSources;
+  data_updated_at: string | null;
   data_sync_type: TAccountLiabilitySyncTypes;
   ownership: TTradelineAccountOwnership;
   hash: string;
