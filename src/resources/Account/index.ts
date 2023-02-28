@@ -449,6 +449,14 @@ export default class Account extends Resource {
     return super._createWithSubPath<IAccountSync, {}>(`/${id}/syncs`, {});
   }
 
+  async enrollAutoSyncs(id: string) {
+    return super._createWithSubPath<IAccount, {}>(`/${id}/sync_enrollment`, {});
+  }
+
+  async unenrollAutoSyncs(id: string) {
+    return super._deleteWithSubPath<IAccount, {}>(`/${id}/sync_enrollment`, {});
+  }
+
   async withdrawConsent(id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
     return super._createWithSubPath<IAccount, IAccountWithdrawConsentOpts>(
       `/${id}/consent`,

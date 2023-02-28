@@ -102,7 +102,7 @@ export default class Resource extends ExtensibleFunction {
     );
   }
 
-  protected _call(id: string): TSubResources  {
+  protected _call(id: string): TSubResources {
     throw new Error();
   }
 
@@ -171,6 +171,14 @@ export default class Resource extends ExtensibleFunction {
 
   protected async _delete<Response>(id: string): Promise<Response> {
     return (await this.client.delete(`/${id}`)).data.data;
+  }
+
+  protected async _deleteWithSubPath<Response, Data>(
+    path: string,
+    data: Data,
+    requestConfig: IRequestConfig = {},
+  ): Promise<Response> {
+    return (await this.client.delete(path, data)).data.data;
   }
 
   protected async _download<Response>(id: string): Promise<Response> {
