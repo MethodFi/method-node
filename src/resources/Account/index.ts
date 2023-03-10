@@ -379,6 +379,7 @@ export interface IAccountListOpts {
   type?: string | null;
   holder_id?: string | null;
   'liability.mch_id'?: string | null;
+  'liability.type'?: string | null;
 }
 
 export interface IAccountDetails {
