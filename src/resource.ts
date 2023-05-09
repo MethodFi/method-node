@@ -87,12 +87,14 @@ export default class Resource extends ExtensibleFunction {
 
     this.client.interceptors.response.use(
       (response) => {
-        if (this.config.onResponse) this.config.onResponse(extractResponseEvent(response));
+        if (this.config.onResponse) this.config.onResponse(extractResponseEvent(response), response);
 
         return response;
       },
       (error) => {
-        if (this.config.onResponse && error.response) this.config.onResponse(extractResponseEvent(error.response));
+        if (this.config.onResponse && error.response) {
+          this.config.onResponse(extractResponseEvent(error.response), error.response);
+        }
 
         if (error.response
           && error.response.data

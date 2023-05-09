@@ -1,3 +1,6 @@
+import { AxiosResponse } from 'axios';
+
+
 type TEnvironments =
   | 'production'
   | 'sandbox'
@@ -45,7 +48,7 @@ export interface IResponseEvent {
 
 export type TOnRequest = (event: IRequestEvent) => void;
 
-export type TOnResponse = (event: IResponseEvent) => void;
+export type TOnResponse = (event: IResponseEvent, axios_response: AxiosResponse) => void;
 
 export interface IConfigurationOpts {
   apiKey: string;
