@@ -53,6 +53,7 @@ export type TOnResponse = (event: IResponseEvent, axios_response: AxiosResponse)
 export interface IConfigurationOpts {
   apiKey: string;
   env: TEnvironments;
+  httpsAgent?: any;
   onRequest?: TOnRequest;
   onResponse?: TOnResponse;
 }
@@ -60,6 +61,7 @@ export interface IConfigurationOpts {
 export default class Configuration {
   baseURL: string;
   apiKey: string;
+  httpsAgent?: any;
   onResponse: TOnResponse | null;
   onRequest: TOnRequest | null;
 
@@ -68,6 +70,7 @@ export default class Configuration {
 
     this.baseURL = `https://${opts.env}.methodfi.com`;
     this.apiKey = opts.apiKey;
+    this.httpsAgent = opts.httpsAgent || null;
     this.onRequest = opts.onRequest || null;
     this.onResponse = opts.onResponse || null;
   }
