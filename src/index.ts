@@ -1,4 +1,5 @@
 export * from './method';
+export {Method as MethodClient} from './method';
 export * from './errors';
 export * from './configuration';
 export * from './resources/Account';

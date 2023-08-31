@@ -36,7 +36,9 @@ export default class Resource extends ExtensibleFunction {
   }
 
   private getDefaultUserAgent(): string {
-    return `Method-Node/v${require('../package.json').version}`;
+    return `Method-Node/v${require(
+      process.env.NODE_ENV === 'TEST' ? '../../package.json' : '../package.json'
+    ).version}`;
   }
 
   private configureRequestInterceptors(): void {
