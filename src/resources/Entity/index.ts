@@ -27,6 +27,7 @@ export const EntityCapabilities = {
   payments_limited_send: 'payments:limited-send',
   data_retrieve: 'data:retrieve',
   data_sync: 'data:sync',
+  transaction_stream: 'transaction:stream',
 };
 
 export type TEntityCapabilities =
@@ -34,7 +35,8 @@ export type TEntityCapabilities =
   | 'payments:receive'
   | 'payments:limited-send'
   | 'data:retrieve'
-  | 'data:sync';
+  | 'data:sync'
+  | 'transaction:stream';
 
 export const EntityStatuses = {
   active: 'active',
@@ -47,13 +49,56 @@ export type TEntityStatuses =
   | 'incomplete'
   | 'disabled';
 
+export const EntityIndividualPhoneVerificationTypes = {
+  method_sms: 'method_sms',
+  method_verified: 'method_verified',
+  sms: 'sms',
+  tos: 'tos',
+}
+
+export type TEntityIndividualPhoneVerificationTypes =
+  | 'method_sms'
+  | 'method_verified'
+  | 'sms'
+  | 'tos';
+
+export const IndividualSensitiveFields = {
+  first_name: 'first_name',
+  last_name: 'last_name',
+  phone: 'phone',
+  phone_history: 'phone_history',
+  dob: 'dob',
+  address: 'address',
+  email: 'email',
+  address_history: 'address_history',
+  ssn_4: 'ssn_4',
+  ssn_6: 'ssn_6',
+  ssn_9: 'ssn_9',
+  identities: 'identities',
+};
+
+export type TIndividualSensitiveFields = 
+  | 'first_name'
+  | 'last_name'
+  | 'phone'
+  | 'phone_history'
+  | 'dob'
+  | 'address'
+  | 'email'
+  | 'address_history'
+  | 'ssn_4'
+  | 'ssn_6'
+  | 'ssn_9'
+  | 'identities';
+
 export interface IEntityIndividual {
   first_name: string | null;
   last_name: string | null;
   phone: string | null;
   email: string | null;
   dob: string | null;
-  ssn?: string,
+  phone_verification_type: TEntityIndividualPhoneVerificationTypes | null,
+  phone_verification_timestamp: Date | null,
 }
 
 export interface IEntityAddress {
@@ -105,8 +150,11 @@ export interface IEntity {
 
 export interface IEntityCreateOpts {
   type: TEntityTypes;
-  address?: IEntityAddress | null;
-  metadata?: {};
+  individual: IEntityIndividual & { ssn?: string, ssn_4?: string } | null,
+  corporation: IEntityCorporation | null,
+  receive_only: IEntityReceiveOnly | null,
+  address: IEntityAddress;
+  metadata: {} | null;
 }
 
 export interface IIndividualCreateOpts extends IEntityCreateOpts {
@@ -232,12 +280,24 @@ export default class Entity extends Resource {
     return super._updateWithSubPath<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(`/${id}/auth_session`, opts)
   }
 
+  async createManualAuthSession(id: string) {
+    return super._createWithSubPath<IEntityQuestionResponse, {}>(`/${id}/manual_auth_session`, {});
+  }
+
+  async updateManualAuthSession(id: string, opts: IEntityUpdateAuthOpts) {
+    return super._updateWithSubPath<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(`/${id}/manual_auth_session`, opts)
+  }
+
   async refreshCapabilities(id: string) {
     return super._createWithSubPath<IEntity, {}>(`/${id}/refresh_capabilities`, {});
   }
 
   async getCreditScore(id: string) {
     return super._getWithSubPath<IEntityGetCreditScoreResponse>(`/${id}/credit_score`);
+  }
+
+  async getSensitiveFields(id: string) {
+    return super._getWithSubPath<TIndividualSensitiveFields>(`/${id}/sensitive`);
   }
 
   async withdrawConsent(id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {

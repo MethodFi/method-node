@@ -33,19 +33,30 @@ export type TWebhookTypes =
   | 'payment_reversal.update'
   | 'connection.create'
   | 'connection.update'
+  | 'transaction.create'
+  | 'transaction.update'
+  | 'report.create'
+  | 'report.update'
+
+  // Deprecated
   | 'account_verification.sent'
   | 'account_verification.returned';
 
 export interface IWebhook {
   id: string;
-  type: TWebhookTypes;
-  url: string;
+  team_id: string,
+  type: TWebhookTypes,
+  url: string,
+  auth_token: string | null,
+  deleted: boolean,
   metadata: {} | null;
+  deleted_at: Date,
   created_at: string;
   updated_at: string;
 }
 
 export interface IWebhookCreateOpts {
+  team_id: string,
   type: TWebhookTypes;
   url: string;
   auth_token?: string;

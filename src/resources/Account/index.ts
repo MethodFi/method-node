@@ -427,6 +427,10 @@ export default class Account extends Resource {
     return super._getWithId<IAccount>(id);
   }
 
+  async update(id: string, data: null) {
+    return super._updateWithId<IAccount, IAccountListOpts>(id, data);
+  }
+
   async list(opts?: IAccountListOpts) {
     return super._list<IAccount, IAccountListOpts>(opts);
   }

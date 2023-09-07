@@ -11,6 +11,7 @@ export const PaymentStatuses = {
   reversed: 'reversed',
   reversal_required: 'reversal_required',
   reversal_processing: 'reversal_processing',
+  settled: 'settled',
 };
 
 export type TPaymentStatuses =
@@ -19,23 +20,34 @@ export type TPaymentStatuses =
   | 'processing'
   | 'failed'
   | 'sent'
-  | 'reversed';
+  | 'reversed'
+  | 'reversal_required'
+  | 'reversal_processing'
+  | 'settled'
 
 export const PaymentFundStatuses = {
+  transmitting: 'transmitting',
+  transmitted: 'transmitted',
   hold: 'hold',
   pending: 'pending',
   requested: 'requested',
   clearing: 'clearing',
+  pending_consolidation: 'pending_consolidation',
+  pending_clearing: 'pending_clearing',
   failed: 'failed',
   sent: 'sent',
   unknown: 'unknown',
 }
 
 export type TPaymentFundStatuses =
+  | 'transmitting'
+  | 'transmitted'
   | 'hold'
   | 'pending'
   | 'requested'
   | 'clearing'
+  | 'pending_consolidation'
+  | 'pending_clearing'
   | 'failed'
   | 'sent'
   | 'unknown';
@@ -89,7 +101,7 @@ export interface IPaymentCreateOpts {
   amount: number;
   source: string;
   destination: string;
-  description: string;
+  description?: string;
   metadata?: {};
   fee?: IPaymentFee;
 }
@@ -108,6 +120,7 @@ export interface IPaymentListOpts {
   source_holder_id?: string,
   destination_holder_id?: string,
   acc_id?: string,
+  holder_id?: string,
 }
 
 export class PaymentSubResources {

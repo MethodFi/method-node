@@ -11,6 +11,7 @@ import Webhook from './resources/Webhook';
 import HealthCheck, { IPingResponse } from './resources/HealthCheck';
 import Connection from './resources/Connection';
 import Simulate from './resources/Simulate';
+import Transaction from './resources/Transaction';
 
 export class Method {
   accounts: Account;
@@ -25,6 +26,7 @@ export class Method {
   healthcheck: HealthCheck;
   connections: Connection;
   simulate: Simulate;
+  transactions: Transaction;
 
   constructor(opts: IConfigurationOpts) {
     const config = new Configuration(opts);
@@ -42,6 +44,7 @@ export class Method {
     this.healthcheck = new HealthCheck(config);
     this.connections = new Connection(config);
     this.simulate = new Simulate(config);
+    this.transactions = new Transaction(config);
   }
 
   public async ping(): Promise<IPingResponse> {
