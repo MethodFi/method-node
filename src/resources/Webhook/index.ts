@@ -44,13 +44,9 @@ export type TWebhookTypes =
 
 export interface IWebhook {
   id: string;
-  team_id: string,
   type: TWebhookTypes,
   url: string,
-  auth_token: string | null,
-  deleted: boolean,
   metadata: {} | null;
-  deleted_at: Date,
   created_at: string;
   updated_at: string;
 }
