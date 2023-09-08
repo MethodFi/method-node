@@ -162,6 +162,20 @@ export const AutoPayStatuses = {
 
 export type TAutoPayStatuses = 'unknown' | 'active' | 'inactive';
 
+export type ILiabilityMortgageUpdateOpts = {
+  address_street: string;
+  address_city: string;
+  address_state: string;
+  address_zip: string;
+}
+
+export type TLiabilityCreditCardUpdateOpts = {
+  number: string,
+} | {
+  expiration_month: number,
+  expiration_year: number,
+};
+
 export interface IAccountLiabilityLoan {
   name: string;
   balance: number | null;
@@ -349,6 +363,11 @@ export interface ILiabilityCreateOpts extends IAccountCreateOpts {
   }
 }
 
+export interface ILiabilityUpdateOps {
+  mortgage: ILiabilityMortgageUpdateOpts | null;
+  credit_card: TLiabilityCreditCardUpdateOpts | null;
+}
+
 export interface IClearingCreateOpts extends IAccountCreateOpts {
   clearing: {
     type: TAccountClearingSubTypes,
@@ -364,6 +383,25 @@ export interface IAccountCreateBulkSyncResponse {
   failed: string[];
   results: IAccountSync[];
 }
+
+export interface IAccountSensitive {
+  number: string | null;
+  encrypted_number: string | null;
+  bin_4: string | null;
+  bin_6: string | null;
+  payment_address: any | null;
+};
+
+export interface IAccountCreateBulkSensitiveResponse {
+  success: string[];
+  failed: string[];
+  results: IAccountSensitive[];
+}
+
+export interface IAccountCreateBulkSensitiveOpts {
+  acc_ids: string[];
+}
+
 export interface IAccountWithdrawConsentOpts {
   type: 'withdraw',
   reason: 'holder_withdrew_consent' | null,
@@ -404,6 +442,15 @@ export interface IAccountTransaction {
   description: string | null;
 }
 
+export interface ICreditReportTradelinePaymentHistoryItem {
+  code: number;
+  date: string;
+};
+
+export interface IAccountPaymentHistory {
+  payment_history: ICreditReportTradelinePaymentHistoryItem[];
+}
+
 export class AccountSubResources {
   verification: Verification;
   syncs: AccountSync;
@@ -427,8 +474,8 @@ export default class Account extends Resource {
     return super._getWithId<IAccount>(id);
   }
 
-  async update(id: string, data: null) {
-    return super._updateWithId<IAccount, IAccountListOpts>(id, data);
+  async update(id: string, opts: ILiabilityUpdateOps) {
+    return super._updateWithId<IAccount, ILiabilityUpdateOps>(id, opts);
   }
 
   async list(opts?: IAccountListOpts) {
@@ -437,6 +484,10 @@ export default class Account extends Resource {
 
   async create(data: IACHCreateOpts | ILiabilityCreateOpts | IClearingCreateOpts, requestConfig?: IRequestConfig) {
     return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts | IClearingCreateOpts>(data, requestConfig);
+  }
+
+  async getPaymentHistory(id: string) {
+    return super._getWithSubPath<IAccountPaymentHistory>(`/${id}/payment_history`);
   }
 
   async getDetails(id: string) {
@@ -452,6 +503,17 @@ export default class Account extends Resource {
 
   async sync(id: string) {
     return super._createWithSubPath<IAccountSync, {}>(`/${id}/syncs`, {});
+  }
+
+  async bulkSensitive(acc_ids: string[]) {
+    return super._createWithSubPath<IAccountCreateBulkSensitiveResponse, IAccountCreateBulkSensitiveOpts>(
+      '/bulk_sensitive',
+      { acc_ids}
+    )
+  }
+
+  async sensitive(id: string) {
+    return super._getWithSubPath<IAccountSensitive>(`/${id}/sensitive`);
   }
 
   async enrollAutoSyncs(id: string) {
