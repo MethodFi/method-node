@@ -52,7 +52,6 @@ export interface IMerchantProviderIds {
   plaid: string[];
   mx: string[];
   finicity: string[];
-  dpp: string[];
 }
 
 export interface IMerchant {
@@ -74,7 +73,6 @@ export interface IMerchantListOpts {
   'provider_id.plaid'?: string,
   'provider_id.mx'?: string,
   'provider_id.finicity'?: string,
-  'provider_id.dpp'?: string,
 }
 
 export default class Merchant extends Resource {

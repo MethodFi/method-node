@@ -52,7 +52,6 @@ export interface IWebhook {
 }
 
 export interface IWebhookCreateOpts {
-  team_id: string;
   type: TWebhookTypes;
   url: string;
   auth_token?: string;

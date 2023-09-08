@@ -25,33 +25,6 @@ export type TPaymentStatuses =
   | 'reversal_processing'
   | 'settled'
 
-export const PaymentFundStatuses = {
-  transmitting: 'transmitting',
-  transmitted: 'transmitted',
-  hold: 'hold',
-  pending: 'pending',
-  requested: 'requested',
-  clearing: 'clearing',
-  pending_consolidation: 'pending_consolidation',
-  pending_clearing: 'pending_clearing',
-  failed: 'failed',
-  sent: 'sent',
-  unknown: 'unknown',
-}
-
-export type TPaymentFundStatuses =
-  | 'transmitting'
-  | 'transmitted'
-  | 'hold'
-  | 'pending'
-  | 'requested'
-  | 'clearing'
-  | 'pending_consolidation'
-  | 'pending_clearing'
-  | 'failed'
-  | 'sent'
-  | 'unknown';
-
 export const PaymentTypes = {
   standard: 'standard',
   clearing: 'clearing',
@@ -85,12 +58,13 @@ export interface IPayment {
   amount: number;
   description: string;
   status: TPaymentStatuses;
-  fund_status?: TPaymentFundStatuses;
   error: IResourceError | null;
   metadata: {} | null;
   estimated_completion_date: string | null;
   source_settlement_date: string | null;
   destination_settlement_date: string | null;
+  source_status: TPaymentStatuses;
+  destination_status: TPaymentStatuses;
   fee: IPaymentFee | null
   type: TPaymentTypes;
   created_at: string;
