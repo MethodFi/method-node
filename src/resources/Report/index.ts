@@ -31,7 +31,6 @@ export type TReportStatuses =
 
 export interface IReport {
   id: string;
-  team_id: string;
   type: TReportTypes;
   url: string;
   status: TReportStatuses;
@@ -41,7 +40,6 @@ export interface IReport {
 }
 
 export interface IReportCreateOpts {
-  team_id: string,
   type: TReportTypes;
   metadata?: {};
 }

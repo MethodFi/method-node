@@ -44,15 +44,15 @@ export type TWebhookTypes =
 
 export interface IWebhook {
   id: string;
-  type: TWebhookTypes,
-  url: string,
+  type: TWebhookTypes;
+  url: string;
   metadata: {} | null;
   created_at: string;
   updated_at: string;
 }
 
 export interface IWebhookCreateOpts {
-  team_id: string,
+  team_id: string;
   type: TWebhookTypes;
   url: string;
   auth_token?: string;
