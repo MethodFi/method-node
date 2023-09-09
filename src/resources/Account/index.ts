@@ -433,15 +433,6 @@ export interface IAccountDetails {
   metadata: {} | null;
 }
 
-export interface IAccountTransaction {
-  id: string;
-  reference_id: string;
-  date: string;
-  amount: number;
-  status: 'pending' | 'success';
-  description: string | null;
-}
-
 export interface ICreditReportTradelinePaymentHistoryItem {
   code: number;
   date: string;
