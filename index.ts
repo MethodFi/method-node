@@ -6,7 +6,7 @@ export { BINBrands, BINTypes } from './src/resources/Bin';
 export { ElementTypes } from './src/resources/Element';
 export { EntityTypes, EntityStatuses, EntityCapabilities } from './src/resources/Entity';
 export { MerchantTypes } from './src/resources/Merchant';
-export { PaymentFundStatuses, PaymentStatuses } from './src/resources/Payment';
+export { PaymentStatuses } from './src/resources/Payment';
 export { ReportTypes, ReportStatuses } from './src/resources/Report';
 export { RoutingNumberOfficeTypes } from './src/resources/RoutingNumber';
 export { WebhookTypes } from './src/resources/Webhook';
