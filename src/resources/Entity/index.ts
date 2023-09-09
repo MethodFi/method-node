@@ -62,35 +62,6 @@ export type TEntityIndividualPhoneVerificationTypes =
   | 'sms'
   | 'tos';
 
-export const IndividualSensitiveFields = {
-  first_name: 'first_name',
-  last_name: 'last_name',
-  phone: 'phone',
-  phone_history: 'phone_history',
-  dob: 'dob',
-  address: 'address',
-  email: 'email',
-  address_history: 'address_history',
-  ssn_4: 'ssn_4',
-  ssn_6: 'ssn_6',
-  ssn_9: 'ssn_9',
-  identities: 'identities',
-};
-
-export type TIndividualSensitiveFields = 
-  | 'first_name'
-  | 'last_name'
-  | 'phone'
-  | 'phone_history'
-  | 'dob'
-  | 'address'
-  | 'email'
-  | 'address_history'
-  | 'ssn_4'
-  | 'ssn_6'
-  | 'ssn_9'
-  | 'identities';
-
 export interface IEntityIndividual {
   first_name: string | null;
   last_name: string | null;
@@ -228,6 +199,38 @@ export interface IEntityGetCreditScoreResponse {
   updated_at: string,
 }
 
+export interface IEntityKYCAddressRecordData {
+  address: string,
+  city: string,
+  postal_code: string,
+  state: string,
+  address_term: number,
+};
+
+export interface IEntityIdentity {
+  first_name: string | null,
+  last_name: string | null,
+  phone: string | null,
+  dob: string | null,
+  address: IEntityKYCAddressRecordData | null,
+  ssn: string | null,
+}
+
+export interface IEntitySensitiveResponse {
+  first_name: string | null,
+  last_name: string | null,
+  phone: string | null,
+  phone_history: string[],
+  email: string | null,
+  dob: string | null,
+  address: IEntityKYCAddressRecordData | null,
+  address_history: IEntityKYCAddressRecordData[],
+  ssn_4: string | null,
+  ssn_6: string | null,
+  ssn_9: string | null,
+  identities: IEntityIdentity[],
+};
+
 export interface IEntityWithdrawConsentOpts {
   type: 'withdraw',
   reason: 'entity_withdrew_consent' | null,
@@ -297,7 +300,7 @@ export default class Entity extends Resource {
   }
 
   async getSensitiveFields(id: string) {
-    return super._getWithSubPath<TIndividualSensitiveFields>(`/${id}/sensitive`);
+    return super._getWithSubPath<IEntitySensitiveResponse>(`/${id}/sensitive`);
   }
 
   async withdrawConsent(id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
