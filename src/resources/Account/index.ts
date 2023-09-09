@@ -363,7 +363,7 @@ export interface ILiabilityCreateOpts extends IAccountCreateOpts {
   }
 }
 
-export interface ILiabilityUpdateOps {
+export interface ILiabilityUpdateOpts {
   mortgage: ILiabilityMortgageUpdateOpts | null;
   credit_card: TLiabilityCreditCardUpdateOpts | null;
 }
@@ -474,8 +474,8 @@ export default class Account extends Resource {
     return super._getWithId<IAccount>(id);
   }
 
-  async update(id: string, opts: ILiabilityUpdateOps) {
-    return super._updateWithId<IAccount, ILiabilityUpdateOps>(id, opts);
+  async update(id: string, opts: ILiabilityUpdateOpts) {
+    return super._updateWithId<IAccount, ILiabilityUpdateOpts>(id, opts);
   }
 
   async list(opts?: IAccountListOpts) {
