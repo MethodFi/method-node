@@ -14,6 +14,10 @@ export const WebhookTypes = {
   payment_reversal_update: 'payment_reversal.update',
   connection_create: 'connection.create',
   connection_update: 'connection.update',
+  transaction_create: 'transaction.create',
+  transaction_update: 'transaction.update',
+  report_create: 'report.create',
+  report_update: 'report.update',
 
   // Deprecated
   account_verification_sent: 'account_verification.sent',
