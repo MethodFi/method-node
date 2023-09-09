@@ -121,11 +121,8 @@ export interface IEntity {
 
 export interface IEntityCreateOpts {
   type: TEntityTypes;
-  individual: IEntityIndividual & { ssn?: string, ssn_4?: string } | null,
-  corporation: IEntityCorporation | null,
-  receive_only: IEntityReceiveOnly | null,
-  address: IEntityAddress;
-  metadata: {} | null;
+  address?: IEntityAddress | null;
+  metadata?: {} | null;
 }
 
 export interface IIndividualCreateOpts extends IEntityCreateOpts {
