@@ -34,79 +34,102 @@ export type TAuthElementAccountFilterSelectionTypes =
   | 'multiple';
 
 export const UserEventType = {
-  auth_intro_open: 'auth_intro_open',
-  auth_intro_continue: 'auth_intro_continue',
-  auth_intro_close: 'auth_intro_close',
-  auth_name_open: 'auth_name_open',
-  auth_name_continue: 'auth_name_continue',
-  auth_name_close: 'auth_name_close',
-  auth_phone_open: 'auth_phone_open',
-  auth_phone_continue: 'auth_phone_continue',
-  auth_phone_close: 'auth_phone_close',
-  auth_phone_verify_open: 'auth_phone_verify_open',
-  auth_phone_verify_submit: 'auth_phone_verify_submit',
-  auth_phone_verify_close: 'auth_phone_verify_close',
-  auth_dob_open: 'auth_dob_open',
-  auth_dob_continue: 'auth_dob_continue',
-  auth_dob_close: 'auth_dob_close',
-  auth_address_open: 'auth_address_open',
-  auth_address_continue: 'auth_address_continue',
-  auth_address_close: 'auth_address_close',
-  auth_incorrect_info_open: 'auth_incorrect_info_open',
-  auth_incorrect_info_try_again: 'auth_incorrect_info_try_again',
-  auth_invalid_info_open: 'auth_invalid_info_open',
-  auth_invalid_info_exit: 'auth_invalid_info_exit',
-  auth_secq_open: 'auth_secq_open',
-  auth_secq_continue: 'auth_secq_continue',
-  auth_secq_close: 'auth_secq_close',
-  auth_secq_incorrect_open: 'auth_secq_incorrect_open',
-  auth_secq_incorrect_try_again: 'auth_secq_incorrect_try_again',
-  auth_secq_incorrect_close: 'auth_secq_incorrect_close',
-  auth_consent_open: 'auth_consent_open',
-  auth_consent_continue: 'auth_consent_continue',
-  auth_consent_close: 'auth_consent_close',
-  auth_success_open: 'auth_success_open',
-  auth_success_continue: 'auth_success_continue',
-  auth_failure_open: 'auth_failure_open',
-  auth_failure_continue: 'auth_failure_continue',
+  AUTH_INTRO_OPEN: 'AUTH_INTRO_OPEN',
+  AUTH_INTRO_CONTINUE: 'AUTH_INTRO_CONTINUE',
+  AUTH_INTRO_CLOSE: 'AUTH_INTRO_CLOSE',
+
+  AUTH_NAME_OPEN: 'AUTH_NAME_OPEN',
+  AUTH_NAME_CONTINUE: 'AUTH_NAME_CONTINUE',
+  AUTH_NAME_CLOSE: 'AUTH_NAME_CLOSE',
+
+  AUTH_PHONE_OPEN: 'AUTH_PHONE_OPEN',
+  AUTH_PHONE_CONTINUE: 'AUTH_PHONE_CONTINUE',
+  AUTH_PHONE_CLOSE: 'AUTH_PHONE_CLOSE',
+
+  AUTH_PHONE_VERIFY_OPEN: 'AUTH_PHONE_VERIFY_OPEN',
+  AUTH_PHONE_VERIFY_SUBMIT: 'AUTH_PHONE_VERIFY_SUBMIT',
+  AUTH_PHONE_VERIFY_CLOSE: 'AUTH_PHONE_VERIFY_CLOSE',
+
+  AUTH_DOB_OPEN: 'AUTH_DOB_OPEN',
+  AUTH_DOB_CONTINUE: 'AUTH_DOB_CONTINUE',
+  AUTH_DOB_CLOSE: 'AUTH_DOB_CLOSE',
+
+  AUTH_ADDRESS_OPEN: 'AUTH_ADDRESS_OPEN',
+  AUTH_ADDRESS_CONTINUE: 'AUTH_ADDRESS_CONTINUE',
+  AUTH_ADDRESS_CLOSE: 'AUTH_ADDRESS_CLOSE',
+
+  AUTH_INCORRECT_INFO_OPEN: 'AUTH_INCORRECT_INFO_OPEN',
+  AUTH_INCORRECT_INFO_TRY_AGAIN: 'AUTH_INCORRECT_INFO_TRY_AGAIN',
+
+  AUTH_INVALID_INFO_OPEN: 'AUTH_INVALID_INFO_OPEN',
+  AUTH_INVALID_INFO_EXIT: 'AUTH_INVALID_INFO_EXIT',
+
+  AUTH_SECQ_OPEN: 'AUTH_SECQ_OPEN',
+  AUTH_SECQ_CONTINUE: 'AUTH_SECQ_CONTINUE',
+  AUTH_SECQ_CLOSE: 'AUTH_SECQ_CLOSE',
+
+  AUTH_SECQ_INCORRECT_OPEN: 'AUTH_SECQ_INCORRECT_OPEN',
+  AUTH_SECQ_INCORRECT_TRY_AGAIN: 'AUTH_SECQ_INCORRECT_TRY_AGAIN',
+  AUTH_SECQ_INCORRECT_CLOSE: 'AUTH_SECQ_INCORRECT_CLOSE',
+
+  AUTH_CONSENT_OPEN: 'AUTH_CONSENT_OPEN',
+  AUTH_CONSENT_CONTINUE: 'AUTH_CONSENT_CONTINUE',
+  AUTH_CONSENT_CLOSE: 'AUTH_CONSENT_CLOSE',
+
+  AUTH_SUCCESS_OPEN: 'AUTH_SUCCESS_OPEN',
+  AUTH_SUCCESS_CONTINUE: 'AUTH_SUCCESS_CONTINUE',
+  AUTH_FAILURE_OPEN: 'AUTH_FAILURE_OPEN',
+  AUTH_FAILURE_CONTINUE: 'AUTH_FAILURE_CONTINUE',
 };
 
 export type TUserEventType =
-  | 'auth_intro_open'
-  | 'auth_intro_continue'
-  | 'auth_intro_close'
-  | 'auth_name_open'
-  | 'auth_name_continue'
-  | 'auth_name_close'
-  | 'auth_phone_open'
-  | 'auth_phone_continue'
-  | 'auth_phone_close'
-  | 'auth_phone_verify_open'
-  | 'auth_phone_verify_submit'
-  | 'auth_phone_verify_close'
-  | 'auth_dob_open'
-  | 'auth_dob_continue'
-  | 'auth_dob_close'
-  | 'auth_address_open'
-  | 'auth_address_continue'
-  | 'auth_address_close'
-  | 'auth_incorrect_info_open'
-  | 'auth_incorrect_info_try_again'
-  | 'auth_invalid_info_open'
-  | 'auth_invalid_info_exit'
-  | 'auth_secq_open'
-  | 'auth_secq_continue'
-  | 'auth_secq_close'
-  | 'auth_secq_incorrect_open'
-  | 'auth_secq_incorrect_try_again'
-  | 'auth_secq_incorrect_close'
-  | 'auth_consent_open'
-  | 'auth_consent_continue'
-  | 'auth_consent_close'
-  | 'auth_success_open'
-  | 'auth_success_continue'
-  | 'auth_failure_open'
-  | 'auth_failure_continue';
+  | 'AUTH_INTRO_OPEN'
+  | 'AUTH_INTRO_CONTINUE'
+  | 'AUTH_INTRO_CLOSE'
+
+  | 'AUTH_NAME_OPEN'
+  | 'AUTH_NAME_CONTINUE'
+  | 'AUTH_NAME_CLOSE'
+
+  | 'AUTH_PHONE_OPEN'
+  | 'AUTH_PHONE_CONTINUE'
+  | 'AUTH_PHONE_CLOSE'
+
+  | 'AUTH_PHONE_VERIFY_OPEN'
+  | 'AUTH_PHONE_VERIFY_SUBMIT'
+  | 'AUTH_PHONE_VERIFY_CLOSE'
+
+  | 'AUTH_DOB_OPEN'
+  | 'AUTH_DOB_CONTINUE'
+  | 'AUTH_DOB_CLOSE'
+
+  | 'AUTH_ADDRESS_OPEN'
+  | 'AUTH_ADDRESS_CONTINUE'
+  | 'AUTH_ADDRESS_CLOSE'
+
+  | 'AUTH_INCORRECT_INFO_OPEN'
+  | 'AUTH_INCORRECT_INFO_TRY_AGAIN'
+
+  | 'AUTH_INVALID_INFO_OPEN'
+  | 'AUTH_INVALID_INFO_EXIT'
+
+  | 'AUTH_SECQ_OPEN'
+  | 'AUTH_SECQ_CONTINUE'
+  | 'AUTH_SECQ_CLOSE'
+
+  | 'AUTH_SECQ_INCORRECT_OPEN'
+  | 'AUTH_SECQ_INCORRECT_TRY_AGAIN'
+  | 'AUTH_SECQ_INCORRECT_CLOSE'
+
+  | 'AUTH_CONSENT_OPEN'
+  | 'AUTH_CONSENT_CONTINUE'
+  | 'AUTH_CONSENT_CLOSE'
+
+  | 'AUTH_SUCCESS_OPEN'
+  | 'AUTH_SUCCESS_CONTINUE'
+
+  | 'AUTH_FAILURE_OPEN'
+  | 'AUTH_FAILURE_CONTINUE';
 
 export interface ILinkElementCreateOpts {
   mch_id?: string;

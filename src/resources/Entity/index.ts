@@ -175,6 +175,8 @@ export interface IEntityQuestion {
 export interface IEntityQuestionResponse {
   questions: IEntityQuestion[]
   authenticated: boolean,
+  cxn_id: string[],
+  accounts: string[],
 }
 
 export interface IAnswerOpts {
@@ -189,6 +191,30 @@ export interface IEntityUpdateAuthOpts {
 export interface IEntityUpdateAuthResponse {
   questions: IEntityQuestion[],
   authenticated: boolean,
+  cxn_id: string[],
+  accounts: string[],
+}
+
+export const CreditReportBureaus = {
+  experian: 'experian',
+  equifax: 'equifax',
+  transunion: 'transunion',
+};
+
+export type CreditReportBureaus =
+ | 'experian'
+ | 'equifax'
+ | 'transunion';
+
+export interface IEntityManualAuthOpts {
+  format: string,
+  bureau: CreditReportBureaus,
+  raw_report: {},
+}
+
+export interface IEntityManualAuthResponse {
+  authenticated: boolean,
+  accounts: string[],
 }
 
 export interface IEntityGetCreditScoreResponse {
@@ -202,7 +228,7 @@ export interface IEntityKYCAddressRecordData {
   postal_code: string,
   state: string,
   address_term: number,
-};
+}
 
 export interface IEntityIdentity {
   first_name: string | null,
@@ -226,7 +252,7 @@ export interface IEntitySensitiveResponse {
   ssn_6: string | null,
   ssn_9: string | null,
   identities: IEntityIdentity[],
-};
+}
 
 export interface IEntityWithdrawConsentOpts {
   type: 'withdraw',
@@ -280,12 +306,12 @@ export default class Entity extends Resource {
     return super._updateWithSubPath<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(`/${id}/auth_session`, opts)
   }
 
-  async createManualAuthSession(id: string) {
-    return super._createWithSubPath<IEntityQuestionResponse, {}>(`/${id}/manual_auth_session`, {});
+  async createManualAuthSession(id: string, opts: IEntityManualAuthOpts) {
+    return super._createWithSubPath<IEntityManualAuthResponse, {}>(`/${id}/manual_auth_session`, opts);
   }
 
-  async updateManualAuthSession(id: string, opts: IEntityUpdateAuthOpts) {
-    return super._updateWithSubPath<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(`/${id}/manual_auth_session`, opts)
+  async updateManualAuthSession(id: string, opts: IEntityManualAuthOpts) {
+    return super._updateWithSubPath<IEntityManualAuthResponse, {}>(`/${id}/manual_auth_session`, opts)
   }
 
   async refreshCapabilities(id: string) {

@@ -499,8 +499,8 @@ export default class Account extends Resource {
   async bulkSensitive(acc_ids: string[]) {
     return super._createWithSubPath<IAccountCreateBulkSensitiveResponse, IAccountCreateBulkSensitiveOpts>(
       '/bulk_sensitive',
-      { acc_ids}
-    )
+      { acc_ids },
+    );
   }
 
   async sensitive(id: string) {
