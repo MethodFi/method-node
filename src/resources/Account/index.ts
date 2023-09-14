@@ -162,7 +162,7 @@ export const AutoPayStatuses = {
 
 export type TAutoPayStatuses = 'unknown' | 'active' | 'inactive';
 
-export type ILiabilityMortgageUpdateOpts = {
+export type TLiabilityMortgageUpdateOpts = {
   address_street: string;
   address_city: string;
   address_state: string;
@@ -364,7 +364,7 @@ export interface ILiabilityCreateOpts extends IAccountCreateOpts {
 }
 
 export interface ILiabilityUpdateOpts {
-  mortgage: ILiabilityMortgageUpdateOpts | null;
+  mortgage: TLiabilityMortgageUpdateOpts | null;
   credit_card: TLiabilityCreditCardUpdateOpts | null;
 }
 

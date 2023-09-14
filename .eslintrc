@@ -2,7 +2,6 @@
   "extends": [
     "airbnb-base"
   ],
-  "parser": "babel-eslint",
   "rules": {
     "no-unused-vars": [1, {"vars": "local", "args": "none"}],
     "no-param-reassign": 0,

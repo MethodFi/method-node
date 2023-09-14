@@ -201,7 +201,7 @@ export const CreditReportBureaus = {
   transunion: 'transunion',
 };
 
-export type CreditReportBureaus =
+export type TCreditReportBureaus =
  | 'experian'
  | 'equifax'
  | 'transunion';
