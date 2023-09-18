@@ -202,13 +202,13 @@ export const CreditReportBureaus = {
 };
 
 export type TCreditReportBureaus =
- | 'experian'
- | 'equifax'
- | 'transunion';
+  | 'experian'
+  | 'equifax'
+  | 'transunion';
 
 export interface IEntityManualAuthOpts {
   format: string,
-  bureau: CreditReportBureaus,
+  bureau: TCreditReportBureaus,
   raw_report: {},
 }
 
