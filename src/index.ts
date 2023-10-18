@@ -12,3 +12,4 @@ export * from './resources/Report';
 export * from './resources/RoutingNumber';
 export * from './resources/Transaction';
 export * from './resources/Webhook';
+export * from './resources/Verification';
