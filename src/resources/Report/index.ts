@@ -23,10 +23,12 @@ export type TReportTypes =
   | 'ach.reversals.nightly';
 
 export const ReportStatuses = {
-   completed: 'completed',
+  processing: 'processing',
+  completed: 'completed',
 }
 
 export type TReportStatuses =
+  | 'processing'
   | 'completed';
 
 export interface IReport {

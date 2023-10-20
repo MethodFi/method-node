@@ -5,17 +5,11 @@ import { IAccount } from '../Account';
 export const ElementTypes = {
   link: 'link',
   auth: 'auth',
-  transfer: 'transfer',
-  transaction_stream: 'transaction_stream',
-  balance_transfer: 'balance_transfer',
 };
 
 export type TElementTypes =
   | 'link'
-  | 'auth'
-  | 'transfer'
-  | 'transaction_stream'
-  | 'balance_transfer';
+  | 'auth';
 
 export type TAuthElementAccountFilterTypes =
   | 'auto_loan'

@@ -324,7 +324,7 @@ export interface IAccountLiability {
   subscription: IAccountLiabilitySubscription | null;
   utility: IAccountLiabilityUtility | null;
   medical: IAccountLiabilityMedical | null;
-};
+}
 
 export type IAccountClearing = {
   routing: string;
@@ -390,7 +390,7 @@ export interface IAccountSensitive {
   bin_4: string | null;
   bin_6: string | null;
   payment_address: any | null;
-};
+}
 
 export interface IAccountCreateBulkSensitiveResponse {
   success: string[];

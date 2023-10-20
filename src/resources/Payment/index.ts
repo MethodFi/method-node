@@ -26,8 +26,6 @@ export type TPaymentStatuses =
   | 'settled';
 
 export const PaymentFundStatuses = {
-  transmitting: 'transmitting',
-  transmitted: 'transmitted',
   hold: 'hold',
   pending: 'pending',
   requested: 'requested',
@@ -35,22 +33,16 @@ export const PaymentFundStatuses = {
   failed: 'failed',
   sent: 'sent',
   unknown: 'unknown',
-  pending_consolidation: 'pending_consolidation',
-  pending_clearing: 'pending_clearing',
 }
 
 export type TPaymentFundStatuses =
-  | 'transmitting'
-  | 'transmitted'
   | 'hold'
   | 'pending'
   | 'requested'
   | 'clearing'
   | 'failed'
   | 'sent'
-  | 'unknown'
-  | 'pending_consolidation'
-  | 'pending_clearing';
+  | 'unknown';
 
 export const PaymentTypes = {
   standard: 'standard',
@@ -103,7 +95,7 @@ export interface IPaymentCreateOpts {
   amount: number;
   source: string;
   destination: string;
-  description?: string;
+  description: string;
   metadata?: {};
   fee?: IPaymentFee;
 }
