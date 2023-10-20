@@ -11,6 +11,7 @@ export const PaymentStatuses = {
   reversed: 'reversed',
   reversal_required: 'reversal_required',
   reversal_processing: 'reversal_processing',
+  settled: 'settled',
 };
 
 export type TPaymentStatuses =
@@ -19,7 +20,10 @@ export type TPaymentStatuses =
   | 'processing'
   | 'failed'
   | 'sent'
-  | 'reversed';
+  | 'reversed'
+  | 'reversal_required'
+  | 'reversal_processing'
+  | 'settled';
 
 export const PaymentFundStatuses = {
   hold: 'hold',
@@ -79,6 +83,8 @@ export interface IPayment {
   estimated_completion_date: string | null;
   source_settlement_date: string | null;
   destination_settlement_date: string | null;
+  source_status: TPaymentStatuses;
+  destination_status: TPaymentStatuses;
   fee: IPaymentFee | null
   type: TPaymentTypes;
   created_at: string;
@@ -105,9 +111,10 @@ export interface IPaymentListOpts {
   source?: string | null;
   destination?: string | null;
   reversal_id?: string | null;
-  source_holder_id?: string,
-  destination_holder_id?: string,
-  acc_id?: string,
+  source_holder_id?: string;
+  destination_holder_id?: string;
+  acc_id?: string;
+  holder_id?: string;
 }
 
 export class PaymentSubResources {

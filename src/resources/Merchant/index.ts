@@ -21,6 +21,8 @@ export const MerchantTypes = {
   mortgage: 'mortgage',
   utility: 'utility',
   waste_utility: 'waste_utility',
+  collection: 'collection',
+  credit_builder: 'credit_builder',
 };
 
 export type TMerchantTypes =
@@ -42,7 +44,9 @@ export type TMerchantTypes =
   | 'home_equity_loan'
   | 'mortgage'
   | 'utility'
-  | 'waste_utility';
+  | 'waste_utility'
+  | 'collection'
+  | 'credit_builder'
 
 export interface IMerchantProviderIds {
   plaid: string[];

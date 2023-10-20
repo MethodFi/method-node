@@ -6,17 +6,25 @@ export const ReportTypes = {
   payments_created_previous: 'payments.created.previous',
   payments_updated_current: 'payments.updated.current',
   payments_updated_previous: 'payments.updated.previous',
+  ach_pull_upcoming: 'ach.pull.upcoming',
+  ach_pull_previous: 'ach.pull.previous',
+  ach_pull_nightly: 'ach.pull.nightly',
+  ach_reversals_nightly: 'ach.reversals.nightly',
 };
 
 export type TReportTypes =
   | 'payments.created.current'
   | 'payments.created.previous'
   | 'payments.updated.current'
-  | 'payments.updated.previous';
+  | 'payments.updated.previous'
+  | 'ach.pull.upcoming'
+  | 'ach.pull.previous'
+  | 'ach.pull.nightly'
+  | 'ach.reversals.nightly';
 
 export const ReportStatuses = {
-   processing: 'processing',
-   completed: 'completed',
+  processing: 'processing',
+  completed: 'completed',
 }
 
 export type TReportStatuses =

@@ -27,6 +27,7 @@ export const EntityCapabilities = {
   payments_limited_send: 'payments:limited-send',
   data_retrieve: 'data:retrieve',
   data_sync: 'data:sync',
+  transaction_stream: 'transaction:stream',
 };
 
 export type TEntityCapabilities =
@@ -34,7 +35,8 @@ export type TEntityCapabilities =
   | 'payments:receive'
   | 'payments:limited-send'
   | 'data:retrieve'
-  | 'data:sync';
+  | 'data:sync'
+  | 'transaction:stream';
 
 export const EntityStatuses = {
   active: 'active',
@@ -47,13 +49,27 @@ export type TEntityStatuses =
   | 'incomplete'
   | 'disabled';
 
+export const EntityIndividualPhoneVerificationTypes = {
+  method_sms: 'method_sms',
+  method_verified: 'method_verified',
+  sms: 'sms',
+  tos: 'tos',
+}
+
+export type TEntityIndividualPhoneVerificationTypes =
+  | 'method_sms'
+  | 'method_verified'
+  | 'sms'
+  | 'tos';
+
 export interface IEntityIndividual {
   first_name: string | null;
   last_name: string | null;
   phone: string | null;
   email: string | null;
   dob: string | null;
-  ssn?: string,
+  phone_verification_type: TEntityIndividualPhoneVerificationTypes | null,
+  phone_verification_timestamp: Date | null,
 }
 
 export interface IEntityAddress {
@@ -106,7 +122,7 @@ export interface IEntity {
 export interface IEntityCreateOpts {
   type: TEntityTypes;
   address?: IEntityAddress | null;
-  metadata?: {};
+  metadata?: {} | null;
 }
 
 export interface IIndividualCreateOpts extends IEntityCreateOpts {
@@ -159,6 +175,8 @@ export interface IEntityQuestion {
 export interface IEntityQuestionResponse {
   questions: IEntityQuestion[]
   authenticated: boolean,
+  cxn_id: string[],
+  accounts: string[],
 }
 
 export interface IAnswerOpts {
@@ -173,11 +191,67 @@ export interface IEntityUpdateAuthOpts {
 export interface IEntityUpdateAuthResponse {
   questions: IEntityQuestion[],
   authenticated: boolean,
+  cxn_id: string[],
+  accounts: string[],
+}
+
+export const CreditReportBureaus = {
+  experian: 'experian',
+  equifax: 'equifax',
+  transunion: 'transunion',
+};
+
+export type TCreditReportBureaus =
+  | 'experian'
+  | 'equifax'
+  | 'transunion';
+
+export interface IEntityManualAuthOpts {
+  format: string,
+  bureau: TCreditReportBureaus,
+  raw_report: {},
+}
+
+export interface IEntityManualAuthResponse {
+  authenticated: boolean,
+  accounts: string[],
 }
 
 export interface IEntityGetCreditScoreResponse {
   score: number,
   updated_at: string,
+}
+
+export interface IEntityKYCAddressRecordData {
+  address: string,
+  city: string,
+  postal_code: string,
+  state: string,
+  address_term: number,
+}
+
+export interface IEntityIdentity {
+  first_name: string | null,
+  last_name: string | null,
+  phone: string | null,
+  dob: string | null,
+  address: IEntityKYCAddressRecordData | null,
+  ssn: string | null,
+}
+
+export interface IEntitySensitiveResponse {
+  first_name: string | null,
+  last_name: string | null,
+  phone: string | null,
+  phone_history: string[],
+  email: string | null,
+  dob: string | null,
+  address: IEntityKYCAddressRecordData | null,
+  address_history: IEntityKYCAddressRecordData[],
+  ssn_4: string | null,
+  ssn_6: string | null,
+  ssn_9: string | null,
+  identities: IEntityIdentity[],
 }
 
 export interface IEntityWithdrawConsentOpts {
@@ -232,12 +306,24 @@ export default class Entity extends Resource {
     return super._updateWithSubPath<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(`/${id}/auth_session`, opts)
   }
 
+  async createManualAuthSession(id: string, opts: IEntityManualAuthOpts) {
+    return super._createWithSubPath<IEntityManualAuthResponse, {}>(`/${id}/manual_auth_session`, opts);
+  }
+
+  async updateManualAuthSession(id: string, opts: IEntityManualAuthOpts) {
+    return super._updateWithSubPath<IEntityManualAuthResponse, {}>(`/${id}/manual_auth_session`, opts)
+  }
+
   async refreshCapabilities(id: string) {
     return super._createWithSubPath<IEntity, {}>(`/${id}/refresh_capabilities`, {});
   }
 
   async getCreditScore(id: string) {
     return super._getWithSubPath<IEntityGetCreditScoreResponse>(`/${id}/credit_score`);
+  }
+
+  async getSensitiveFields(id: string) {
+    return super._getWithSubPath<IEntitySensitiveResponse>(`/${id}/sensitive`);
   }
 
   async withdrawConsent(id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {

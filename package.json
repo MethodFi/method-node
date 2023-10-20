@@ -1,6 +1,6 @@
 {
   "name": "method-node",
-  "version": "0.3.18",
+  "version": "0.3.19",
   "description": "Node.js library for the Method API",
   "main": "dist/index.ts",
   "module": "dist/index.mjs",
@@ -13,7 +13,7 @@
     "build": "./node_modules/.bin/rollup -c",
     "dev": "./node_modules/.bin/rollup -c -w",
     "pretest": "./node_modules/.bin/tsc -p tsconfig-test.json",
-    "test": "./node_modules/.bin/mocha --exit --timeout 100000 ./test-dist/test/index.js"
+    "test": "NODE_ENV=TEST ./node_modules/.bin/mocha --exit --timeout 100000 ./test-dist/test/index.js"
   },
   "repository": {
     "type": "git",

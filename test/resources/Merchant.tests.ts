@@ -11,6 +11,7 @@ describe('Merchants - core methods tests', () => {
   let merchants_list_response: IMerchant[] | null = null;
   const amex_mch_id = 'mch_3';
   const amex_provider_id_plaid = 'ins_10';
+  const amex_expected_mch_id = 'mch_300485';
 
   describe('merchants.get', () => {
     it('should successfully get a merchant.', async () => {
@@ -28,7 +29,7 @@ describe('Merchants - core methods tests', () => {
       Array.isArray(merchants_list_response).should.be.true;
 
       merchants_list_response.length.should.equal(1);
-      merchants_list_response[0].mch_id.should.equal(amex_mch_id);
+      merchants_list_response[0].mch_id.should.equal(amex_expected_mch_id);
     });
   });
 });
