@@ -1,10 +1,10 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios_retry from 'axios-retry';
 import Configuration, { TResponseEventIdemStatuses } from './configuration';
 import { MethodError } from './errors';
 import { AccountSubResources } from './resources/Account';
 import { PaymentSubResources } from './resources/Payment';
 import { EntitySubResources } from './resources/Entity';
-import axios_retry from 'axios-retry';
 
 type TSubResources = AccountSubResources | PaymentSubResources | EntitySubResources;
 
