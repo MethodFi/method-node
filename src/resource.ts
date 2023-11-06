@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios_retry from 'axios-retry';
 import Configuration, { TResponseEventIdemStatuses } from './configuration';
 import { MethodError } from './errors';
 import { AccountSubResources } from './resources/Account';
@@ -30,6 +31,10 @@ export default class Resource extends ExtensibleFunction {
       headers: { Authorization: `Bearer ${config.apiKey}`, 'User-Agent': this.getDefaultUserAgent() },
       httpsAgent: config.httpsAgent,
     });
+
+    if (config.axiosRetryConfig) {
+      axios_retry(this.client, config.axiosRetryConfig);
+    }
 
     this.configureRequestInterceptors();
     this.configureResponseInterceptors();

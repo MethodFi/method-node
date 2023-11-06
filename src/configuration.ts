@@ -9,9 +9,9 @@ type TEnvironments =
 type EnvironmentsMapped = { [key in TEnvironments]: key };
 
 export const Environments: EnvironmentsMapped = {
-   production: 'production',
-   sandbox: 'sandbox',
-   dev: 'dev',
+  production: 'production',
+  sandbox: 'sandbox',
+  dev: 'dev',
 }
 
 export interface IRequestEvent {
@@ -50,12 +50,21 @@ export type TOnRequest = (event: IRequestEvent) => void;
 
 export type TOnResponse = (event: IResponseEvent, axios_response: AxiosResponse) => void;
 
+export type IAxiosRetryConfig = {
+  retries?: number;
+  shouldResetTimeout?: boolean;
+  retryDelay?: (retryCount: number) => number;
+  retryCondition?: (error: any) => boolean;
+  onRetry?: (error: any) => void;
+};
+
 export interface IConfigurationOpts {
   apiKey: string;
   env: TEnvironments;
   httpsAgent?: any;
   onRequest?: TOnRequest;
   onResponse?: TOnResponse;
+  axiosRetryConfig?: IAxiosRetryConfig;
 }
 
 export default class Configuration {
@@ -64,6 +73,7 @@ export default class Configuration {
   httpsAgent?: any;
   onResponse: TOnResponse | null;
   onRequest: TOnRequest | null;
+  axiosRetryConfig?: IAxiosRetryConfig;
 
   constructor(opts: IConfigurationOpts) {
     Configuration._validateConfiguration(opts);
@@ -73,6 +83,7 @@ export default class Configuration {
     this.httpsAgent = opts.httpsAgent || null;
     this.onRequest = opts.onRequest || null;
     this.onResponse = opts.onResponse || null;
+    this.axiosRetryConfig = opts.axiosRetryConfig || null;
   }
 
   public addPath(path: string): Configuration {

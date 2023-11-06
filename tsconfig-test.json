@@ -3,6 +3,7 @@
     "outDir": "./test-dist",
     "module": "commonjs",
     "target": "es5",
+    "esModuleInterop": true,
     "allowJs": false
   },
   "include": [
