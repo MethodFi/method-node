@@ -68,6 +68,8 @@ export interface IEntityIndividual {
   phone: string | null;
   email: string | null;
   dob: string | null;
+  ssn: string | null;
+  ssn_4: string | null;
   phone_verification_type: TEntityIndividualPhoneVerificationTypes | null,
   phone_verification_timestamp: Date | null,
 }
