@@ -165,13 +165,13 @@ export interface IEntityListOpts {
 
 export interface IEntityAnswer {
   id: string,
-  text: string
+  text: string,
 }
 
 export interface IEntityQuestion {
   id: string,
   text: string | null,
-  answers: IEntityAnswer[]
+  answers: IEntityAnswer[],
 }
 
 export interface IEntityQuestionResponse {
@@ -183,11 +183,11 @@ export interface IEntityQuestionResponse {
 
 export interface IAnswerOpts {
   question_id: string,
-  answer_id: string
+  answer_id: string,
 }
 
 export interface IEntityUpdateAuthOpts {
-  answers: IAnswerOpts[]
+  answers: IAnswerOpts[],
 }
 
 export interface IEntityUpdateAuthResponse {
@@ -231,7 +231,7 @@ export const CreditScoreStatuses = {
   failed: 'failed',
 };
 
-export type IEntityCreditScoreStatuses =
+export type TEntityCreditScoreStatuses =
   | 'completed'
   | 'in_progress'
   | 'pending'
@@ -239,7 +239,7 @@ export type IEntityCreditScoreStatuses =
 
 export interface IEntityCreditScoresFactorsType {
   code: string,
-  description: string
+  description: string,
 }
 
 export interface IEntityCreditScoresType {
@@ -247,17 +247,16 @@ export interface IEntityCreditScoresType {
   source: TCreditReportBureaus,
   model: string,
   factors: IEntityCreditScoresFactorsType[],
-  created_at: string
+  created_at: string,
 }
 
 export interface IEntityCreditScoresResponse {
   id: string,
-  status: IEntityCreditScoreStatuses,
+  status: TEntityCreditScoreStatuses,
   credit_scores: IEntityCreditScoresType[] | null,
   error: IResourceError | null,
   created_at: string,
-  updated_at: string
-
+  updated_at: string,
 }
 
 export interface IEntityKYCAddressRecordData {
