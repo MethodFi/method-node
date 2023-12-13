@@ -237,23 +237,23 @@ export type IEntityCreditScoreStatuses =
   | 'pending'
   | 'failed';
 
-export interface IEntityGetCreditScoresFactorsType {
+export interface IEntityCreditScoresFactorsType {
   code: string,
   description: string
 }
 
-export interface IEntityGetCreditScoresType {
+export interface IEntityCreditScoresType {
   score: number,
   source: TCreditReportBureaus,
   model: string,
-  factors: IEntityGetCreditScoresFactorsType[],
+  factors: IEntityCreditScoresFactorsType[],
   created_at: string
 }
 
-export interface IEntityGetCreditScoresResponse {
+export interface IEntityCreditScoresResponse {
   id: string,
   status: IEntityCreditScoreStatuses,
-  credit_scores: IEntityGetCreditScoresType[] | null,
+  credit_scores: IEntityCreditScoresType[] | null,
   error: IResourceError | null,
   created_at: string,
   updated_at: string
@@ -361,11 +361,11 @@ export default class Entity extends Resource {
   }
 
   async getCreditScores(id: string, crs_id: string) {
-    return super._getWithSubPath<IEntityGetCreditScoresResponse>(`/${id}/credit_scores/${crs_id}`);
+    return super._getWithSubPath<IEntityCreditScoresResponse>(`/${id}/credit_scores/${crs_id}`);
   }
 
   async createCreditScores(id: string) {
-    return super._createWithSubPath<IEntityGetCreditScoresResponse, {}>(`/${id}/credit_scores`, {});
+    return super._createWithSubPath<IEntityCreditScoresResponse, {}>(`/${id}/credit_scores`, {});
   }
 
   async getSensitiveFields(id: string) {
