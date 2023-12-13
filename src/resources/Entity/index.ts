@@ -231,7 +231,7 @@ export const CreditScoreStatuses = {
   failed: 'failed',
 };
 
-export type IEntityCreditScoresStatuses =
+export type IEntityCreditScoreStatuses =
   | 'completed'
   | 'in_progress'
   | 'pending'
@@ -252,7 +252,7 @@ export interface IEntityGetCreditScoresType {
 
 export interface IEntityGetCreditScoresResponse {
   id: string,
-  status: IEntityCreditScoresStatuses,
+  status: IEntityCreditScoreStatuses,
   credit_scores: IEntityGetCreditScoresType[] | null,
   error: IResourceError | null,
   created_at: string,
