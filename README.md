@@ -417,23 +417,3 @@ const report = await method.reports.get('rpt_cj2mkA3hFyHT5');
 ```jsx
 const reportCSV = await method.reports.download('rpt_cj2mkA3hFyHT5');
 ```
-
-## Connections
-
-### List Connections
-
-```jsx
-const connections = await method.connections.list();
-```
-
-### Retrieve Connection
-
-```jsx
-const connection = await method.connections.get('cxn_iENwAPKnNqA5j');
-```
-
-### Update Connection
-
-```jsx
-const connection = await method.connections.update('cxn_iENwAPKnNqA5j', { status: 'syncing' });
-```

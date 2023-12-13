@@ -224,6 +224,42 @@ export interface IEntityGetCreditScoreResponse {
   updated_at: string,
 }
 
+export const CreditScoreStatuses = {
+  completed: 'completed',
+  in_progress: 'in_progress',
+  pending: 'pending',
+  failed: 'failed',
+};
+
+export type IEntityCreditScoresStatuses =
+  | 'completed'
+  | 'in_progress'
+  | 'pending'
+  | 'failed';
+
+export interface IEntityGetCreditScoresFactorsType {
+  code: string,
+  description: string
+}
+
+export interface IEntityGetCreditScoresType {
+  score: number,
+  source: TCreditReportBureaus,
+  model: string,
+  factors: IEntityGetCreditScoresFactorsType[],
+  created_at: string
+}
+
+export interface IEntityGetCreditScoresResponse {
+  id: string,
+  status: IEntityCreditScoresStatuses,
+  credit_scores: IEntityGetCreditScoresType[] | null,
+  error: IResourceError | null,
+  created_at: string,
+  updated_at: string
+
+}
+
 export interface IEntityKYCAddressRecordData {
   address: string,
   city: string,
@@ -322,6 +358,14 @@ export default class Entity extends Resource {
 
   async getCreditScore(id: string) {
     return super._getWithSubPath<IEntityGetCreditScoreResponse>(`/${id}/credit_score`);
+  }
+
+  async getCreditScores(id: string, crs_id: string) {
+    return super._getWithSubPath<IEntityGetCreditScoresResponse>(`/${id}/credit_scores/${crs_id}`);
+  }
+
+  async createCreditScores(id: string) {
+    return super._createWithSubPath<IEntityGetCreditScoresResponse, {}>(`/${id}/credit_scores`, {});
   }
 
   async getSensitiveFields(id: string) {
