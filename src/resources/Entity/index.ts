@@ -165,13 +165,13 @@ export interface IEntityListOpts {
 
 export interface IEntityAnswer {
   id: string,
-  text: string
+  text: string,
 }
 
 export interface IEntityQuestion {
   id: string,
   text: string | null,
-  answers: IEntityAnswer[]
+  answers: IEntityAnswer[],
 }
 
 export interface IEntityQuestionResponse {
@@ -183,11 +183,11 @@ export interface IEntityQuestionResponse {
 
 export interface IAnswerOpts {
   question_id: string,
-  answer_id: string
+  answer_id: string,
 }
 
 export interface IEntityUpdateAuthOpts {
-  answers: IAnswerOpts[]
+  answers: IAnswerOpts[],
 }
 
 export interface IEntityUpdateAuthResponse {
@@ -221,6 +221,41 @@ export interface IEntityManualAuthResponse {
 
 export interface IEntityGetCreditScoreResponse {
   score: number,
+  updated_at: string,
+}
+
+export const CreditScoreStatuses = {
+  completed: 'completed',
+  in_progress: 'in_progress',
+  pending: 'pending',
+  failed: 'failed',
+};
+
+export type TEntityCreditScoreStatuses =
+  | 'completed'
+  | 'in_progress'
+  | 'pending'
+  | 'failed';
+
+export interface IEntityCreditScoresFactorsType {
+  code: string,
+  description: string,
+}
+
+export interface IEntityCreditScoresType {
+  score: number,
+  source: TCreditReportBureaus,
+  model: string,
+  factors: IEntityCreditScoresFactorsType[],
+  created_at: string,
+}
+
+export interface IEntityCreditScoresResponse {
+  id: string,
+  status: TEntityCreditScoreStatuses,
+  credit_scores: IEntityCreditScoresType[] | null,
+  error: IResourceError | null,
+  created_at: string,
   updated_at: string,
 }
 
@@ -322,6 +357,14 @@ export default class Entity extends Resource {
 
   async getCreditScore(id: string) {
     return super._getWithSubPath<IEntityGetCreditScoreResponse>(`/${id}/credit_score`);
+  }
+
+  async getCreditScores(id: string, crs_id: string) {
+    return super._getWithSubPath<IEntityCreditScoresResponse>(`/${id}/credit_scores/${crs_id}`);
+  }
+
+  async createCreditScores(id: string) {
+    return super._createWithSubPath<IEntityCreditScoresResponse, {}>(`/${id}/credit_scores`, {});
   }
 
   async getSensitiveFields(id: string) {

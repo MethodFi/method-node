@@ -9,7 +9,6 @@ import Report from './resources/Report';
 import RoutingNumber from './resources/RoutingNumber';
 import Webhook from './resources/Webhook';
 import HealthCheck, { IPingResponse } from './resources/HealthCheck';
-import Connection from './resources/Connection';
 import Simulate from './resources/Simulate';
 import Transaction from './resources/Transaction';
 
@@ -24,7 +23,6 @@ export class Method {
   routingNumbers: RoutingNumber;
   webhooks: Webhook;
   healthcheck: HealthCheck;
-  connections: Connection;
   simulate: Simulate;
   transactions: Transaction;
 
@@ -42,7 +40,6 @@ export class Method {
     this.routingNumbers = new RoutingNumber(config);
     this.webhooks = new Webhook(config);
     this.healthcheck = new HealthCheck(config);
-    this.connections = new Connection(config);
     this.simulate = new Simulate(config);
     this.transactions = new Transaction(config);
   }
