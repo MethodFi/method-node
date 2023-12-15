@@ -223,16 +223,16 @@ export interface TDelinquencyHistoryItem {
 };
 
 export interface TTrendedDataItem {
-  month: number;
-  year: number;
-  balance: string;
-  available_credit: string;
-  scheduled_payment: string;
-  actual_payment: string;
-  high_credit: string;
-  credit_limit: string;
-  amount_past_due: string;
-  last_payment_date: string;
+  month: number | null;
+  year: number | null;
+  balance: number | null;
+  available_credit: number | null;
+  scheduled_payment: number | null;
+  actual_payment: number | null;
+  high_credit: string | null;
+  credit_limit: number | null;
+  amount_past_due: number | null;
+  last_payment_date: string | null;
   account_status: string;
   payment_status: string;
 };
@@ -325,6 +325,7 @@ export interface IAccountLiabilityStudentLoansDisbursement extends IAccountLiabi
 }
 
 export interface IAccountLiabilityStudentLoans extends IAccountLiabilityLoan {
+  sub_type: 'federal' | 'private' | null;
   term_length: undefined;
   interest_rate_type: undefined;
   interest_rate_percentage: undefined;
@@ -412,6 +413,7 @@ export interface IAccountLiability {
   type: TAccountLiabilityTypes;
   loan: IAccountLiabilityLoan | null;
   student_loan: IAccountLiabilityStudentLoan | null;
+  student_loans: IAccountLiabilityStudentLoans | null;
   credit_card: IAccountLiabilityCreditCard | null;
   mortgage: IAccountLiabilityMortgage | null;
   auto_loan: IAccountLiabilityAutoLoan | null;
