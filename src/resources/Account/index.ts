@@ -117,6 +117,7 @@ export type TAccountLiabilityDataSources =
 
 export const AccountLiabilityTypes = {
   student_loan: 'student_loan',
+  student_loans: 'student_loans',
   credit_card: 'credit_card',
   mortgage: 'mortgage',
   auto_loan: 'auto_loan',
@@ -133,6 +134,7 @@ export const AccountLiabilityTypes = {
 
 export type TAccountLiabilityTypes =
   | 'student_loan'
+  | 'student_loans'
   | 'credit_card'
   | 'mortgage'
   | 'auto_loan'
@@ -162,6 +164,79 @@ export const AutoPayStatuses = {
 
 export type TAutoPayStatuses = 'unknown' | 'active' | 'inactive';
 
+export const DelinquencyPeriods = {
+  less_than_30: 'less_than_30',
+  '30': '30',
+  '60': '60',
+  '90': '90',
+  '120': '120',
+  over_120: 'over_120',
+};
+
+export type TDelinquencyPeriod = 
+  | 'less_than_30'
+  | '30'
+  | '60'
+  | '90'
+  | '120'
+  | 'over_120';
+
+export const DelinquencyActions = {
+  chapter_13: 'chapter_13',
+  chapter_7: 'chapter_7',
+  wage_garnishment: 'wage_garnishment',
+  charge_off: 'charge_off',
+  payment_agreement: 'payment_agreement',
+  repossession: 'repossession',
+  foreclosure: 'foreclosure',
+  bankruptcy: 'bankruptcy',
+};
+
+export type TDelinquencyActions = 
+  |'chapter_13'
+  |'chapter_7'
+  |'wage_garnishment'
+  |'charge_off'
+  |'payment_agreement'
+  |'repossession'
+  |'foreclosure'
+  |'bankruptcy';
+
+export const DelinquencyStatuses = {
+  good_standing: 'good_standing',
+  past_due: 'past_due',
+  major_delinquency: 'major_delinquency',
+  unavailable: 'unavailable',
+};
+
+export type TDelinquencyStatus = 
+  | 'good_standing'
+  | 'past_due'
+  | 'major_delinquency'
+  | 'unavailable';
+
+export interface TDelinquencyHistoryItem {
+  start_date: string;
+  end_date: string;
+  status: TDelinquencyStatus;
+  period: TDelinquencyPeriod | null;
+};
+
+export interface TTrendedDataItem {
+  month: number;
+  year: number;
+  balance: string;
+  available_credit: string;
+  scheduled_payment: string;
+  actual_payment: string;
+  high_credit: string;
+  credit_limit: string;
+  amount_past_due: string;
+  last_payment_date: string;
+  account_status: string;
+  payment_status: string;
+};
+
 export type TLiabilityMortgageUpdateOpts = {
   address_street: string;
   address_city: string;
@@ -170,10 +245,10 @@ export type TLiabilityMortgageUpdateOpts = {
 }
 
 export type TLiabilityCreditCardUpdateOpts = {
-  number: string,
+  number: string;
 } | {
-  expiration_month: number,
-  expiration_year: number,
+  expiration_month: number;
+  expiration_year: number;
 };
 
 export interface IAccountLiabilityLoan {
@@ -226,12 +301,36 @@ export interface IAccountLiabilityAutoLoan extends IAccountLiabilityLoan {
 
 export interface IAccountLiabilityStudentLoan extends IAccountLiabilityLoan {
   sub_type: 'federal' | 'private' | null;
-  sequence: number | null,
-  disbursed_at: string | null,
-  expected_payoff_date: string | null,
-  payoff_amount: number | null,
-  payoff_amount_term: number | null,
-  principal_balance: number | null,
+  sequence: number | null;
+  disbursed_at: string | null;
+  expected_payoff_date: string | null;
+  payoff_amount: number | null;
+  payoff_amount_term: number | null;
+  principal_balance: number | null;
+}
+
+export interface IAccountLiabilityStudentLoansDisbursement extends IAccountLiabilityLoan {
+  sequence: number;
+  disbursed_at: string | null;
+  expected_payoff_date: string | null;
+  delinquent_status: string | null;
+  delinquent_amount: number | null;
+  delinquent_period: number | null;
+  delinquent_action: string | null;
+  delinquent_start_date: string | null;
+  delinquent_major_start_date: string | null;
+  delinquent_status_updated_at: string | null;
+  delinquent_history: TDelinquencyHistoryItem[];
+  trended: TTrendedDataItem[];
+}
+
+export interface IAccountLiabilityStudentLoans extends IAccountLiabilityLoan {
+  term_length: undefined;
+  interest_rate_type: undefined;
+  interest_rate_percentage: undefined;
+  interest_rate_source: undefined;
+  expected_payoff_date: string | null;
+  disbursements: IAccountLiabilityStudentLoansDisbursement[];
 }
 
 export interface IAccountLiabilityMortgage extends IAccountLiabilityLoan {
@@ -353,13 +452,13 @@ export interface IAccountCreateOpts {
 }
 
 export interface IACHCreateOpts extends IAccountCreateOpts {
-  ach: IAccountACH
+  ach: IAccountACH;
 }
 
 export interface ILiabilityCreateOpts extends IAccountCreateOpts {
   liability: {
-    mch_id: string,
-    account_number: string,
+    mch_id: string;
+    account_number: string;
   }
 }
 
@@ -370,7 +469,7 @@ export interface ILiabilityUpdateOpts {
 
 export interface IClearingCreateOpts extends IAccountCreateOpts {
   clearing: {
-    type: TAccountClearingSubTypes,
+    type: TAccountClearingSubTypes;
   }
 }
 
@@ -403,8 +502,8 @@ export interface IAccountCreateBulkSensitiveOpts {
 }
 
 export interface IAccountWithdrawConsentOpts {
-  type: 'withdraw',
-  reason: 'holder_withdrew_consent' | null,
+  type: 'withdraw';
+  reason: 'holder_withdrew_consent' | null;
 }
 
 export interface IAccountListOpts {
