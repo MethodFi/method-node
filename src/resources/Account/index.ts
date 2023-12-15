@@ -193,14 +193,14 @@ export const DelinquencyActions = {
 };
 
 export type TDelinquencyActions = 
-  |'chapter_13'
-  |'chapter_7'
-  |'wage_garnishment'
-  |'charge_off'
-  |'payment_agreement'
-  |'repossession'
-  |'foreclosure'
-  |'bankruptcy';
+  | 'chapter_13'
+  | 'chapter_7'
+  | 'wage_garnishment'
+  | 'charge_off'
+  | 'payment_agreement'
+  | 'repossession'
+  | 'foreclosure'
+  | 'bankruptcy';
 
 export const DelinquencyStatuses = {
   good_standing: 'good_standing',
@@ -229,7 +229,7 @@ export interface TTrendedDataItem {
   available_credit: number | null;
   scheduled_payment: number | null;
   actual_payment: number | null;
-  high_credit: string | null;
+  high_credit: number | null;
   credit_limit: number | null;
   amount_past_due: number | null;
   last_payment_date: string | null;
