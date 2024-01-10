@@ -1,6 +1,6 @@
 {
   "name": "method-node",
-  "version": "0.3.23",
+  "version": "0.3.24",
   "description": "Node.js library for the Method API",
   "main": "dist/index.ts",
   "module": "dist/index.mjs",
