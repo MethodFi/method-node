@@ -257,15 +257,15 @@ export interface IAccountLiabilityLoan {
   opened_at: string | null;
   original_loan_amount: number | null;
   sub_type: string | null;
-  term_length: number | null;
+  term_length?: number | null;
   closed_at: string | null;
   last_payment_amount: number | null;
   last_payment_date: string | null;
   next_payment_minimum_amount: number | null;
   next_payment_due_date: string | null;
-  interest_rate_type: 'fixed' | 'variable';
-  interest_rate_percentage: number | null;
-  interest_rate_source: 'financial_institution' | 'public_data' | 'method' | null;
+  interest_rate_type?: 'fixed' | 'variable';
+  interest_rate_percentage?: number | null;
+  interest_rate_source?: 'financial_institution' | 'public_data' | 'method' | null;
 }
 
 export interface IAccountLiabilityCreditCard extends IAccountLiabilityLoan {
@@ -326,10 +326,6 @@ export interface IAccountLiabilityStudentLoansDisbursement extends IAccountLiabi
 
 export interface IAccountLiabilityStudentLoans extends IAccountLiabilityLoan {
   sub_type: 'federal' | 'private' | null;
-  term_length: undefined;
-  interest_rate_type: undefined;
-  interest_rate_percentage: undefined;
-  interest_rate_source: undefined;
   expected_payoff_date: string | null;
   disbursements: IAccountLiabilityStudentLoansDisbursement[];
 }
