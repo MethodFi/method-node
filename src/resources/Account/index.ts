@@ -259,6 +259,14 @@ export interface IAccountLiabilityLoan {
   sub_type: string | null;
   term_length?: number | null;
   closed_at: string | null;
+  delinquent_status: TDelinquencyStatus | null;
+  delinquent_amount: number | null;
+  delinquent_period: TDelinquencyPeriod | null;
+  delinquent_action: TDelinquencyActions | null;
+  delinquent_start_date: string | null;
+  delinquent_major_start_date: string | null;
+  delinquent_status_updated_at: string | null;
+  delinquent_history: TDelinquencyHistoryItem[];
   last_payment_amount: number | null;
   last_payment_date: string | null;
   next_payment_minimum_amount: number | null;
@@ -313,14 +321,6 @@ export interface IAccountLiabilityStudentLoansDisbursement extends IAccountLiabi
   sequence: number;
   disbursed_at: string | null;
   expected_payoff_date: string | null;
-  delinquent_status: string | null;
-  delinquent_amount: number | null;
-  delinquent_period: number | null;
-  delinquent_action: string | null;
-  delinquent_start_date: string | null;
-  delinquent_major_start_date: string | null;
-  delinquent_status_updated_at: string | null;
-  delinquent_history: TDelinquencyHistoryItem[];
   trended: TTrendedDataItem[];
 }
 
