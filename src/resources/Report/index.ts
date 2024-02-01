@@ -6,10 +6,12 @@ export const ReportTypes = {
   payments_created_previous: 'payments.created.previous',
   payments_updated_current: 'payments.updated.current',
   payments_updated_previous: 'payments.updated.previous',
+  payments_failed_previous_day: 'payments.failed.previous_day',
   ach_pull_upcoming: 'ach.pull.upcoming',
   ach_pull_previous: 'ach.pull.previous',
   ach_pull_nightly: 'ach.pull.nightly',
   ach_reversals_nightly: 'ach.reversals.nightly',
+  entities_created_previous_day: 'entities.created.previous_day'
 };
 
 export type TReportTypes =
@@ -17,10 +19,12 @@ export type TReportTypes =
   | 'payments.created.previous'
   | 'payments.updated.current'
   | 'payments.updated.previous'
+  | 'payments.failed.previous_day'
   | 'ach.pull.upcoming'
   | 'ach.pull.previous'
   | 'ach.pull.nightly'
-  | 'ach.reversals.nightly';
+  | 'ach.reversals.nightly'
+  | 'entities.created.previous_day'
 
 export const ReportStatuses = {
   processing: 'processing',

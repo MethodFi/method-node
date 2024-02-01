@@ -70,6 +70,7 @@ export interface IMerchant {
 
 export interface IMerchantListOpts {
   name?: string,
+  creditor_name?:string,
   'provider_id.plaid'?: string,
   'provider_id.mx'?: string,
   'provider_id.finicity'?: string,

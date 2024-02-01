@@ -215,6 +215,19 @@ export type TDelinquencyStatus =
   | 'major_delinquency'
   | 'unavailable';
 
+export const AccountPayoffStatuses = {
+  completed: 'completed',
+  in_progress: 'in_progress',
+  pending: 'pending',
+  failed: 'failed'
+};
+
+export type TAccountPayoffStatuses = 
+  | 'completed'
+  | 'in_progress'
+  | 'pending'
+  | 'failed'
+
 export interface TDelinquencyHistoryItem {
   start_date: string;
   end_date: string;
@@ -456,7 +469,8 @@ export interface IACHCreateOpts extends IAccountCreateOpts {
 export interface ILiabilityCreateOpts extends IAccountCreateOpts {
   liability: {
     mch_id: string;
-    account_number: string;
+    account_number?: string;
+    number?: string;
   }
 }
 
@@ -539,6 +553,17 @@ export interface IAccountPaymentHistory {
   payment_history: ICreditReportTradelinePaymentHistoryItem[];
 }
 
+export interface IAccountPayoff {
+  id: string,
+  status: TAccountPayoffStatuses,
+  amount: number,
+  term: number,
+  per_diem_amount: number,
+  error?: IResourceError,
+  created_at: string,
+  updated_at: string,
+}
+
 export class AccountSubResources {
   verification: Verification;
   syncs: AccountSync;
@@ -598,6 +623,14 @@ export default class Account extends Resource {
       '/bulk_sensitive',
       { acc_ids },
     );
+  }
+
+  async getPayoff(acc_id: string, pyf_id: string) {
+    return super._getWithSubPath<IAccountPayoff>(`/${acc_id}/payoffs/${pyf_id}`);
+  }
+
+  async createPayoff(id: string) {
+    return super._createWithSubPath<IAccountPayoff, {}>(`/${id}/payoffs`, {});
   }
 
   async sensitive(id: string) {
