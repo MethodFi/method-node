@@ -559,7 +559,7 @@ export interface IAccountPayoff {
   amount: number,
   term: number,
   per_diem_amount: number,
-  error : IResourceError,
+  error?: IResourceError,
   created_at: string,
   updated_at: string,
 }
