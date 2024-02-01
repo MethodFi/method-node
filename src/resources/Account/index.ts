@@ -556,10 +556,10 @@ export interface IAccountPaymentHistory {
 export interface IAccountPayoff {
   id: string,
   status: TAccountPayoffStatuses,
-  amount: number,
-  term: number,
-  per_diem_amount: number,
-  error?: IResourceError,
+  amount: number | null,
+  term: number | null,
+  per_diem_amount: number | null,
+  error: IResourceError | null,
   created_at: string,
   updated_at: string,
 }
