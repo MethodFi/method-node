@@ -625,8 +625,8 @@ export default class Account extends Resource {
     );
   }
 
-  async getPayoff(acc_id: string, payoff_id: string) {
-    return super._getWithSubPath<IAccountPayoff>(`/${acc_id}/payoffs/${payoff_id}`);
+  async getPayoff(acc_id: string, pyf_id: string) {
+    return super._getWithSubPath<IAccountPayoff>(`/${acc_id}/payoffs/${pyf_id}`);
   }
 
   async createPayoff(id: string) {
