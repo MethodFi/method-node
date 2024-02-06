@@ -419,6 +419,7 @@ export interface IAccountLiability {
   data_sync_type: TAccountLiabilitySyncTypes;
   ownership: TTradelineAccountOwnership;
   hash: string;
+  fingerprint: string;
   type: TAccountLiabilityTypes;
   loan: IAccountLiabilityLoan | null;
   student_loan: IAccountLiabilityStudentLoan | null;
