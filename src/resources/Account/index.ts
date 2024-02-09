@@ -527,10 +527,15 @@ export interface IAccountSensitive {
   payment_address: any | null;
 }
 
+export interface IAccountBulkSensitiveResults extends IAccountSensitive {
+  id: string;
+  type: TAccountLiabilityTypes;
+}
+
 export interface IAccountCreateBulkSensitiveResponse {
   success: string[];
   failed: string[];
-  results: IAccountSensitive[];
+  results: IAccountBulkSensitiveResults[];
 }
 
 export interface IAccountCreateBulkSensitiveOpts {
