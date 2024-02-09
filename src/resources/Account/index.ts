@@ -529,7 +529,7 @@ export interface IAccountSensitive {
 
 export interface IAccountBulkSensitiveResults extends IAccountSensitive {
   id: string;
-  type: string;
+  type: TAccountLiabilityTypes;
 }
 
 export interface IAccountCreateBulkSensitiveResponse {
