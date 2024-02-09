@@ -219,14 +219,14 @@ export const AccountPayoffStatuses = {
   completed: 'completed',
   in_progress: 'in_progress',
   pending: 'pending',
-  failed: 'failed'
+  failed: 'failed',
 };
 
 export type TAccountPayoffStatuses = 
   | 'completed'
   | 'in_progress'
   | 'pending'
-  | 'failed'
+  | 'failed';
 
 export const SensitiveFields = {
   number: 'number',
@@ -237,19 +237,19 @@ export const SensitiveFields = {
   encrypted_tabapay_card: 'encrypted_tabapay_card', 
   billing_zip_code: 'billing_zip_code', 
   expiration_month: 'expiration_month', 
-  expiration_year: 'expiration_year'
+  expiration_year: 'expiration_year',
 }
 
 export type TSensitiveFields =
-  |'number'
-  |'encrypted_number'
-  |'bin_4'
-  |'bin_6'
-  |'payment_address'
-  |'encrypted_tabapay_card'
-  |'billing_zip_code'
-  |'expiration_month'
-  |'expiration_year'
+  | 'number'
+  | 'encrypted_number'
+  | 'bin_4'
+  | 'bin_6'
+  | 'payment_address'
+  | 'encrypted_tabapay_card'
+  | 'billing_zip_code'
+  | 'expiration_month'
+  | 'expiration_year';
 
 export interface TDelinquencyHistoryItem {
   start_date: string;
