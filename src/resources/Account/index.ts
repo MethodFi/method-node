@@ -228,6 +228,29 @@ export type TAccountPayoffStatuses =
   | 'pending'
   | 'failed'
 
+export const SensitiveFields = {
+  number: 'number',
+  encrypted_number: 'encrypted_number', 
+  bin_4: 'bin_4', 
+  bin_6: 'bin_6', 
+  payment_address: 'payment_address', 
+  encrypted_tabapay_card: 'encrypted_tabapay_card', 
+  billing_zip_code: 'billing_zip_code', 
+  expiration_month: 'expiration_month', 
+  expiration_year: 'expiration_year'
+}
+
+export type TSensitiveFields =
+  |'number'
+  |'encrypted_number'
+  |'bin_4'
+  |'bin_6'
+  |'payment_address'
+  |'encrypted_tabapay_card'
+  |'billing_zip_code'
+  |'expiration_month'
+  |'expiration_year'
+
 export interface TDelinquencyHistoryItem {
   start_date: string;
   end_date: string;
@@ -512,6 +535,7 @@ export interface IAccountCreateBulkSensitiveResponse {
 
 export interface IAccountCreateBulkSensitiveOpts {
   acc_ids: string[];
+  fields: TSensitiveFields[];
 }
 
 export interface IAccountWithdrawConsentOpts {
@@ -619,10 +643,10 @@ export default class Account extends Resource {
     return super._createWithSubPath<IAccountSync, {}>(`/${id}/syncs`, {});
   }
 
-  async bulkSensitive(acc_ids: string[]) {
+  async bulkSensitive(acc_ids: string[], fields: TSensitiveFields[]) {
     return super._createWithSubPath<IAccountCreateBulkSensitiveResponse, IAccountCreateBulkSensitiveOpts>(
       '/bulk_sensitive',
-      { acc_ids },
+      { acc_ids, fields },
     );
   }
 
