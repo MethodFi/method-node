@@ -18,6 +18,8 @@ export const WebhookTypes = {
   transaction_update: 'transaction.update',
   report_create: 'report.create',
   report_update: 'report.update',
+  credit_score_create: 'credit_score.create',
+  credit_score_update: 'credit_score.update',
 
   // Deprecated
   account_verification_sent: 'account_verification.sent',
@@ -41,6 +43,8 @@ export type TWebhookTypes =
   | 'transaction.update'
   | 'report.create'
   | 'report.update'
+  | 'credit_score.create'
+  | 'credit_score.update'
 
   // Deprecated
   | 'account_verification.sent'
