@@ -313,6 +313,7 @@ export interface IAccountLiabilityLoan {
 }
 
 export interface IAccountLiabilityCreditCard extends IAccountLiabilityLoan {
+  sub_type: 'flexible_spending' | 'charge' | 'secured' | 'unsecured' | 'purchase' | 'business' | null;
   last_statement_balance: number | null;
   remaining_statement_balance: number | null;
   available_credit: number | null;
@@ -387,6 +388,7 @@ export interface IAccountLiabilityMortgage extends IAccountLiabilityLoan {
 }
 
 export interface IAccountLiabilityPersonalLoan extends IAccountLiabilityLoan {
+  sub_type: 'line_of_credit' | 'heloc' | 'secured' | 'unsecured' | 'note' | null,
   expected_payoff_date: string | null;
   available_credit: number | null;
   principal_balance: number | null;
