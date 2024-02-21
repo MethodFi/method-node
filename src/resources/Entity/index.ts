@@ -253,7 +253,7 @@ export interface IEntityCreditScoresType {
 export interface IEntityCreditScoresResponse {
   id: string,
   status: TEntityCreditScoreStatuses,
-  credit_scores: IEntityCreditScoresType[] | null,
+  scores: IEntityCreditScoresType[] | null,
   error: IResourceError | null,
   created_at: string,
   updated_at: string,
