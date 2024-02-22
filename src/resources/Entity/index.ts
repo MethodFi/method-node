@@ -62,6 +62,39 @@ export type TEntityIndividualPhoneVerificationTypes =
   | 'sms'
   | 'tos';
 
+export const CreditReportBureaus = {
+  experian: 'experian',
+  equifax: 'equifax',
+  transunion: 'transunion',
+};
+
+export type TCreditReportBureaus =
+  | 'experian'
+  | 'equifax'
+  | 'transunion';
+
+export const CreditScoreStatuses = {
+  completed: 'completed',
+  in_progress: 'in_progress',
+  pending: 'pending',
+  failed: 'failed',
+};
+
+export type TEntityCreditScoreStatuses =
+  | 'completed'
+  | 'in_progress'
+  | 'pending'
+  | 'failed';
+
+export const CreditScoresModel = {
+  vantage_4: 'vantage_4',
+  vantage_3: 'vantage_3',
+};
+
+export type TCreditScoresModel =
+  | 'vantage_4'
+  | 'vantage_3';
+
 export interface IEntityIndividual {
   first_name: string | null;
   last_name: string | null;
@@ -197,17 +230,6 @@ export interface IEntityUpdateAuthResponse {
   accounts: string[],
 }
 
-export const CreditReportBureaus = {
-  experian: 'experian',
-  equifax: 'equifax',
-  transunion: 'transunion',
-};
-
-export type TCreditReportBureaus =
-  | 'experian'
-  | 'equifax'
-  | 'transunion';
-
 export interface IEntityManualAuthOpts {
   format: string,
   bureau: TCreditReportBureaus,
@@ -224,19 +246,6 @@ export interface IEntityGetCreditScoreResponse {
   updated_at: string,
 }
 
-export const CreditScoreStatuses = {
-  completed: 'completed',
-  in_progress: 'in_progress',
-  pending: 'pending',
-  failed: 'failed',
-};
-
-export type TEntityCreditScoreStatuses =
-  | 'completed'
-  | 'in_progress'
-  | 'pending'
-  | 'failed';
-
 export interface IEntityCreditScoresFactorsType {
   code: string,
   description: string,
@@ -245,7 +254,7 @@ export interface IEntityCreditScoresFactorsType {
 export interface IEntityCreditScoresType {
   score: number,
   source: TCreditReportBureaus,
-  model: string,
+  model: TCreditScoresModel,
   factors: IEntityCreditScoresFactorsType[],
   created_at: string,
 }
