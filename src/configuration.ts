@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios';
 
-
 type TEnvironments =
   | 'production'
   | 'sandbox'
