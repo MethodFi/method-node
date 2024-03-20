@@ -125,7 +125,10 @@ export class PaymentSubResources {
   }
 }
 
-export default class Payment extends Resource {
+export interface Payment {
+  (id: string): PaymentSubResources;
+}
+export class Payment extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('payments'));
   }
@@ -150,3 +153,5 @@ export default class Payment extends Resource {
     return super._delete<IPayment>(id);
   }
 };
+
+export default Payment;

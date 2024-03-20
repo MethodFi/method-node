@@ -606,7 +606,11 @@ export class AccountSubResources {
   }
 }
 
-export default class Account extends Resource {
+export interface Account {
+  (id: string): AccountSubResources;
+}
+
+export class Account extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('accounts'));
   }
@@ -684,3 +688,5 @@ export default class Account extends Resource {
     );
   }
 }
+
+export default Account;

@@ -313,7 +313,11 @@ export class EntitySubResources {
   }
 }
 
-export default class Entity extends Resource {
+export interface Entity {
+  (id: string): EntitySubResources;
+}
+
+export class Entity extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('entities'));
   }
@@ -387,3 +391,5 @@ export default class Entity extends Resource {
     );
   }
 };
+
+export default Entity;
