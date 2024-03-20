@@ -128,6 +128,7 @@ export class PaymentSubResources {
 export interface Payment {
   (id: string): PaymentSubResources;
 }
+
 export class Payment extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('payments'));
