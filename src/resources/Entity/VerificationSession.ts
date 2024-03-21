@@ -138,6 +138,14 @@ export default class EntityVerificationSession extends Resource {
     return super._create<IEntityVerificationSession, IEntityVerificationSessionCreateOpts>(data);
   }
 
+  /**
+   * Update a verification session
+   * 
+   * @param evf_id Verification session id
+   * @param data IEntityVerificationSessionUpdateOpts
+   * @returns IEntityVerificationSession
+   */
+
   async update(evf_id: string, data: IEntityVerificationSessionUpdateOpts) {
     return super._updateWithId<IEntityVerificationSession, IEntityVerificationSessionUpdateOpts>(evf_id, data);
   }
