@@ -1,6 +1,6 @@
 import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
-import EntitySync from "../EntitySync";
+import EntitySync from "./Sync";
 
 export const EntityTypes = {
   individual: 'individual',
@@ -326,6 +326,14 @@ export class Entity extends Resource {
     return new EntitySubResources(id, this.config);
   }
 
+  /**
+   * Creates an entity
+   * 
+   * @param opts IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts,
+   * @param requestConfig Idempotency Key { idempotency_key?: string }
+   * @returns Created entity (IEntity)
+   */
+
   async create(
     opts: IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts,
     requestConfig?: IRequestConfig,
@@ -336,21 +344,58 @@ export class Entity extends Resource {
     );
   }
 
+  /**
+   * Updates an entity
+   * 
+   * @param id ent_id
+   * @param opts IEntityUpdateOpts
+   * @returns Updated entity (IEntity)
+   */
+
   async update(id: string, opts: IEntityUpdateOpts) {
     return super._updateWithId<IEntity, IEntityUpdateOpts>(id, opts);
   }
+
+  /**
+   * Retrieves an entity by id
+   * 
+   * @param id ent_id
+   * @returns Retrieved entity (IEntity)
+   */
 
   async get(id: string) {
     return super._getWithId<IEntity>(id);
   }
 
+  /**
+   * Lists all entities
+   * 
+   * @param opts IEntityListOpts: https://docs.methodfi.com/api/core/entities/list
+   * @returns IEntity[]
+   */
+
   async list(opts?: IEntityListOpts) {
     return super._list<IEntity>(opts);
   }
 
+  /**
+   * Creates an auth session for an entity
+   * 
+   * @param id ent_id
+   * @returns IEntityQuestionResponse
+   */
+
   async createAuthSession(id: string) {
     return super._createWithSubPath<IEntityQuestionResponse, {}>(`/${id}/auth_session`, {});
   }
+
+  /**
+   * Updates and auth session with answers to KBA questions
+   * 
+   * @param id ent_id
+   * @param opts IEntityUpdateAuthOpts
+   * @returns IEntityUpdateAuthResponse
+   */
 
   async updateAuthSession(id: string, opts: IEntityUpdateAuthOpts) {
     return super._updateWithSubPath<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(`/${id}/auth_session`, opts)
@@ -364,25 +409,69 @@ export class Entity extends Resource {
     return super._updateWithSubPath<IEntityManualAuthResponse, {}>(`/${id}/manual_auth_session`, opts)
   }
 
+  /**
+   * Refresh an entity's capabilities
+   * 
+   * @param id ent_id
+   * @returns IEntity
+   */
+
   async refreshCapabilities(id: string) {
     return super._createWithSubPath<IEntity, {}>(`/${id}/refresh_capabilities`, {});
   }
+
+  /**
+   * Retrieve an entity's credit score
+   * 
+   * @param id ent_id
+   * @returns IEntityGetCreditScoreResponse
+   */
 
   async getCreditScore(id: string) {
     return super._getWithSubPath<IEntityGetCreditScoreResponse>(`/${id}/credit_score`);
   }
 
+  /**
+   * Retrieve the result of a credit score request
+   * 
+   * @param id ent_id
+   * @param crs_id id of the credit score request
+   * @returns IEntityCreditScoresResponse
+   */
+
   async getCreditScores(id: string, crs_id: string) {
     return super._getWithSubPath<IEntityCreditScoresResponse>(`/${id}/credit_scores/${crs_id}`);
   }
+
+  /**
+   * Creates a credit score request
+   * 
+   * @param id ent_id
+   * @returns IEntityCreditScoresResponse
+   */
 
   async createCreditScores(id: string) {
     return super._createWithSubPath<IEntityCreditScoresResponse, {}>(`/${id}/credit_scores`, {});
   }
 
+  /**
+   * Retrieve the sensitive fields of an entity
+   * 
+   * @param id ent_id
+   * @returns IEntitySensitiveResponse
+   */
+
   async getSensitiveFields(id: string) {
     return super._getWithSubPath<IEntitySensitiveResponse>(`/${id}/sensitive`);
   }
+
+  /**
+   * Withdraws consent for an entity
+   * 
+   * @param id ent_id
+   * @param data IEntityWithdrawConsentOpts: { type: 'withdraw', reason: 'entity_withdrew_consent' }
+   * @returns Deactivated entity (IEntity)
+   */
 
   async withdrawConsent(id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
     return super._createWithSubPath<IEntity, IEntityWithdrawConsentOpts>(

@@ -18,9 +18,23 @@ export default class AccountSync extends Resource {
     super(config.addPath('syncs'));
   }
 
+  /**
+   * Gets results of an account sync
+   * 
+   * @param id id of the account sync
+   * @returns IAccountSync
+   */
+
   async get(id: string) {
     return super._getWithId<IAccountSync>(id);
   }
+
+  /**
+   * Creates a new account sync
+   * 
+   * @param data IAccountSyncCreateOpts
+   * @returns IAccountSync
+   */
 
   async create(data: IAccountSyncCreateOpts) {
     return super._create<IAccountSync, IAccountSyncCreateOpts>(data);

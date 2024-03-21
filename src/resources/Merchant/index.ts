@@ -84,9 +84,23 @@ export default class Merchant extends Resource {
     super(config.addPath('merchants'));
   }
 
+  /**
+   * Retrieves a merchant by id
+   * 
+   * @param id mch_id
+   * @returns IMerchant
+   */
+
   async get(id: string) {
     return super._getWithId<IMerchant>(id);
   }
+
+  /**
+   * Lists all merchants
+   * 
+   * @param opts IMerchantListOpts: https://docs.methodfi.com/api/core/merchants/list
+   * @returns IMerchant[]
+   */
 
   async list(opts: IMerchantListOpts) {
     return super._list<IMerchant, IMerchantListOpts>(opts);

@@ -136,6 +136,10 @@ export default class Resource extends ExtensibleFunction {
     return (await this.client.get('', { params })).data.data;
   }
 
+  protected async _getWithSubPathAndParams<Response, Params = {}>(path: string, params: Params): Promise<Response> {
+    return (await this.client.get(path, { params })).data.data;
+  }
+
   protected async _list<Response, Params = {}>(params?: Params): Promise<Response[]> {
     return (await this.client.get('', { params })).data.data;
   }

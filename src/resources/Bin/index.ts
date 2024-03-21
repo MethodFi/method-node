@@ -41,6 +41,13 @@ export default class Bin extends Resource {
     super(config.addPath('bins'));
   }
 
+  /**
+   * Retrieves bin information
+   * 
+   * @param bin { bin: string }
+   * @returns IBIN
+   */
+
   async get(bin: string) {
     return super._getWithParams<IBIN, { bin: string }>({ bin });
   }

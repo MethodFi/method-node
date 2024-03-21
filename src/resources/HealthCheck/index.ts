@@ -13,6 +13,12 @@ export default class HealthCheck extends Resource {
     super(config.addPath('ping'));
   }
 
+  /**
+   * Check that the service is up and running
+   * 
+   * @returns IPingResponse
+   */
+
   async get() {
     return super._getRaw<IPingResponse>();
   }

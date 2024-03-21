@@ -1,7 +1,7 @@
 import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 import Verification from '../Verification';
-import AccountSync, { IAccountSync } from '../AccountSync';
+import AccountSync, { IAccountSync } from './Sync';
 
 export const AccountTypes = {
   ach: 'ach',
@@ -619,29 +619,80 @@ export class Account extends Resource {
     return new AccountSubResources(id, this.config);
   }
 
+  /**
+   * Retrieves an account by acc_id
+   * 
+   * @param id acc_id of the account
+   * @returns IAccount
+   */
+
   async get(id: string) {
     return super._getWithId<IAccount>(id);
   }
+
+  /**
+   * Updates an account by acc_id
+   * 
+   * @param id acc_id of the account
+   * @param opts ILiabilityUpdateOpts
+   * @returns IAccount
+   */
 
   async update(id: string, opts: ILiabilityUpdateOpts) {
     return super._updateWithId<IAccount, ILiabilityUpdateOpts>(id, opts);
   }
 
+  /**
+   * Lists all accounts
+   * 
+   * @param opts IAccountListOpts: https://docs.methodfi.com/api/core/accounts/list
+   * @returns IAccount[]
+   */
+
   async list(opts?: IAccountListOpts) {
     return super._list<IAccount, IAccountListOpts>(opts);
   }
+
+  /**
+   * Creates a new account
+   * 
+   * @param data Create options: https://docs.methodfi.com/api/core/accounts/create
+   * @param requestConfig Allows for idempotency: { idempotency_key?: string }
+   * @returns IAccount
+   */
 
   async create(data: IACHCreateOpts | ILiabilityCreateOpts | IClearingCreateOpts, requestConfig?: IRequestConfig) {
     return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts | IClearingCreateOpts>(data, requestConfig);
   }
 
+  /**
+   * Retrieves payment history for an account
+   * 
+   * @param id acc_id of the account
+   * @returns IAccountPaymentHistory
+   */
+
   async getPaymentHistory(id: string) {
     return super._getWithSubPath<IAccountPaymentHistory>(`/${id}/payment_history`);
   }
 
+  /**
+   * Retrieves account details
+   * 
+   * @param id acc_id of the account
+   * @returns IAccountDetails
+   */
+
   async getDetails(id: string) {
     return super._getWithSubPath<IAccountDetails>(`/${id}/details`);
   }
+
+  /**
+   * Creates a bulk sync request for accounts provided
+   * 
+   * @param acc_ids array of acc_ids
+   * @returns IAccountCreateBulkSyncResponse
+   */
 
   async bulkSync(acc_ids: string[]) {
     return super._createWithSubPath<IAccountCreateBulkSyncResponse, IAccountCreateBulkSyncOpts>(
@@ -654,6 +705,14 @@ export class Account extends Resource {
     return super._createWithSubPath<IAccountSync, {}>(`/${id}/syncs`, {});
   }
 
+  /**
+   * Retrieves sensitive fields for multiple accounts
+   * 
+   * @param acc_ids array of acc_ids
+   * @param fields 'number' | 'encrypted_number' | 'bin_4' | 'bin_6' | 'payment_address' | 'encrypted_tabapay_card' | 'billing_zip_code' | 'expiration_month' | 'expiration_year';
+   * @returns IAccountCreateBulkSensitiveResponse
+   */
+
   async bulkSensitive(acc_ids: string[], fields: TSensitiveFields[]) {
     return super._createWithSubPath<IAccountCreateBulkSensitiveResponse, IAccountCreateBulkSensitiveOpts>(
       '/bulk_sensitive',
@@ -661,25 +720,70 @@ export class Account extends Resource {
     );
   }
 
+  /**
+   * Retrieves sensitive fields for an account
+   * 
+   * @param id
+   * @param fields 'number' | 'encrypted_number' | 'bin_4' | 'bin_6' | 'payment_address' | 'encrypted_tabapay_card' | 'billing_zip_code' | 'expiration_month' | 'expiration_year';  
+   * @returns IAccountSensitive
+   */
+
+  async sensitive(id: string, fields: TSensitiveFields[]) {
+    return super._getWithSubPathAndParams<IAccountSensitive>(`/${id}/sensitive`, { fields });
+  }
+
+  /**
+   * Retrieves results of a payoff request for an account
+   * 
+   * @param acc_id account id
+   * @param pyf_id payoff id
+   * @returns IAccountPayoff
+   */
+
   async getPayoff(acc_id: string, pyf_id: string) {
     return super._getWithSubPath<IAccountPayoff>(`/${acc_id}/payoffs/${pyf_id}`);
   }
+
+  /**
+   * Creates a payoff request for an account
+   * 
+   * @param id acc_id of the account
+   * @returns IAccountPayoff
+   */
 
   async createPayoff(id: string) {
     return super._createWithSubPath<IAccountPayoff, {}>(`/${id}/payoffs`, {});
   }
 
-  async sensitive(id: string) {
-    return super._getWithSubPath<IAccountSensitive>(`/${id}/sensitive`);
-  }
+  /**
+   * Enrolls an account in auto syncs
+   * 
+   * @param id acc_id of the account
+   * @returns IAccount
+   */
 
   async enrollAutoSyncs(id: string) {
     return super._createWithSubPath<IAccount, {}>(`/${id}/sync_enrollment`, {});
   }
 
+  /**
+   * Un-enrolls an account in auto syncs
+   * 
+   * @param id acc_id of the account
+   * @returns IAccount
+   */
+
   async unenrollAutoSyncs(id: string) {
     return super._deleteWithSubPath<IAccount, {}>(`/${id}/sync_enrollment`, {});
   }
+
+  /**
+   * Withdraws consent for an account
+   * 
+   * @param id acc_id of the account
+   * @param data IAccountWithdrawConsentOpts: { type: 'withdraw', reason: 'holder_withdrew_consent' | null }
+   * @returns IAccount
+   */
 
   async withdrawConsent(id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
     return super._createWithSubPath<IAccount, IAccountWithdrawConsentOpts>(
