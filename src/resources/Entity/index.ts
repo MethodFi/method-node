@@ -1,6 +1,8 @@
 import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 import EntitySync from "./Sync";
+import EntityConnect from './Connect';
+import EntityVerificationSession from './VerificationSession';
 
 export const EntityTypes = {
   individual: 'individual',
@@ -307,9 +309,13 @@ export interface IEntityWithdrawConsentOpts {
 
 export class EntitySubResources {
   syncs: EntitySync;
+  connect: EntityConnect;
+  verificationSession: EntityVerificationSession;
 
   constructor(id: string, config: Configuration) {
     this.syncs = new EntitySync(config.addPath(id));
+    this.connect = new EntityConnect(config.addPath(id));
+    this.verificationSession = new EntityVerificationSession(config.addPath(id));
   }
 }
 

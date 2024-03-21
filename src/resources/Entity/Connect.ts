@@ -23,7 +23,7 @@ export interface IEntityConnect {
   updated_at: string;
 }
 
-export class EntityConnect extends Resource {
+export default class EntityConnect extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('connect'));
   }
