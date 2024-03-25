@@ -19,7 +19,7 @@ export default class HealthCheck extends Resource {
    * @returns IPingResponse
    */
 
-  async get() {
+  async retrieve() {
     return super._getRaw<IPingResponse>();
   }
 }

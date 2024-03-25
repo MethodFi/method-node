@@ -71,17 +71,45 @@ export default class Webhook extends Resource {
     super(config.addPath('webhooks'));
   }
 
-  async get(id: string) {
-    return super._getWithId<IWebhook>(id);
+  /**
+   * Returns the webhook associated with the id.
+   * 
+   * @param whk_id id of the webhook
+   * @returns IWebhook
+   */
+
+  async retrieve(whk_id: string) {
+    return super._getWithId<IWebhook>(whk_id);
   }
 
-  async delete(id: string) {
-    return super._delete<IWebhook>(id);
+  /**
+   * Deletes the webhook associated with the id.
+   * 
+   * @param whk_id id of the webhook
+   * @returns IWebhook
+   */
+
+  async delete(whk_id: string) {
+    return super._delete<IWebhook>(whk_id);
   }
+
+  /**
+   * Returns all the webhook associated with your team, or an empty array is none have been created.
+   * 
+   * @returns IWebhook[]
+   */
 
   async list() {
     return super._list<IWebhook>();
   }
+
+  /**
+   * Creates a new webhook for a specific type and url. Your application will be notified of updates to the chosen event type.
+   * 
+   * @param opts IWebhookCreateOpts: https://docs.methodfi.com/api/core/webhooks/create
+   * @param requestConfig Idempotency key: { idempotency_key: string}
+   * @returns IWebhook
+   */
 
   async create(opts: IWebhookCreateOpts, requestConfig?: IRequestConfig) {
     return super._create<IWebhook, IWebhookCreateOpts>(opts, requestConfig);

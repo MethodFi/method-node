@@ -48,7 +48,7 @@ export default class Bin extends Resource {
    * @returns IBIN
    */
 
-  async get(bin: string) {
+  async retrieve(bin: string) {
     return super._getWithParams<IBIN, { bin: string }>({ bin });
   }
 }

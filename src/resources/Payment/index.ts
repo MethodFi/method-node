@@ -141,12 +141,12 @@ export class Payment extends Resource {
   /**
    * Retrieves payment by id
    * 
-   * @param id pmt_id
+   * @param pmt_id id of the payment
    * @returns IPayment
    */
 
-  async get(id: string) {
-    return super._getWithId<IPayment>(id);
+  async retrieve(pmt_id: string) {
+    return super._getWithId<IPayment>(pmt_id);
   }
 
   /**
@@ -175,12 +175,12 @@ export class Payment extends Resource {
   /**
    * Cancels a payment
    * 
-   * @param id pmt_id
+   * @param pmt_id id of the payment
    * @returns IPayment
    */
 
-  async delete(id: string) {
-    return super._delete<IPayment>(id);
+  async delete(pmt_id: string) {
+    return super._delete<IPayment>(pmt_id);
   }
 };
 

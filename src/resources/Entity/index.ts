@@ -2,7 +2,9 @@ import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 import EntitySync from "./Sync";
 import EntityConnect from './Connect';
-import EntityVerificationSession from './VerificationSession';
+import EntityIdentities from './Identities';
+import EntityCreditScores from './CreditScores';
+import EntityVerificationSession from './VerificationSessions';
 
 export const EntityTypes = {
   individual: 'individual',
@@ -278,7 +280,7 @@ export interface IEntityKYCAddressRecordData {
   address_term: number,
 }
 
-export interface IEntityIdentity {
+export interface IEntityIdentityType {
   first_name: string | null,
   last_name: string | null,
   phone: string | null,
@@ -299,7 +301,7 @@ export interface IEntitySensitiveResponse {
   ssn_4: string | null,
   ssn_6: string | null,
   ssn_9: string | null,
-  identities: IEntityIdentity[],
+  identities: IEntityIdentityType[],
 }
 
 export interface IEntityWithdrawConsentOpts {
@@ -310,11 +312,15 @@ export interface IEntityWithdrawConsentOpts {
 export class EntitySubResources {
   syncs: EntitySync;
   connect: EntityConnect;
+  identities: EntityIdentities;
+  creditScores: EntityCreditScores;
   verificationSession: EntityVerificationSession;
 
   constructor(id: string, config: Configuration) {
     this.syncs = new EntitySync(config.addPath(id));
     this.connect = new EntityConnect(config.addPath(id));
+    this.identities = new EntityIdentities(config.addPath(id));
+    this.creditScores = new EntityCreditScores(config.addPath(id));
     this.verificationSession = new EntityVerificationSession(config.addPath(id));
   }
 }
@@ -328,8 +334,8 @@ export class Entity extends Resource {
     super(config.addPath('entities'));
   }
 
-  protected _call(id): EntitySubResources {
-    return new EntitySubResources(id, this.config);
+  protected _call(ent_id): EntitySubResources {
+    return new EntitySubResources(ent_id, this.config);
   }
 
   /**
@@ -353,24 +359,24 @@ export class Entity extends Resource {
   /**
    * Updates an entity
    * 
-   * @param id ent_id
+   * @param ent_id ent_id
    * @param opts IEntityUpdateOpts
    * @returns Updated entity (IEntity)
    */
 
-  async update(id: string, opts: IEntityUpdateOpts) {
-    return super._updateWithId<IEntity, IEntityUpdateOpts>(id, opts);
+  async update(ent_id: string, opts: IEntityUpdateOpts) {
+    return super._updateWithId<IEntity, IEntityUpdateOpts>(ent_id, opts);
   }
 
   /**
    * Retrieves an entity by id
    * 
-   * @param id ent_id
+   * @param ent_id ent_id
    * @returns Retrieved entity (IEntity)
    */
 
-  async get(id: string) {
-    return super._getWithId<IEntity>(id);
+  async retrieve(ent_id: string) {
+    return super._getWithId<IEntity>(ent_id);
   }
 
   /**
@@ -387,101 +393,78 @@ export class Entity extends Resource {
   /**
    * Creates an auth session for an entity
    * 
-   * @param id ent_id
+   * @param ent_id ent_id
    * @returns IEntityQuestionResponse
    */
 
-  async createAuthSession(id: string) {
-    return super._createWithSubPath<IEntityQuestionResponse, {}>(`/${id}/auth_session`, {});
+  async createAuthSession(ent_id: string) {
+    return super._createWithSubPath<IEntityQuestionResponse, {}>(`/${ent_id}/auth_session`, {});
   }
 
   /**
    * Updates and auth session with answers to KBA questions
    * 
-   * @param id ent_id
+   * @param ent_id ent_id
    * @param opts IEntityUpdateAuthOpts
    * @returns IEntityUpdateAuthResponse
    */
 
-  async updateAuthSession(id: string, opts: IEntityUpdateAuthOpts) {
-    return super._updateWithSubPath<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(`/${id}/auth_session`, opts)
+  async updateAuthSession(ent_id: string, opts: IEntityUpdateAuthOpts) {
+    return super._updateWithSubPath<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(`/${ent_id}/auth_session`, opts)
   }
 
-  async createManualAuthSession(id: string, opts: IEntityManualAuthOpts) {
-    return super._createWithSubPath<IEntityManualAuthResponse, {}>(`/${id}/manual_auth_session`, opts);
+  async createManualAuthSession(ent_id: string, opts: IEntityManualAuthOpts) {
+    return super._createWithSubPath<IEntityManualAuthResponse, {}>(`/${ent_id}/manual_auth_session`, opts);
   }
 
-  async updateManualAuthSession(id: string, opts: IEntityManualAuthOpts) {
-    return super._updateWithSubPath<IEntityManualAuthResponse, {}>(`/${id}/manual_auth_session`, opts)
+  async updateManualAuthSession(ent_id: string, opts: IEntityManualAuthOpts) {
+    return super._updateWithSubPath<IEntityManualAuthResponse, {}>(`/${ent_id}/manual_auth_session`, opts)
   }
 
   /**
    * Refresh an entity's capabilities
    * 
-   * @param id ent_id
+   * @param ent_id ent_id
    * @returns IEntity
    */
 
-  async refreshCapabilities(id: string) {
-    return super._createWithSubPath<IEntity, {}>(`/${id}/refresh_capabilities`, {});
+  async refreshCapabilities(ent_id: string) {
+    return super._createWithSubPath<IEntity, {}>(`/${ent_id}/refresh_capabilities`, {});
   }
 
   /**
    * Retrieve an entity's credit score
    * 
-   * @param id ent_id
+   * @param ent_id ent_id
    * @returns IEntityGetCreditScoreResponse
    */
 
-  async getCreditScore(id: string) {
-    return super._getWithSubPath<IEntityGetCreditScoreResponse>(`/${id}/credit_score`);
-  }
-
-  /**
-   * Retrieve the result of a credit score request
-   * 
-   * @param id ent_id
-   * @param crs_id id of the credit score request
-   * @returns IEntityCreditScoresResponse
-   */
-
-  async getCreditScores(id: string, crs_id: string) {
-    return super._getWithSubPath<IEntityCreditScoresResponse>(`/${id}/credit_scores/${crs_id}`);
-  }
-
-  /**
-   * Creates a credit score request
-   * 
-   * @param id ent_id
-   * @returns IEntityCreditScoresResponse
-   */
-
-  async createCreditScores(id: string) {
-    return super._createWithSubPath<IEntityCreditScoresResponse, {}>(`/${id}/credit_scores`, {});
+  async retrieveCreditScore(ent_id: string) {
+    return super._getWithSubPath<IEntityGetCreditScoreResponse>(`/${ent_id}/credit_score`);
   }
 
   /**
    * Retrieve the sensitive fields of an entity
    * 
-   * @param id ent_id
+   * @param ent_id ent_id
    * @returns IEntitySensitiveResponse
    */
 
-  async getSensitiveFields(id: string) {
-    return super._getWithSubPath<IEntitySensitiveResponse>(`/${id}/sensitive`);
+  async retrieveSensitiveFields(ent_id: string) {
+    return super._getWithSubPath<IEntitySensitiveResponse>(`/${ent_id}/sensitive`);
   }
 
   /**
    * Withdraws consent for an entity
    * 
-   * @param id ent_id
+   * @param ent_id ent_id
    * @param data IEntityWithdrawConsentOpts: { type: 'withdraw', reason: 'entity_withdrew_consent' }
    * @returns Deactivated entity (IEntity)
    */
 
-  async withdrawConsent(id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
+  async withdrawConsent(ent_id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
     return super._createWithSubPath<IEntity, IEntityWithdrawConsentOpts>(
-      `/${id}/consent`,
+      `/${ent_id}/consent`,
       data,
     );
   }

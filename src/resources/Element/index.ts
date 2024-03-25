@@ -209,7 +209,7 @@ export default class Element extends Resource {
    * @returns ITokenSessionResult
    */
 
-  async getSessionResults(id: string) {
+  async retrieveSessionResults(id: string) {
     return super._getWithSubPath<ITokenSessionResult>(`/token/${id}/results`);
   }
 

@@ -87,12 +87,12 @@ export default class Merchant extends Resource {
   /**
    * Retrieves a merchant by id
    * 
-   * @param id mch_id
+   * @param mch_id Method merchant id
    * @returns IMerchant
    */
 
-  async get(id: string) {
-    return super._getWithId<IMerchant>(id);
+  async retrieve(mch_id: string) {
+    return super._getWithId<IMerchant>(mch_id);
   }
 
   /**

@@ -1,7 +1,8 @@
 import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 import Verification from '../Verification';
-import AccountSync, { IAccountSync } from './Sync';
+import AccountSync, { IAccountSync } from './Syncs';
+import AccountPayoffs from './Payoffs';
 
 export const AccountTypes = {
   ach: 'ach',
@@ -214,19 +215,6 @@ export type TDelinquencyStatus =
   | 'past_due'
   | 'major_delinquency'
   | 'unavailable';
-
-export const AccountPayoffStatuses = {
-  completed: 'completed',
-  in_progress: 'in_progress',
-  pending: 'pending',
-  failed: 'failed',
-};
-
-export type TAccountPayoffStatuses = 
-  | 'completed'
-  | 'in_progress'
-  | 'pending'
-  | 'failed';
 
 export const SensitiveFields = {
   number: 'number',
@@ -585,24 +573,16 @@ export interface IAccountPaymentHistory {
   payment_history: ICreditReportTradelinePaymentHistoryItem[];
 }
 
-export interface IAccountPayoff {
-  id: string,
-  status: TAccountPayoffStatuses,
-  amount: number | null,
-  term: number | null,
-  per_diem_amount: number | null,
-  error: IResourceError | null,
-  created_at: string,
-  updated_at: string,
-}
 
 export class AccountSubResources {
   verification: Verification;
   syncs: AccountSync;
+  payoffs: AccountPayoffs;
 
   constructor(id: string, config: Configuration) {
     this.verification = new Verification(config.addPath(id));
     this.syncs = new AccountSync(config.addPath(id));
+    this.payoffs = new AccountPayoffs(config.addPath(id));
   }
 }
 
@@ -626,7 +606,7 @@ export class Account extends Resource {
    * @returns IAccount
    */
 
-  async get(id: string) {
+  async retrieve(id: string) {
     return super._getWithId<IAccount>(id);
   }
 
@@ -672,7 +652,7 @@ export class Account extends Resource {
    * @returns IAccountPaymentHistory
    */
 
-  async getPaymentHistory(id: string) {
+  async retrievePaymentHistory(id: string) {
     return super._getWithSubPath<IAccountPaymentHistory>(`/${id}/payment_history`);
   }
 
@@ -683,7 +663,7 @@ export class Account extends Resource {
    * @returns IAccountDetails
    */
 
-  async getDetails(id: string) {
+  async retrieveDetails(id: string) {
     return super._getWithSubPath<IAccountDetails>(`/${id}/details`);
   }
 
@@ -730,29 +710,6 @@ export class Account extends Resource {
 
   async sensitive(id: string, fields: TSensitiveFields[]) {
     return super._getWithSubPathAndParams<IAccountSensitive>(`/${id}/sensitive`, { fields });
-  }
-
-  /**
-   * Retrieves results of a payoff request for an account
-   * 
-   * @param acc_id account id
-   * @param pyf_id payoff id
-   * @returns IAccountPayoff
-   */
-
-  async getPayoff(acc_id: string, pyf_id: string) {
-    return super._getWithSubPath<IAccountPayoff>(`/${acc_id}/payoffs/${pyf_id}`);
-  }
-
-  /**
-   * Creates a payoff request for an account
-   * 
-   * @param id acc_id of the account
-   * @returns IAccountPayoff
-   */
-
-  async createPayoff(id: string) {
-    return super._createWithSubPath<IAccountPayoff, {}>(`/${id}/payoffs`, {});
   }
 
   /**

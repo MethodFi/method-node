@@ -49,15 +49,36 @@ export default class Reversal extends Resource {
     super(config.addPath('reversals'));
   }
 
-  async get(id: string) {
-    return super._getWithId<IReversal>(id);
+  /**
+   * Retrieve a reversal
+   * 
+   * @param rvs_id id of the reversal
+   * @returns IReversal
+   */
+
+  async retrieve(rvs_id: string) {
+    return super._getWithId<IReversal>(rvs_id);
   }
+
+  /**
+   * Lists all reversals
+   * 
+   * @returns IReversal[]
+   */
 
   async list() {
     return super._list<IReversal>();
   }
 
-  async update(id: string, data: IReversalUpdateOpts) {
-    return super._updateWithId<IReversal, IReversalUpdateOpts>(id, data);
+  /**
+   * Update a reversal
+   * 
+   * @param rvs_id id of the reversal
+   * @param data IReversalUpdateOpts: https://docs.methodfi.com/api/core/payments/reversals/update
+   * @returns IReversal
+   */
+
+  async update(rvs_id: string, data: IReversalUpdateOpts) {
+    return super._updateWithId<IReversal, IReversalUpdateOpts>(rvs_id, data);
   }
 }
