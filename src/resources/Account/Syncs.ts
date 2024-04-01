@@ -21,12 +21,12 @@ export default class AccountSync extends Resource {
   /**
    * Gets results of an account sync
    * 
-   * @param snc_id id of the account sync
+   * @param acc_sync_id id of the account sync
    * @returns IAccountSync
    */
 
-  async retrieve(snc_id: string) {
-    return super._getWithId<IAccountSync>(snc_id);
+  async retrieve(acc_sync_id: string) {
+    return super._getWithId<IAccountSync>(acc_sync_id);
   }
 
   /**

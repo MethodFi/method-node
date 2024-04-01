@@ -7,8 +7,8 @@ export const EntitySyncTypes = {
 }
 
 export type TEntitySyncTypes =
-    | 'capabilities'
-    | 'accounts';
+  | 'capabilities'
+  | 'accounts';
 
 export interface IEntitySync {
   id: string;
@@ -29,8 +29,8 @@ export default class EntitySync extends Resource {
     super(config.addPath('syncs'));
   }
 
-  async get(id: string) {
-    return super._getWithId<IEntitySync>(id);
+  async retrieve(ent_sync_id: string) {
+    return super._getWithId<IEntitySync>(ent_sync_id);
   }
 
   async create(data: IEntitySyncCreateOpts) {

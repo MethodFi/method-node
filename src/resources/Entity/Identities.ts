@@ -35,6 +35,7 @@ export default class EntityIdentities extends Resource {
    * @param idn_id id of the identity
    * @returns IEntityIdentity
    */
+
   async retrieve(idn_id: string) {
     return super._getWithId<IEntityIdentity>(idn_id);
   }
@@ -44,6 +45,7 @@ export default class EntityIdentities extends Resource {
    * 
    * @returns IEntityIdentity
    */
+  
   async create() {
     return super._create<IEntityIdentity, {}>({});
   }

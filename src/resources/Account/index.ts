@@ -149,6 +149,38 @@ export type TAccountLiabilityTypes =
   | 'medical'
   | 'loan';
 
+export const AccountLiabilityPersonalLoanSubTypes = {
+  line_of_credit: 'line_of_credit',
+  heloc: 'heloc',
+  secured: 'secured',
+  unsecured: 'unsecured',
+  note: 'note',
+};
+
+export type TAccountLiabilityPersonalLoanSubTypes =
+  | 'line_of_credit'
+  | 'heloc'
+  | 'secured'
+  | 'unsecured'
+  | 'note';
+
+export const AccountLiabilityCreditCardSubTypes = {
+  flexible_spending: 'flexible_spending',
+  charge: 'charge',
+  secured: 'secured',
+  unsecured: 'unsecured',
+  purchase: 'purchase',
+  business: 'business',
+};
+
+export type TAccountLiabilityCreditCardSubTypes =
+  | 'flexible_spending'
+  | 'charge'
+  | 'secured'
+  | 'unsecured'
+  | 'purchase'
+  | 'business';
+
 export const PastDueStatuses = {
   unknown: 'unknown',
   overdue: 'overdue',
@@ -301,7 +333,7 @@ export interface IAccountLiabilityLoan {
 }
 
 export interface IAccountLiabilityCreditCard extends IAccountLiabilityLoan {
-  sub_type: 'flexible_spending' | 'charge' | 'secured' | 'unsecured' | 'purchase' | 'business' | null;
+  sub_type:  TAccountLiabilityCreditCardSubTypes | null;
   last_statement_balance: number | null;
   remaining_statement_balance: number | null;
   available_credit: number | null;
@@ -376,7 +408,7 @@ export interface IAccountLiabilityMortgage extends IAccountLiabilityLoan {
 }
 
 export interface IAccountLiabilityPersonalLoan extends IAccountLiabilityLoan {
-  sub_type: 'line_of_credit' | 'heloc' | 'secured' | 'unsecured' | 'note' | null,
+  sub_type: TAccountLiabilityPersonalLoanSubTypes | null,
   expected_payoff_date: string | null;
   available_credit: number | null;
   principal_balance: number | null;
@@ -602,24 +634,24 @@ export class Account extends Resource {
   /**
    * Retrieves an account by acc_id
    * 
-   * @param id acc_id of the account
+   * @param acc_id id of the account
    * @returns IAccount
    */
 
-  async retrieve(id: string) {
-    return super._getWithId<IAccount>(id);
+  async retrieve(acc_id: string) {
+    return super._getWithId<IAccount>(acc_id);
   }
 
   /**
    * Updates an account by acc_id
    * 
-   * @param id acc_id of the account
+   * @param acc_id id of the account
    * @param opts ILiabilityUpdateOpts
    * @returns IAccount
    */
 
-  async update(id: string, opts: ILiabilityUpdateOpts) {
-    return super._updateWithId<IAccount, ILiabilityUpdateOpts>(id, opts);
+  async update(acc_id: string, opts: ILiabilityUpdateOpts) {
+    return super._updateWithId<IAccount, ILiabilityUpdateOpts>(acc_id, opts);
   }
 
   /**
@@ -648,23 +680,23 @@ export class Account extends Resource {
   /**
    * Retrieves payment history for an account
    * 
-   * @param id acc_id of the account
+   * @param acc_id id of the account
    * @returns IAccountPaymentHistory
    */
 
-  async retrievePaymentHistory(id: string) {
-    return super._getWithSubPath<IAccountPaymentHistory>(`/${id}/payment_history`);
+  async retrievePaymentHistory(acc_id: string) {
+    return super._getWithSubPath<IAccountPaymentHistory>(`/${acc_id}/payment_history`);
   }
 
   /**
    * Retrieves account details
    * 
-   * @param id acc_id of the account
+   * @param acc_id id of the account
    * @returns IAccountDetails
    */
 
-  async retrieveDetails(id: string) {
-    return super._getWithSubPath<IAccountDetails>(`/${id}/details`);
+  async retrieveDetails(acc_id: string) {
+    return super._getWithSubPath<IAccountDetails>(`/${acc_id}/details`);
   }
 
   /**
@@ -681,8 +713,8 @@ export class Account extends Resource {
     );
   }
 
-  async sync(id: string) {
-    return super._createWithSubPath<IAccountSync, {}>(`/${id}/syncs`, {});
+  async sync(acc_id: string) {
+    return super._createWithSubPath<IAccountSync, {}>(`/${acc_id}/syncs`, {});
   }
 
   /**
@@ -703,48 +735,48 @@ export class Account extends Resource {
   /**
    * Retrieves sensitive fields for an account
    * 
-   * @param id
+   * @param acc_id id of the account
    * @param fields 'number' | 'encrypted_number' | 'bin_4' | 'bin_6' | 'payment_address' | 'encrypted_tabapay_card' | 'billing_zip_code' | 'expiration_month' | 'expiration_year';  
    * @returns IAccountSensitive
    */
 
-  async sensitive(id: string, fields: TSensitiveFields[]) {
-    return super._getWithSubPathAndParams<IAccountSensitive>(`/${id}/sensitive`, { fields });
+  async sensitive(acc_id: string, fields: TSensitiveFields[]) {
+    return super._getWithSubPathAndParams<IAccountSensitive>(`/${acc_id}/sensitive`, { fields });
   }
 
   /**
    * Enrolls an account in auto syncs
    * 
-   * @param id acc_id of the account
+   * @param acc_id id of the account
    * @returns IAccount
    */
 
-  async enrollAutoSyncs(id: string) {
-    return super._createWithSubPath<IAccount, {}>(`/${id}/sync_enrollment`, {});
+  async enrollAutoSyncs(acc_id: string) {
+    return super._createWithSubPath<IAccount, {}>(`/${acc_id}/sync_enrollment`, {});
   }
 
   /**
    * Un-enrolls an account in auto syncs
    * 
-   * @param id acc_id of the account
+   * @param acc_id id of the account
    * @returns IAccount
    */
 
-  async unenrollAutoSyncs(id: string) {
-    return super._deleteWithSubPath<IAccount, {}>(`/${id}/sync_enrollment`, {});
+  async unenrollAutoSyncs(acc_id: string) {
+    return super._deleteWithSubPath<IAccount, {}>(`/${acc_id}/sync_enrollment`, {});
   }
 
   /**
    * Withdraws consent for an account
    * 
-   * @param id acc_id of the account
+   * @param acc_id id of the account
    * @param data IAccountWithdrawConsentOpts: { type: 'withdraw', reason: 'holder_withdrew_consent' | null }
    * @returns IAccount
    */
 
-  async withdrawConsent(id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
+  async withdrawConsent(acc_id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
     return super._createWithSubPath<IAccount, IAccountWithdrawConsentOpts>(
-      `/${id}/consent`,
+      `/${acc_id}/consent`,
       data,
     );
   }

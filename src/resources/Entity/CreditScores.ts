@@ -65,7 +65,6 @@ export default class EntityCreditScores extends Resource {
     /**
      * Creates a credit score request
      * 
-     * @param ent_id ent_id
      * @returns IEntityCreditScoresResponse
      */
   

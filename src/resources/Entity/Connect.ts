@@ -9,7 +9,7 @@ export const EntityConnectResponseStatuses = {
 };
 
 export type TEntityConnectResponseStatuses =
-  |'completed'
+  | 'completed'
   | 'pending'
   | 'failed'
   | 'in_progress';

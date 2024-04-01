@@ -24,7 +24,7 @@ export const EntityVerificationSessionTypes = {
 };
 
 export type IEntityVerificationSessionTypes =
-  |'phone_method_sms'
+  | 'phone_method_sms'
   | 'phone_method_sna'
   | 'phone_byo_sms'
   | 'identity_byo_kyc'
@@ -37,7 +37,7 @@ export const EntityVerificationSessionCategories = {
 };
 
 export type IEntityVerificationSessionCategories =
-  |'phone'
+  | 'phone'
   | 'identity';
 
 export interface IEntityPhoneSmsVerification {
