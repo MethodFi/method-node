@@ -98,15 +98,42 @@ export interface IAccountVerificationSessionCreateOpts {
   type: TAccountVerificaionSessionTypes;
 };
 
-export interface IAccountVerificationSessionUpdateOpts {
-  micro_deposits?: IAccountVerificationSessionMicroDeposits;
-  plaid?: IAccountVerificaitonSessionPlaid;
-  mx?: IAccountVerificationSessionMX;
-  teller?: IAccountVerificationSessionTeller;
-  standard?: IAccountVerificationSessionStandard;
-  instant?: IAccountVerificationSessionInstant;
-  pre_auth?: IAccountVerificationSessionPreAuth;
+export interface IAccountVerificationSessionMicroDepositsUpdateOpts {
+  micro_deposits: IAccountVerificationSessionMicroDeposits;
 };
+
+export interface IAccountVerificationSessionPlaidUpdateOpts {
+  plaid: IAccountVerificaitonSessionPlaid;
+};
+
+export interface IAccountVerificationSessionMXUpdateOpts {
+  mx: IAccountVerificationSessionMX;
+};
+
+export interface IAccountVerificationSessionTellerUpdateOpts {
+  teller: IAccountVerificationSessionTeller;
+};
+
+export interface IAccountVerificationSessionStandardUpdateOpts {
+  standard: IAccountVerificationSessionStandard;
+};
+
+export interface IAccountVerificationSessionInstantUpdateOpts {
+  instant: IAccountVerificationSessionInstant;
+};
+
+export interface IAccountVerificationSessionPreAuthUpdateOpts {
+  pre_auth: IAccountVerificationSessionPreAuth;
+};
+
+export type IAccountVerificationSessionUpdateOpts =
+  | IAccountVerificationSessionMicroDepositsUpdateOpts
+  | IAccountVerificationSessionPlaidUpdateOpts
+  | IAccountVerificationSessionMXUpdateOpts
+  | IAccountVerificationSessionTellerUpdateOpts
+  | IAccountVerificationSessionStandardUpdateOpts
+  | IAccountVerificationSessionInstantUpdateOpts
+  | IAccountVerificationSessionPreAuthUpdateOpts;
 
 export interface IAccountVerificationSession {
   id: string;

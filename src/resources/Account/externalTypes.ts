@@ -53,12 +53,6 @@ export type TPLaidTransactionPaymentChannelTypes =
   | 'in store'
   | 'other';
 
-export interface IPlaidPersonalFinanceCategory {
-  primary: string;
-  detailed: string;
-  confidence_level?: string | null;
-}
-
 export const PlaidTransactionCode = {
   Adjustment: 'adjustment',
   Atm: 'atm',
@@ -107,6 +101,12 @@ export type TPlaidCounterpartyType =
   | 'payment_terminal'
   | 'income_source';
 
+export interface IPlaidPersonalFinanceCategory {
+  primary: string;
+  detailed: string;
+  confidence_level?: string | null;
+}
+
 export interface IPLaidTransactionCounterparty {
   name: string;
   entity_id?: string | null;
@@ -121,7 +121,7 @@ export interface IPlaidTransaction {
   amount: number;
   iso_currency_code: string | null;
   unofficial_currency_code: string | null;
-  category?: Array<string> | null;
+  category?: string[] | null;
   category_id?: string | null;
   check_number?: string | null;
   date: string;
@@ -144,7 +144,7 @@ export interface IPlaidTransaction {
   personal_finance_category?: IPlaidPersonalFinanceCategory | null;
   transaction_code: TPlaidTransactionCode | null;
   personal_finance_category_icon_url?: string;
-  counterparties?: Array<IPLaidTransactionCounterparty>;
+  counterparties?: IPLaidTransactionCounterparty[];
   merchant_entity_id?: string | null;
 };
 
