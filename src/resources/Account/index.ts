@@ -298,7 +298,7 @@ export type TLiabilityMortgageUpdateOpts = {
   address_city: string;
   address_state: string;
   address_zip: string;
-}
+};
 
 export type TLiabilityCreditCardUpdateOpts = {
   number: string;
@@ -330,7 +330,7 @@ export interface IAccountLiabilityLoan {
   interest_rate_type?: 'fixed' | 'variable';
   interest_rate_percentage?: number | null;
   interest_rate_source?: 'financial_institution' | 'public_data' | 'method' | null;
-}
+};
 
 export interface IAccountLiabilityCreditCard extends IAccountLiabilityLoan {
   sub_type:  TAccountLiabilityCreditCardSubTypes | null;
@@ -348,7 +348,7 @@ export interface IAccountLiabilityCreditCard extends IAccountLiabilityLoan {
   pending_credit_authorization_amount: number | null;
   interest_saving_balance: number | null;
   next_statement_date: string | null;
-}
+};
 
 export interface IAccountLiabilityAutoLoan extends IAccountLiabilityLoan {
   sub_type: 'lease' | 'loan' | null;
@@ -362,7 +362,7 @@ export interface IAccountLiabilityAutoLoan extends IAccountLiabilityLoan {
   principal_balance: number | null;
   per_diem_amount: number | null;
   mileage_allocation: number | null;
-}
+};
 
 export interface IAccountLiabilityStudentLoan extends IAccountLiabilityLoan {
   sub_type: 'federal' | 'private' | null;
@@ -372,20 +372,20 @@ export interface IAccountLiabilityStudentLoan extends IAccountLiabilityLoan {
   payoff_amount: number | null;
   payoff_amount_term: number | null;
   principal_balance: number | null;
-}
+};
 
 export interface IAccountLiabilityStudentLoansDisbursement extends IAccountLiabilityLoan {
   sequence: number;
   disbursed_at: string | null;
   expected_payoff_date: string | null;
   trended: TTrendedDataItem[];
-}
+};
 
 export interface IAccountLiabilityStudentLoans extends IAccountLiabilityLoan {
   sub_type: 'federal' | 'private' | null;
   expected_payoff_date: string | null;
   disbursements: IAccountLiabilityStudentLoansDisbursement[];
-}
+};
 
 export interface IAccountLiabilityMortgage extends IAccountLiabilityLoan {
   principal_balance: number | null;
@@ -405,7 +405,7 @@ export interface IAccountLiabilityMortgage extends IAccountLiabilityLoan {
   year_to_date_taxes_paid: number | null;
   year_start_principal_balance: number | null;
   escrow_balance: number | null;
-}
+};
 
 export interface IAccountLiabilityPersonalLoan extends IAccountLiabilityLoan {
   sub_type: TAccountLiabilityPersonalLoanSubTypes | null,
@@ -413,44 +413,45 @@ export interface IAccountLiabilityPersonalLoan extends IAccountLiabilityLoan {
   available_credit: number | null;
   principal_balance: number | null;
   year_to_date_interest_paid: number | null;
-}
+};
 
-export interface IAccountLiabilityCreditBuilder extends IAccountLiabilityLoan { }
+export interface IAccountLiabilityCreditBuilder extends IAccountLiabilityLoan { };
 
-export interface IAccountLiabilityCollection extends IAccountLiabilityLoan { }
+export interface IAccountLiabilityCollection extends IAccountLiabilityLoan { };
 
 export interface IAccountLiabilityBusinessLoan {
   name: string;
   balance: number | null;
   opened_at: string | null;
-}
+};
+
 export interface IAccountLiabilityInsurance {
   name: string;
   balance: number | null;
   opened_at: string | null;
-}
+};
 export interface IAccountLiabilitySubscription {
   name: string;
   balance: number | null;
   opened_at: string | null;
-}
+};
 
 export interface IAccountLiabilityUtility {
   name: string;
   balance: number | null;
   opened_at: string | null;
-}
+};
 export interface IAccountLiabilityMedical {
   name: string;
   balance: number | null;
   opened_at: string | null;
-}
+};
 
 export interface IAccountACH {
   routing: string;
   number: string;
   type: TAccountSubTypes;
-}
+};
 
 export interface IAccountLiability {
   mch_id: string;
@@ -480,7 +481,7 @@ export interface IAccountLiability {
   subscription: IAccountLiabilitySubscription | null;
   utility: IAccountLiabilityUtility | null;
   medical: IAccountLiabilityMedical | null;
-}
+};
 
 export type IAccountClearing = {
   routing: string;
@@ -501,16 +502,16 @@ export interface IAccount {
   created_at: string;
   updated_at: string;
   metadata: {} | null;
-}
+};
 
 export interface IAccountCreateOpts {
   holder_id: string;
   metadata?: {};
-}
+};
 
 export interface IACHCreateOpts extends IAccountCreateOpts {
   ach: IAccountACH;
-}
+};
 
 export interface ILiabilityCreateOpts extends IAccountCreateOpts {
   liability: {
@@ -518,28 +519,28 @@ export interface ILiabilityCreateOpts extends IAccountCreateOpts {
     account_number?: string;
     number?: string;
   }
-}
+};
 
 export interface ILiabilityUpdateOpts {
   mortgage: TLiabilityMortgageUpdateOpts | null;
   credit_card: TLiabilityCreditCardUpdateOpts | null;
-}
+};
 
 export interface IClearingCreateOpts extends IAccountCreateOpts {
   clearing: {
     type: TAccountClearingSubTypes;
   }
-}
+};
 
 export interface IAccountCreateBulkSyncOpts {
   acc_ids: string[];
-}
+};
 
 export interface IAccountCreateBulkSyncResponse {
   success: string[];
   failed: string[];
   results: IAccountSync[];
-}
+};
 
 export interface IAccountSensitive {
   number: string | null;
@@ -547,28 +548,28 @@ export interface IAccountSensitive {
   bin_4: string | null;
   bin_6: string | null;
   payment_address: any | null;
-}
+};
 
 export interface IAccountBulkSensitiveResults extends IAccountSensitive {
   id: string;
   type: TAccountLiabilityTypes;
-}
+};
 
 export interface IAccountCreateBulkSensitiveResponse {
   success: string[];
   failed: string[];
   results: IAccountBulkSensitiveResults[];
-}
+};
 
 export interface IAccountCreateBulkSensitiveOpts {
   acc_ids: string[];
   fields: TSensitiveFields[];
-}
+};
 
 export interface IAccountWithdrawConsentOpts {
   type: 'withdraw';
   reason: 'holder_withdrew_consent' | null;
-}
+};
 
 export interface IAccountListOpts {
   to_date?: string | null;
@@ -581,7 +582,7 @@ export interface IAccountListOpts {
   holder_id?: string | null;
   'liability.mch_id'?: string | null;
   'liability.type'?: string | null;
-}
+};
 
 export interface IAccountDetails {
   id: string;
@@ -594,7 +595,7 @@ export interface IAccountDetails {
   created_at: string;
   updated_at: string;
   metadata: {} | null;
-}
+};
 
 export interface ICreditReportTradelinePaymentHistoryItem {
   code: number;
@@ -603,8 +604,7 @@ export interface ICreditReportTradelinePaymentHistoryItem {
 
 export interface IAccountPaymentHistory {
   payment_history: ICreditReportTradelinePaymentHistoryItem[];
-}
-
+};
 
 export class AccountSubResources {
   verification: Verification;
@@ -616,11 +616,11 @@ export class AccountSubResources {
     this.syncs = new AccountSync(config.addPath(id));
     this.payoffs = new AccountPayoffs(config.addPath(id));
   }
-}
+};
 
 export interface Account {
   (id: string): AccountSubResources;
-}
+};
 
 export class Account extends Resource {
   constructor(config: Configuration) {
@@ -780,6 +780,6 @@ export class Account extends Resource {
       data,
     );
   }
-}
+};
 
 export default Account;
