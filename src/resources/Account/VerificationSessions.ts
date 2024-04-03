@@ -9,40 +9,15 @@ import type {
   ITellerTransaction,
 } from './externalTypes';
 
-/**
- * {
-  "id": "avf_bxDxWqdnRcrer",
-  "account_id": "acc_yVf3mkzbhz9tj",
-  "status": "pending",
-  "type": "micro_deposits",
-  "error": null,
-  "plaid": null,
-  "mx": null,
-  "teller": null,
-  "micro_deposits": {
-    "amounts": []
-  },
-  "trusted_provisioner": null,
-  "auto_verify": null,
-  "standard": null,
-  "instant": null,
-  "pre_auth": null,
-  "three_ds": null,
-  "issuer": null,
-  "created_at": "2024-03-29T21:32:54.452Z",
-  "updated_at": "2024-03-29T21:32:54.452Z"
-}
- */
-
 export const AccountVerificationSessionStatuses = {
-  completed: 'completed',
+  pending: 'pending',
   in_progress: 'in_progress',
   verified: 'verified',
   failed: 'failed',
 };
 
 export type TAccountVerificationSessionStatuses =
-  | 'completed'
+  | 'pending'
   | 'in_progress'
   | 'verified'
   | 'failed';
@@ -66,23 +41,71 @@ export type TAccountVerificaionSessionTypes =
   | 'instant'
   | 'pre_auth';
 
+export const AccountVerificationCheckStatusTypes = {
+  pass: 'pass',
+  fail: 'fail',
+};
+
+export type TAccountVerificaionCheckStatusTypes =
+  | 'pass'
+  | 'fail';
+
 export interface IAccountVerificationSessionMicroDeposits {
-  amounts: number[];
+  amounts: number[] | [];
 };
 
 export interface IAccountVerificaitonSessionPlaid {
-  balances: IPlaidBalance;
-  transactions: IPlaidTransaction[];
+  balances: IPlaidBalance | {};
+  transactions: IPlaidTransaction[] | [];
 };
 
 export interface IAccountVerificationSessionMX {
-  account: IMXAccount;
-  transactions: IMXTransaction[];
+  account: IMXAccount | {};
+  transactions: IMXTransaction[] | [];
 };
 
 export interface IAccountVerificationSessionTeller {
-  balances: ITellerBalance;
-  transactions: ITellerTransaction[];
+  balances: ITellerBalance | {};
+  transactions: ITellerTransaction[] | [];
+};
+
+// TODO: Implement the following interfaces
+export interface IAccountVerificationSessionTrustProvisioner {};
+export interface IAccountVerificationSessionAutoVerify {};
+export interface IAccountVerificationSessionThreeDS {};
+export interface IAccountVerificationSessionIssuer {};
+
+export interface IAccountVerificationSessionStandard {
+  number: string;
+};
+
+export interface IAccountVerificationSessionInstant {
+  exp_year: string | null;
+  exp_month: string | null;
+  exp_check: TAccountVerificaionCheckStatusTypes | null;
+  number: string | null;
+};
+
+export interface IAccountVerificationSessionPreAuth extends IAccountVerificationSessionInstant {
+  cvv: string;
+  cvv_check: TAccountVerificaionCheckStatusTypes;
+  billing_zip_code: string;
+  billing_zip_code_check: TAccountVerificaionCheckStatusTypes;
+  pre_auth_check: TAccountVerificaionCheckStatusTypes;
+};
+
+export interface IAccountVerificationSessionCreateOpts {
+  type: TAccountVerificaionSessionTypes;
+};
+
+export interface IAccountVerificationSessionUpdateOpts {
+  micro_deposits?: IAccountVerificationSessionMicroDeposits;
+  plaid?: IAccountVerificaitonSessionPlaid;
+  mx?: IAccountVerificationSessionMX;
+  teller?: IAccountVerificationSessionTeller;
+  standard?: IAccountVerificationSessionStandard;
+  instant?: IAccountVerificationSessionInstant;
+  pre_auth?: IAccountVerificationSessionPreAuth;
 };
 
 export interface IAccountVerificationSession {
@@ -95,13 +118,31 @@ export interface IAccountVerificationSession {
   mx: IAccountVerificationSessionMX | null;
   teller: IAccountVerificationSessionTeller | null;
   micro_deposits: IAccountVerificationSessionMicroDeposits | null;
-  trusted_provisioner: any;
-  auto_verify: any;
-  standard: any;
-  instant: any;
-  pre_auth: any;
-  three_ds: any;
-  issuer: any;
+  trusted_provisioner: IAccountVerificationSessionTrustProvisioner | null;
+  auto_verify: IAccountVerificationSessionAutoVerify | null;
+  standard: IAccountVerificationSessionStandard | null;
+  instant: IAccountVerificationSessionInstant | null;
+  pre_auth: IAccountVerificationSessionPreAuth | null;
+  three_ds: IAccountVerificationSessionThreeDS | null;
+  issuer: IAccountVerificationSessionIssuer | null;
   created_at: string;
   updated_at: string; 
+};
+
+export default class AccountVerificationSession extends Resource {
+  constructor(config: Configuration) {
+    super(config.addPath('verification_sessions'));
+  }
+
+  async retrieve(avs_id: string) {
+    return super._getWithId<IAccountVerificationSession>(avs_id);
+  }
+
+  async create(data: IAccountVerificationSessionCreateOpts) {
+    return super._create<IAccountVerificationSession, IAccountVerificationSessionCreateOpts>(data);
+  }
+
+  async update(avs_id: string, data: IAccountVerificationSessionUpdateOpts) {
+    return super._updateWithId<IAccountVerificationSession, IAccountVerificationSessionUpdateOpts>(avs_id, data);
+  }
 };

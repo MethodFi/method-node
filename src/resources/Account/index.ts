@@ -3,6 +3,7 @@ import Configuration from '../../configuration';
 import Verification from '../Verification';
 import AccountSync, { IAccountSync } from './Syncs';
 import AccountPayoffs from './Payoffs';
+import AccountVerificationSession from './VerificationSessions';
 
 export const AccountTypes = {
   ach: 'ach',
@@ -610,11 +611,13 @@ export class AccountSubResources {
   verification: Verification;
   syncs: AccountSync;
   payoffs: AccountPayoffs;
+  verification_sessions: AccountVerificationSession;
 
   constructor(id: string, config: Configuration) {
     this.verification = new Verification(config.addPath(id));
     this.syncs = new AccountSync(config.addPath(id));
     this.payoffs = new AccountPayoffs(config.addPath(id));
+    this.verification_sessions = new AccountVerificationSession(config.addPath(id));
   }
 };
 
