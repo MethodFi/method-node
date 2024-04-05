@@ -10,8 +10,7 @@ export interface IAccountSync {
   updated_at: string;
 }
 
-export interface IAccountSyncCreateOpts {
-}
+export interface IAccountSyncCreateOpts {}
 
 export default class AccountSync extends Resource {
   constructor(config: Configuration) {

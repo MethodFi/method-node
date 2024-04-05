@@ -30,7 +30,7 @@ export default class AccountPayoffs extends Resource {
     super(config.addPath('payoffs'));
   }
 
-    /**
+  /**
    * Retrieves results of a payoff request for an account
    * 
    * @param pyf_id payoff id

@@ -40,41 +40,41 @@ export type IEntityVerificationSessionCategories =
   | 'phone'
   | 'identity';
 
-export interface IEntityPhoneSmsVerification {
+export interface IEntitySmsVerification {
   timestamp: Date;
 }
 
-export interface IEntityPhoneSmsVerificationUpdate {
+export interface IEntitySmsVerificationUpdate {
   sms_code: string;
 }
 
-export interface IEntityPhoneSnaVerification {
+export interface IEntitySnaVerification {
   urls: string;
 }
 
-export interface IEntityIdentityByoKycVerification {
+export interface IEntityByoKycVerification {
   authenticated: boolean;
 }
 
-export interface IEntityIdentityMethodKbaVerificationAnswer {
+export interface IEntityKbaVerificationAnswer {
   id: string;
   text: string;
 }
 
-export interface IEntityIdentityMethodKbaVerificationAnswerUpdate {
+export interface IEntityKbaVerificationAnswerUpdate {
   question_id: string;
   answer_id: string;
 }
 
-export interface IEntityIdentityMethodKbaVerificationQuestion {
+export interface IEntityKbaVerificationQuestion {
   selected_answer?: string;
   id: string;
   text: string;
-  answers: IEntityIdentityMethodKbaVerificationAnswer[];
+  answers: IEntityKbaVerificationAnswer[];
 }
 
-export interface IEntityIdentityMethodKbaVerification {
-  questions: IEntityIdentityMethodKbaVerificationQuestion[];
+export interface IEntityKbaVerification {
+  questions: IEntityKbaVerificationQuestion[];
   authenticated: boolean;
 }
 
@@ -82,16 +82,16 @@ export interface IEntityVerificationSessionCreateOpts {
   type: IEntityVerificationSessionTypes;
   phone_method_sms?: {};
   phone_method_sna?: {};
-  phone_byo_sms?: IEntityPhoneSmsVerification;
+  phone_byo_sms?: IEntitySmsVerification;
   identity_byo_kyc?: {};
   identity_method_kba?: {};
 }
 
 export interface IEntityVerificationSessionUpdateOpts {
   type: IEntityVerificationSessionTypes;
-  phone_method_sms?: IEntityPhoneSmsVerificationUpdate;
+  phone_method_sms?: IEntitySmsVerificationUpdate;
   phone_method_sna?: {};
-  identity_method_kba?: IEntityIdentityMethodKbaVerificationAnswerUpdate;
+  identity_method_kba?: IEntityKbaVerificationAnswerUpdate;
 }
 
 export interface IEntityVerificationSession {
@@ -100,12 +100,12 @@ export interface IEntityVerificationSession {
   status: IEntityVerificationSessionStatuses;
   type: IEntityVerificationSessionTypes;
   category: IEntityVerificationSessionCategories;
-  phone_method_sms: IEntityPhoneSmsVerification | null;
-  phone_method_sna: IEntityPhoneSnaVerification | null;
-  phone_byo_sms: IEntityPhoneSmsVerification | null;
-  identity_byo_kyc: IEntityIdentityByoKycVerification | null
-  identity_method_kba: IEntityIdentityMethodKbaVerification | null;
-  identity_method_auth_element: IEntityIdentityMethodKbaVerification | null;
+  phone_method_sms: IEntitySmsVerification | null;
+  phone_method_sna: IEntitySnaVerification | null;
+  phone_byo_sms: IEntitySmsVerification | null;
+  identity_byo_kyc: IEntityByoKycVerification | null
+  identity_method_kba: IEntityKbaVerification | null;
+  identity_method_auth_element: IEntityKbaVerification | null;
   error: IResourceError | null;
   created_at: Date;
   updated_at: Date;

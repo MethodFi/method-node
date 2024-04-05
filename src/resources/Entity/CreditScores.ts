@@ -37,7 +37,7 @@ export interface IEntityCreditScoresType {
   created_at: string,
 }
 
-export interface IEntityCreditScoresResponse {
+export interface IEntityCreditScores {
   id: string,
   status: TEntityCreditScoresStatuses,
   scores: IEntityCreditScoresType[] | null,
@@ -55,20 +55,20 @@ export default class EntityCreditScores extends Resource {
    * Retrieve the result of a credit score request
    * 
    * @param crs_id id of the credit score request
-   * @returns IEntityCreditScoresResponse
+   * @returns IEntityCreditScores
    */
 
     async retrieve(crs_id: string) {
-      return super._getWithId<IEntityCreditScoresResponse>(crs_id);
+      return super._getWithId<IEntityCreditScores>(crs_id);
     }
   
     /**
      * Creates a credit score request
      * 
-     * @returns IEntityCreditScoresResponse
+     * @returns IEntityCreditScores
      */
   
     async create() {
-      return super._create<IEntityCreditScoresResponse, {}>({});
+      return super._create<IEntityCreditScores, {}>({});
     }
 }

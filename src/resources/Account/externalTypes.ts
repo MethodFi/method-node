@@ -43,30 +43,30 @@ export type TPlaidTransactionTypes =
 
 
 export const PlaidTransactionPaymentChannelTypes = {
-  Online: 'online',
-  In_store: 'in store',
-  Other: 'other',
+  online: 'online',
+  in_store: 'in_store',
+  other: 'other',
 };
 
-export type TPLaidTransactionPaymentChannelTypes =
+export type TPlaidTransactionPaymentChannelTypes =
   | 'online'
   | 'in store'
   | 'other';
 
 export const PlaidTransactionCode = {
-  Adjustment: 'adjustment',
-  Atm: 'atm',
-  Bank_charge: 'bank charge',
-  Bill_payment: 'bill payment',
-  Cash: 'cash',
-  Cashback: 'cashback',
-  Cheque: 'cheque',
-  Direct_debit: 'direct debit',
-  Interest: 'interest',
-  Purchase: 'purchase',
-  Standing_order: 'standing order',
-  Transfer: 'transfer',
-  Null: 'null',
+  adjustment: 'adjustment',
+  atm: 'atm',
+  bank_charge: 'bank charge',
+  bill_payment: 'bill payment',
+  cash: 'cash',
+  cashback: 'cashback',
+  cheque: 'cheque',
+  direct_debit: 'direct debit',
+  interest: 'interest',
+  purchase: 'purchase',
+  standing_order: 'standing order',
+  transfer: 'transfer',
+  null: 'null',
 };
 
 export type TPlaidTransactionCode =
@@ -85,12 +85,12 @@ export type TPlaidTransactionCode =
   | 'null';
 
 export const PlaidCounterpartyType = {
-  Merchant: 'merchant',
-  FinancialInstitution: 'financial_institution',
-  PaymentApp: 'payment_app',
-  Marketplace: 'marketplace',
-  PaymentTerminal: 'payment_terminal',
-  IncomeSource: 'income_source',
+  merchant: 'merchant',
+  financial_institution: 'financial_institution',
+  payment_app: 'payment_app',
+  marketplace: 'marketplace',
+  payment_terminal: 'payment_terminal',
+  income_source: 'income_source',
 }
 
 export type TPlaidCounterpartyType =
@@ -107,7 +107,7 @@ export interface IPlaidPersonalFinanceCategory {
   confidence_level?: string | null;
 }
 
-export interface IPLaidTransactionCounterparty {
+export interface IPlaidTransactionCounterparty {
   name: string;
   entity_id?: string | null;
   type: TPlaidCounterpartyType;
@@ -140,11 +140,11 @@ export interface IPlaidTransaction {
   authorized_date: string | null;
   authorized_datetime: string | null;
   datetime: string | null;
-  payment_channel: TPLaidTransactionPaymentChannelTypes;
+  payment_channel: TPlaidTransactionPaymentChannelTypes;
   personal_finance_category?: IPlaidPersonalFinanceCategory | null;
   transaction_code: TPlaidTransactionCode | null;
   personal_finance_category_icon_url?: string;
-  counterparties?: IPLaidTransactionCounterparty[];
+  counterparties?: IPlaidTransactionCounterparty[];
   merchant_entity_id?: string | null;
 };
 
