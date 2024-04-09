@@ -3,8 +3,21 @@ import Configuration from '../../configuration';
 import Verification from '../Verification';
 import AccountSync, { IAccountSync } from './Syncs';
 import AccountPayoffs from './Payoffs';
-import AccountVerificationSession from './VerificationSessions';
+import AccountVerificationSession, { 
+  IAccountVerificaitonSessionPlaid,
+  IAccountVerificationSessionPreAuth,
+  IAccountVerificationSessionInstant,
+  IAccountVerificationSessionMX,
+  IAccountVerificationSessionTeller,
+  IAccountVerificationSessionStandard,
+  IAccountVerificationSessionMicroDeposits,
+  IAccountVerificationSessionThreeDS,
+  IAccountVerificationSessionIssuer,
+  TAccountVerificationSessionStatuses,
+  TAccountVerificaionSessionTypes
+} from './VerificationSessions';
 import AccountBalances from './Balances';
+import AccountTransactions from './Transactions';
 
 export const AccountTypes = {
   ach: 'ach',
@@ -273,6 +286,20 @@ export type TSensitiveFields =
   | 'expiration_month'
   | 'expiration_year';
 
+  export const AccountExpandableFields = {
+    latest_verification_session: 'latest_verification_session',
+  };
+  
+  export type TAccountExpandableFields = 
+    | 'latest_verification_session';
+  
+  export const AccountSubscriptionTypes = {
+    transactions: 'transactions',
+  }
+  
+  export type TAccountSubscriptionTypes = 
+    | 'transactions';
+
 export interface TDelinquencyHistoryItem {
   start_date: string;
   end_date: string;
@@ -490,7 +517,42 @@ export type IAccountClearing = {
   number: string;
 };
 
-export interface IAccount {
+export interface IAccountLatestVerificationSession {
+  id: string;
+  status: string;
+  status_error: string | null;
+  type: string;
+  three_ds?: IAccountVerificationSessionThreeDS;
+  issuer?: IAccountVerificationSessionIssuer;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IAccountVerificationSessionString {
+  latest_verification_session: string;
+}
+
+export interface IAccountVerificationSessionExpanded {
+  latest_verification_session: {
+    id: string;
+    status: TAccountVerificationSessionStatuses;
+    status_error: IResourceError | null;
+    type: TAccountVerificaionSessionTypes;
+    three_ds?: IAccountVerificationSessionThreeDS;
+    pre_auth?: IAccountVerificationSessionPreAuth;
+    issuer?: IAccountVerificationSessionIssuer;
+    plaid?: IAccountVerificaitonSessionPlaid;
+    mx?: IAccountVerificationSessionMX;
+    teller?: IAccountVerificationSessionTeller;
+    instant?: IAccountVerificationSessionInstant;
+    standard?: IAccountVerificationSessionStandard;
+    micro_deposits?: IAccountVerificationSessionMicroDeposits;
+    created_at: string;
+    updated_at: string;
+  };
+}
+
+export interface IAccountBase {
   id: string;
   holder_id: string;
   status: TAccountStatuses;
@@ -505,6 +567,9 @@ export interface IAccount {
   updated_at: string;
   metadata: {} | null;
 };
+
+export type IAccount = IAccountBase & IAccountVerificationSessionString;
+export type IAccountExpanded = IAccountBase & IAccountVerificationSessionExpanded;
 
 export interface IAccountCreateOpts {
   holder_id: string;
@@ -608,19 +673,40 @@ export interface IAccountPaymentHistory {
   payment_history: ICreditReportTradelinePaymentHistoryItem[];
 };
 
+export interface IAccountSubscription {
+  id: string;
+  name: TAccountSubscriptionTypes;
+  status: string;
+  latest_transaction_id: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export interface IAccountSubscriptionsResponse {
+  transactions?: {
+    subscription: IAccountSubscription;
+  };
+};
+
+export interface IAccountSubscriptionCreateOpts {
+  enroll: TAccountSubscriptionTypes[];
+};
+
 export class AccountSubResources {
   verification: Verification;
   syncs: AccountSync;
   payoffs: AccountPayoffs;
   verification_sessions: AccountVerificationSession;
   balances: AccountBalances;
+  transactions: AccountTransactions;
 
-  constructor(id: string, config: Configuration) {
-    this.verification = new Verification(config.addPath(id));
-    this.syncs = new AccountSync(config.addPath(id));
-    this.payoffs = new AccountPayoffs(config.addPath(id));
-    this.verification_sessions = new AccountVerificationSession(config.addPath(id));
-    this.balances = new AccountBalances(config.addPath(id));
+  constructor(acc_id: string, config: Configuration) {
+    this.verification = new Verification(config.addPath(acc_id));
+    this.syncs = new AccountSync(config.addPath(acc_id));
+    this.payoffs = new AccountPayoffs(config.addPath(acc_id));
+    this.verification_sessions = new AccountVerificationSession(config.addPath(acc_id));
+    this.balances = new AccountBalances(config.addPath(acc_id));
+    this.transactions = new AccountTransactions(config.addPath(acc_id));
   }
 };
 
@@ -633,8 +719,8 @@ export class Account extends Resource {
     super(config.addPath('accounts'));
   }
 
-  protected _call(id): AccountSubResources {
-    return new AccountSubResources(id, this.config);
+  protected _call(acc_id: string): AccountSubResources {
+    return new AccountSubResources(acc_id, this.config);
   }
 
   /**
@@ -785,6 +871,19 @@ export class Account extends Resource {
       `/${acc_id}/consent`,
       data,
     );
+  }
+
+  async createSubscription(id: string, data: IAccountSubscriptionCreateOpts) {
+    return super._createWithSubPath<IAccountSubscriptionsResponse, IAccountSubscriptionCreateOpts>(
+      `/${id}/subscriptions`,
+      data
+    )
+  }
+
+  async retrieveLastVerificationStatusField(holder_id: string){
+    return super._getWithParams<IAccountExpanded, { holder_id: string, 'liability.type': string, 'expand': string[] }>(
+      { holder_id, 'liability.type': 'credit_card', expand: ['latest_verification_session'] }
+    )
   }
 };
 
