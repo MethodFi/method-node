@@ -45,6 +45,6 @@ export class Method {
   }
 
   public async ping(): Promise<IPingResponse> {
-    return this.healthcheck.get();
+    return this.healthcheck.retrieve();
   }
 }
