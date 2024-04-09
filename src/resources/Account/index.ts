@@ -18,6 +18,7 @@ import AccountVerificationSession, {
 } from './VerificationSessions';
 import AccountBalances from './Balances';
 import AccountTransactions from './Transactions';
+import AccountSubscriptions from './Subscriptions';
 
 export const AccountTypes = {
   ach: 'ach',
@@ -292,13 +293,6 @@ export type TSensitiveFields =
   
   export type TAccountExpandableFields = 
     | 'latest_verification_session';
-  
-  export const AccountSubscriptionTypes = {
-    transactions: 'transactions',
-  }
-  
-  export type TAccountSubscriptionTypes = 
-    | 'transactions';
 
 export interface TDelinquencyHistoryItem {
   start_date: string;
@@ -673,25 +667,6 @@ export interface IAccountPaymentHistory {
   payment_history: ICreditReportTradelinePaymentHistoryItem[];
 };
 
-export interface IAccountSubscription {
-  id: string;
-  name: TAccountSubscriptionTypes;
-  status: string;
-  latest_transaction_id: string;
-  created_at: string;
-  updated_at: string;
-};
-
-export interface IAccountSubscriptionsResponse {
-  transactions?: {
-    subscription: IAccountSubscription;
-  };
-};
-
-export interface IAccountSubscriptionCreateOpts {
-  enroll: TAccountSubscriptionTypes[];
-};
-
 export class AccountSubResources {
   verification: Verification;
   syncs: AccountSync;
@@ -699,6 +674,7 @@ export class AccountSubResources {
   verification_sessions: AccountVerificationSession;
   balances: AccountBalances;
   transactions: AccountTransactions;
+  subscriptions: AccountSubscriptions;
 
   constructor(acc_id: string, config: Configuration) {
     this.verification = new Verification(config.addPath(acc_id));
@@ -707,6 +683,7 @@ export class AccountSubResources {
     this.verification_sessions = new AccountVerificationSession(config.addPath(acc_id));
     this.balances = new AccountBalances(config.addPath(acc_id));
     this.transactions = new AccountTransactions(config.addPath(acc_id));
+    this.subscriptions = new AccountSubscriptions(config.addPath(acc_id));
   }
 };
 
@@ -871,13 +848,6 @@ export class Account extends Resource {
       `/${acc_id}/consent`,
       data,
     );
-  }
-
-  async createSubscription(id: string, data: IAccountSubscriptionCreateOpts) {
-    return super._createWithSubPath<IAccountSubscriptionsResponse, IAccountSubscriptionCreateOpts>(
-      `/${id}/subscriptions`,
-      data
-    )
   }
 
   async retrieveLastVerificationStatusField(holder_id: string){
