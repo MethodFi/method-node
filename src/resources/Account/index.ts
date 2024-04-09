@@ -4,7 +4,7 @@ import Verification from '../Verification';
 import AccountSync, { IAccountSync } from './Syncs';
 import AccountPayoffs from './Payoffs';
 import AccountVerificationSession from './VerificationSessions';
-import AccountBalances from './Balance';
+import AccountBalances from './Balances';
 
 export const AccountTypes = {
   ach: 'ach',
