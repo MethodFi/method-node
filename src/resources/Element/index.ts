@@ -1,6 +1,6 @@
 import Resource from '../../resource';
 import Configuration from '../../configuration';
-import { IAccount } from '../Account';
+import { IAccount } from '../Account/types';
 
 export const ElementTypes = {
   link: 'link',

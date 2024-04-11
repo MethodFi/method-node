@@ -10,7 +10,6 @@ import AccountTransactions from './Transactions';
 import AccountSubscriptions from './Subscriptions';
 import AccountAutoSyncs from './AutoSyncs';
 import AccountDetails from './Details';
-import AccountWithdrawConsent from './WithdrawConsent';
 import AccountSensitive from './Sensitive';
 import AccountBulkSensitive from './BulkSensitive';
 import AccountBulkSync from './BulkSync';
@@ -78,6 +77,11 @@ export interface IAccountListOpts {
   'liability.type'?: string | null;
 };
 
+export interface IAccountWithdrawConsentOpts {
+  type: 'withdraw';
+  reason: 'holder_withdrew_consent' | null;
+};
+
 export class AccountSubResources {
   verification: Verification;
   syncs: AccountSync;
@@ -92,7 +96,6 @@ export class AccountSubResources {
   bulkSensitive: AccountBulkSensitive;
   bulkSync: AccountBulkSync;
   paymentHistory: AccountPaymentHistory;
-  withdrawConsent: AccountWithdrawConsent;
 
   constructor(acc_id: string, config: Configuration) {
     this.verification = new Verification(config.addPath(acc_id));
@@ -108,7 +111,6 @@ export class AccountSubResources {
     this.bulkSensitive = new AccountBulkSensitive(config.addPath(acc_id));
     this.bulkSync = new AccountBulkSync(config.addPath(acc_id));
     this.paymentHistory = new AccountPaymentHistory(config.addPath(acc_id));
-    this.withdrawConsent = new AccountWithdrawConsent(config.addPath(acc_id));
   }
 };
 
@@ -169,6 +171,22 @@ export class Account extends Resource {
 
   async create(data: IACHCreateOpts | ILiabilityCreateOpts | IClearingCreateOpts, requestConfig?: IRequestConfig) {
     return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts | IClearingCreateOpts>(data, requestConfig);
+  }
+
+
+  /**
+   * Withdraws consent for an account
+   * 
+   * @param acc_id id of the account
+   * @param data IAccountWithdrawConsentOpts: { type: 'withdraw', reason: 'holder_withdrew_consent' | null }
+   * @returns IAccount
+   */
+  
+  async delete(id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
+    return super._createWithSubPath<IAccount, IAccountWithdrawConsentOpts>(
+      `/${id}/consent`,
+      data,
+    );
   }
 };
 

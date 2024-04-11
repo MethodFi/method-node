@@ -1,162 +1,22 @@
-import Resource, { IRequestConfig, IResourceError } from '../../resource';
+import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
 import EntitySync from "./Sync";
 import EntityConnect from './Connect';
+import EntitySensitive from './Sensitive';
 import EntityIdentities from './Identities';
+import EntityAuthSession from './AuthSession';
+import EntityCreditScore from './CreditScore';
 import EntityCreditScores from './CreditScores';
+import EntityManualAuthSession from './ManualAuthSession';
 import EntityVerificationSession from './VerificationSessions';
-
-export const EntityTypes = {
-  individual: 'individual',
-  c_corporation: 'c_corporation',
-  s_corporation: 's_corporation',
-  llc: 'llc',
-  partnership: 'partnership',
-  sole_proprietorship: 'sole_proprietorship',
-  receive_only: 'receive_only',
-};
-
-export type TEntityTypes =
-  | 'individual'
-  | 'c_corporation'
-  | 's_corporation'
-  | 'llc'
-  | 'partnership'
-  | 'sole_proprietorship'
-  | 'receive_only';
-
-export const EntityCapabilities = {
-  payments_send: 'payments:send',
-  payments_receive: 'payments:receive',
-  payments_limited_send: 'payments:limited-send',
-  data_retrieve: 'data:retrieve',
-  data_sync: 'data:sync',
-  transaction_stream: 'transaction:stream',
-};
-
-export type TEntityCapabilities =
-  | 'payments:send'
-  | 'payments:receive'
-  | 'payments:limited-send'
-  | 'data:retrieve'
-  | 'data:sync'
-  | 'transaction:stream';
-
-export const EntityStatuses = {
-  active: 'active',
-  incomplete: 'incomplete',
-  disabled: 'disabled',
-};
-
-export type TEntityStatuses =
-  | 'active'
-  | 'incomplete'
-  | 'disabled';
-
-export const EntityIndividualPhoneVerificationTypes = {
-  method_sms: 'method_sms',
-  method_verified: 'method_verified',
-  sms: 'sms',
-  tos: 'tos',
-}
-
-export type TEntityIndividualPhoneVerificationTypes =
-  | 'method_sms'
-  | 'method_verified'
-  | 'sms'
-  | 'tos';
-
-export const CreditReportBureaus = {
-  experian: 'experian',
-  equifax: 'equifax',
-  transunion: 'transunion',
-};
-
-export type TCreditReportBureaus =
-  | 'experian'
-  | 'equifax'
-  | 'transunion';
-
-export const CreditScoreStatuses = {
-  completed: 'completed',
-  in_progress: 'in_progress',
-  pending: 'pending',
-  failed: 'failed',
-};
-
-export type TEntityCreditScoreStatuses =
-  | 'completed'
-  | 'in_progress'
-  | 'pending'
-  | 'failed';
-
-export const CreditScoresModel = {
-  vantage_4: 'vantage_4',
-  vantage_3: 'vantage_3',
-};
-
-export type TCreditScoresModel =
-  | 'vantage_4'
-  | 'vantage_3';
-
-export interface IEntityIndividual {
-  first_name: string | null;
-  last_name: string | null;
-  phone: string | null;
-  email: string | null;
-  dob: string | null;
-  ssn: string | null;
-  ssn_4: string | null;
-  phone_verification_type: TEntityIndividualPhoneVerificationTypes | null,
-  phone_verification_timestamp: Date | null,
-}
-
-export interface IEntityAddress {
-  line1: string | null;
-  line2: string | null;
-  city: string | null;
-  state: string | null;
-  zip: string | null;
-}
-
-export interface IEntityCorporationOwner {
-  first_name: string | null;
-  last_name: string | null;
-  phone: string | null;
-  email: string | null;
-  dob: string | null;
-  address: IEntityAddress;
-}
-
-export interface IEntityCorporation {
-  name: string | null;
-  dba: string | null;
-  ein: string | null;
-  owners: IEntityCorporationOwner[];
-}
-
-export interface IEntityReceiveOnly {
-  name: string;
-  phone: string | null;
-  email: string | null;
-}
-
-export interface IEntity {
-  id: string;
-  type: TEntityTypes;
-  individual: IEntityIndividual | null;
-  corporation: IEntityCorporation | null;
-  receive_only: IEntityReceiveOnly | null;
-  capabilities: TEntityCapabilities[];
-  available_capabilities: TEntityCapabilities[];
-  pending_capabilities: TEntityCapabilities[];
-  address: IEntityAddress;
-  status: TEntityStatuses;
-  error: IResourceError | null;
-  metadata: {} | null;
-  created_at: string;
-  updated_at: string;
-}
+import type {
+  IEntity,
+  IEntityAddress,
+  IEntityIndividual,
+  IEntityCorporation,
+  IEntityReceiveOnly,
+  TEntityTypes
+} from './types';
 
 export interface IEntityCreateOpts {
   type: TEntityTypes;
@@ -200,109 +60,6 @@ export interface IEntityListOpts {
   type?: string | null;
 }
 
-export interface IEntityAnswer {
-  id: string,
-  text: string,
-}
-
-export interface IEntityQuestion {
-  id: string,
-  text: string | null,
-  answers: IEntityAnswer[],
-}
-
-export interface IEntityQuestionResponse {
-  questions: IEntityQuestion[]
-  authenticated: boolean,
-  cxn_id: string[],
-  accounts: string[],
-}
-
-export interface IAnswerOpts {
-  question_id: string,
-  answer_id: string,
-}
-
-export interface IEntityUpdateAuthOpts {
-  answers: IAnswerOpts[],
-}
-
-export interface IEntityUpdateAuthResponse {
-  questions: IEntityQuestion[],
-  authenticated: boolean,
-  cxn_id: string[],
-  accounts: string[],
-}
-
-export interface IEntityManualAuthOpts {
-  format: string,
-  bureau: TCreditReportBureaus,
-  raw_report: {},
-}
-
-export interface IEntityManualAuthResponse {
-  authenticated: boolean,
-  accounts: string[],
-}
-
-export interface IEntityGetCreditScoreResponse {
-  score: number,
-  updated_at: string,
-}
-
-export interface IEntityCreditScoresFactorsType {
-  code: string,
-  description: string,
-}
-
-export interface IEntityCreditScoresType {
-  score: number,
-  source: TCreditReportBureaus,
-  model: TCreditScoresModel,
-  factors: IEntityCreditScoresFactorsType[],
-  created_at: string,
-}
-
-export interface IEntityCreditScoresResponse {
-  id: string,
-  status: TEntityCreditScoreStatuses,
-  scores: IEntityCreditScoresType[] | null,
-  error: IResourceError | null,
-  created_at: string,
-  updated_at: string,
-}
-
-export interface IEntityKYCAddressRecordData {
-  address: string,
-  city: string,
-  postal_code: string,
-  state: string,
-  address_term: number,
-}
-
-export interface IEntityIdentityType {
-  first_name: string | null,
-  last_name: string | null,
-  phone: string | null,
-  dob: string | null,
-  address: IEntityKYCAddressRecordData | null,
-  ssn: string | null,
-}
-
-export interface IEntitySensitiveResponse {
-  first_name: string | null,
-  last_name: string | null,
-  phone: string | null,
-  phone_history: string[],
-  email: string | null,
-  dob: string | null,
-  address: IEntityKYCAddressRecordData | null,
-  address_history: IEntityKYCAddressRecordData[],
-  ssn_4: string | null,
-  ssn_6: string | null,
-  ssn_9: string | null,
-  identities: IEntityIdentityType[],
-}
 
 export interface IEntityWithdrawConsentOpts {
   type: 'withdraw',
@@ -310,17 +67,25 @@ export interface IEntityWithdrawConsentOpts {
 }
 
 export class EntitySubResources {
-  syncs: EntitySync;
+  authSession: EntityAuthSession;
   connect: EntityConnect;
-  identities: EntityIdentities;
+  creditScore: EntityCreditScore;
   creditScores: EntityCreditScores;
+  identities: EntityIdentities;
+  manualAuthSession: EntityManualAuthSession;
+  sensitive: EntitySensitive;
+  syncs: EntitySync;
   verificationSession: EntityVerificationSession;
 
   constructor(id: string, config: Configuration) {
-    this.syncs = new EntitySync(config.addPath(id));
+    this.authSession = new EntityAuthSession(config.addPath(id));
     this.connect = new EntityConnect(config.addPath(id));
-    this.identities = new EntityIdentities(config.addPath(id));
+    this.creditScore = new EntityCreditScore(config.addPath(id));
     this.creditScores = new EntityCreditScores(config.addPath(id));
+    this.identities = new EntityIdentities(config.addPath(id));
+    this.manualAuthSession = new EntityManualAuthSession(config.addPath(id));
+    this.sensitive = new EntitySensitive(config.addPath(id));
+    this.syncs = new EntitySync(config.addPath(id));
     this.verificationSession = new EntityVerificationSession(config.addPath(id));
   }
 }
@@ -391,37 +156,6 @@ export class Entity extends Resource {
   }
 
   /**
-   * Creates an auth session for an entity
-   * 
-   * @param ent_id ent_id
-   * @returns IEntityQuestionResponse
-   */
-
-  async createAuthSession(ent_id: string) {
-    return super._createWithSubPath<IEntityQuestionResponse, {}>(`/${ent_id}/auth_session`, {});
-  }
-
-  /**
-   * Updates and auth session with answers to KBA questions
-   * 
-   * @param ent_id ent_id
-   * @param opts IEntityUpdateAuthOpts
-   * @returns IEntityUpdateAuthResponse
-   */
-
-  async updateAuthSession(ent_id: string, opts: IEntityUpdateAuthOpts) {
-    return super._updateWithSubPath<IEntityUpdateAuthResponse, IEntityUpdateAuthOpts>(`/${ent_id}/auth_session`, opts)
-  }
-
-  async createManualAuthSession(ent_id: string, opts: IEntityManualAuthOpts) {
-    return super._createWithSubPath<IEntityManualAuthResponse, {}>(`/${ent_id}/manual_auth_session`, opts);
-  }
-
-  async updateManualAuthSession(ent_id: string, opts: IEntityManualAuthOpts) {
-    return super._updateWithSubPath<IEntityManualAuthResponse, {}>(`/${ent_id}/manual_auth_session`, opts)
-  }
-
-  /**
    * Refresh an entity's capabilities
    * 
    * @param ent_id ent_id
@@ -433,28 +167,6 @@ export class Entity extends Resource {
   }
 
   /**
-   * Retrieve an entity's credit score
-   * 
-   * @param ent_id ent_id
-   * @returns IEntityGetCreditScoreResponse
-   */
-
-  async retrieveCreditScore(ent_id: string) {
-    return super._getWithSubPath<IEntityGetCreditScoreResponse>(`/${ent_id}/credit_score`);
-  }
-
-  /**
-   * Retrieve the sensitive fields of an entity
-   * 
-   * @param ent_id ent_id
-   * @returns IEntitySensitiveResponse
-   */
-
-  async retrieveSensitiveFields(ent_id: string) {
-    return super._getWithSubPath<IEntitySensitiveResponse>(`/${ent_id}/sensitive`);
-  }
-
-  /**
    * Withdraws consent for an entity
    * 
    * @param ent_id ent_id
@@ -462,7 +174,7 @@ export class Entity extends Resource {
    * @returns Deactivated entity (IEntity)
    */
 
-  async withdrawConsent(ent_id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
+  async delete(ent_id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
     return super._createWithSubPath<IEntity, IEntityWithdrawConsentOpts>(
       `/${ent_id}/consent`,
       data,

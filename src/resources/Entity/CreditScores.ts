@@ -1,6 +1,6 @@
 import Resource, { IResourceError } from "../../resource";
 import Configuration from "../../configuration";
-import { TCreditReportBureaus } from ".";
+import { TCreditReportBureaus } from "./types";
 
 export const CreditScoresStatuses = {
   completed: 'completed',
