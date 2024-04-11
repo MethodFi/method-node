@@ -1,4 +1,4 @@
-import Resource, { IResourceError } from '../../resource';
+import Resource from '../../resource';
 import Configuration from '../../configuration';
 
 export const AccountSubscriptionTypes = {
@@ -40,10 +40,7 @@ export default class AccountSubscriptions extends Resource {
    * @returns IAccountSubscriptionsResponse
    */
 
-  async create(id: string, data: IAccountSubscriptionCreateOpts) {
-    return super._createWithSubPath<IAccountSubscriptionsResponse, IAccountSubscriptionCreateOpts>(
-      `/${id}/subscriptions`,
-      data
-    )
+  async create(data: IAccountSubscriptionCreateOpts) {
+    return super._create<IAccountSubscriptionsResponse, IAccountSubscriptionCreateOpts>(data);
   }
-}
+};
