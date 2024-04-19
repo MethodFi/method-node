@@ -28,7 +28,11 @@ export default class Resource extends ExtensibleFunction {
     this.config = config;
     this.client = axios.create({
       baseURL: config.baseURL,
-      headers: { Authorization: `Bearer ${config.apiKey}`, 'User-Agent': this.getDefaultUserAgent() },
+      headers: {
+        Authorization: `Bearer ${config.apiKey}`,
+        'User-Agent': this.getDefaultUserAgent(),
+        'method-version': config.version
+      },
       httpsAgent: config.httpsAgent,
     });
 
@@ -41,6 +45,7 @@ export default class Resource extends ExtensibleFunction {
   }
 
   private getDefaultUserAgent(): string {
+    // @ts-ignore
     return `Method-Node/v${require(
       process.env.NODE_ENV === 'TEST' ? '../../package.json' : '../package.json'
     ).version}`;
@@ -187,12 +192,11 @@ export default class Resource extends ExtensibleFunction {
     return (await this.client.delete(`/${id}`)).data.data;
   }
 
-  protected async _deleteWithSubPath<Response, Data>(
+  protected async _deleteWithSubPath<Response>(
     path: string,
-    data: Data,
     requestConfig: IRequestConfig = {},
   ): Promise<Response> {
-    return (await this.client.delete(path, data)).data.data;
+    return (await this.client.delete(path)).data.data;
   }
 
   protected async _download<Response>(id: string): Promise<Response> {
