@@ -26,7 +26,7 @@ describe('Webhooks - core methods tests', () => {
 
   describe('webhooks.get', () => {
     it('should successfully get a webhook.', async () => {
-      webhooks_get_response = await client.webhooks.get(webhooks_create_response.id);
+      webhooks_get_response = await client.webhooks.retrieve(webhooks_create_response.id);
 
       (webhooks_get_response !== null).should.be.true;
     });

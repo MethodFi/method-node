@@ -72,11 +72,11 @@ export interface IMerchantListOpts {
   page?: number | string | null;
   page_limit?: number | string | null;
   type?: string | null;
-  name?: string,
-  creditor_name?:string,
-  'provider_id.plaid'?: string,
-  'provider_id.mx'?: string,
-  'provider_id.finicity'?: string,
+  name?: string;
+  creditor_name?:string;
+  'provider_id.plaid'?: string;
+  'provider_id.mx'?: string;
+  'provider_id.finicity'?: string;
 }
 
 export default class Merchant extends Resource {
@@ -102,7 +102,7 @@ export default class Merchant extends Resource {
    * @returns IMerchant[]
    */
 
-  async list(opts: IMerchantListOpts) {
+  async list(opts?: IMerchantListOpts) {
     return super._list<IMerchant, IMerchantListOpts>(opts);
   }
 };

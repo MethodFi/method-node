@@ -60,7 +60,6 @@ export type IAxiosRetryConfig = {
 export interface IConfigurationOpts {
   apiKey: string;
   env: TEnvironments;
-  version: string;
   httpsAgent?: any;
   onRequest?: TOnRequest;
   onResponse?: TOnResponse;
@@ -70,7 +69,6 @@ export interface IConfigurationOpts {
 export default class Configuration {
   baseURL: string;
   apiKey: string;
-  version: string;
   httpsAgent?: any;
   onResponse: TOnResponse | null;
   onRequest: TOnRequest | null;
@@ -81,7 +79,6 @@ export default class Configuration {
 
     this.baseURL = `https://${opts.env}.methodfi.com`;
     this.apiKey = opts.apiKey;
-    this.version = opts.version || '2024-04-04';
     this.httpsAgent = opts.httpsAgent || null;
     this.onRequest = opts.onRequest || null;
     this.onResponse = opts.onResponse || null;

@@ -1,19 +1,20 @@
 import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 import type { IAccount, IAccountACH } from './types';
-import Verification from '../Verification';
 import AccountSync from './Syncs';
+import AccountCards from './Cards';
+import AccountDetails from './Details';
 import AccountPayoffs from './Payoffs';
-import AccountVerificationSession from './VerificationSessions';
+import AccountUpdates from './Updates';
 import AccountBalances from './Balances';
+import AccountBulkSync from './BulkSync';
+import AccountSensitive from './Sensitive';
+import AccountAutoSyncs from './AutoSyncs';
 import AccountTransactions from './Transactions';
 import AccountSubscriptions from './Subscriptions';
-import AccountAutoSyncs from './AutoSyncs';
-import AccountDetails from './Details';
-import AccountSensitive from './Sensitive';
 import AccountBulkSensitive from './BulkSensitive';
-import AccountBulkSync from './BulkSync';
 import AccountPaymentHistory from './PaymentHistory';
+import AccountVerificationSession from './VerificationSessions';
 
 export const AccountClearingSubTypes = {
   single_use: 'single_use',
@@ -83,34 +84,36 @@ export interface IAccountWithdrawConsentOpts {
 };
 
 export class AccountSubResources {
-  verification: Verification;
-  syncs: AccountSync;
-  payoffs: AccountPayoffs;
-  verificationSessions: AccountVerificationSession;
-  balances: AccountBalances;
-  transactions: AccountTransactions;
-  subscriptions: AccountSubscriptions;
   autoSyncs: AccountAutoSyncs;
-  details: AccountDetails;
-  sensitive: AccountSensitive;
+  balances: AccountBalances;
   bulkSensitive: AccountBulkSensitive;
   bulkSync: AccountBulkSync;
+  cards: AccountCards;
+  details: AccountDetails;
   paymentHistory: AccountPaymentHistory;
+  payoffs: AccountPayoffs;
+  sensitive: AccountSensitive;
+  subscriptions: AccountSubscriptions;
+  syncs: AccountSync;
+  transactions: AccountTransactions;
+  updates: AccountUpdates;
+  verificationSessions: AccountVerificationSession;
 
   constructor(acc_id: string, config: Configuration) {
-    this.verification = new Verification(config.addPath(acc_id));
-    this.syncs = new AccountSync(config.addPath(acc_id));
-    this.payoffs = new AccountPayoffs(config.addPath(acc_id));
-    this.verificationSessions = new AccountVerificationSession(config.addPath(acc_id));
-    this.balances = new AccountBalances(config.addPath(acc_id));
-    this.transactions = new AccountTransactions(config.addPath(acc_id));
-    this.subscriptions = new AccountSubscriptions(config.addPath(acc_id));
     this.autoSyncs = new AccountAutoSyncs(config.addPath(acc_id));
-    this.details = new AccountDetails(config.addPath(acc_id));
-    this.sensitive = new AccountSensitive(config.addPath(acc_id));
+    this.balances = new AccountBalances(config.addPath(acc_id));
     this.bulkSensitive = new AccountBulkSensitive(config.addPath(acc_id));
     this.bulkSync = new AccountBulkSync(config.addPath(acc_id));
+    this.cards = new AccountCards(config.addPath(acc_id));
+    this.details = new AccountDetails(config.addPath(acc_id));
     this.paymentHistory = new AccountPaymentHistory(config.addPath(acc_id));
+    this.payoffs = new AccountPayoffs(config.addPath(acc_id));
+    this.sensitive = new AccountSensitive(config.addPath(acc_id));
+    this.subscriptions = new AccountSubscriptions(config.addPath(acc_id));
+    this.syncs = new AccountSync(config.addPath(acc_id));
+    this.transactions = new AccountTransactions(config.addPath(acc_id));
+    this.updates = new AccountUpdates(config.addPath(acc_id));
+    this.verificationSessions = new AccountVerificationSession(config.addPath(acc_id));
   }
 };
 
@@ -182,7 +185,7 @@ export class Account extends Resource {
    * @returns IAccount
    */
   
-  async delete(id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
+  async withdrawConsent(id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
     return super._createWithSubPath<IAccount, IAccountWithdrawConsentOpts>(
       `/${id}/consent`,
       data,

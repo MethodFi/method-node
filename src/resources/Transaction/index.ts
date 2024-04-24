@@ -25,7 +25,7 @@ export default class Transaction extends Resource {
     return super._list<ITransaction>();
   }
 
-  async get(id: string) {
+  async retrieve(id: string) {
     return super._getWithId<ITransaction>(id);
   }
 }

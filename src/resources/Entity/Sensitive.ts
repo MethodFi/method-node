@@ -1,22 +1,6 @@
 import Resource from '../../resource';
 import Configuration from '../../configuration';
-
-export interface IEntityKYCAddressRecordData {
-  address: string;
-  city: string;
-  postal_code: string;
-  state: string;
-  address_term: number;
-};
-
-export interface IEntityIdentityType {
-  first_name: string | null;
-  last_name: string | null;
-  phone: string | null;
-  dob: string | null;
-  address: IEntityKYCAddressRecordData | null;
-  ssn: string | null;
-};
+import type { IEntityKYCAddressRecordData, IEntityIdentityType } from './types';
 
 export interface IEntitySensitiveResponse {
   first_name: string | null;

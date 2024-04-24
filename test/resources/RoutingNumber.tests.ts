@@ -12,7 +12,7 @@ describe('RoutingNumbers - core methods tests', () => {
 
   describe('routingNumbers.get', () => {
     it('should successfully get a routing_number.', async () => {
-      routing_number_get_response = await client.routingNumbers.get(capital_one_routing_number);
+      routing_number_get_response = await client.routingNumbers.retrieve(capital_one_routing_number);
 
       (routing_number_get_response !== null).should.be.true;
     });

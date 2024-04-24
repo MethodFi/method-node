@@ -72,10 +72,23 @@ export default class Webhook extends Resource {
   }
 
   /**
+   * Creating a new Webhook means registering a URL to receive updates for a specific event type.
+   * Once a resource is created or updated, your application will be notified via an HTTP POST request with the event information.
+   * 
+   * @param opts IWebhookCreateOpts: https://docs.methodfi.com/api/core/webhooks/create
+   * @param requestConfig Idempotency key: { idempotency_key: string}
+   * @returns Returns the newly created Webhook object.
+   */
+
+  async create(opts: IWebhookCreateOpts, requestConfig?: IRequestConfig) {
+    return super._create<IWebhook, IWebhookCreateOpts>(opts, requestConfig);
+  }
+
+  /**
    * Returns the webhook associated with the id.
    * 
    * @param whk_id id of the webhook
-   * @returns IWebhook
+   * @returns Returns the Webhook associated with the ID.
    */
 
   async retrieve(whk_id: string) {
@@ -83,20 +96,9 @@ export default class Webhook extends Resource {
   }
 
   /**
-   * Deletes the webhook associated with the id.
-   * 
-   * @param whk_id id of the webhook
-   * @returns IWebhook
-   */
-
-  async delete(whk_id: string) {
-    return super._delete<IWebhook>(whk_id);
-  }
-
-  /**
    * Returns all the webhook associated with your team, or an empty array is none have been created.
    * 
-   * @returns IWebhook[]
+   * @returns Returns a list of Webhook objects.
    */
 
   async list() {
@@ -104,14 +106,13 @@ export default class Webhook extends Resource {
   }
 
   /**
-   * Creates a new webhook for a specific type and url. Your application will be notified of updates to the chosen event type.
+   * Deletes the webhook associated with the id.
    * 
-   * @param opts IWebhookCreateOpts: https://docs.methodfi.com/api/core/webhooks/create
-   * @param requestConfig Idempotency key: { idempotency_key: string}
-   * @returns IWebhook
+   * @param whk_id id of the webhook
+   * @returns Returns 200 with an empty object on success.
    */
 
-  async create(opts: IWebhookCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IWebhook, IWebhookCreateOpts>(opts, requestConfig);
+  async delete(whk_id: string) {
+    return super._delete<{}>(whk_id);
   }
 };

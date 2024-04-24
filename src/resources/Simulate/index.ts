@@ -1,15 +1,33 @@
 import Resource from '../../resource';
 import Configuration from '../../configuration';
-import SimulatePayment from '../SimulatePayment';
+import SimulatePayments from './Payments';
+import SimulateTransactions from './Transactions';
 
-
-export default class Simulate extends Resource {
-  payments: SimulatePayment;
+export class SumulateSubResources {
+  payments: SimulatePayments;
+  transactions: SimulateTransactions;
 
   constructor(config: Configuration) {
-    const _config = config.addPath('simulate');
-    super(_config);
-
-    this.payments = new SimulatePayment(_config);
+    this.payments = new SimulatePayments(config);
+    this.transactions = new SimulateTransactions(config);
   }
-}
+};
+
+export interface Simulate {
+  (): SumulateSubResources;
+};
+
+export class Simulate extends Resource {
+  payments: SimulatePayments;
+  transactions: SimulateTransactions;
+
+  constructor(config: Configuration) {
+    super(config.addPath('simulate'));
+  }
+
+  protected _call(): SumulateSubResources {
+    return new SumulateSubResources(this.config);
+  }
+};
+
+export default Simulate;

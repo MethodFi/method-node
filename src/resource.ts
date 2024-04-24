@@ -5,8 +5,9 @@ import { MethodError } from './errors';
 import { AccountSubResources } from './resources/Account';
 import { PaymentSubResources } from './resources/Payment';
 import { EntitySubResources } from './resources/Entity';
+import { SumulateSubResources } from './resources/Simulate';
 
-type TSubResources = AccountSubResources | PaymentSubResources | EntitySubResources;
+type TSubResources = AccountSubResources | PaymentSubResources | EntitySubResources | SumulateSubResources;
 
 export interface IRequestConfig {
   idempotency_key?: string;
@@ -31,7 +32,7 @@ export default class Resource extends ExtensibleFunction {
       headers: {
         Authorization: `Bearer ${config.apiKey}`,
         'User-Agent': this.getDefaultUserAgent(),
-        'method-version': config.version
+        'method-version': '2024-04-04'
       },
       httpsAgent: config.httpsAgent,
     });

@@ -1,6 +1,6 @@
 import Resource, { IResourceError } from '../../resource';
 import Configuration from '../../configuration';
-import { IEntityIdentityType } from '.';
+import { IEntityIdentityType } from './types';
 
 export const EntityVerificationSessionStatuses = {
   completed: 'completed',

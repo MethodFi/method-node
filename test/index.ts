@@ -1,5 +1,5 @@
+// @ts-nocheck
 require('./resources/Account.tests');
-require('./resources/Bin.tests');
 require('./resources/Element.tests');
 require('./resources/Entity.tests');
 require('./resources/Merchant.tests');

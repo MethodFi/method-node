@@ -112,6 +112,23 @@ export type TCreditReportBureaus =
     phone: string | null;
     email: string | null;
   };
+
+  export interface IEntityKYCAddressRecordData {
+    address: string;
+    city: string;
+    postal_code: string;
+    state: string;
+    address_term: number;
+  };
+
+  export interface IEntityIdentityType {
+    first_name: string | null;
+    last_name: string | null;
+    phone: string | null;
+    dob: string | null;
+    address: IEntityKYCAddressRecordData | null;
+    ssn: string | null;
+  };
   
   export interface IEntity {
     id: string;

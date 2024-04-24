@@ -1,7 +1,7 @@
 import { should } from 'chai';
 import { MethodClient, Environments } from '../../src';
-import { IEntity } from '../../src/resources/Entity';
-import { IAccount } from '../../src/resources/Account';
+import { IEntity } from '../../src/resources/Entity/types';
+import { IAccount } from '../../src/resources/Account/types';
 
 should();
 
@@ -48,7 +48,7 @@ describe('Accounts - core methods tests', () => {
 
   describe('accounts.get', () => {
     it('should successfully get an account.', async () => {
-      accounts_get_response = await client.accounts.get(accounts_create_ach_response.id);
+      accounts_get_response = await client.accounts.retrieve(accounts_create_ach_response.id);
 
       (accounts_get_response !== null).should.be.true;
     });

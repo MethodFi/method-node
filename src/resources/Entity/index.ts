@@ -1,13 +1,11 @@
 import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
-import EntitySync from "./Sync";
 import EntityConnect from './Connect';
+import EntityProducts from './Products';
 import EntitySensitive from './Sensitive';
 import EntityIdentities from './Identities';
-import EntityAuthSession from './AuthSession';
-import EntityCreditScore from './CreditScore';
 import EntityCreditScores from './CreditScores';
-import EntityManualAuthSession from './ManualAuthSession';
+import EntitySubscriptions from './Subscriptions';
 import EntityVerificationSession from './VerificationSessions';
 import type {
   IEntity,
@@ -67,25 +65,21 @@ export interface IEntityWithdrawConsentOpts {
 }
 
 export class EntitySubResources {
-  authSession: EntityAuthSession;
   connect: EntityConnect;
-  creditScore: EntityCreditScore;
   creditScores: EntityCreditScores;
   identities: EntityIdentities;
-  manualAuthSession: EntityManualAuthSession;
+  products: EntityProducts;
   sensitive: EntitySensitive;
-  syncs: EntitySync;
+  subscriptions: EntitySubscriptions;
   verificationSession: EntityVerificationSession;
 
   constructor(id: string, config: Configuration) {
-    this.authSession = new EntityAuthSession(config.addPath(id));
     this.connect = new EntityConnect(config.addPath(id));
-    this.creditScore = new EntityCreditScore(config.addPath(id));
     this.creditScores = new EntityCreditScores(config.addPath(id));
     this.identities = new EntityIdentities(config.addPath(id));
-    this.manualAuthSession = new EntityManualAuthSession(config.addPath(id));
+    this.products = new EntityProducts(config.addPath(id));
     this.sensitive = new EntitySensitive(config.addPath(id));
-    this.syncs = new EntitySync(config.addPath(id));
+    this.subscriptions = new EntitySubscriptions(config.addPath(id));
     this.verificationSession = new EntityVerificationSession(config.addPath(id));
   }
 }
@@ -174,7 +168,7 @@ export class Entity extends Resource {
    * @returns Deactivated entity (IEntity)
    */
 
-  async delete(ent_id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
+  async withdrawConsent(ent_id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
     return super._createWithSubPath<IEntity, IEntityWithdrawConsentOpts>(
       `/${ent_id}/consent`,
       data,

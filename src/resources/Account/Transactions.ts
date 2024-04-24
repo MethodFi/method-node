@@ -45,6 +45,14 @@ export interface IAccountTransactionNetworkData {
   visa_store_name: string | null;
 };
 
+export interface IAccountTransactionListOpts {
+  from_date?: string;
+  to_date?: string;
+  page?: string;
+  page_cursor?: string;
+  page_limit?: string;
+}
+
 export interface IAccountTransaction {
   id: string;
   account_id: string;
@@ -76,5 +84,15 @@ export default class AccountTransactions extends Resource {
 
   async retrieve(txn_id: string) {
     return super._getWithId<IAccountTransaction>(txn_id);
+  }
+
+  /**
+   * Retrieve a list of Transactions for a specific Account.
+   * 
+   * @returns Returns a list of transactions for the account.
+   */
+
+  async list(opts?: IAccountTransactionListOpts) {
+    return super._list<IAccountTransaction, IAccountTransactionListOpts>(opts);
   }
 };
