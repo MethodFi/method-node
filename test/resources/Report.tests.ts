@@ -23,7 +23,7 @@ describe('Reports - core methods tests', () => {
 
   describe('reports.get', () => {
     it('should successfully get a report.', async () => {
-      reports_get_response = await client.reports.get(reports_create_response.id);
+      reports_get_response = await client.reports.retrieve(reports_create_response.id);
 
       (reports_get_response !== null).should.be.true;
     });

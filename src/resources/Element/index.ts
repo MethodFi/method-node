@@ -1,6 +1,6 @@
 import Resource from '../../resource';
 import Configuration from '../../configuration';
-import { IAccount } from '../Account';
+import { IAccount } from '../Account/types';
 
 export const ElementTypes = {
   link: 'link',
@@ -191,13 +191,34 @@ export default class Element extends Resource {
     super(config.addPath('elements'));
   }
 
+  /**
+   * Creates token to be used with Element
+   * 
+   * @param opts IElementTokenCreateOpts
+   * @returns IElement { element_token: string };
+   */
+
   async createToken(opts: IElementTokenCreateOpts) {
     return super._createWithSubPath<IElement, IElementTokenCreateOpts>('/token', opts);
   }
 
-  async getSessionResults(id: string) {
+  /**
+   * Retrieves session results for a token
+   * 
+   * @param id pk_elem_id
+   * @returns ITokenSessionResult
+   */
+
+  async retrieveSessionResults(id: string) {
     return super._getWithSubPath<ITokenSessionResult>(`/token/${id}/results`);
   }
+
+  /**
+   * Exchanges public account token
+   * 
+   * @param public_account_token pk_acc_token
+   * @returns IAccount
+   */
 
   async exchangePublicAccountToken(public_account_token: string) {
     return super._createWithSubPath<IAccount, IElementExchangePublicAccountOpts>(
@@ -205,6 +226,13 @@ export default class Element extends Resource {
       { public_account_token },
     );
   }
+
+  /**
+   * Exchanges public account tokens
+   * 
+   * @param public_account_tokens ['pk_acc_token', 'pk_acc_token_2']
+   * @returns IAccount
+   */
 
   async exchangePublicAccountTokens(public_account_tokens: string[]) {
     return super._createWithSubPath<IAccount, IElementExchangePublicAccountOpts>(

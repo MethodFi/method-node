@@ -138,20 +138,49 @@ export class Payment extends Resource {
     return new PaymentSubResources(id, this.config);
   }
 
-  async get(id: string) {
-    return super._getWithId<IPayment>(id);
+  /**
+   * Retrieves payment by id
+   * 
+   * @param pmt_id id of the payment
+   * @returns IPayment
+   */
+
+  async retrieve(pmt_id: string) {
+    return super._getWithId<IPayment>(pmt_id);
   }
+
+  /**
+   * Lists all payments
+   * 
+   * @param opts IPaymentListOpts: https://docs.methodfi.com/api/core/payments/list
+   * @returns IPayment[]
+   */
 
   async list(opts?: IPaymentListOpts) {
     return super._list<IPayment, IPaymentListOpts>(opts);
   }
 
+  /**
+   * Creates a payment
+   * 
+   * @param opts IPaymentCreateOpts
+   * @param requestConfig Idempotency key: { idempotency_key: string}
+   * @returns IPayment
+   */
+
   async create(opts: IPaymentCreateOpts, requestConfig?: IRequestConfig) {
     return super._create<IPayment, IPaymentCreateOpts>(opts, requestConfig);
   }
 
-  async delete(id: string) {
-    return super._delete<IPayment>(id);
+  /**
+   * Cancels a payment
+   * 
+   * @param pmt_id id of the payment
+   * @returns IPayment
+   */
+
+  async delete(pmt_id: string) {
+    return super._delete<IPayment>(pmt_id);
   }
 };
 

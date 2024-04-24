@@ -72,7 +72,7 @@ export default class Configuration {
   httpsAgent?: any;
   onResponse: TOnResponse | null;
   onRequest: TOnRequest | null;
-  axiosRetryConfig?: IAxiosRetryConfig;
+  axiosRetryConfig?: IAxiosRetryConfig | null;
 
   constructor(opts: IConfigurationOpts) {
     Configuration._validateConfiguration(opts);

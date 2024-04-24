@@ -10,17 +10,30 @@ export interface IAccountSync {
   updated_at: string;
 }
 
-export interface IAccountSyncCreateOpts {
-}
+export interface IAccountSyncCreateOpts {}
 
 export default class AccountSync extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('syncs'));
   }
 
-  async get(id: string) {
-    return super._getWithId<IAccountSync>(id);
+  /**
+   * Gets results of an account sync
+   * 
+   * @param acc_sync_id id of the account sync
+   * @returns IAccountSync
+   */
+
+  async retrieve(acc_sync_id: string) {
+    return super._getWithId<IAccountSync>(acc_sync_id);
   }
+
+  /**
+   * Creates a new account sync
+   * 
+   * @param data IAccountSyncCreateOpts
+   * @returns IAccountSync
+   */
 
   async create(data: IAccountSyncCreateOpts) {
     return super._create<IAccountSync, IAccountSyncCreateOpts>(data);

@@ -34,7 +34,14 @@ export default class RoutingNumber extends Resource {
     super(config.addPath('routing_numbers'));
   }
 
-  async get(routing_number: string) {
+  /**
+   * Returns details for a Routing Number.
+   * 
+   * @param routing_number The routing number of the bank or financial institution.
+   * @returns IRoutingNumber
+   */
+
+  async retrieve(routing_number: string) {
     return super._getWithParams<IRoutingNumber, { routing_number: string }>({ routing_number });
   }
 };

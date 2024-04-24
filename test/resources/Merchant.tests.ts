@@ -15,7 +15,7 @@ describe('Merchants - core methods tests', () => {
 
   describe('merchants.get', () => {
     it('should successfully get a merchant.', async () => {
-      merchants_get_response = await client.merchants.get(amex_mch_id);
+      merchants_get_response = await client.merchants.retrieve(amex_mch_id);
 
       (merchants_get_response !== null).should.be.true;
     });

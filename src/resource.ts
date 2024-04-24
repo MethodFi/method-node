@@ -5,8 +5,9 @@ import { MethodError } from './errors';
 import { AccountSubResources } from './resources/Account';
 import { PaymentSubResources } from './resources/Payment';
 import { EntitySubResources } from './resources/Entity';
+import { SumulateSubResources } from './resources/Simulate';
 
-type TSubResources = AccountSubResources | PaymentSubResources | EntitySubResources;
+type TSubResources = AccountSubResources | PaymentSubResources | EntitySubResources | SumulateSubResources;
 
 export interface IRequestConfig {
   idempotency_key?: string;
@@ -28,7 +29,11 @@ export default class Resource extends ExtensibleFunction {
     this.config = config;
     this.client = axios.create({
       baseURL: config.baseURL,
-      headers: { Authorization: `Bearer ${config.apiKey}`, 'User-Agent': this.getDefaultUserAgent() },
+      headers: {
+        Authorization: `Bearer ${config.apiKey}`,
+        'User-Agent': this.getDefaultUserAgent(),
+        'method-version': '2024-04-04'
+      },
       httpsAgent: config.httpsAgent,
     });
 
@@ -41,6 +46,7 @@ export default class Resource extends ExtensibleFunction {
   }
 
   private getDefaultUserAgent(): string {
+    // @ts-ignore
     return `Method-Node/v${require(
       process.env.NODE_ENV === 'TEST' ? '../../package.json' : '../package.json'
     ).version}`;
@@ -136,6 +142,10 @@ export default class Resource extends ExtensibleFunction {
     return (await this.client.get('', { params })).data.data;
   }
 
+  protected async _getWithSubPathAndParams<Response, Params = {}>(path: string, params: Params): Promise<Response> {
+    return (await this.client.get(path, { params })).data.data;
+  }
+
   protected async _list<Response, Params = {}>(params?: Params): Promise<Response[]> {
     return (await this.client.get('', { params })).data.data;
   }
@@ -183,12 +193,11 @@ export default class Resource extends ExtensibleFunction {
     return (await this.client.delete(`/${id}`)).data.data;
   }
 
-  protected async _deleteWithSubPath<Response, Data>(
+  protected async _deleteWithSubPath<Response>(
     path: string,
-    data: Data,
     requestConfig: IRequestConfig = {},
   ): Promise<Response> {
-    return (await this.client.delete(path, data)).data.data;
+    return (await this.client.delete(path)).data.data;
   }
 
   protected async _download<Response>(id: string): Promise<Response> {

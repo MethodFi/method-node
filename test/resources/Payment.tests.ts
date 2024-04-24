@@ -1,7 +1,7 @@
 import { should } from 'chai';
 import { MethodClient, Environments } from '../../src';
-import { IEntity } from '../../src/resources/Entity';
-import { IAccount } from '../../src/resources/Account';
+import { IEntity } from '../../src/resources/Entity/types';
+import { IAccount } from '../../src/resources/Account/types';
 import { IPayment } from '../../src/resources/Payment';
 
 should();
@@ -61,7 +61,7 @@ describe('Payments - core methods tests', () => {
 
   describe('payments.get', () => {
     it('should successfully get a payment.', async () => {
-      payments_get_response = await client.payments.get(payments_create_response.id);
+      payments_get_response = await client.payments.retrieve(payments_create_response.id);
 
       (payments_get_response !== null).should.be.true;
     });

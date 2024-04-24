@@ -56,16 +56,38 @@ export default class Report extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('reports'));
   }
+  
+    /**
+     * Creates a new Report for a specific type. Once created, you can retrieve the Report results from the URL returned.
+     * 
+     * @param opts IReportCreateOpts: https://docs.methodfi.com/api/core/reports/create
+     * @param requestConfig Idempotency key: { idempotency_key: string}
+     * @returns Returns a Report object.
+     */
+  
+    async create(opts: IReportCreateOpts, requestConfig?: IRequestConfig) {
+      return super._create<IReport, IReportCreateOpts>(opts, requestConfig);
+    }
 
-  async get(id: string) {
-    return super._getWithId<IReport>(id);
+  /**
+   * Retrieves the Report associated with the ID.
+   * 
+   * @param rpt_id id of the report
+   * @returns Returns the Report associated with the ID.
+   */
+
+  async retrieve(rpt_id: string) {
+    return super._getWithId<IReport>(rpt_id);
   }
 
-  async create(opts: IReportCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IReport, IReportCreateOpts>(opts, requestConfig);
-  }
+  /**
+   * Download a report
+   * 
+   * @param rpt_id id of the report
+   * @returns Returns the Report’s results in CSV format.
+   */
 
-  async download(id: string) {
-    return super._download<string>(id);
+  async download(rpt_id: string) {
+    return super._download<string>(rpt_id);
   }
 };
