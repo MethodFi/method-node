@@ -5,8 +5,7 @@ export const AccountCurrencyTypes = {
   USD: 'USD',
 };
 
-export type TAccountCurrencyTypes =
-  | 'USD';
+export type TAccountCurrencyTypes = keyof typeof AccountCurrencyTypes;
 
 export const AccountTransactionStatuses = {
   cleared: 'cleared',
@@ -15,11 +14,7 @@ export const AccountTransactionStatuses = {
   unknown: 'unknown',
 };
 
-export type TAccountTransactionStatuses =
-  | 'cleared'
-  | 'auth'
-  | 'refund'
-  | 'unknown';
+export type TAccountTransactionStatuses = keyof typeof AccountTransactionStatuses;
 
 
 export interface TProductBaseStatusHistoryItem {
@@ -51,7 +46,7 @@ export interface IAccountTransactionListOpts {
   page?: string;
   page_cursor?: string;
   page_limit?: string;
-}
+};
 
 export interface IAccountTransaction {
   id: string;

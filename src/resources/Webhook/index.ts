@@ -20,35 +20,9 @@ export const WebhookTypes = {
   report_update: 'report.update',
   credit_score_create: 'credit_score.create',
   credit_score_update: 'credit_score.update',
+} as const;
 
-  // Deprecated
-  account_verification_sent: 'account_verification.sent',
-  account_verification_returned: 'account_verification.returned',
-}
-
-export type TWebhookTypes =
-  | 'payment.create'
-  | 'payment.update'
-  | 'account.create'
-  | 'account.update'
-  | 'entity.update'
-  | 'entity.create'
-  | 'account_verification.create'
-  | 'account_verification.update'
-  | 'payment_reversal.create'
-  | 'payment_reversal.update'
-  | 'connection.create'
-  | 'connection.update'
-  | 'transaction.create'
-  | 'transaction.update'
-  | 'report.create'
-  | 'report.update'
-  | 'credit_score.create'
-  | 'credit_score.update'
-
-  // Deprecated
-  | 'account_verification.sent'
-  | 'account_verification.returned';
+export type TWebhookTypes = typeof WebhookTypes[keyof typeof WebhookTypes];
 
 export interface IWebhook {
   id: string;
@@ -57,14 +31,14 @@ export interface IWebhook {
   metadata: {} | null;
   created_at: string;
   updated_at: string;
-}
+};
 
 export interface IWebhookCreateOpts {
   type: TWebhookTypes;
   url: string;
   auth_token?: string;
   metadata?: {};
-}
+};
 
 export default class Webhook extends Resource {
   constructor(config: Configuration) {

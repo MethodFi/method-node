@@ -25,34 +25,13 @@ export const MerchantTypes = {
   credit_builder: 'credit_builder',
 };
 
-export type TMerchantTypes =
-  | 'auto_loan'
-  | 'business_loan'
-  | 'credit_card'
-  | 'electric_utility'
-  | 'home_loan'
-  | 'insurance'
-  | 'internet_utility'
-  | 'loan'
-  | 'medical'
-  | 'personal_loan'
-  | 'student_loan'
-  | 'telephone_utility'
-  | 'television_utility'
-  | 'water_utility'
-  | 'bank'
-  | 'home_equity_loan'
-  | 'mortgage'
-  | 'utility'
-  | 'waste_utility'
-  | 'collection'
-  | 'credit_builder'
+export type TMerchantTypes = keyof typeof MerchantTypes;
 
 export interface IMerchantProviderIds {
   plaid: string[];
   mx: string[];
   finicity: string[];
-}
+};
 
 export interface IMerchant {
   mch_id: string;
@@ -66,7 +45,7 @@ export interface IMerchant {
   provider_ids: IMerchantProviderIds;
   customized_auth: boolean;
   is_temp: boolean;
-}
+};
 
 export interface IMerchantListOpts {
   page?: number | string | null;
@@ -77,7 +56,7 @@ export interface IMerchantListOpts {
   'provider_id.plaid'?: string;
   'provider_id.mx'?: string;
   'provider_id.finicity'?: string;
-}
+};
 
 export default class Merchant extends Resource {
   constructor(config: Configuration) {

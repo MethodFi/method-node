@@ -55,4 +55,3 @@ export default class EntityProducts extends Resource {
     return super._getWithId<IEntityProduct>(prd_id);
   }
 };
-

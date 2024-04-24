@@ -1,27 +1,14 @@
-import Resource, { IResourceError } from "../../resource";
+import Resource, { IResourceError, TResourceStatus } from "../../resource";
 import Configuration from "../../configuration";
-
-export const EntityConnectResponseStatuses = {
-  completed: 'completed',
-  pending: 'pending',
-  failed: 'failed',
-  in_progress: 'in_progress',
-};
-
-export type TEntityConnectResponseStatuses =
-  | 'completed'
-  | 'pending'
-  | 'failed'
-  | 'in_progress';
 
 export interface IEntityConnect {
   id: string;
-  status: TEntityConnectResponseStatuses;
+  status: TResourceStatus;
   accounts: string[] | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
-}
+};
 
 export default class EntityConnect extends Resource {
   constructor(config: Configuration) {
@@ -48,4 +35,4 @@ export default class EntityConnect extends Resource {
   async create() {
     return super._create<IEntityConnect, {}>({});
   }
-}
+};

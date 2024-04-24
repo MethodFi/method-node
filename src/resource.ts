@@ -11,14 +11,14 @@ type TSubResources = AccountSubResources | PaymentSubResources | EntitySubResour
 
 export interface IRequestConfig {
   idempotency_key?: string;
-}
+};
 
 class ExtensibleFunction extends Function {
   // @ts-ignore
   constructor(f) {
     return Object.setPrototypeOf(f, new.target.prototype);
   }
-}
+};
 
 export default class Resource extends ExtensibleFunction {
   private client: AxiosInstance;
@@ -48,6 +48,7 @@ export default class Resource extends ExtensibleFunction {
   private getDefaultUserAgent(): string {
     // @ts-ignore
     return `Method-Node/v${require(
+      // @ts-ignore
       process.env.NODE_ENV === 'TEST' ? '../../package.json' : '../package.json'
     ).version}`;
   }
@@ -207,11 +208,20 @@ export default class Resource extends ExtensibleFunction {
   protected async _postWithId<Response, Data>(id: string, data: Data): Promise<Response> {
     return (await this.client.post(`/${id}`, data)).data.data;
   }
-}
+};
 
 export interface IResourceError {
   type: string;
   code: number;
   sub_type: string;
   message: string;
-}
+};
+
+export const ResourceStatus = {
+  completed: 'completed',
+  in_progress: 'in_progress',
+  pending: 'pending',
+  failed: 'failed',
+};
+
+export type TResourceStatus = keyof typeof ResourceStatus;

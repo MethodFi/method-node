@@ -16,4 +16,4 @@ export default class SimulateTransactions extends Resource {
   async create() {
     return super._create<IAccountTransaction, {}>({});
   }
-}
+};

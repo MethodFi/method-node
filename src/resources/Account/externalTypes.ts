@@ -35,23 +35,16 @@ export const PlaidTransactionTypes = {
   Unresolved: 'unresolved',
 };
 
-export type TPlaidTransactionTypes =
-  | 'digital'
-  | 'place'
-  | 'special'
-  | 'unresolved';
+export type TPlaidTransactionTypes = keyof typeof PlaidTransactionTypes;
 
 
 export const PlaidTransactionPaymentChannelTypes = {
   online: 'online',
-  in_store: 'in_store',
+  in_store: 'in store',
   other: 'other',
-};
+} as const;
 
-export type TPlaidTransactionPaymentChannelTypes =
-  | 'online'
-  | 'in store'
-  | 'other';
+export type TPlaidTransactionPaymentChannelTypes = typeof PlaidTransactionPaymentChannelTypes[keyof typeof PlaidTransactionPaymentChannelTypes];
 
 export const PlaidTransactionCode = {
   adjustment: 'adjustment',
@@ -67,22 +60,9 @@ export const PlaidTransactionCode = {
   standing_order: 'standing order',
   transfer: 'transfer',
   null: 'null',
-};
+} as const;
 
-export type TPlaidTransactionCode =
-  | 'adjustment'
-  | 'atm'
-  | 'bank charge'
-  | 'bill payment'
-  | 'cash'
-  | 'cashback'
-  | 'cheque'
-  | 'direct debit'
-  | 'interest'
-  | 'purchase'
-  | 'standing order'
-  | 'transfer'
-  | 'null';
+export type TPlaidTransactionCode = typeof PlaidTransactionCode[keyof typeof PlaidTransactionCode];
 
 export const PlaidCounterpartyType = {
   merchant: 'merchant',
@@ -93,19 +73,13 @@ export const PlaidCounterpartyType = {
   income_source: 'income_source',
 }
 
-export type TPlaidCounterpartyType =
-  | 'merchant'
-  | 'financial_institution'
-  | 'payment_app'
-  | 'marketplace'
-  | 'payment_terminal'
-  | 'income_source';
+export type TPlaidCounterpartyType = keyof typeof PlaidCounterpartyType;
 
 export interface IPlaidPersonalFinanceCategory {
   primary: string;
   detailed: string;
   confidence_level?: string | null;
-}
+};
 
 export interface IPlaidTransactionCounterparty {
   name: string;
@@ -114,7 +88,7 @@ export interface IPlaidTransactionCounterparty {
   website: string | null;
   logo_url: string | null;
   confidence_level?: string | null;
-}
+};
 
 export interface IPlaidTransaction {
   account_id: string;
@@ -149,64 +123,64 @@ export interface IPlaidTransaction {
 };
 
 export interface IMXAccount {
-    account_number: string;
-    account_ownership: string;
-    annuity_policy_to_date: string;
-    annuity_provider: string;
-    annuity_term_year: number;
-    apr: number;
-    apy: number;
-    available_balance: number;
-    available_credit: number;
-    balance: number;
-    cash_balance: number;
-    cash_surrender_value: number;
-    created_at: string;
-    credit_limit: number;
-    currency_code: string;
-    day_payment_is_due: number;
-    death_benefit: number;
-    guid: string;
-    holdings_value: number;
-    id: string;
-    imported_at: string;
-    interest_rate: number;
-    institution_code: string;
-    insured_name: string;
-    is_closed: boolean;
-    is_hidden: boolean;
-    is_manual: boolean;
-    last_payment: number;
-    last_payment_at: string;
-    loan_amount: number;
-    margin_balance: number;
-    matures_on: string;
-    member_guid: string;
-    member_id: string;
-    member_is_managed_by_user: boolean;
-    metadata: string;
-    minimum_balance: number;
-    minimum_payment: number;
-    name: string;
-    nickname: string;
-    original_balance: number;
-    pay_out_amount: number;
-    payment_due_at: string;
-    payoff_balance: number;
-    premium_amount: number;
-    property_type: string;
-    routing_number: string;
-    skip_webhook: boolean;
-    started_on: string;
-    subtype: string;
-    today_ugl_amount: number;
-    today_ugl_percentage: number;
-    total_account_value: number;
-    type: string;
-    updated_at: string;
-    user_guid: string;
-    user_id: string;
-}
+  account_number: string;
+  account_ownership: string;
+  annuity_policy_to_date: string;
+  annuity_provider: string;
+  annuity_term_year: number;
+  apr: number;
+  apy: number;
+  available_balance: number;
+  available_credit: number;
+  balance: number;
+  cash_balance: number;
+  cash_surrender_value: number;
+  created_at: string;
+  credit_limit: number;
+  currency_code: string;
+  day_payment_is_due: number;
+  death_benefit: number;
+  guid: string;
+  holdings_value: number;
+  id: string;
+  imported_at: string;
+  interest_rate: number;
+  institution_code: string;
+  insured_name: string;
+  is_closed: boolean;
+  is_hidden: boolean;
+  is_manual: boolean;
+  last_payment: number;
+  last_payment_at: string;
+  loan_amount: number;
+  margin_balance: number;
+  matures_on: string;
+  member_guid: string;
+  member_id: string;
+  member_is_managed_by_user: boolean;
+  metadata: string;
+  minimum_balance: number;
+  minimum_payment: number;
+  name: string;
+  nickname: string;
+  original_balance: number;
+  pay_out_amount: number;
+  payment_due_at: string;
+  payoff_balance: number;
+  premium_amount: number;
+  property_type: string;
+  routing_number: string;
+  skip_webhook: boolean;
+  started_on: string;
+  subtype: string;
+  today_ugl_amount: number;
+  today_ugl_percentage: number;
+  total_account_value: number;
+  type: string;
+  updated_at: string;
+  user_guid: string;
+  user_id: string;
+};
 
 export interface IMXTransaction {
   account_guid: string;

@@ -16,11 +16,7 @@ export const AccountVerificationSessionStatuses = {
   failed: 'failed',
 };
 
-export type TAccountVerificationSessionStatuses =
-  | 'pending'
-  | 'in_progress'
-  | 'verified'
-  | 'failed';
+export type TAccountVerificationSessionStatuses = keyof typeof AccountVerificationSessionStatuses;
 
 export const AccountVerificationSessionTypes = {
   micro_deposits: 'micro_deposits',
@@ -32,23 +28,14 @@ export const AccountVerificationSessionTypes = {
   pre_auth: 'pre_auth',
 };
 
-export type TAccountVerificaionSessionTypes =
-  | 'micro_deposits'
-  | 'plaid'
-  | 'mx'
-  | 'teller'
-  | 'standard'
-  | 'instant'
-  | 'pre_auth';
+export type TAccountVerificaionSessionTypes = keyof typeof AccountVerificationSessionTypes;
 
 export const AccountVerificationCheckStatusTypes = {
   pass: 'pass',
   fail: 'fail',
 };
 
-export type TAccountVerificationPassFail =
-  | 'pass'
-  | 'fail';
+export type TAccountVerificationPassFail = keyof typeof AccountVerificationCheckStatusTypes;
 
 export interface IAccountVerificationSessionMicroDeposits {
   amounts: number[] | [];

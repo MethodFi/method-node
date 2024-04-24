@@ -32,7 +32,7 @@ export interface IResponseEventPagination {
   total_count: number;
   page_cursor_next: string | null;
   page_cursor_prev: string | null;
-}
+};
 
 export interface IResponseEvent {
   request_id: string | null;
@@ -43,7 +43,7 @@ export interface IResponseEvent {
   request_start_time: number;
   request_end_time: number;
   pagination: IResponseEventPagination,
-}
+};
 
 export type TOnRequest = (event: IRequestEvent) => void;
 
@@ -96,4 +96,4 @@ export default class Configuration {
     if (!Environments[opts.env]) throw new Error(`Invalid env: ${opts.env}`);
     if (!opts.apiKey) throw new Error(`Invalid apiKey: ${opts.apiKey}`);
   }
-}
+};

@@ -1,27 +1,20 @@
 import Resource, { IRequestConfig, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 import type { IAccount, IAccountACH } from './types';
-import AccountSync from './Syncs';
 import AccountCards from './Cards';
-import AccountDetails from './Details';
 import AccountPayoffs from './Payoffs';
 import AccountUpdates from './Updates';
 import AccountBalances from './Balances';
-import AccountBulkSync from './BulkSync';
 import AccountSensitive from './Sensitive';
-import AccountAutoSyncs from './AutoSyncs';
 import AccountTransactions from './Transactions';
 import AccountSubscriptions from './Subscriptions';
-import AccountBulkSensitive from './BulkSensitive';
-import AccountPaymentHistory from './PaymentHistory';
 import AccountVerificationSession from './VerificationSessions';
 
 export const AccountClearingSubTypes = {
   single_use: 'single_use',
 }
 
-export type TAccountClearingSubTypes =
-  | 'single_use';
+export type TAccountClearingSubTypes = keyof typeof AccountClearingSubTypes;
 
 export interface IAccountCreateOpts {
   holder_id: string;
@@ -84,33 +77,21 @@ export interface IAccountWithdrawConsentOpts {
 };
 
 export class AccountSubResources {
-  autoSyncs: AccountAutoSyncs;
   balances: AccountBalances;
-  bulkSensitive: AccountBulkSensitive;
-  bulkSync: AccountBulkSync;
   cards: AccountCards;
-  details: AccountDetails;
-  paymentHistory: AccountPaymentHistory;
   payoffs: AccountPayoffs;
   sensitive: AccountSensitive;
   subscriptions: AccountSubscriptions;
-  syncs: AccountSync;
   transactions: AccountTransactions;
   updates: AccountUpdates;
   verificationSessions: AccountVerificationSession;
 
   constructor(acc_id: string, config: Configuration) {
-    this.autoSyncs = new AccountAutoSyncs(config.addPath(acc_id));
     this.balances = new AccountBalances(config.addPath(acc_id));
-    this.bulkSensitive = new AccountBulkSensitive(config.addPath(acc_id));
-    this.bulkSync = new AccountBulkSync(config.addPath(acc_id));
     this.cards = new AccountCards(config.addPath(acc_id));
-    this.details = new AccountDetails(config.addPath(acc_id));
-    this.paymentHistory = new AccountPaymentHistory(config.addPath(acc_id));
     this.payoffs = new AccountPayoffs(config.addPath(acc_id));
     this.sensitive = new AccountSensitive(config.addPath(acc_id));
     this.subscriptions = new AccountSubscriptions(config.addPath(acc_id));
-    this.syncs = new AccountSync(config.addPath(acc_id));
     this.transactions = new AccountTransactions(config.addPath(acc_id));
     this.updates = new AccountUpdates(config.addPath(acc_id));
     this.verificationSessions = new AccountVerificationSession(config.addPath(acc_id));

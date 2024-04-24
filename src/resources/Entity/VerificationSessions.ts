@@ -1,18 +1,5 @@
-import Resource, { IResourceError } from '../../resource';
+import Resource, { IResourceError, TResourceStatus } from '../../resource';
 import Configuration from '../../configuration';
-
-export const EntityVerificationSessionStatuses = {
-  completed: 'completed',
-  in_progress: 'in_progress',
-  pending: 'pending',
-  failed: 'failed',
-};
-
-export type IEntityVerificationSessionStatuses =
-  | 'completed'
-  | 'in_progress'
-  | 'pending'
-  | 'failed';
 
 export const EntityVerificationSessionTypes = {
   phone_method_sms: 'phone_method_sms',
@@ -42,41 +29,41 @@ export type IEntityVerificationSessionCategories =
 
 export interface IEntitySmsVerification {
   timestamp: Date;
-}
+};
 
 export interface IEntitySmsVerificationUpdate {
   sms_code: string;
-}
+};
 
 export interface IEntitySnaVerification {
   urls: string;
-}
+};
 
 export interface IEntityByoKycVerification {
   authenticated: boolean;
-}
+};
 
 export interface IEntityKbaVerificationAnswer {
   id: string;
   text: string;
-}
+};
 
 export interface IEntityKbaVerificationAnswerUpdate {
   question_id: string;
   answer_id: string;
-}
+};
 
 export interface IEntityKbaVerificationQuestion {
   selected_answer?: string;
   id: string;
   text: string;
   answers: IEntityKbaVerificationAnswer[];
-}
+};
 
 export interface IEntityKbaVerification {
   questions: IEntityKbaVerificationQuestion[];
   authenticated: boolean;
-}
+};
 
 export interface IEntityVerificationSessionCreateOpts {
   type: IEntityVerificationSessionTypes;
@@ -85,19 +72,19 @@ export interface IEntityVerificationSessionCreateOpts {
   phone_byo_sms?: IEntitySmsVerification;
   identity_byo_kyc?: {};
   identity_method_kba?: {};
-}
+};
 
 export interface IEntityVerificationSessionUpdateOpts {
   type: IEntityVerificationSessionTypes;
   phone_method_sms?: IEntitySmsVerificationUpdate;
   phone_method_sna?: {};
   identity_method_kba?: IEntityKbaVerificationAnswerUpdate;
-}
+};
 
 export interface IEntityVerificationSession {
   id: string;
   entity_id: string;
-  status: IEntityVerificationSessionStatuses;
+  status: TResourceStatus;
   type: IEntityVerificationSessionTypes;
   category: IEntityVerificationSessionCategories;
   phone_method_sms: IEntitySmsVerification | null;
@@ -109,7 +96,7 @@ export interface IEntityVerificationSession {
   error: IResourceError | null;
   created_at: Date;
   updated_at: Date;
-}
+};
 
 export default class EntityVerificationSession extends Resource {
   constructor(config: Configuration) {
@@ -149,4 +136,4 @@ export default class EntityVerificationSession extends Resource {
   async update(evf_id: string, data: IEntityVerificationSessionUpdateOpts) {
     return super._updateWithId<IEntityVerificationSession, IEntityVerificationSessionUpdateOpts>(evf_id, data);
   }
-}
+};

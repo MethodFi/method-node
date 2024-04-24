@@ -20,12 +20,12 @@ export interface IEntityCreateOpts {
   type: TEntityTypes;
   address?: IEntityAddress | null;
   metadata?: {} | null;
-}
+};
 
 export interface IIndividualCreateOpts extends IEntityCreateOpts {
   type: 'individual';
   individual: Partial<IEntityIndividual>;
-}
+};
 
 export interface ICorporationCreateOpts extends IEntityCreateOpts {
   type:
@@ -35,18 +35,18 @@ export interface ICorporationCreateOpts extends IEntityCreateOpts {
   | 'partnership'
   | 'sole_proprietorship';
   corporation: Partial<IEntityCorporation>;
-}
+};
 
 export interface IReceiveOnlyCreateOpts extends IEntityCreateOpts {
   type: 'receive_only';
   receive_only: IEntityReceiveOnly;
-}
+};
 
 export interface IEntityUpdateOpts {
   address?: IEntityAddress;
   corporation?: Partial<IEntityCorporation>;
   individual?: Partial<IEntityIndividual>;
-}
+};
 
 export interface IEntityListOpts {
   to_date?: string | null;
@@ -56,13 +56,13 @@ export interface IEntityListOpts {
   page_cursor?: string | null;
   status?: string | null;
   type?: string | null;
-}
+};
 
 
 export interface IEntityWithdrawConsentOpts {
   type: 'withdraw',
   reason: 'entity_withdrew_consent' | null,
-}
+};
 
 export class EntitySubResources {
   connect: EntityConnect;
@@ -82,11 +82,11 @@ export class EntitySubResources {
     this.subscriptions = new EntitySubscriptions(config.addPath(id));
     this.verificationSession = new EntityVerificationSession(config.addPath(id));
   }
-}
+};
 
 export interface Entity {
   (id: string): EntitySubResources;
-}
+};
 
 export class Entity extends Resource {
   constructor(config: Configuration) {

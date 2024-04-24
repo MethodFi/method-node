@@ -9,21 +9,14 @@ export const ReversalStatuses = {
   failed: 'failed',
 };
 
-export type TReversalStatuses =
-  | 'pending_approval'
-  | 'pending'
-  | 'processing'
-  | 'sent'
-  | 'failed';
+export type TReversalStatuses = keyof typeof ReversalStatuses;
 
 export const ReversalDirections = {
   debit: 'debit',
   credit: 'credit',
 };
 
-export type TReversalDirections =
-  | 'debit'
-  | 'credit';
+export type TReversalDirections = keyof typeof ReversalDirections;
 
 export interface IReversal {
   id: string;
@@ -37,12 +30,12 @@ export interface IReversal {
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
-}
+};
 
 export interface IReversalUpdateOpts {
   status: TReversalStatuses;
   description?: string | null;
-}
+};
 
 export default class Reversal extends Resource {
   constructor(config: Configuration) {
@@ -81,4 +74,4 @@ export default class Reversal extends Resource {
   async update(rvs_id: string, data: IReversalUpdateOpts) {
     return super._updateWithId<IReversal, IReversalUpdateOpts>(rvs_id, data);
   }
-}
+};

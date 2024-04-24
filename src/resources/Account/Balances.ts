@@ -1,27 +1,14 @@
-import Resource, { IResourceError } from '../../resource';
+import Resource, { IResourceError, TResourceStatus } from '../../resource';
 import Configuration from '../../configuration';
-
-export const AccountBalanceStatus = {
-  completed: 'completed',
-  in_progress: 'in_progress',
-  pending: 'pending',
-  failed: 'failed',
-};
-
-export type TAccountBalanceStatus =
-  | 'completed'
-  | 'in_progress'
-  | 'pending'
-  | 'failed';
 
 export interface IAccountBalance {
   id: string;
-  status: TAccountBalanceStatus;
+  status: TResourceStatus;
   balance: number | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
-}
+};
 
 export default class AccountBalances extends Resource {
   constructor(config: Configuration) {
@@ -48,4 +35,4 @@ export default class AccountBalances extends Resource {
   async create() {
     return super._create<IAccountBalance, {}>({});
   }
-}
+};

@@ -1,28 +1,15 @@
-import Resource, { IResourceError } from '../../resource';
+import Resource, { IResourceError, TResourceStatus } from '../../resource';
 import Configuration from '../../configuration';
 import { IEntityIdentityType } from './types';
 
-export const EntityVerificationSessionStatuses = {
-  completed: 'completed',
-  in_progress: 'in_progress',
-  pending: 'pending',
-  failed: 'failed',
-};
-
-export type TEntityVerificationSessionStatuses = 
-  | 'completed'
-  | 'in_progress'
-  | 'pending'
-  | 'failed';
-
 export interface IEntityIdentity {
   id: string;
-  status: TEntityVerificationSessionStatuses;
+  status: TResourceStatus;
   identities: IEntityIdentityType[];
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
-}
+};
 
 export default class EntityIdentities extends Resource {
   constructor(config: Configuration) {
@@ -49,4 +36,4 @@ export default class EntityIdentities extends Resource {
   async create() {
     return super._create<IEntityIdentity, {}>({});
   }
-}
+};

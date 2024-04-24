@@ -5,7 +5,7 @@ import { IPayment, TPaymentStatuses } from '../Payment';
 export interface ISimulatePaymentsUpdateOpts {
   status: TPaymentStatuses;
   error_code?: number | null;
-}
+};
 
 export default class SimulatePayments extends Resource {
   constructor(config: Configuration) {
@@ -23,4 +23,4 @@ export default class SimulatePayments extends Resource {
   async update(id: string, data: ISimulatePaymentsUpdateOpts) {
     return super._postWithId<IPayment, ISimulatePaymentsUpdateOpts>(id, data);
   }
-}
+};

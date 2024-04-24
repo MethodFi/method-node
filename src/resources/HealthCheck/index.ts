@@ -6,7 +6,7 @@ export interface IPingResponse {
   success: boolean;
   data: null;
   message: 'pong';
-}
+};
 
 export default class HealthCheck extends Resource {
   constructor(config: Configuration) {
@@ -22,4 +22,4 @@ export default class HealthCheck extends Resource {
   async retrieve() {
     return super._getRaw<IPingResponse>();
   }
-}
+};

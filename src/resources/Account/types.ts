@@ -17,21 +17,16 @@ export const AccountTypes = {
   ach: 'ach',
   liability: 'liability',
   clearing: 'clearing',
-}
+};
 
-export type TAccountTypes =
-  | 'ach'
-  | 'liability'
-  | 'clearing';
+export type TAccountTypes = keyof typeof AccountTypes;
 
 export const AccountSubTypes = {
   savings: 'savings',
   checking: 'checking',
-}
+};
 
-export type TAccountSubTypes =
-  | 'savings'
-  | 'checking';
+export type TAccountSubTypes = keyof typeof AccountSubTypes;
 
 export const AccountStatuses = {
   disabled: 'disabled',
@@ -40,24 +35,16 @@ export const AccountStatuses = {
   closed: 'closed'
 };
 
-export type TAccountStatuses =
-  | 'disabled'
-  | 'active'
-  | 'processing'
-  | 'closed';
+export type TAccountStatuses = keyof typeof AccountStatuses;
 
 export const AccountCapabilities = {
   payments_receive: 'payments:receive',
   payments_send: 'payments:send',
   data_retrieve: 'data:retrieve',
   data_sync: 'data:sync',
-};
+} as const;
 
-export type TAccountCapabilities =
-  | 'payments:receive'
-  | 'payments:send'
-  | 'data:retrieve'
-  | 'data:sync';
+export type TAccountCapabilities = typeof AccountCapabilities[keyof typeof AccountCapabilities];
 
 export const AccountLiabilityPaymentStatuses = {
   active: 'active',
@@ -65,10 +52,7 @@ export const AccountLiabilityPaymentStatuses = {
   unavailable: 'unavailable',
 };
 
-export type TAccountLiabilityPaymentStatuses =
-  | 'active'
-  | 'activating'
-  | 'unavailable';
+export type TAccountLiabilityPaymentStatuses = keyof typeof AccountLiabilityPaymentStatuses;
 
 export const AccountLiabilityDataStatuses = {
   active: 'active',
@@ -78,21 +62,14 @@ export const AccountLiabilityDataStatuses = {
   pending: 'pending',
 };
 
-export type TAccountLiabilityDataStatuses =
-  | 'active'
-  | 'syncing'
-  | 'unavailable'
-  | 'failed'
-  | 'pending';
+export type TAccountLiabilityDataStatuses = keyof typeof AccountLiabilityDataStatuses;
 
 export const AccountLiabilitySyncTypes = {
   manual: 'manual',
   auto: 'auto',
 };
 
-export type TAccountLiabilitySyncTypes =
-  | 'manual'
-  | 'auto';
+export type TAccountLiabilitySyncTypes = keyof typeof AccountLiabilitySyncTypes;
 
 export const TradelineAccountOwnership = {
   primary: 'primary',
@@ -101,11 +78,7 @@ export const TradelineAccountOwnership = {
   unknown: 'unknown',
 };
 
-export type TTradelineAccountOwnership =
-  | 'primary'
-  | 'authorized'
-  | 'joint'
-  | 'unknown';
+export type TTradelineAccountOwnership = keyof typeof TradelineAccountOwnership;
 
 export const AccountLiabilityDataSources = {
   credit_report: 'credit_report',
@@ -113,10 +86,7 @@ export const AccountLiabilityDataSources = {
   unavailable: 'unavailable',
 };
 
-export type TAccountLiabilityDataSources =
-  | 'credit_report'
-  | 'financial_institution'
-  | 'unavailable';
+export type TAccountLiabilityDataSources = keyof typeof AccountLiabilityDataSources;
 
 export const AccountLiabilityTypes = {
   student_loan: 'student_loan',
@@ -135,21 +105,7 @@ export const AccountLiabilityTypes = {
   loan: 'loan',
 };
 
-export type TAccountLiabilityTypes =
-  | 'student_loan'
-  | 'student_loans'
-  | 'credit_card'
-  | 'mortgage'
-  | 'auto_loan'
-  | 'collection'
-  | 'personal_loan'
-  | 'business_loan'
-  | 'insurance'
-  | 'credit_builder'
-  | 'subscription'
-  | 'utility'
-  | 'medical'
-  | 'loan';
+export type TAccountLiabilityTypes = keyof typeof AccountLiabilityTypes;
 
 export const AccountLiabilityPersonalLoanSubTypes = {
   line_of_credit: 'line_of_credit',
@@ -159,12 +115,7 @@ export const AccountLiabilityPersonalLoanSubTypes = {
   note: 'note',
 };
 
-export type TAccountLiabilityPersonalLoanSubTypes =
-  | 'line_of_credit'
-  | 'heloc'
-  | 'secured'
-  | 'unsecured'
-  | 'note';
+export type TAccountLiabilityPersonalLoanSubTypes = keyof typeof AccountLiabilityPersonalLoanSubTypes;
 
 export const AccountLiabilityCreditCardSubTypes = {
   flexible_spending: 'flexible_spending',
@@ -175,13 +126,7 @@ export const AccountLiabilityCreditCardSubTypes = {
   business: 'business',
 };
 
-export type TAccountLiabilityCreditCardSubTypes =
-  | 'flexible_spending'
-  | 'charge'
-  | 'secured'
-  | 'unsecured'
-  | 'purchase'
-  | 'business';
+export type TAccountLiabilityCreditCardSubTypes = keyof typeof AccountLiabilityCreditCardSubTypes;
 
 export const PastDueStatuses = {
   unknown: 'unknown',
@@ -189,7 +134,7 @@ export const PastDueStatuses = {
   on_time: 'on_time',
 };
 
-export type TPastDueStatuses = 'unknown' | 'overdue' | 'on_time';
+export type TPastDueStatuses = keyof typeof PastDueStatuses;
 
 export const AutoPayStatuses = {
   unknown: 'unknown',
@@ -197,7 +142,7 @@ export const AutoPayStatuses = {
   inactive: 'inactive',
 };
 
-export type TAutoPayStatuses = 'unknown' | 'active' | 'inactive';
+export type TAutoPayStatuses = keyof typeof AutoPayStatuses;
 
 export const DelinquencyPeriods = {
   less_than_30: 'less_than_30',
@@ -208,13 +153,7 @@ export const DelinquencyPeriods = {
   over_120: 'over_120',
 };
 
-export type TDelinquencyPeriod = 
-  | 'less_than_30'
-  | '30'
-  | '60'
-  | '90'
-  | '120'
-  | 'over_120';
+export type TDelinquencyPeriod = keyof typeof DelinquencyPeriods;
 
 export const DelinquencyActions = {
   chapter_13: 'chapter_13',
@@ -227,15 +166,7 @@ export const DelinquencyActions = {
   bankruptcy: 'bankruptcy',
 };
 
-export type TDelinquencyActions = 
-  | 'chapter_13'
-  | 'chapter_7'
-  | 'wage_garnishment'
-  | 'charge_off'
-  | 'payment_agreement'
-  | 'repossession'
-  | 'foreclosure'
-  | 'bankruptcy';
+export type TDelinquencyActions = keyof typeof DelinquencyActions;
 
 export const DelinquencyStatuses = {
   good_standing: 'good_standing',
@@ -244,41 +175,13 @@ export const DelinquencyStatuses = {
   unavailable: 'unavailable',
 };
 
-export type TDelinquencyStatus = 
-  | 'good_standing'
-  | 'past_due'
-  | 'major_delinquency'
-  | 'unavailable';
+export type TDelinquencyStatus = keyof typeof DelinquencyStatuses;
 
-export const SensitiveFields = {
-  number: 'number',
-  encrypted_number: 'encrypted_number', 
-  bin_4: 'bin_4', 
-  bin_6: 'bin_6', 
-  payment_address: 'payment_address', 
-  encrypted_tabapay_card: 'encrypted_tabapay_card', 
-  billing_zip_code: 'billing_zip_code', 
-  expiration_month: 'expiration_month', 
-  expiration_year: 'expiration_year',
-}
+export const AccountExpandableFields = {
+  latest_verification_session: 'latest_verification_session',
+};
 
-export type TSensitiveFields =
-  | 'number'
-  | 'encrypted_number'
-  | 'bin_4'
-  | 'bin_6'
-  | 'payment_address'
-  | 'encrypted_tabapay_card'
-  | 'billing_zip_code'
-  | 'expiration_month'
-  | 'expiration_year';
-
-  export const AccountExpandableFields = {
-    latest_verification_session: 'latest_verification_session',
-  };
-  
-  export type TAccountExpandableFields = 
-    | 'latest_verification_session';
+export type TAccountExpandableFields = keyof typeof AccountExpandableFields;
 
 export interface TDelinquencyHistoryItem {
   start_date: string;
@@ -410,9 +313,9 @@ export interface IAccountLiabilityPersonalLoan extends IAccountLiabilityLoan {
   year_to_date_interest_paid: number | null;
 };
 
-export interface IAccountLiabilityCreditBuilder extends IAccountLiabilityLoan { };
+export interface IAccountLiabilityCreditBuilder extends IAccountLiabilityLoan {};
 
-export interface IAccountLiabilityCollection extends IAccountLiabilityLoan { };
+export interface IAccountLiabilityCollection extends IAccountLiabilityLoan {};
 
 export interface IAccountLiabilityBusinessLoan {
   name: string;
@@ -492,11 +395,11 @@ export interface IAccountLatestVerificationSession {
   issuer?: IAccountVerificationSessionIssuer;
   created_at: string;
   updated_at: string;
-}
+};
 
 export interface IAccountVerificationSessionString {
   latest_verification_session: string;
-}
+};
 
 export interface IAccountVerificationSessionExpanded {
   latest_verification_session: {
@@ -516,7 +419,7 @@ export interface IAccountVerificationSessionExpanded {
     created_at: string;
     updated_at: string;
   };
-}
+};
 
 export interface IAccountBase {
   id: string;

@@ -5,8 +5,7 @@ export const AccountSubscriptionTypes = {
   transactions: 'transactions',
 }
 
-export type TAccountSubscriptionTypes = 
-  | 'transactions';
+export type TAccountSubscriptionTypes = keyof typeof AccountSubscriptionTypes;
 
 export interface IAccountSubscription {
   id: string;
@@ -44,4 +43,4 @@ export default class AccountSubscriptions extends Resource {
       data
     )
   }
-}
+};

@@ -6,10 +6,7 @@ export const CreditReportBureaus = {
   transunion: 'transunion',
 };
 
-export type TCreditReportBureaus =
-  | 'experian'
-  | 'equifax'
-  | 'transunion';
+export type TCreditReportBureaus = keyof typeof CreditReportBureaus;
 
   export const EntityTypes = {
     individual: 'individual',
@@ -21,14 +18,7 @@ export type TCreditReportBureaus =
     receive_only: 'receive_only',
   };
   
-  export type TEntityTypes =
-    | 'individual'
-    | 'c_corporation'
-    | 's_corporation'
-    | 'llc'
-    | 'partnership'
-    | 'sole_proprietorship'
-    | 'receive_only';
+  export type TEntityTypes = keyof typeof EntityTypes;
   
   export const EntityCapabilities = {
     payments_send: 'payments:send',
@@ -37,15 +27,9 @@ export type TCreditReportBureaus =
     data_retrieve: 'data:retrieve',
     data_sync: 'data:sync',
     transaction_stream: 'transaction:stream',
-  };
+  } as const;
   
-  export type TEntityCapabilities =
-    | 'payments:send'
-    | 'payments:receive'
-    | 'payments:limited-send'
-    | 'data:retrieve'
-    | 'data:sync'
-    | 'transaction:stream';
+  export type TEntityCapabilities = typeof EntityCapabilities[keyof typeof EntityCapabilities];
   
   export const EntityStatuses = {
     active: 'active',
@@ -53,10 +37,7 @@ export type TCreditReportBureaus =
     disabled: 'disabled',
   };
   
-  export type TEntityStatuses =
-    | 'active'
-    | 'incomplete'
-    | 'disabled';
+  export type TEntityStatuses = keyof typeof EntityStatuses;
   
   export const EntityIndividualPhoneVerificationTypes = {
     method_sms: 'method_sms',
@@ -65,11 +46,7 @@ export type TCreditReportBureaus =
     tos: 'tos',
   };
   
-  export type TEntityIndividualPhoneVerificationTypes =
-    | 'method_sms'
-    | 'method_verified'
-    | 'sms'
-    | 'tos';
+  export type TEntityIndividualPhoneVerificationTypes = keyof typeof EntityIndividualPhoneVerificationTypes;
   
   export interface IEntityIndividual {
     first_name: string | null;

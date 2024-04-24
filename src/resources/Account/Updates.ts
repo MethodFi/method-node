@@ -1,4 +1,4 @@
-import Resource, { IResourceError } from '../../resource';
+import Resource, { IResourceError, TResourceStatus } from '../../resource';
 import Configuration from '../../configuration';
 import type {
   TAccountLiabilityTypes,
@@ -16,12 +16,6 @@ import type {
   IAccountLiabilityUtility,
 } from './types';
 
-export type TAccountUpdateLiabilityStatuses =
-  | 'completed'
-  | 'in_progress'
-  | 'pending'
-  | 'failed';
-
 export interface IAccountUpdateListOpts {
   from_date?: string;
   to_date?: string;
@@ -32,7 +26,7 @@ export interface IAccountUpdateListOpts {
 
 export interface IAccountUpdate {
   id: string;
-  status: TAccountUpdateLiabilityStatuses;
+  status: TResourceStatus;
   account_id: string;
   type: TAccountLiabilityTypes;
   auto_loan?: IAccountLiabilityAutoLoan;
@@ -88,5 +82,4 @@ export default class AccountUpdates extends Resource {
     return super._list<IAccountUpdate, IAccountUpdateListOpts>(opts);
   }
 };
-
 
