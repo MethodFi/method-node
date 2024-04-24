@@ -227,8 +227,8 @@ export const ResourceStatus = {
 export type TResourceStatus = keyof typeof ResourceStatus;
 
 export interface IResourceListOpts {
-  to_date?: string | null;
   from_date?: string | null;
+  to_date?: string | null;
   page?: number | string | null;
   page_limit?: number | string | null;
   page_cursor?: string | null;
