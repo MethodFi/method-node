@@ -50,9 +50,9 @@ export interface IMerchant {
 export interface IMerchantListOpts {
   page?: number | string | null;
   page_limit?: number | string | null;
-  type?: string | null;
+  type?: TMerchantTypes | null;
   name?: string;
-  creditor_name?:string;
+  creditor_name?: string;
   'provider_id.plaid'?: string;
   'provider_id.mx'?: string;
   'provider_id.finicity'?: string;

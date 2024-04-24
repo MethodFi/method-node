@@ -1,4 +1,4 @@
-import Resource, { IRequestConfig, IResourceError } from '../../resource';
+import Resource, { IRequestConfig, IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
 import type { IAccount, IAccountACH } from './types';
 import AccountCards from './Cards';
@@ -58,12 +58,7 @@ export interface IClearingCreateOpts extends IAccountCreateOpts {
   }
 };
 
-export interface IAccountListOpts {
-  to_date?: string | null;
-  from_date?: string | null;
-  page?: number | string | null;
-  page_limit?: number | string | null;
-  page_cursor?: string | null;
+export interface IAccountListOpts extends IResourceListOpts {
   status?: string | null;
   type?: string | null;
   holder_id?: string | null;

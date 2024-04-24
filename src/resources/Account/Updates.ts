@@ -1,4 +1,4 @@
-import Resource, { IResourceError, TResourceStatus } from '../../resource';
+import Resource, { IResourceError, IResourceListOpts, TResourceStatus } from '../../resource';
 import Configuration from '../../configuration';
 import type {
   TAccountLiabilityTypes,
@@ -16,13 +16,6 @@ import type {
   IAccountLiabilityUtility,
 } from './types';
 
-export interface IAccountUpdateListOpts {
-  from_date?: string;
-  to_date?: string;
-  page?: string;
-  page_cursor?: string;
-  page_limit?: string;
-}
 
 export interface IAccountUpdate {
   id: string;
@@ -78,8 +71,8 @@ export default class AccountUpdates extends Resource {
    * @returns Returns a list of Updates.
    */
 
-  async list(opts?: IAccountUpdateListOpts) {
-    return super._list<IAccountUpdate, IAccountUpdateListOpts>(opts);
+  async list(opts?: IResourceListOpts) {
+    return super._list<IAccountUpdate, IResourceListOpts>(opts);
   }
 };
 

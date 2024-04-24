@@ -7,10 +7,7 @@ export const EntityProductTypeStatuses = {
   restricted: 'restricted',
 };
 
-export type TEntityProductTypeStatuses =
-  | 'unavailable'
-  | 'available'
-  | 'restricted';
+export type TEntityProductTypeStatuses = keyof typeof EntityProductTypeStatuses;
 
 export interface IEntityProduct {
   id: string;

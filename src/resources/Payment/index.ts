@@ -1,4 +1,4 @@
-import Resource, { IRequestConfig, IResourceError } from '../../resource';
+import Resource, { IRequestConfig, IResourceError, IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
 import Reversal from './Reversals';
 
@@ -80,12 +80,7 @@ export interface IPaymentCreateOpts {
   fee?: IPaymentFee;
 };
 
-export interface IPaymentListOpts {
-  to_date?: string | null;
-  from_date?: string | null;
-  page?: number | string | null;
-  page_limit?: number | string | null;
-  page_cursor?: string | null;
+export interface IPaymentListOpts extends IResourceListOpts {
   status?: string | null;
   type?: string | null;
   source?: string | null;

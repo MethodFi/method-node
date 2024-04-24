@@ -3,14 +3,22 @@ import Configuration from '../../configuration';
 
 export const AccountSubscriptionTypes = {
   transactions: 'transactions',
-}
+  update: 'update',
+  update_snapshot: 'update.snapshot',
+} as const;
 
-export type TAccountSubscriptionTypes = keyof typeof AccountSubscriptionTypes;
+export type TAccountSubscriptionTypes = typeof AccountSubscriptionTypes[keyof typeof AccountSubscriptionTypes];
+
+export const AccountSubscriptionStatuses = {
+  active: 'active',
+};
+
+export type TAccountSubscriptionStatuses = keyof typeof AccountSubscriptionStatuses;
 
 export interface IAccountSubscription {
   id: string;
   name: TAccountSubscriptionTypes;
-  status: string;
+  status: TAccountSubscriptionStatuses;
   latest_transaction_id: string;
   created_at: string;
   updated_at: string;

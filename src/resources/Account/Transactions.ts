@@ -1,4 +1,4 @@
-import Resource, { IResourceError } from '../../resource';
+import Resource, { IResourceError, IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
 
 export const AccountCurrencyTypes = {
@@ -40,14 +40,6 @@ export interface IAccountTransactionNetworkData {
   visa_store_name: string | null;
 };
 
-export interface IAccountTransactionListOpts {
-  from_date?: string;
-  to_date?: string;
-  page?: string;
-  page_cursor?: string;
-  page_limit?: string;
-};
-
 export interface IAccountTransaction {
   id: string;
   account_id: string;
@@ -87,7 +79,7 @@ export default class AccountTransactions extends Resource {
    * @returns Returns a list of transactions for the account.
    */
 
-  async list(opts?: IAccountTransactionListOpts) {
-    return super._list<IAccountTransaction, IAccountTransactionListOpts>(opts);
+  async list(opts?: IResourceListOpts) {
+    return super._list<IAccountTransaction, IResourceListOpts>(opts);
   }
 };

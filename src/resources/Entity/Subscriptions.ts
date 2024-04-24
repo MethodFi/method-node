@@ -6,18 +6,14 @@ export const EntitySubscriptionNames = {
   credit_score: 'credit_score',
 };
 
-export type TEntitySubscriptionNames =
-  | 'connect'
-  | 'credit_score';
+export type TEntitySubscriptionNames = keyof typeof EntitySubscriptionNames;
 
 export const EntitySubscriptionStatuses = {
   active: 'active',
   inactive: 'inactive',
 };
 
-export type TEntitySubscriptionStatuses =
-  | 'active'
-  | 'inactive';
+export type TEntitySubscriptionStatuses = keyof typeof EntitySubscriptionStatuses;
 
 export interface IEntitySubscription {
   id: string;

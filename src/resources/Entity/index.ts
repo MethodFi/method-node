@@ -1,4 +1,4 @@
-import Resource, { IRequestConfig } from '../../resource';
+import Resource, { IRequestConfig, IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
 import EntityConnect from './Connect';
 import EntityProducts from './Products';
@@ -48,12 +48,7 @@ export interface IEntityUpdateOpts {
   individual?: Partial<IEntityIndividual>;
 };
 
-export interface IEntityListOpts {
-  to_date?: string | null;
-  from_date?: string | null;
-  page?: number | string | null;
-  page_limit?: number | string | null;
-  page_cursor?: string | null;
+export interface IEntityListOpts extends IResourceListOpts {
   status?: string | null;
   type?: string | null;
 };
