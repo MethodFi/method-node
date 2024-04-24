@@ -21,7 +21,7 @@ export default class AccountPayoffs extends Resource {
    * Retrieves results of a payoff request for an account
    * 
    * @param pyf_id payoff id
-   * @returns IAccountPayoff
+   * @returns AccountPayoff object
    */
 
   async retrieve(pyf_id: string) {
@@ -31,8 +31,7 @@ export default class AccountPayoffs extends Resource {
   /**
    * Creates a payoff request for an account
    * 
-   * @param id acc_id of the account
-   * @returns IAccountPayoff
+   * @returns AccountPayoff object
    */
 
   async create() {
