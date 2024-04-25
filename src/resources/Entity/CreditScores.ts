@@ -37,11 +37,11 @@ export default class EntityCreditScores extends Resource {
   }
 
     /**
-   * Retrieve the result of a credit score request
-   * 
-   * @param crs_id id of the credit score request
-   * @returns IEntityCreditScores
-   */
+     * Retrieve the result of a credit score request
+     * 
+     * @param crs_id id of the credit score request
+     * @returns IEntityCreditScores
+     */
 
     async retrieve(crs_id: string) {
       return super._getWithId<IEntityCreditScores>(crs_id);

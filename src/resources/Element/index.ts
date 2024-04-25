@@ -97,12 +97,12 @@ export interface IAuthElementEntityOpts {
     phone?: string;
     phone_verification_type?: 'sms' | 'tos';
     phone_verification_timestamp?: string;
-  }
+  };
 };
 
 export interface IAuthElementCreateOpts {
   account_filters?: IAuthElementAccountFiltersOpts;
-  entity?: IAuthElementEntityOpts
+  entity?: IAuthElementEntityOpts;
 };
 
 export interface IElementTokenCreateOpts {

@@ -44,17 +44,17 @@ export default class Report extends Resource {
     super(config.addPath('reports'));
   }
   
-    /**
-     * Creates a new Report for a specific type. Once created, you can retrieve the Report results from the URL returned.
-     * 
-     * @param opts IReportCreateOpts: https://docs.methodfi.com/api/core/reports/create
-     * @param requestConfig Idempotency key: { idempotency_key: string}
-     * @returns Returns a Report object.
-     */
-  
-    async create(opts: IReportCreateOpts, requestConfig?: IRequestConfig) {
-      return super._create<IReport, IReportCreateOpts>(opts, requestConfig);
-    }
+  /**
+   * Creates a new Report for a specific type. Once created, you can retrieve the Report results from the URL returned.
+   * 
+   * @param opts IReportCreateOpts: https://docs.methodfi.com/api/core/reports/create
+   * @param requestConfig Idempotency key: { idempotency_key: string}
+   * @returns Returns a Report object.
+   */
+
+  async create(opts: IReportCreateOpts, requestConfig?: IRequestConfig) {
+    return super._create<IReport, IReportCreateOpts>(opts, requestConfig);
+  }
 
   /**
    * Retrieves the Report associated with the ID.

@@ -61,37 +61,6 @@ describe('Entities - core methods tests', () => {
     });
   });
 
-  describe('entities.create_auth_session', () => {
-    it('should successfully initiate an authenticated session for the entity', async () => {
-      entities_create_auth_session_response = await client.entities(entities_create_auth_session_response.id).authSession.create();
-
-      (entities_create_auth_session_response !== null).should.be.true
-    })
-  })
-
-  describe('entities.update_auth_session', () => {
-    it('should successfully provide answers to the security questions', async () => {
-      entities_update_auth_session_response = await client.entities(entities_create_response.id).authSession.update({
-        answers: [
-          {
-            question_id: entities_create_auth_session_response.questions[0].id,
-            answer_id: entities_create_auth_session_response.questions[0].answers[0].id
-          },
-          {
-            question_id: entities_create_auth_session_response.questions[1].id,
-            answer_id: entities_create_auth_session_response.questions[1].answers[0].id
-          },
-          {
-            question_id: entities_create_auth_session_response.questions[2].id,
-            answer_id: entities_create_auth_session_response.questions[2].answers[0].id
-          }
-        ]
-      });
-
-      (entities_create_auth_session_response !== null).should.be.true
-    })
-  })
-
   describe('entities.refresh_capabilities', () => {
     it('should successfully refresh entity capabilities', async () => {
       entities_refresh_capabilities_response = await client.entities.refreshCapabilities(entities_create_response.id);

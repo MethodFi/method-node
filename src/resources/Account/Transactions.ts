@@ -63,7 +63,7 @@ export default class AccountTransactions extends Resource {
   }
 
   /**
-   * Retrieves the transaction of an account
+   * Retrieves a transaction by ID.
    * 
    * @param txn_id ID of the transaction
    * @returns IAccountTransaction
@@ -74,7 +74,7 @@ export default class AccountTransactions extends Resource {
   }
 
   /**
-   * Retrieve a list of Transactions for a specific Account.
+   * Retrieve a list of Transactions for an Account.
    * 
    * @returns Returns a list of transactions for the account.
    */
