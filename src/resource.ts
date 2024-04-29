@@ -7,8 +7,12 @@ import { PaymentSubResources } from './resources/Payment';
 import { EntitySubResources } from './resources/Entity';
 import { SumulateSubResources } from './resources/Simulate';
 
-type TSubResources = AccountSubResources | PaymentSubResources | EntitySubResources | SumulateSubResources;
-
+type TSubResources =
+  | AccountSubResources
+  | PaymentSubResources
+  | EntitySubResources
+  | SumulateSubResources;
+  
 export interface IRequestConfig {
   idempotency_key?: string;
 };

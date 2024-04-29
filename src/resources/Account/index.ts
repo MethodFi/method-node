@@ -118,18 +118,6 @@ export class Account extends Resource {
   }
 
   /**
-   * Updates an account by acc_id
-   * 
-   * @param acc_id id of the account
-   * @param opts ILiabilityUpdateOpts
-   * @returns IAccount
-   */
-
-  async update(acc_id: string, opts: ILiabilityUpdateOpts) {
-    return super._updateWithId<IAccount, ILiabilityUpdateOpts>(acc_id, opts);
-  }
-
-  /**
    * Lists all accounts
    * 
    * @param opts IAccountListOpts: https://docs.methodfi.com/api/core/accounts/list
