@@ -191,7 +191,7 @@ export default class ElementToken extends Resource {
    * @returns Returns an ElementResults object.
    */
   
-  async results() {
-    return super._get<IElementResults>();
+  async results(pk_elem_id: string) {
+    return super._getWithId<IElementResults>(pk_elem_id);
   }
 };
