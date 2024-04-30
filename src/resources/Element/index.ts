@@ -6,7 +6,8 @@ export default class Element extends Resource {
   token: Token;
 
   constructor(config: Configuration) {
-    super(config.addPath('elements'));
-    this.token = new Token(config);
+    const _config = config.addPath('element');
+    super(_config);
+    this.token = new Token(_config);
   }
 };

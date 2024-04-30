@@ -74,11 +74,13 @@ export interface IAccountVerificationSessionInstant {
 };
 
 export interface IAccountVerificationSessionPreAuth extends IAccountVerificationSessionInstant {
-  cvv: string | null;
-  cvv_check: TAccountVerificationPassFail | null;
-  billing_zip_code: string | null;
-  billing_zip_code_check: TAccountVerificationPassFail | null;
-  pre_auth_check: TAccountVerificationPassFail | null;
+  cvv?: string | null;
+  cvv_check?: TAccountVerificationPassFail | null;
+  exp_month?: string | null;
+  exp_year?: string | null;
+  billing_zip_code?: string | null;
+  billing_zip_code_check?: TAccountVerificationPassFail | null;
+  pre_auth_check?: TAccountVerificationPassFail | null;
 };
 
 export interface IAccountVerificationSessionCreateOpts {
@@ -110,7 +112,7 @@ export interface IAccountVerificationSessionInstantUpdateOpts {
 };
 
 export interface IAccountVerificationSessionPreAuthUpdateOpts {
-  pre_auth: IAccountVerificationSessionPreAuth;
+  pre_auth: IAccountVerificationSessionPreAuth
 };
 
 export type IAccountVerificationSessionUpdateOpts =

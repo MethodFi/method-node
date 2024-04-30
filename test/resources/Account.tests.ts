@@ -46,6 +46,7 @@ describe('Accounts - core methods tests', () => {
       "liability.type": 'credit_card',
       "liability.mch_id": "mch_302086",
     }))[0];
+    console.log('-------TEST ACCOUNT-------', test_credit_card_account);
     test_auto_loan_account = (await client.accounts.list({
       holder_id: holder_1_response?.id || '',
       "liability.type": 'auto_loan',
@@ -110,7 +111,7 @@ describe('Accounts - core methods tests', () => {
         restricted_products: [],
         subscriptions: [],
         available_subscriptions: [],
-        restricted_subscriptions: [ 'update', 'update.snapshot' ],
+        restricted_subscriptions: [],
         status: 'active',
         error: null,
         metadata: null,
@@ -368,20 +369,25 @@ describe('Accounts - core methods tests', () => {
         .accounts(test_credit_card_account?.id || '')
         .verificationSessions
         .create({
-          type: 'instant'
+          type: 'pre_auth'
         });
 
         const expect_results = {
           id: verification_session_create.id,
           account_id: test_credit_card_account?.id,
           status: 'pending',
-          type: 'instant',
+          type: 'pre_auth',
           error: null,
-          instant: {
+          pre_auth: {
+            billing_zip_code: 'xxxxx',
+            billing_zip_code_check: null,
+            cvv: null,
+            cvv_check: null,
             exp_check: null,
-            exp_month: null,
-            exp_year: null,
-            number: "xxxxxxxxxxxxxxxx"
+            exp_month: 'xx',
+            exp_year: 'xxxx',
+            number: 'xxxxxxxxxxxxxxxx',
+            pre_auth_check: null
           },
           created_at: verification_session_create.created_at,
           updated_at: verification_session_create.updated_at
@@ -396,9 +402,11 @@ describe('Accounts - core methods tests', () => {
         .accounts(test_credit_card_account?.id || '12345')
         .verificationSessions
         .update(verification_session_create?.id || '12345', {
-          instant: {
-            exp_month: '09',
+          pre_auth: {
+            exp_month: '03',
             exp_year: '2028',
+            billing_zip_code: '78758',
+            cvv: '878'
           }  
         });
 
@@ -406,13 +414,18 @@ describe('Accounts - core methods tests', () => {
         id: verification_session_update.id,
         account_id: test_credit_card_account?.id,
         status: 'verified',
-        type: 'instant',
+        type: 'pre_auth',
         error: null,
-        instant: {
+        pre_auth: {
+          billing_zip_code: 'xxxxx',
+          billing_zip_code_check: 'pass',
+          cvv: 'xxx',
+          cvv_check: 'pass',
           exp_check: "pass",
           exp_month: "xx",
           exp_year: "xxxx",
-          number: "xxxxxxxxxxxxxxxx"
+          number: "xxxxxxxxxxxxxxxx",
+          pre_auth_check: "pass"
         },
         created_at: verification_session_update.created_at,
         updated_at: verification_session_update.updated_at
@@ -449,13 +462,18 @@ describe('Accounts - core methods tests', () => {
         id: verification_session_update?.id,
         account_id: test_credit_card_account?.id,
         status: 'verified',
-        type: 'instant',
+        type: 'pre_auth',
         error: null,
-        instant: {
+        pre_auth: {
+          billing_zip_code: 'xxxxx',
+          billing_zip_code_check: 'pass',
+          cvv: 'xxx',
+          cvv_check: 'pass',
           exp_check: "pass",
           exp_month: "xx",
           exp_year: "xxxx",
-          number: "xxxxxxxxxxxxxxxx"
+          number: "xxxxxxxxxxxxxxxx",
+          pre_auth_check: "pass"
         },
         created_at: verification_session?.created_at,
         updated_at: verification_session?.updated_at
@@ -503,7 +521,7 @@ describe('Accounts - core methods tests', () => {
       const subscriptions_response = await client
         .accounts(test_credit_card_account?.id || '')
         .subscriptions
-        .create({ enroll: ['transactions', 'update'] });
+        .create({ enroll: ['transactions', 'update.snapshot'] });
 
       const expect_results = {
         transactions: {
@@ -511,19 +529,9 @@ describe('Accounts - core methods tests', () => {
             id: subscriptions_response.transactions?.subscription?.id,
             name: 'transactions',
             status: 'active',
-            latest_transaction_id: null,
+            latest_request_id: null,
             created_at: subscriptions_response.transactions?.subscription?.created_at,
             updated_at: subscriptions_response.transactions?.subscription?.updated_at
-          }
-        },
-        update: {
-          subscription: {
-            id: subscriptions_response.update?.subscription?.id,
-            name: 'update',
-            status: 'active',
-            latest_transaction_id: null,
-            created_at: subscriptions_response.update?.subscription?.created_at,
-            updated_at: subscriptions_response.update?.subscription?.updated_at
           }
         },
         'update.snapshot': {
@@ -531,7 +539,7 @@ describe('Accounts - core methods tests', () => {
             id: subscriptions_response['update.snapshot']?.subscription?.id,
             name: 'update.snapshot',
             status: 'active',
-            latest_transaction_id: null,
+            latest_request_id: null,
             created_at: subscriptions_response['update.snapshot']?.subscription?.created_at,
             updated_at: subscriptions_response['update.snapshot']?.subscription?.updated_at
           }
@@ -543,9 +551,8 @@ describe('Accounts - core methods tests', () => {
   });
 
   describe('accounts.transactions', () => {
-    it('should successfully create a request to get transactions for an account.', async () => {
-      await client.simulate.accounts(test_credit_card_account?.id || '').transactions.create();
-      
+    it('should successfully create a request to get transactions for an account.', async () => {      
+      const { amount, billing_amount, merchant } = await client.simulate.accounts(test_credit_card_account?.id || '').transactions.create();
       const res = await client
         .accounts(test_credit_card_account?.id || '')
         .transactions
@@ -556,25 +563,14 @@ describe('Accounts - core methods tests', () => {
       const expect_results = {
         id: transactions_response?.id,
         account_id: test_credit_card_account?.id,
-        merchant: null,
+        merchant,
         network: 'visa',
-        network_data: {
-          visa_merchant_id: null,
-          visa_merchant_name: null,
-          visa_store_id: null,
-          visa_store_name: null
-        },
-        amount: -5000,
-        currency: 'usd',
-        billing_amount: -5000,
-        billing_currency: 'usd',
+        network_data: null,
+        amount,
+        currency: 'USD',
+        billing_amount,
+        billing_currency: 'USD',
         status: 'cleared',
-        status_history: [
-          {
-            status: 'cleared',
-            timestamp: transactions_response?.created_at
-          }
-        ],
         error: null,
         created_at: transactions_response?.created_at,
         updated_at: transactions_response?.updated_at

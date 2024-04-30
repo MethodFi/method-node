@@ -16,13 +16,6 @@ export const AccountTransactionStatuses = {
 
 export type TAccountTransactionStatuses = keyof typeof AccountTransactionStatuses;
 
-
-export interface TProductBaseStatusHistoryItem {
-  status: TAccountTransactionStatuses,
-  timestamp: string,
-  metadata?: {} | null,
-};
-
 export interface IAccountTransactionMerchant {
   name: string;
   category_code: string;
@@ -51,7 +44,6 @@ export interface IAccountTransaction {
   billing_amount: number;
   billing_currency: TAccountCurrencyTypes;
   status: TAccountTransactionStatuses;
-  status_history: TProductBaseStatusHistoryItem[];
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
