@@ -2,7 +2,7 @@ import Resource from '../../resource';
 import Configuration from '../../configuration';
 import Token from './Token';
 
-export class Element extends Resource {
+export default class Element extends Resource {
   token: Token;
 
   constructor(config: Configuration) {
@@ -10,5 +10,3 @@ export class Element extends Resource {
     this.token = new Token(config);
   }
 };
-
-export default Element;

@@ -1,6 +1,6 @@
-import Resource from '../../resource';
-import Configuration from '../../configuration';
-import type { IAccountTransaction } from '../Account/Transactions';
+import Resource from '../../../resource';
+import Configuration from '../../../configuration';
+import type { IAccountTransaction } from '../../Account/Transactions';
 
 export default class SimulateTransactions extends Resource {
   constructor(config: Configuration) {

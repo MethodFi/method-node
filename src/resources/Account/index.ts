@@ -94,7 +94,7 @@ export class AccountSubResources {
 };
 
 export interface Account {
-  (id: string): AccountSubResources;
+  (acc_id: string): AccountSubResources;
 };
 
 export class Account extends Resource {

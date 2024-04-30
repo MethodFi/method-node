@@ -7,7 +7,7 @@ export const AccountSensitiveFields = {
   exp_month: 'credit_card.exp_month',
   exp_year: 'credit_card.exp_year',
   cvv: 'credit_card.cvv',
-};
+} as const;
 
 export type TAccountSensitiveFields = typeof AccountSensitiveFields[keyof typeof AccountSensitiveFields];
 

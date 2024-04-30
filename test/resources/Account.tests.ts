@@ -8,12 +8,13 @@ import { IAccount } from '../../src/resources/Account/types';
 import { IAccountBalance } from '../../src/resources/Account/Balances';
 import { IAccountCard } from '../../src/resources/Account/Cards';
 import { IAccountPayoff } from '../../src/resources/Account/Payoffs';
-import { AccountSensitiveFields, IAccountSensitive, TAccountSensitiveFields } from '../../src/resources/Account/Sensitive';
+import { IAccountSensitive } from '../../src/resources/Account/Sensitive';
 import { IAccountVerificationSession } from '../../src/resources/Account/VerificationSessions';
+import { IAccountTransaction } from '../../src/resources/Account/Transactions';
 
 should();
 
-describe.only('Accounts - core methods tests', () => {
+describe('Accounts - core methods tests', () => {
   let holder_1_response: IEntity | null = null;
   let holder_connect_response: IEntityConnect | null = null;
   let accounts_create_ach_response: IAccount | null = null;
@@ -28,6 +29,7 @@ describe.only('Accounts - core methods tests', () => {
   let verification_session_create: IAccountVerificationSession | null = null;
   let verification_session_update: IAccountVerificationSession | null = null;
   let sensitive_data_response: IAccountSensitive | null = null;
+  let transactions_response: IAccountTransaction | null = null;
 
   before(async () => {
     holder_1_response = await client.entities.create({
@@ -493,6 +495,93 @@ describe.only('Accounts - core methods tests', () => {
         };
 
       sensitive_data_response.should.be.eql(expect_results);
+    });
+  });
+
+  describe('accounts.subscriptions', () => {
+    it('should successfully create subscriptions.', async () => {
+      const subscriptions_response = await client
+        .accounts(test_credit_card_account?.id || '')
+        .subscriptions
+        .create({ enroll: ['transactions', 'update'] });
+
+      const expect_results = {
+        transactions: {
+          subscription: {
+            id: subscriptions_response.transactions?.subscription?.id,
+            name: 'transactions',
+            status: 'active',
+            latest_transaction_id: null,
+            created_at: subscriptions_response.transactions?.subscription?.created_at,
+            updated_at: subscriptions_response.transactions?.subscription?.updated_at
+          }
+        },
+        update: {
+          subscription: {
+            id: subscriptions_response.update?.subscription?.id,
+            name: 'update',
+            status: 'active',
+            latest_transaction_id: null,
+            created_at: subscriptions_response.update?.subscription?.created_at,
+            updated_at: subscriptions_response.update?.subscription?.updated_at
+          }
+        },
+        'update.snapshot': {
+          subscription: {
+            id: subscriptions_response['update.snapshot']?.subscription?.id,
+            name: 'update.snapshot',
+            status: 'active',
+            latest_transaction_id: null,
+            created_at: subscriptions_response['update.snapshot']?.subscription?.created_at,
+            updated_at: subscriptions_response['update.snapshot']?.subscription?.updated_at
+          }
+        }
+      };
+
+      subscriptions_response.should.be.eql(expect_results);
+    });
+  });
+
+  describe('accounts.transactions', () => {
+    it('should successfully create a request to get transactions for an account.', async () => {
+      await client.simulate.accounts(test_credit_card_account?.id || '').transactions.create();
+      
+      const res = await client
+        .accounts(test_credit_card_account?.id || '')
+        .transactions
+        .list();
+
+      transactions_response = res[0];
+
+      const expect_results = {
+        id: transactions_response?.id,
+        account_id: test_credit_card_account?.id,
+        merchant: null,
+        network: 'visa',
+        network_data: {
+          visa_merchant_id: null,
+          visa_merchant_name: null,
+          visa_store_id: null,
+          visa_store_name: null
+        },
+        amount: -5000,
+        currency: 'usd',
+        billing_amount: -5000,
+        billing_currency: 'usd',
+        status: 'cleared',
+        status_history: [
+          {
+            status: 'cleared',
+            timestamp: transactions_response?.created_at
+          }
+        ],
+        error: null,
+        created_at: transactions_response?.created_at,
+        updated_at: transactions_response?.updated_at
+      };
+
+
+      transactions_response.should.be.eql(expect_results);
     });
   });
 });

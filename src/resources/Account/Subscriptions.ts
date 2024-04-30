@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 
 export const AccountSubscriptionTypes = {
@@ -16,18 +16,21 @@ export const AccountSubscriptionStatuses = {
 export type TAccountSubscriptionStatuses = keyof typeof AccountSubscriptionStatuses;
 
 export interface IAccountSubscription {
-  id: string;
-  name: TAccountSubscriptionTypes;
-  status: TAccountSubscriptionStatuses;
-  latest_transaction_id: string;
-  created_at: string;
-  updated_at: string;
+  subscription?: {
+    id: string;
+    name: TAccountSubscriptionTypes;
+    status: TAccountSubscriptionStatuses;
+    latest_transaction_id: string;
+    created_at: string;
+    updated_at: string;
+  };
+  error?: IResourceError;
 };
 
 export interface IAccountSubscriptionsResponse {
-  transactions?: {
-    subscription: IAccountSubscription;
-  };
+  transactions?: IAccountSubscription;
+  update?: IAccountSubscription;
+  'update.snapshot'?: IAccountSubscription;
 };
 
 export interface IAccountSubscriptionCreateOpts {

@@ -5,13 +5,13 @@ import { MethodError } from './errors';
 import { AccountSubResources } from './resources/Account';
 import { PaymentSubResources } from './resources/Payment';
 import { EntitySubResources } from './resources/Entity';
-import { SumulateSubResources } from './resources/Simulate';
+import { SimulateAccountsSubResources } from './resources/Simulate/Accounts';
 
 type TSubResources =
   | AccountSubResources
   | PaymentSubResources
   | EntitySubResources
-  | SumulateSubResources;
+  | SimulateAccountsSubResources;
   
 export interface IRequestConfig {
   idempotency_key?: string;
@@ -161,7 +161,6 @@ export default class Resource extends ExtensibleFunction {
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
     if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
-
     return (await this.client.post('', data, _requestConfig)).data.data;
   }
 
