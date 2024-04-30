@@ -3,6 +3,7 @@ import Configuration from "../../configuration";
 
 export interface IAccountPayoff {
   id: string,
+  account_id: string,
   status: TResourceStatus,
   amount: number | null,
   term: number | null,

@@ -1,16 +1,15 @@
 import { should } from 'chai';
-import { MethodClient, Environments } from '../../src';
+import { describe } from 'mocha';
+import { client } from '../config';
 import { IWebhook } from '../../src/resources/Webhook';
 
 should();
-
-const client = new MethodClient({ apiKey: process.env.TEST_CLIENT_KEY, env: Environments.dev });
 
 describe('Webhooks - core methods tests', () => {
   let webhooks_create_response: IWebhook | null = null;
   let webhooks_get_response: IWebhook | null = null;
   let webhooks_list_response: IWebhook[] | null = null;
-  let webhooks_delete_response: IWebhook | null = null;
+  let webhooks_delete_response: {} | null = null;
 
   describe('webhooks.create', () => {
     it('should successfully create a webhook.', async () => {
@@ -26,7 +25,7 @@ describe('Webhooks - core methods tests', () => {
 
   describe('webhooks.get', () => {
     it('should successfully get a webhook.', async () => {
-      webhooks_get_response = await client.webhooks.retrieve(webhooks_create_response.id);
+      webhooks_get_response = await client.webhooks.retrieve(webhooks_create_response?.id || '');
 
       (webhooks_get_response !== null).should.be.true;
     });
@@ -43,7 +42,7 @@ describe('Webhooks - core methods tests', () => {
 
   describe('webhooks.delete', () => {
     it('should successfully delete a webhook.', async () => {
-      webhooks_delete_response = await client.webhooks.delete(webhooks_create_response.id);
+      webhooks_delete_response = await client.webhooks.delete(webhooks_create_response?.id || '');
 
       (webhooks_delete_response === null).should.be.true;
     });

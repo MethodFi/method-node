@@ -1,10 +1,9 @@
 import { should } from 'chai';
-import { MethodClient, Environments } from '../../src';
+import { describe } from 'mocha';
+import { client } from '../config';
 import { IMerchant } from '../../src/resources/Merchant';
 
 should();
-
-const client = new MethodClient({ apiKey: process.env.TEST_CLIENT_KEY, env: Environments.dev });
 
 describe('Merchants - core methods tests', () => {
   let merchants_get_response: IMerchant | null = null;

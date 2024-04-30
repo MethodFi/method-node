@@ -1,18 +1,14 @@
 import { should } from 'chai';
-import { MethodClient, Environments } from '../../src';
-import { IEntity, IEntityQuestionResponse } from '../../src/resources/Entity';
+import { client } from '../config';
+import { IEntity } from '../../src/resources/Entity/types';
 
 should();
-
-const client = new MethodClient({ apiKey: process.env.TEST_CLIENT_KEY, env: Environments.dev });
 
 describe('Entities - core methods tests', () => {
   let entities_create_response: IEntity | null = null;
   let entities_get_response: IEntity | null = null;
   let entities_update_response: IEntity | null = null;
   let entities_list_response: IEntity[] | null = null;
-  let entities_create_auth_session_response: IEntityQuestionResponse | null;
-  let entities_update_auth_session_response: IEntityQuestionResponse | null;
   let entities_refresh_capabilities_response: IEntity | null;
 
   describe('entities.create', () => {
@@ -29,7 +25,7 @@ describe('Entities - core methods tests', () => {
 
   describe('entities.get', () => {
     it('should successfully get an entity.', async () => {
-      entities_get_response = await client.entities.retrieve(entities_create_response.id);
+      entities_get_response = await client.entities.retrieve(entities_create_response?.id || '');
 
       (entities_get_response !== null).should.be.true;
     });
@@ -38,7 +34,7 @@ describe('Entities - core methods tests', () => {
   describe('entities.update', () => {
     it('should successfully update an entity.', async () => {
       entities_update_response = await client.entities.update(
-        entities_get_response.id,
+        entities_get_response?.id || '',
         {
           individual: {
             first_name: 'Kevin',
@@ -63,7 +59,7 @@ describe('Entities - core methods tests', () => {
 
   describe('entities.refresh_capabilities', () => {
     it('should successfully refresh entity capabilities', async () => {
-      entities_refresh_capabilities_response = await client.entities.refreshCapabilities(entities_create_response.id);
+      entities_refresh_capabilities_response = await client.entities.refreshCapabilities(entities_create_response?.id || '');
 
       (entities_refresh_capabilities_response !== null).should.be.true
     })

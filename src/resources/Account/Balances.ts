@@ -4,7 +4,7 @@ import Configuration from '../../configuration';
 export interface IAccountBalance {
   id: string;
   status: TResourceStatus;
-  balance: number | null;
+  amount: number | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;

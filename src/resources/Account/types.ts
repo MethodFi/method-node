@@ -37,6 +37,17 @@ export const AccountStatuses = {
 
 export type TAccountStatuses = keyof typeof AccountStatuses;
 
+export const AccountProducts = {
+  payment: 'payment',
+  balance: 'balance',
+  account_sensitive: 'account_sensitive',
+  card: 'card',
+  payoff: 'payoff',
+  update: 'update',
+};
+
+export type TAccountProducts = keyof typeof AccountProducts;
+
 export const AccountCapabilities = {
   payments_receive: 'payments:receive',
   payments_send: 'payments:send',
@@ -429,6 +440,11 @@ export interface IAccountBase {
   ach: IAccountACH | null;
   liability: IAccountLiability | null;
   clearing: IAccountClearing | null;
+  products: TAccountProducts[];
+  restricted_products: TAccountProducts[];
+  subscriptions: string[];
+  available_subscriptions: string[];
+  restricted_subscriptions: string[];
   capabilities: TAccountCapabilities[];
   available_capabilities: TAccountCapabilities[];
   error: IResourceError | null;

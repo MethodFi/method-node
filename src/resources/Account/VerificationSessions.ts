@@ -67,10 +67,10 @@ export interface IAccountVerificationSessionStandard {
 };
 
 export interface IAccountVerificationSessionInstant {
-  exp_year: string | null;
-  exp_month: string | null;
-  exp_check: TAccountVerificationPassFail | null;
-  number: string | null;
+  exp_year?: string | null;
+  exp_month?: string | null;
+  exp_check?: TAccountVerificationPassFail | null;
+  number?: string | null;
 };
 
 export interface IAccountVerificationSessionPreAuth extends IAccountVerificationSessionInstant {
@@ -128,17 +128,17 @@ export interface IAccountVerificationSession {
   status: TAccountVerificationSessionStatuses;
   type: TAccountVerificaionSessionTypes;
   error: IResourceError | null;
-  plaid: IAccountVerificaitonSessionPlaid | null;
-  mx: IAccountVerificationSessionMX | null;
-  teller: IAccountVerificationSessionTeller | null;
-  micro_deposits: IAccountVerificationSessionMicroDeposits | null;
-  trusted_provisioner: IAccountVerificationSessionTrustProvisioner | null;
-  auto_verify: IAccountVerificationSessionAutoVerify | null;
-  standard: IAccountVerificationSessionStandard | null;
-  instant: IAccountVerificationSessionInstant | null;
-  pre_auth: IAccountVerificationSessionPreAuth | null;
-  three_ds: IAccountVerificationSessionThreeDS | null;
-  issuer: IAccountVerificationSessionIssuer | null;
+  plaid?: IAccountVerificaitonSessionPlaid | null;
+  mx?: IAccountVerificationSessionMX | null;
+  teller?: IAccountVerificationSessionTeller | null;
+  micro_deposits?: IAccountVerificationSessionMicroDeposits | null;
+  trusted_provisioner?: IAccountVerificationSessionTrustProvisioner | null;
+  auto_verify?: IAccountVerificationSessionAutoVerify | null;
+  standard?: IAccountVerificationSessionStandard | null;
+  instant?: IAccountVerificationSessionInstant | null;
+  pre_auth?: IAccountVerificationSessionPreAuth | null;
+  three_ds?: IAccountVerificationSessionThreeDS | null;
+  issuer?: IAccountVerificationSessionIssuer | null;
   created_at: string;
   updated_at: string; 
 };

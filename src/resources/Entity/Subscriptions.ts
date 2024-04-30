@@ -1,4 +1,5 @@
-import Resource, { IRequestConfig, IResourceError } from '../../resource';
+import Resource, { IRequestConfig } from '../../resource';
+import { MethodError } from '../../errors';
 import Configuration from '../../configuration';
 
 export const EntitySubscriptionNames = {
@@ -26,7 +27,7 @@ export interface IEntitySubscription {
 
 export interface IEntitySubscriptionResponseOpts {
   subscription?: IEntitySubscription;
-  error?: IResourceError;
+  error?: Partial<MethodError>;
 };
 
 export interface IEntitySubscriptionCreateOpts {
@@ -36,6 +37,7 @@ export interface IEntitySubscriptionCreateOpts {
 export interface IEntitySubscriptionListResponse {
   connect?: IEntitySubscriptionResponseOpts;
   credit_score?: IEntitySubscriptionResponseOpts;
+  [key: string]: IEntitySubscriptionResponseOpts;
 };
 
 export default class EntitySubscriptions extends Resource {

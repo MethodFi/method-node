@@ -1,12 +1,11 @@
 import { should } from 'chai';
-import { MethodClient, Environments } from '../../src';
+import { describe } from 'mocha';
+import { client } from '../config';
 import { IEntity } from '../../src/resources/Entity/types';
 import { IAccount } from '../../src/resources/Account/types';
 import { IPayment } from '../../src/resources/Payment';
 
 should();
-
-const client = new MethodClient({ apiKey: process.env.TEST_CLIENT_KEY, env: Environments.dev });
 
 describe('Payments - core methods tests', () => {
   let holder_1_response: IEntity | null = null;
@@ -50,8 +49,8 @@ describe('Payments - core methods tests', () => {
     it('should successfully create a payment.', async () => {
       payments_create_response = await client.payments.create({
         amount: 5000,
-        source: source_1_response.id,
-        destination: destination_1_response.id,
+        source: source_1_response?.id || '',
+        destination: destination_1_response?.id || '',
         description: 'MethodNode',
       });
 
@@ -61,7 +60,7 @@ describe('Payments - core methods tests', () => {
 
   describe('payments.get', () => {
     it('should successfully get a payment.', async () => {
-      payments_get_response = await client.payments.retrieve(payments_create_response.id);
+      payments_get_response = await client.payments.retrieve(payments_create_response?.id || '');
 
       (payments_get_response !== null).should.be.true;
     });
@@ -78,7 +77,7 @@ describe('Payments - core methods tests', () => {
 
   describe('payments.delete', () => {
     it('should successfully delete a payment.', async () => {
-      payments_delete_response = await client.payments.delete(payments_create_response.id);
+      payments_delete_response = await client.payments.delete(payments_create_response?.id || '');
 
       (payments_delete_response !== null).should.be.true;
     });

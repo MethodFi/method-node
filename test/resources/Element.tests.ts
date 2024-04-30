@@ -1,15 +1,14 @@
 import { should } from 'chai';
-import { MethodClient, Environments } from '../../src';
-import { IEntity } from '../../src/resources/Entity';
-import { IElement } from '../../src/resources/Element';
+import { describe } from 'mocha';
+import { client } from '../config';
+import { IEntity } from '../../src/resources/Entity/types';
+import { IElementToken } from '../../src/resources/Element/Token';
 
 should();
 
-const client = new MethodClient({ apiKey: process.env.TEST_CLIENT_KEY, env: Environments.dev });
-
 describe('Elements - core methods tests', () => {
   let entity_1_response: IEntity | null = null;
-  let element_create_token_1_response: IElement | null = null;
+  let element_create_token_1_response: IElementToken | null = null;
 
   before(async () => {
     entity_1_response = await client.entities.create({
@@ -24,10 +23,10 @@ describe('Elements - core methods tests', () => {
     });
   });
 
-  describe('elements.createToken', () => {
+  describe('elements.token.create', () => {
     it('should successfully create an element_token.', async () => {
-      element_create_token_1_response = await client.elements.createToken({
-        entity_id: entity_1_response.id,
+      element_create_token_1_response = await client.elements.token.create({
+        entity_id: entity_1_response?.id || '',
         type: 'link',
         link: {},
       });
