@@ -89,5 +89,22 @@ describe.only('Entities - core methods tests', () => {
 
       entities_connect_create_response.should.be.eql(expect_results);
     });
+
+    it('should retrieve results of a connection for an entity', async () => {
+      let entities_connect_results_response = await client.entities(entities_create_response?.id || '').connect.retrieve(entities_connect_create_response?.id || '');
+      entities_connect_results_response.accounts = entities_connect_results_response?.accounts?.sort() || null;
+
+      const expect_results = {
+        id: entities_connect_create_response?.id,
+        entity_id: entities_create_response?.id,
+        status: 'completed',
+        accounts: entities_account_ids,
+        error: null,
+        created_at: entities_connect_create_response?.created_at,
+        updated_at: entities_connect_create_response?.updated_at,
+      };
+
+      entities_connect_results_response.should.be.eql(expect_results);
+    });
   });
 });
