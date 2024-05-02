@@ -46,7 +46,6 @@ describe('Accounts - core methods tests', () => {
       "liability.type": 'credit_card',
       "liability.mch_id": "mch_302086",
     }))[0];
-    console.log('-------TEST ACCOUNT-------', test_credit_card_account);
     test_auto_loan_account = (await client.accounts.list({
       holder_id: holder_1_response?.id || '',
       "liability.type": 'auto_loan',
@@ -580,4 +579,35 @@ describe('Accounts - core methods tests', () => {
       transactions_response.should.be.eql(expect_results);
     });
   });
+
+  describe('accounts.withdrawConsent', () => {
+    it('should successfully withdraw consent from an account.', async () => {
+      const withdraw_consent_response = await client.accounts.withdrawConsent(test_credit_card_account?.id || '');
+      const expect_results = {
+        id: test_credit_card_account?.id,
+        holder_id: holder_1_response?.id,
+        status: 'disabled',
+        type: null,
+        ach: null,
+        liability: null,
+        clearing: null,
+        products: [],
+        restricted_products: [],
+        subscriptions: [],
+        available_subscriptions: [],
+        restricted_subscriptions: [],
+        error: {
+          type: 'ACCOUNT_DISABLED',
+          sub_type: 'ACCOUNT_CONSENT_WITHDRAWN',
+          code: 11004,
+          message: 'Account was disabled due to consent withdrawal.'
+        },
+        metadata: null,
+        created_at: withdraw_consent_response.created_at,
+        updated_at: withdraw_consent_response.updated_at
+      }
+
+      withdraw_consent_response.should.be.eql(expect_results);
+    });
+  })
 });

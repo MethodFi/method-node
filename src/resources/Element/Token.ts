@@ -134,8 +134,8 @@ export interface IAuthElementCreateOpts {
 
 export interface IElementConnectOpts {
   products: TElementProductTypes[];
-  accounts: string[];
-  entity: IElementEntityOpts;
+  accounts?: string[];
+  entity?: IElementEntityOpts;
 };
 
 export interface IElementTokenCreateOpts {
@@ -181,7 +181,7 @@ export default class ElementToken extends Resource {
    */
 
   async create(opts: IElementTokenCreateOpts) {
-    return super._createWithSubPath<IElementToken, IElementTokenCreateOpts>('/token', opts);
+    return super._create<IElementToken, IElementTokenCreateOpts>(opts);
   }
 
   /**
@@ -192,6 +192,6 @@ export default class ElementToken extends Resource {
    */
   
   async results(pk_elem_id: string) {
-    return super._getWithId<IElementResults>(pk_elem_id);
+    return super._getWithSubPath<IElementResults>(`${pk_elem_id}/results`);
   }
 };

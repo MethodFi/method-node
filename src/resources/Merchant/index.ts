@@ -34,7 +34,7 @@ export interface IMerchantProviderIds {
 };
 
 export interface IMerchant {
-  mch_id: string;
+  id: string;
   parent_name: string;
   name: string;
   logo: string;
