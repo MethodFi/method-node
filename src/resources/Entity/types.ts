@@ -1,4 +1,6 @@
 import { IResourceError } from "../../resource";
+import EntityProducts, { TEntityProductType } from "./Products";
+import { TEntitySubscriptionNames } from "./Subscriptions";
 
 export const CreditReportBureaus = {
   experian: 'experian',
@@ -39,14 +41,22 @@ export const EntityStatuses = {
 
 export type TEntityStatuses = keyof typeof EntityStatuses;
 
-export const EntityIndividualPhoneVerificationTypes = {
-  method_sms: 'method_sms',
-  method_verified: 'method_verified',
-  sms: 'sms',
-  tos: 'tos',
+export const EntityVerificationIdentityMethods = {
+  kba: 'kba',
+  byo_kyc: 'byo_kyc',
+  element: 'element',
 };
 
-export type TEntityIndividualPhoneVerificationTypes = keyof typeof EntityIndividualPhoneVerificationTypes;
+export type TEntityVerificationIdentityMethods = keyof typeof EntityVerificationIdentityMethods;
+
+export const EntityVerificationPhoneMethods = {
+  sms: 'sms',
+  sna: 'sna',
+  byo_sms: 'byo_sms',
+  element: 'element',
+};
+
+export type TEntityVerificationPhoneMethods = keyof typeof EntityVerificationPhoneMethods;
 
 export interface IEntityIndividual {
   first_name: string | null;
@@ -56,8 +66,6 @@ export interface IEntityIndividual {
   dob: string | null;
   ssn: string | null;
   ssn_4: string | null;
-  phone_verification_type: TEntityIndividualPhoneVerificationTypes | null,
-  phone_verification_timestamp: Date | null,
 };
 
 export interface IEntityAddress {
@@ -107,19 +115,41 @@ export interface IEntityIdentityType {
   ssn: string | null;
 };
 
+export interface IEntityVerificationIdentity {
+  verified: boolean;
+  matched: boolean;
+  latest_verification_session: string | null;
+  methods: TEntityVerificationIdentityMethods[];
+};
+
+export interface IEntityVerificationPhone {
+  verified: boolean;
+  latest_verification_session: string | null;
+  methods: TEntityVerificationPhoneMethods[];
+};
+
+export interface IEntityVerification {
+  identity?: IEntityVerificationIdentity;
+  phone?: IEntityVerificationPhone;
+};
+
 export interface IEntity {
   id: string;
   type: TEntityTypes;
-  individual: IEntityIndividual | null;
-  corporation: IEntityCorporation | null;
-  receive_only: IEntityReceiveOnly | null;
-  capabilities: TEntityCapabilities[];
-  available_capabilities: TEntityCapabilities[];
-  pending_capabilities: TEntityCapabilities[];
+  individual?: IEntityIndividual | null;
+  corporation?: IEntityCorporation | null;
   address: IEntityAddress;
   status: TEntityStatuses;
   error: IResourceError | null;
   metadata: {} | null;
+  products?: TEntityProductType[];
+  restricted_products?: TEntityProductType[];
+  subscriptions?: TEntitySubscriptionNames[];
+  available_subscriptions?: TEntitySubscriptionNames[];
+  restricted_subscriptions?: TEntitySubscriptionNames[];
+  verification?: IEntityVerification;
+  connect: string | null;
+  credit_score: string | null;
   created_at: string;
   updated_at: string;
 };

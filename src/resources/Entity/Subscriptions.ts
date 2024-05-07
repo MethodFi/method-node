@@ -25,9 +25,14 @@ export interface IEntitySubscription {
   updated_at: string;
 };
 
-export interface IEntitySubscriptionResponseOpts {
+export interface IEntitySubscriptionCreateResponseOpts {
   subscription?: IEntitySubscription;
   error?: Partial<MethodError>;
+};
+
+export interface IEntitySubscriptionCreateResponse {
+  connect?: IEntitySubscriptionCreateResponseOpts;
+  credit_score?: IEntitySubscriptionCreateResponseOpts;
 };
 
 export interface IEntitySubscriptionCreateOpts {
@@ -35,9 +40,9 @@ export interface IEntitySubscriptionCreateOpts {
 };
 
 export interface IEntitySubscriptionListResponse {
-  connect?: IEntitySubscriptionResponseOpts;
-  credit_score?: IEntitySubscriptionResponseOpts;
-  [key: string]: IEntitySubscriptionResponseOpts;
+  connect?: IEntitySubscription;
+  credit_score?: IEntitySubscription;
+  [key: string]: IEntitySubscription;
 };
 
 export default class EntitySubscriptions extends Resource {
@@ -55,7 +60,7 @@ export default class EntitySubscriptions extends Resource {
    */
 
   async create(opts: IEntitySubscriptionCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IEntitySubscriptionListResponse, IEntitySubscriptionCreateOpts>(opts, requestConfig);
+    return super._create<IEntitySubscriptionCreateResponse, IEntitySubscriptionCreateOpts>(opts, requestConfig);
   }
 
   /**
@@ -77,7 +82,7 @@ export default class EntitySubscriptions extends Resource {
    */
 
   async list() {
-    return super._list<IEntitySubscriptionListResponse>();
+    return super._get<IEntitySubscriptionListResponse>();
   }
 
   /**

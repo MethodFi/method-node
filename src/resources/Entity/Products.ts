@@ -9,6 +9,14 @@ export const EntityProductTypeStatuses = {
 
 export type TEntityProductTypeStatuses = keyof typeof EntityProductTypeStatuses;
 
+export const EntityProductType = {
+  connect: 'connect',
+  credit_score: 'credit_score',
+  identity: 'identity',
+};
+
+export type TEntityProductType = keyof typeof EntityProductType;
+
 export interface IEntityProduct {
   id: string;
   name: string;
@@ -38,7 +46,7 @@ export default class EntityProducts extends Resource {
    */
 
   async list() {
-    return super._list<IEntityProductListResponse>();
+    return super._get<IEntityProductListResponse>();
   }
 
   /**

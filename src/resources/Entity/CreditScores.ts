@@ -24,6 +24,7 @@ export interface IEntityCreditScoresType {
 
 export interface IEntityCreditScores {
   id: string,
+  entity_id: string,
   status: TResourceStatus,
   scores: IEntityCreditScoresType[] | null,
   error: IResourceError | null,

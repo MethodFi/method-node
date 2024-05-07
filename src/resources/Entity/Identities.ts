@@ -4,6 +4,7 @@ import { IEntityIdentityType } from './types';
 
 export interface IEntityIdentity {
   id: string;
+  entity_id: string;
   status: TResourceStatus;
   identities: IEntityIdentityType[];
   error: IResourceError | null;

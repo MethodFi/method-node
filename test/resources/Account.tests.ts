@@ -1,7 +1,7 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import { sleep } from '../utils';
+import { awaitResults } from '../utils';
 import { IEntity } from '../../src/resources/Entity/types';
 import { IEntityConnect } from '../../src/resources/Entity/Connect';
 import { IAccount } from '../../src/resources/Account/types';
@@ -200,21 +200,7 @@ describe('Accounts - core methods tests', () => {
         .retrieve(balances_create_response?.id || '');
       }
 
-      let account_balances;
-      let retries = 5;
-      while (retries > 0) {
-        try {
-          account_balances = await getAccountBalances();
-          if (account_balances.status === 'completed' || account_balances.status === 'failed') {
-            break;
-          }
-          await sleep(5000);
-        } catch (error) {
-          console.error('Error occurred while retrieving account balances:', error);
-          throw error; // Rethrow the error to fail the test
-        }
-        retries--;
-      }
+      const account_balances = await awaitResults(getAccountBalances);
 
       const expect_results = {
         id: balances_create_response?.id,
@@ -324,27 +310,13 @@ describe('Accounts - core methods tests', () => {
 
     it('should successfully retrieve a payoff for an account.', async () => {
       const getPayoffQuotes = async () =>{
-        return  await client
+        return await client
           .accounts(test_auto_loan_account?.id || '12345')
           .payoffs
           .retrieve(payoff_create_response?.id || '12345');
       };
 
-      let payoff_quote;
-      let retries = 5;
-      while (retries > 0) {
-        try {
-          payoff_quote = await getPayoffQuotes();
-          if (payoff_quote.status === 'completed' || payoff_quote.status === 'failed') {
-            break;
-          }
-          await sleep(5000);
-        } catch (error) {
-          console.error('Error occurred while retrieving account balances:', error);
-          throw error; // Rethrow the error to fail the test
-        }
-        retries--;
-      }
+      const payoff_quote = await awaitResults(getPayoffQuotes);
 
       const expect_results = {
         id: payoff_create_response?.id,
@@ -441,21 +413,7 @@ describe('Accounts - core methods tests', () => {
           .retrieve(verification_session_update?.id || '');
       };
 
-      let verification_session;
-      let retries = 5;
-      while (retries > 0) {
-        try {
-          verification_session = await getVerificationSession();
-          if (verification_session.status === 'verified' || verification_session.status === 'failed') {
-            break;
-          }
-          await sleep(5000);
-        } catch (error) {
-          console.error('Error occurred while retrieving account balances:', error);
-          throw error; // Rethrow the error to fail the test
-        }
-        retries--;
-      }
+      const verification_session = await awaitResults(getVerificationSession);
 
       const expect_results = {
         id: verification_session_update?.id,

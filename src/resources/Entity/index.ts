@@ -2,7 +2,6 @@ import Resource, { IRequestConfig, IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
 import EntityConnect from './Connect';
 import EntityProducts from './Products';
-import EntitySensitive from './Sensitive';
 import EntityIdentities from './Identities';
 import EntityCreditScores from './CreditScores';
 import EntitySubscriptions from './Subscriptions';
@@ -15,6 +14,15 @@ import type {
   IEntityReceiveOnly,
   TEntityTypes
 } from './types';
+
+export const EntityExpandableFields = {
+  connect: 'connect',
+  credit_score: 'credit_score',
+  identity_latest_verification_session: 'identity.latest_verification_session',
+  phone_latest_verification_session: 'phone.latest_verification_session',
+};
+
+export type TEntityExpandableFields = keyof typeof EntityExpandableFields;
 
 export interface IEntityCreateOpts {
   type: TEntityTypes;
@@ -59,23 +67,25 @@ export interface IEntityWithdrawConsentOpts {
   reason: 'entity_withdrew_consent' | null,
 };
 
+export interface IEntityExpandOpts {
+  expand?: TEntityExpandableFields[];
+};
+
 export class EntitySubResources {
   connect: EntityConnect;
   creditScores: EntityCreditScores;
   identities: EntityIdentities;
   products: EntityProducts;
-  sensitive: EntitySensitive;
   subscriptions: EntitySubscriptions;
-  verificationSession: EntityVerificationSession;
+  verificationSessions: EntityVerificationSession;
 
   constructor(id: string, config: Configuration) {
     this.connect = new EntityConnect(config.addPath(id));
     this.creditScores = new EntityCreditScores(config.addPath(id));
     this.identities = new EntityIdentities(config.addPath(id));
     this.products = new EntityProducts(config.addPath(id));
-    this.sensitive = new EntitySensitive(config.addPath(id));
     this.subscriptions = new EntitySubscriptions(config.addPath(id));
-    this.verificationSession = new EntityVerificationSession(config.addPath(id));
+    this.verificationSessions = new EntityVerificationSession(config.addPath(id));
   }
 };
 
@@ -129,8 +139,8 @@ export class Entity extends Resource {
    * @returns Retrieved entity (IEntity)
    */
 
-  async retrieve(ent_id: string) {
-    return super._getWithId<IEntity>(ent_id);
+  async retrieve(ent_id: string, opts?: IEntityExpandOpts) {
+    return super._getWithSubPathAndParams<IEntity>(ent_id, opts);
   }
 
   /**
