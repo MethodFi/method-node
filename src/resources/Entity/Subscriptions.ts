@@ -42,7 +42,7 @@ export interface IEntitySubscriptionCreateOpts {
 export interface IEntitySubscriptionListResponse {
   connect?: IEntitySubscription;
   credit_score?: IEntitySubscription;
-  [key: string]: IEntitySubscription;
+  [key: string]: IEntitySubscription | undefined;
 };
 
 export default class EntitySubscriptions extends Resource {

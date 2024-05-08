@@ -1,6 +1,5 @@
 import Resource, { IRequestConfig, IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
-import type { IAccount, IAccountACH } from './types';
 import AccountCards from './Cards';
 import AccountPayoffs from './Payoffs';
 import AccountUpdates from './Updates';
@@ -9,6 +8,11 @@ import AccountSensitive from './Sensitive';
 import AccountTransactions from './Transactions';
 import AccountSubscriptions from './Subscriptions';
 import AccountVerificationSession from './VerificationSessions';
+import type {
+  IAccount,
+  IAccountACH,
+  TAccountExpandableFields,
+} from './types';
 
 export const AccountClearingSubTypes = {
   single_use: 'single_use',
@@ -33,31 +37,6 @@ export interface ILiabilityCreateOpts extends IAccountCreateOpts {
   }
 };
 
-export type TLiabilityMortgageUpdateOpts = {
-  address_street: string;
-  address_city: string;
-  address_state: string;
-  address_zip: string;
-};
-
-export type TLiabilityCreditCardUpdateOpts = {
-  number: string;
-} | {
-  expiration_month: number;
-  expiration_year: number;
-};
-
-export interface ILiabilityUpdateOpts {
-  mortgage: TLiabilityMortgageUpdateOpts | null;
-  credit_card: TLiabilityCreditCardUpdateOpts | null;
-};
-
-export interface IClearingCreateOpts extends IAccountCreateOpts {
-  clearing: {
-    type: TAccountClearingSubTypes;
-  }
-};
-
 export interface IAccountListOpts extends IResourceListOpts {
   status?: string | null;
   type?: string | null;
@@ -69,6 +48,10 @@ export interface IAccountListOpts extends IResourceListOpts {
 export interface IAccountWithdrawConsentOpts {
   type: 'withdraw';
   reason: 'holder_withdrew_consent' | null;
+};
+
+export interface IAccountExpandOpts {
+  expand: TAccountExpandableFields[];
 };
 
 export class AccountSubResources {
@@ -113,8 +96,9 @@ export class Account extends Resource {
    * @returns IAccount
    */
 
-  async retrieve(acc_id: string) {
-    return super._getWithId<IAccount>(acc_id);
+  // TODO: make the string also possible to be null
+  async retrieve<K extends TAccountExpandableFields = never>(acc_id: string, opts?: { expand: K[] }) {
+    return super._getWithSubPathAndParams<{[P in keyof IAccount]: P extends K ? Exclude<IAccount[P], string | null> : Extract<IAccount[P], string | null>}, { expand: K[]; } | undefined>(acc_id, opts);
   }
 
   /**
@@ -136,8 +120,8 @@ export class Account extends Resource {
    * @returns IAccount
    */
 
-  async create(data: IACHCreateOpts | ILiabilityCreateOpts | IClearingCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts | IClearingCreateOpts>(data, requestConfig);
+  async create(data: IACHCreateOpts | ILiabilityCreateOpts, requestConfig?: IRequestConfig) {
+    return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts>(data, requestConfig);
   }
 
 

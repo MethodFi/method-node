@@ -3,17 +3,10 @@ import Configuration from '../../configuration';
 import type {
   TAccountLiabilityTypes,
   IAccountLiabilityAutoLoan,
-  IAccountLiabilityCollection,
-  IAccountLiabilityCreditBuilder,
   IAccountLiabilityCreditCard,
-  IAccountLiabilityInsurance,
-  IAccountLiabilityLoan,
-  IAccountLiabilityMedical,
   IAccountLiabilityMortgage,
   IAccountLiabilityPersonalLoan,
-  IAccountLiabilityStudentLoan,
   IAccountLiabilityStudentLoans,
-  IAccountLiabilityUtility,
 } from './types';
 
 
@@ -23,17 +16,10 @@ export interface IAccountUpdate {
   account_id: string;
   type: TAccountLiabilityTypes;
   auto_loan?: IAccountLiabilityAutoLoan;
-  collection?: IAccountLiabilityCollection;
-  credit_builder?: IAccountLiabilityCreditBuilder;
   credit_card?: IAccountLiabilityCreditCard;
-  insurance?: IAccountLiabilityInsurance;
-  loan?: IAccountLiabilityLoan;
-  medical?: IAccountLiabilityMedical;
   mortgage?: IAccountLiabilityMortgage;
   personal_loan?: IAccountLiabilityPersonalLoan;
-  student_loan?: IAccountLiabilityStudentLoan;
   student_loans?: IAccountLiabilityStudentLoans;
-  utility?: IAccountLiabilityUtility;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;

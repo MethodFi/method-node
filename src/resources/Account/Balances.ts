@@ -3,8 +3,9 @@ import Configuration from '../../configuration';
 
 export interface IAccountBalance {
   id: string;
+  account_id: string;
   status: TResourceStatus;
-  amount: number | null;
+  amount: number;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;

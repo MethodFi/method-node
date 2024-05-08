@@ -140,7 +140,7 @@ export class Entity extends Resource {
    */
 
   async retrieve(ent_id: string, opts?: IEntityExpandOpts) {
-    return super._getWithSubPathAndParams<IEntity>(ent_id, opts);
+    return super._getWithSubPathAndParams<IEntity, IEntityExpandOpts | undefined>(ent_id, opts);
   }
 
   /**

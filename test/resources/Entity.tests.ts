@@ -12,7 +12,7 @@ import { IEntityVerificationSession } from '../../src/resources/Entity/Verificat
 
 should();
 
-describe.only('Entities - core methods tests', () => {
+describe('Entities - core methods tests', () => {
   let entities_create_response: IEntity | null = null;
   let entitiy_with_identity_cap: IEntity | null = null;
   let entities_get_response: IEntity | null = null;

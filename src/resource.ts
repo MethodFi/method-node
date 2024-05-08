@@ -59,14 +59,14 @@ export default class Resource extends ExtensibleFunction {
 
   private configureRequestInterceptors(): void {
     this.client.interceptors.request.use((request) => {
-      request.headers['request-start-time'] = Date.now();
+      if (request.headers) request.headers['request-start-time'] = Date.now();
 
       if (this.config.onRequest) {
         this.config.onRequest({
-          method: request.method.toUpperCase(),
-          idempotency_key: request.headers['Idempotency-Key'] as string || null,
+          method: request?.method?.toUpperCase() as string,
+          idempotency_key: request?.headers?.['Idempotency-Key'] as string || null,
           path: new URL(`${request.baseURL}${request.url}`).pathname,
-          request_start_time: request.headers['request-start-time'] as number,
+          request_start_time: request?.headers?.['request-start-time'] as number,
         });
       }
 
@@ -77,20 +77,20 @@ export default class Resource extends ExtensibleFunction {
   private configureResponseInterceptors(): void {
     const extractResponseEvent = (response: AxiosResponse) => {
       const payload = {
-        request_id: response.headers['idem-request-id'] || null,
-        idempotency_status: response.headers['idem-status'] as TResponseEventIdemStatuses || null,
-        method: response.config.method.toUpperCase(),
-        path: new URL(`${response.config.baseURL}${response.config.url}`).pathname,
-        status: response.status,
-        request_start_time: response.config.headers['request-start-time'] as number,
+        request_id: response.headers['idem-request-id'] || '',
+        idempotency_status: response.headers['idem-status'] as TResponseEventIdemStatuses || '',
+        method: response?.config?.method?.toUpperCase() || '',
+        path: new URL(`${response.config.baseURL}${response.config.url}`).pathname || '',
+        status: response.status || 0,
+        request_start_time: response?.config?.headers?.['request-start-time'] as number,
         request_end_time: Date.now(),
         pagination: {
           page: 1,
           page_count: 1,
           page_limit: 1,
           total_count: 1,
-          page_cursor_next: null,
-          page_cursor_prev: null,
+          page_cursor_next: '',
+          page_cursor_prev: '',
         },
       };
 

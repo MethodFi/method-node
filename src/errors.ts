@@ -28,11 +28,15 @@ export class MethodError extends Error {
   }
 
   static generate(opts: MethodErrorOpts): MethodError {
+    let error;
+    
     switch (opts.type) {
-      case MethodErrorTypes.API_ERROR: return new MethodInternalError(opts);
-      case MethodErrorTypes.INVALID_REQUEST: return new MethodInvalidRequestError(opts);
-      case MethodErrorTypes.INVALID_AUTHORIZATION: return new MethodAuthorizationError(opts);
+      case MethodErrorTypes.API_ERROR: error = new MethodInternalError(opts);
+      case MethodErrorTypes.INVALID_REQUEST: error = new MethodInvalidRequestError(opts);
+      case MethodErrorTypes.INVALID_AUTHORIZATION: error = new MethodAuthorizationError(opts);
     }
+    
+    return error;
   }
 };
 
