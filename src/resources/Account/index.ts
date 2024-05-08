@@ -50,10 +50,6 @@ export interface IAccountWithdrawConsentOpts {
   reason: 'holder_withdrew_consent' | null;
 };
 
-export interface IAccountExpandOpts {
-  expand: TAccountExpandableFields[];
-};
-
 export class AccountSubResources {
   balances: AccountBalances;
   cards: AccountCards;
@@ -98,7 +94,7 @@ export class Account extends Resource {
 
   // TODO: make the string also possible to be null
   async retrieve<K extends TAccountExpandableFields = never>(acc_id: string, opts?: { expand: K[] }) {
-    return super._getWithSubPathAndParams<{[P in keyof IAccount]: P extends K ? Exclude<IAccount[P], string | null> : Extract<IAccount[P], string | null>}, { expand: K[]; } | undefined>(acc_id, opts);
+    return super._getWithSubPathAndParams<{[P in keyof IAccount]: P extends K ? Exclude<IAccount[P], string> : Extract<IAccount[P], string | null>}, { expand: K[]; } | undefined>(acc_id, opts);
   }
 
   /**

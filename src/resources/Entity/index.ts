@@ -67,10 +67,6 @@ export interface IEntityWithdrawConsentOpts {
   reason: 'entity_withdrew_consent' | null,
 };
 
-export interface IEntityExpandOpts {
-  expand?: TEntityExpandableFields[];
-};
-
 export class EntitySubResources {
   connect: EntityConnect;
   creditScores: EntityCreditScores;
@@ -139,8 +135,8 @@ export class Entity extends Resource {
    * @returns Retrieved entity (IEntity)
    */
 
-  async retrieve(ent_id: string, opts?: IEntityExpandOpts) {
-    return super._getWithSubPathAndParams<IEntity, IEntityExpandOpts | undefined>(ent_id, opts);
+  async retrieve<K extends TEntityExpandableFields = never>(ent_id: string, opts?: { expand: K[] }) {
+    return super._getWithSubPathAndParams<{[P in keyof IEntity]: P extends K ? Exclude<IEntity[P], string> : Extract<IEntity[P], string | null>}, { expand: K[]; } | undefined>(ent_id, opts);
   }
 
   /**
