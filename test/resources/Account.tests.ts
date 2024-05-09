@@ -14,7 +14,7 @@ import { IAccountTransaction } from '../../src/resources/Account/Transactions';
 
 should();
 
-describe('Accounts - core methods tests', () => {
+describe.only('Accounts - core methods tests', () => {
   let holder_1_response: IEntity | null = null;
   let holder_connect_response: IEntityConnect | null = null;
   let accounts_create_ach_response: IAccount | null = null;
@@ -106,7 +106,7 @@ describe('Accounts - core methods tests', () => {
         balance: null,
         update: null,
         card_brand: null,
-        products: [ 'sensitive', 'balance', 'payment' ],
+        products: [ 'balance', 'payment', 'sensitive' ],
         restricted_products: accounts_create_liability_response?.restricted_products,
         subscriptions: accounts_create_liability_response.subscriptions,
         available_subscriptions: [],

@@ -133,16 +133,22 @@ export interface IAuthElementCreateOpts {
   entity?: IElementEntityOpts;
 };
 
-export interface IElementConnectOpts {
+export interface IConnectElementFilterOpts {
+  selection_type?: TAuthElementAccountFilterSelectionTypes;
+  liability_types?: TAuthElementAccountFilterTypes[];
+};
+
+export interface IConnectElementCreateOpts {
   products: TElementProductTypes[];
   accounts?: string[];
   entity?: IElementEntityOpts;
+  account_filters?: IConnectElementFilterOpts;
 };
 
 export interface IElementTokenCreateOpts {
   type: TElementTypes;
   entity_id?: string;
-  connect?: IElementConnectOpts;
+  connect?: IConnectElementCreateOpts;
   link?: ILinkElementCreateOpts;
   auth?: IAuthElementCreateOpts;
 };
