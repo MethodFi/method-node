@@ -6,7 +6,7 @@ import { IEntity } from '../../src/resources/Entity/types';
 import { IEntityConnect } from '../../src/resources/Entity/Connect';
 import { IAccount } from '../../src/resources/Account/types';
 import { IAccountBalance } from '../../src/resources/Account/Balances';
-import { IAccountCard } from '../../src/resources/Account/Cards';
+import { IAccountCardBrand } from '../../src/resources/Account/CardBrands';
 import { IAccountPayoff } from '../../src/resources/Account/Payoffs';
 import { IAccountSensitive } from '../../src/resources/Account/Sensitive';
 import { IAccountVerificationSession } from '../../src/resources/Account/VerificationSessions';
@@ -24,7 +24,7 @@ describe('Accounts - core methods tests', () => {
   let balances_create_response: IAccountBalance | null = null;
   let test_credit_card_account: IAccount | null = null;
   let test_auto_loan_account: IAccount | null = null;
-  let card_create_response: IAccountCard | null = null;
+  let card_create_response: IAccountCardBrand | null = null;
   let payoff_create_response: IAccountPayoff | null = null;
   let verification_session_create: IAccountVerificationSession | null = null;
   let verification_session_update: IAccountVerificationSession | null = null;
@@ -105,8 +105,8 @@ describe('Accounts - core methods tests', () => {
         latest_verification_session: accounts_create_liability_response.latest_verification_session,
         balance: null,
         update: null,
-        card: null,
-        products: [ 'account_sensitive', 'balance', 'payment' ],
+        card_brand: null,
+        products: [ 'sensitive', 'balance', 'payment' ],
         restricted_products: accounts_create_liability_response?.restricted_products,
         subscriptions: accounts_create_liability_response.subscriptions,
         available_subscriptions: [],
@@ -216,11 +216,11 @@ describe('Accounts - core methods tests', () => {
     });  
   });
 
-  describe('accounts.cards', () => {
+  describe('accounts.cardBrands', () => {
     it('should successfully create a card for an account.', async () => {
       card_create_response = await client
         .accounts(test_credit_card_account?.id || '')
-        .cards
+        .cardBrands
         .create();
 
         const expect_results = {
@@ -254,7 +254,7 @@ describe('Accounts - core methods tests', () => {
     it('should successfully retrieve a card for an account.', async () => {
       const card_retrieve_response = await client
         .accounts(test_credit_card_account?.id || '')
-        .cards
+        .cardBrands
         .retrieve(card_create_response?.id || '');
 
       const expect_results = {

@@ -1,6 +1,6 @@
 import Resource, { IRequestConfig, IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
-import AccountCards from './Cards';
+import AccountCardBrand from './CardBrands';
 import AccountPayoffs from './Payoffs';
 import AccountUpdates from './Updates';
 import AccountBalances from './Balances';
@@ -52,7 +52,7 @@ export interface IAccountWithdrawConsentOpts {
 
 export class AccountSubResources {
   balances: AccountBalances;
-  cards: AccountCards;
+  cardBrands: AccountCardBrand;
   payoffs: AccountPayoffs;
   sensitive: AccountSensitive;
   subscriptions: AccountSubscriptions;
@@ -62,7 +62,7 @@ export class AccountSubResources {
 
   constructor(acc_id: string, config: Configuration) {
     this.balances = new AccountBalances(config.addPath(acc_id));
-    this.cards = new AccountCards(config.addPath(acc_id));
+    this.cardBrands = new AccountCardBrand(config.addPath(acc_id));
     this.payoffs = new AccountPayoffs(config.addPath(acc_id));
     this.sensitive = new AccountSensitive(config.addPath(acc_id));
     this.subscriptions = new AccountSubscriptions(config.addPath(acc_id));

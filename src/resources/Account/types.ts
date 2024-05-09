@@ -1,7 +1,7 @@
 import { IResourceError } from "../../resource";
 import type { IAccountSensitive } from "./Sensitive";
 import type { IAccountBalance } from "./Balances";
-import type { IAccountCard } from "./Cards";
+import type { IAccountCardBrand } from "./CardBrands";
 import type { IAccountPayoff } from "./Payoffs";
 import type { IAccountTransaction } from "./Transactions";
 import type { IAccountVerificationSession } from "./VerificationSessions";
@@ -25,8 +25,8 @@ export type TAccountStatuses = keyof typeof AccountStatuses;
 export const AccountProducts = {
   payment: 'payment',
   balance: 'balance',
-  account_sensitive: 'account_sensitive',
-  card: 'card',
+  sensitive: 'sensitive',
+  card_brand: 'card_brand',
   payoff: 'payoff',
   update: 'update',
 };
@@ -83,12 +83,7 @@ export const AchAccountSubTypes = {
 export type TAchAccountSubTypes = keyof typeof AchAccountSubTypes;
 
 export const AccountExpandableFields = {
-  account_sensitive: 'account_sensitive',
-  balance: 'balance',
-  card: 'card',
-  payoff: 'payoff',
-  transactions: 'transactions',
-  update: 'update',
+  ...AccountProducts,
   latest_verification_session: 'latest_verification_session',
 };
 
@@ -240,9 +235,9 @@ export interface IAccount {
   subscriptions?: string[];
   available_subscriptions?: string[];
   restricted_subscriptions?: string[];
-  account_sensitive: string | IAccountSensitive | null;
+  sensitive: string | IAccountSensitive | null;
   balance: string | IAccountBalance | null;
-  card: string | IAccountCard | null;
+  card_brand: string | IAccountCardBrand | null;
   payoff: string | IAccountPayoff | null;
   transactions: string | IAccountTransaction[] | null;
   update: string | IAccountUpdate | null;

@@ -1,19 +1,19 @@
 import Resource, { IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 
-export interface IAccountCardBrand {
+export interface IAccountCardBrandInfo {
   art_id: string;
   url: string;
   name: string;
 };
 
-export interface IAccountCard {
+export interface IAccountCardBrand {
   id: string;
   account_id: string;
   network: string;
   issuer: string;
   last4: string;
-  brands: IAccountCardBrand[];
+  brands: IAccountCardBrandInfo[];
   status: 'completed' | 'failed';
   shared: boolean;
   error: IResourceError | null;
@@ -21,9 +21,9 @@ export interface IAccountCard {
   updated_at: string;
 };
 
-export default class AccountCards extends Resource {
+export default class AccountCardBrand extends Resource {
   constructor(config: Configuration) {
-    super(config.addPath('cards'));
+    super(config.addPath('card_brands'));
   }
 
   /**
@@ -33,7 +33,7 @@ export default class AccountCards extends Resource {
    */
 
   async create() {
-    return super._create<IAccountCard, {}>({});
+    return super._create<IAccountCardBrand, {}>({});
   }
 
   /**
@@ -44,6 +44,6 @@ export default class AccountCards extends Resource {
    */
 
   async retrieve(crd_id: string) {
-    return super._getWithId<IAccountCard>(crd_id);
+    return super._getWithId<IAccountCardBrand>(crd_id);
   }
 };
