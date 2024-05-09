@@ -5,11 +5,13 @@ import { IAccount } from '../Account';
 export const ElementTypes = {
   link: 'link',
   auth: 'auth',
+  connect: 'connect',
 };
 
 export type TElementTypes =
   | 'link'
-  | 'auth';
+  | 'auth'
+  | 'connect';
 
 export type TAuthElementAccountFilterTypes =
   | 'auto_loan'
@@ -26,6 +28,13 @@ export type TAuthElementAccountFilterCapabilities =
 export type TAuthElementAccountFilterSelectionTypes =
   | 'single'
   | 'multiple';
+
+export type TElementProductTypes =
+  | 'balance'
+  | 'payoff'
+  | 'transactions'
+  | 'card_brands'
+  | 'update';
 
 export const UserEventType = {
   AUTH_INTRO_OPEN: 'AUTH_INTRO_OPEN',
@@ -148,9 +157,15 @@ export interface IAuthElementEntityOpts {
     phone_verification_timestamp?: string;
   }
 }
+
 export interface IAuthElementCreateOpts {
   account_filters?: IAuthElementAccountFiltersOpts;
   entity?: IAuthElementEntityOpts
+}
+
+export interface IConnectElementCreateOpts extends IAuthElementCreateOpts {
+  products: TElementProductTypes[];
+  accounts?: string[];
 }
 
 export interface IElementTokenCreateOpts {
@@ -161,6 +176,7 @@ export interface IElementTokenCreateOpts {
   team_icon?: string | null;
   link?: ILinkElementCreateOpts;
   auth?: IAuthElementCreateOpts;
+  connect?: IConnectElementCreateOpts;
 }
 
 export interface IElement {
