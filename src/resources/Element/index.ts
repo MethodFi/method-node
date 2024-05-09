@@ -19,7 +19,8 @@ export type TAuthElementAccountFilterTypes =
   | 'credit_card'
   | 'loan'
   | 'student_loan'
-  | 'personal_loan'
+  | 'student_loans'
+  | 'personal_loan';
 
 export type TAuthElementAccountFilterCapabilities =
   | 'payments:receive'
