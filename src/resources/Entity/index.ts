@@ -143,17 +143,6 @@ export class Entity extends Resource {
   }
 
   /**
-   * Refresh an entity's capabilities
-   * 
-   * @param ent_id ent_id
-   * @returns IEntity
-   */
-
-  async refreshCapabilities(ent_id: string) {
-    return super._createWithSubPath<IEntity, {}>(`/${ent_id}/refresh_capabilities`, {});
-  }
-
-  /**
    * Withdraws consent for an entity
    * 
    * @param ent_id ent_id
