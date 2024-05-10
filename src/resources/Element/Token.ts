@@ -54,7 +54,7 @@ export type TUserEventType = keyof typeof UserEventType;
 
 export interface IElementUserEvent {
   type: TUserEventType,
-  timestamp: Date,
+  timestamp: string,
   metadata: {} | null,
 };
 
