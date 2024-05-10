@@ -1,5 +1,5 @@
 import { IResourceError } from "../../resource";
-import EntityProducts, { TEntityProductType } from "./Products";
+import { TEntityProductType } from "./Products";
 import { TEntitySubscriptionNames } from "./Subscriptions";
 
 export const CreditReportBureaus = {
@@ -12,26 +12,10 @@ export type TCreditReportBureaus = keyof typeof CreditReportBureaus;
 
 export const EntityTypes = {
   individual: 'individual',
-  c_corporation: 'c_corporation',
-  s_corporation: 's_corporation',
-  llc: 'llc',
-  partnership: 'partnership',
-  sole_proprietorship: 'sole_proprietorship',
-  receive_only: 'receive_only',
+  corporation: 'c_corporation',
 };
 
 export type TEntityTypes = keyof typeof EntityTypes;
-
-export const EntityCapabilities = {
-  payments_send: 'payments:send',
-  payments_receive: 'payments:receive',
-  payments_limited_send: 'payments:limited-send',
-  data_retrieve: 'data:retrieve',
-  data_sync: 'data:sync',
-  transaction_stream: 'transaction:stream',
-} as const;
-
-export type TEntityCapabilities = typeof EntityCapabilities[keyof typeof EntityCapabilities];
 
 export const EntityStatuses = {
   active: 'active',

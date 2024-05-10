@@ -148,6 +148,9 @@ export interface IConnectElementCreateOpts {
 export interface IElementTokenCreateOpts {
   type: TElementTypes;
   entity_id?: string;
+  team_name?: string;
+  team_logo?: string | null;
+  team_icon?: string | null;
   connect?: IConnectElementCreateOpts;
   link?: ILinkElementCreateOpts;
   auth?: IAuthElementCreateOpts;

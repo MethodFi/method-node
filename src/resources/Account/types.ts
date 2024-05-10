@@ -210,11 +210,11 @@ export interface IAccountLiabilityStudentLoans extends IAccountLiabilityBase {
 
 export interface IAccountLiability {
   mch_id: string;
-  mask: string;
-  ownership: string;
-  fingerprint: string;
-  type: string;
-  name: string;
+  mask: string | null;
+  ownership: string | null;
+  fingerprint: string| null;
+  type: string | null;
+  name: string | null;
 }
 
 export interface IAccountACH {

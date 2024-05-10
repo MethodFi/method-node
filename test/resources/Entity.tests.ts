@@ -1,4 +1,5 @@
 import { should } from 'chai';
+import { describe } from 'mocha';
 import { client } from '../config';
 import { awaitResults } from '../utils';
 import { IEntity } from '../../src/resources/Entity/types';
@@ -35,6 +36,8 @@ describe('Entities - core methods tests', () => {
         individual: {},
         metadata: {},
       });
+
+      entities_create_response?.restricted_subscriptions?.sort();
 
       const expect_results = {
         id: entities_create_response?.id,
@@ -76,7 +79,7 @@ describe('Entities - core methods tests', () => {
         restricted_products: entities_create_response?.restricted_products,
         subscriptions: [],
         available_subscriptions: [],
-        restricted_subscriptions: [ 'connect', 'credit_score' ],
+        restricted_subscriptions: [ 'connect', 'credit_score' ].sort(),
         status: 'incomplete',
         error: null,
         metadata: {},
@@ -92,6 +95,7 @@ describe('Entities - core methods tests', () => {
     it('should successfully get an entity.', async () => {
       entities_get_response = await client.entities.retrieve(entities_create_response?.id || '');
       entities_get_response?.restricted_products?.sort();
+      entities_get_response?.restricted_subscriptions?.sort();
 
       const expect_results = {
         id: entities_create_response?.id,
@@ -133,7 +137,7 @@ describe('Entities - core methods tests', () => {
         restricted_products: [ 'connect', 'identity', 'credit_score' ].sort(),
         subscriptions: [],
         available_subscriptions: [],
-        restricted_subscriptions: [ 'connect', 'credit_score' ],
+        restricted_subscriptions: [ 'connect', 'credit_score' ].sort(),
         status: 'incomplete',
         error: null,
         metadata: {},
@@ -159,7 +163,7 @@ describe('Entities - core methods tests', () => {
       );
 
       entities_update_response?.available_subscriptions?.sort();
-      entities_update_response?.products?.sort();
+      entities_update_response?.restricted_products?.sort();
       
       const expect_results = {
         id: entities_create_response?.id,
@@ -176,25 +180,33 @@ describe('Entities - core methods tests', () => {
         address: { line1: null, line2: null, city: null, state: null, zip: null },
         verification: {
           identity: {
-            verified: true,
+            verified: false,
             matched: true,
             latest_verification_session: entities_update_response?.verification?.identity?.latest_verification_session,
-            methods: []
+            methods: [
+              'element',
+              'kba'
+            ]
           },
           phone: {
-            verified: true,
+            verified: false,
             latest_verification_session: entities_update_response?.verification?.phone?.latest_verification_session,
-            methods: []
+            methods: [
+              'element',
+              'sna',
+              'sms',
+              'byo_sms'
+            ]
           }
         },
         connect: null,
         credit_score: null,
-        products: [ 'connect', 'credit_score', 'identity' ].sort(),
-        restricted_products: [],
+        products: [ 'identity' ],
+        restricted_products: ['connect', 'credit_score'].sort(),
         subscriptions: [],
-        available_subscriptions: [ 'connect', 'credit_score' ].sort(),
-        restricted_subscriptions: [],
-        status: 'active',
+        available_subscriptions: [],
+        restricted_subscriptions: [ 'connect', 'credit_score' ].sort(),
+        status: 'incomplete',
         error: null,
         metadata: {},
         created_at: entities_update_response?.created_at,
@@ -211,6 +223,59 @@ describe('Entities - core methods tests', () => {
 
       (entities_list_response !== null).should.be.true;
       Array.isArray(entities_list_response).should.be.true;
+    });
+  });
+
+  describe('entities.verification_sessions', () => {
+    it('should create a phone verification session for an entity', async () => {
+      const entities_create_phone_verification_session_response = await client.entities(entities_create_response?.id || '').verificationSessions.create({
+        type: 'phone',
+        method: 'byo_sms',
+        byo_sms: {
+          timestamp: '2021-09-01T00:00:00.000Z',
+        },
+      });
+
+      const expect_results = {
+        id: entities_create_phone_verification_session_response?.id,
+        entity_id: entities_create_response?.id,
+        byo_sms: {
+          timestamp: '2021-09-01T00:00:00.000Z',
+        },
+        method: 'byo_sms',
+        status: 'verified',
+        type: 'phone',
+        error: null,
+        created_at: entities_create_phone_verification_session_response?.created_at,
+        updated_at: entities_create_phone_verification_session_response?.updated_at,
+      };
+
+      entities_create_phone_verification_session_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully create an identity verification session for an entity', async () => {
+      entities_create_verification_session_response = await client.entities(entities_create_response?.id || '').verificationSessions.create({
+        type: 'identity',
+        method: 'kba',
+        kba: {},
+      });
+
+      const expect_results = {
+        id: entities_create_verification_session_response?.id,
+        entity_id: entities_create_response?.id,
+        kba: {
+          authenticated: true,
+          questions: []
+        },
+        method: 'kba',
+        status: 'verified',
+        type: 'identity',
+        error: null,
+        created_at: entities_create_verification_session_response?.created_at,
+        updated_at: entities_create_verification_session_response?.updated_at,
+      };
+
+      entities_create_verification_session_response.should.be.eql(expect_results);
     });
   });
 
@@ -593,39 +658,6 @@ describe('Entities - core methods tests', () => {
       };
       
       entities_subscription_delete_response.should.be.eql(expect_results);
-    });
-  });
-
-  describe('entities.verification_sessions', () => {
-    it('should create a verification session for an entity', async () => {
-      const entitiy_to_verify = await client.entities.create({
-        type: 'individual',
-        individual: {
-          first_name: 'Kevin',
-          last_name: 'Doyle',
-          dob: '1930-03-11',
-          phone: '+15121231111',
-        },
-      });
-
-      entities_create_verification_session_response = await client.entities(entitiy_to_verify?.id || '').verificationSessions.create({
-        type: 'phone',
-        method: 'sms',
-        sms: {},
-      });
-
-      console.log(entities_create_verification_session_response);
-
-      const expect_results = {
-        id: entities_create_verification_session_response?.id,
-        entity_id: entitiy_to_verify?.id,
-        status: 'pending',
-        error: null,
-        created_at: entities_create_verification_session_response?.created_at,
-        updated_at: entities_create_verification_session_response?.updated_at,
-      };
-
-      entities_create_verification_session_response.should.be.eql(expect_results);
     });
   });
 });

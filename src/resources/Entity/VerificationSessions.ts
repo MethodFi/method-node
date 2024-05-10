@@ -20,7 +20,7 @@ export const EntityVerificationSessionCategories = {
 export type IEntityVerificationSessionCategories = keyof typeof EntityVerificationSessionCategories;
 
 export interface IEntitySmsVerification {
-  timestamp: Date;
+  timestamp: string;
 };
 
 export interface IEntitySmsVerificationUpdate {
@@ -87,8 +87,8 @@ export interface IEntityVerificationSession {
   kba: IEntityKbaVerification | null;
   auth_element: IEntityKbaVerification | null;
   error: IResourceError | null;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 };
 
 export default class EntityVerificationSession extends Resource {

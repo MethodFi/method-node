@@ -11,7 +11,6 @@ import type {
   IEntityAddress,
   IEntityIndividual,
   IEntityCorporation,
-  IEntityReceiveOnly,
   TEntityTypes
 } from './types';
 
@@ -36,18 +35,8 @@ export interface IIndividualCreateOpts extends IEntityCreateOpts {
 };
 
 export interface ICorporationCreateOpts extends IEntityCreateOpts {
-  type:
-  | 'c_corporation'
-  | 's_corporation'
-  | 'llc'
-  | 'partnership'
-  | 'sole_proprietorship';
+  type: 'corporation';
   corporation: Partial<IEntityCorporation>;
-};
-
-export interface IReceiveOnlyCreateOpts extends IEntityCreateOpts {
-  type: 'receive_only';
-  receive_only: IEntityReceiveOnly;
 };
 
 export interface IEntityUpdateOpts {
@@ -60,7 +49,6 @@ export interface IEntityListOpts extends IResourceListOpts {
   status?: string | null;
   type?: string | null;
 };
-
 
 export interface IEntityWithdrawConsentOpts {
   type: 'withdraw',
@@ -107,10 +95,10 @@ export class Entity extends Resource {
    */
 
   async create(
-    opts: IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts,
+    opts: IIndividualCreateOpts | ICorporationCreateOpts,
     requestConfig?: IRequestConfig,
   ) {
-    return super._create<IEntity, IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts>(
+    return super._create<IEntity, IIndividualCreateOpts | ICorporationCreateOpts>(
       opts,
       requestConfig,
     );
@@ -136,7 +124,11 @@ export class Entity extends Resource {
    */
 
   async retrieve<K extends TEntityExpandableFields = never>(ent_id: string, opts?: { expand: K[] }) {
-    return super._getWithSubPathAndParams<{[P in keyof IEntity]: P extends K ? Exclude<IEntity[P], string> : Extract<IEntity[P], string | null>}, { expand: K[]; } | undefined>(ent_id, opts);
+    return super._getWithSubPathAndParams<{
+      [P in keyof IEntity]: P extends K
+        ? Exclude<IEntity[P], string>
+        : Extract<IEntity[P], string | null>
+      }, { expand: K[]; } | undefined>(ent_id, opts);
   }
 
   /**

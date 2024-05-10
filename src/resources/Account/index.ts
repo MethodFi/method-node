@@ -93,7 +93,11 @@ export class Account extends Resource {
    */
 
   async retrieve<K extends TAccountExpandableFields = never>(acc_id: string, opts?: { expand: K[] }) {
-    return super._getWithSubPathAndParams<{[P in keyof IAccount]: P extends K ? Exclude<IAccount[P], string> : Extract<IAccount[P], string | null>}, { expand: K[]; } | undefined>(acc_id, opts);
+    return super._getWithSubPathAndParams<{
+      [P in keyof IAccount]: P extends K
+        ? Exclude<IAccount[P], string>
+        : Extract<IAccount[P], string | null>
+      }, { expand: K[]; } | undefined>(acc_id, opts);
   }
 
   /**

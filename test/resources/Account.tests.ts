@@ -9,12 +9,12 @@ import { IAccountBalance } from '../../src/resources/Account/Balances';
 import { IAccountCardBrand } from '../../src/resources/Account/CardBrands';
 import { IAccountPayoff } from '../../src/resources/Account/Payoffs';
 import { IAccountSensitive } from '../../src/resources/Account/Sensitive';
-import { IAccountVerificationSession } from '../../src/resources/Account/VerificationSessions';
 import { IAccountTransaction } from '../../src/resources/Account/Transactions';
+import { IAccountVerificationSession } from '../../src/resources/Account/VerificationSessions';
 
 should();
 
-describe.only('Accounts - core methods tests', () => {
+describe('Accounts - core methods tests', () => {
   let holder_1_response: IEntity | null = null;
   let holder_connect_response: IEntityConnect | null = null;
   let accounts_create_ach_response: IAccount | null = null;
@@ -39,6 +39,18 @@ describe.only('Accounts - core methods tests', () => {
         last_name: 'McTesterson',
         phone: '+15121231111'
       }
+    });
+    await client.entities(holder_1_response?.id || '').verificationSessions.create({
+      type: 'phone',
+      method: 'byo_sms',
+      byo_sms: {
+        timestamp: '2021-09-01T00:00:00.000Z',
+      },
+    });
+    await client.entities(holder_1_response?.id || '').verificationSessions.create({
+      type: 'identity',
+      method: 'kba',
+      kba: {},
     });
     holder_connect_response = await client.entities(holder_1_response?.id || '').connect.create();
     test_credit_card_account = (await client.accounts.list({
@@ -96,6 +108,7 @@ describe.only('Accounts - core methods tests', () => {
         holder_id: holder_1_response?.id,
         type: 'liability',
         liability: {
+          fingerprint: null,
           mch_id: 'mch_183',
           mask: '8721',
           ownership: 'unknown',
@@ -135,7 +148,11 @@ describe.only('Accounts - core methods tests', () => {
         id: accounts_create_ach_response?.id,
         holder_id: holder_1_response?.id,
         type: 'ach',
-        ach: { routing: '062103000', number: '123456789', type: 'checking' },
+        ach: {
+          routing: '062103000',
+          number: '123456789',
+          type: 'checking'
+        },
         latest_verification_session: accounts_create_ach_response?.latest_verification_session,
         products: [ 'payment' ],
         restricted_products: [],
