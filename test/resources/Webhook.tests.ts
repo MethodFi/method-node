@@ -5,6 +5,7 @@ import { IWebhook } from '../../src/resources/Webhook';
 
 should();
 
+// TODO: Add tests for each webhook type
 describe('Webhooks - core methods tests', () => {
   let webhooks_create_response: IWebhook | null = null;
   let webhooks_get_response: IWebhook | null = null;
@@ -19,7 +20,16 @@ describe('Webhooks - core methods tests', () => {
         auth_token: Math.random().toString(),
       });
 
-      (webhooks_create_response !== null).should.be.true;
+      const expect_results = {
+        id: webhooks_create_response?.id,
+        type: 'payment.create',
+        url: 'https://dev.methodfi.com',
+        metadata: null,
+        created_at: webhooks_create_response?.created_at,
+        updated_at: webhooks_create_response?.updated_at,
+      };
+
+      webhooks_create_response.should.be.eql(expect_results);
     });
   });
 
@@ -27,7 +37,16 @@ describe('Webhooks - core methods tests', () => {
     it('should successfully get a webhook.', async () => {
       webhooks_get_response = await client.webhooks.retrieve(webhooks_create_response?.id || '');
 
-      (webhooks_get_response !== null).should.be.true;
+      const expect_results = {
+        id: webhooks_create_response?.id,
+        type: 'payment.create',
+        url: 'https://dev.methodfi.com',
+        metadata: null,
+        created_at: webhooks_get_response?.created_at,
+        updated_at: webhooks_get_response?.updated_at,
+      };
+
+      webhooks_get_response.should.be.eql(expect_results);
     });
   });
 
