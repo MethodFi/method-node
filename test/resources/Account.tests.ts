@@ -10,6 +10,7 @@ import { IAccountCardBrand } from '../../src/resources/Account/CardBrands';
 import { IAccountPayoff } from '../../src/resources/Account/Payoffs';
 import { IAccountSensitive } from '../../src/resources/Account/Sensitive';
 import { IAccountTransaction } from '../../src/resources/Account/Transactions';
+import { IAccountSubscriptionsCreateResponse } from '../../src/resources/Account/Subscriptions';
 import { IAccountVerificationSession } from '../../src/resources/Account/VerificationSessions';
 
 should();
@@ -30,6 +31,7 @@ describe('Accounts - core methods tests', () => {
   let verification_session_update: IAccountVerificationSession | null = null;
   let sensitive_data_response: IAccountSensitive | null = null;
   let transactions_response: IAccountTransaction | null = null;
+  let create_subscriptions_response: IAccountSubscriptionsCreateResponse | null = null;
 
   before(async () => {
     holder_1_response = await client.entities.create({
@@ -492,7 +494,7 @@ describe('Accounts - core methods tests', () => {
 
   describe('accounts.subscriptions', () => {
     it('should successfully create subscriptions.', async () => {
-      const subscriptions_response = await client
+      create_subscriptions_response = await client
         .accounts(test_credit_card_account?.id || '')
         .subscriptions
         .create({ enroll: ['transactions', 'update.snapshot'] });
@@ -500,27 +502,91 @@ describe('Accounts - core methods tests', () => {
       const expect_results = {
         transactions: {
           subscription: {
-            id: subscriptions_response.transactions?.subscription?.id,
+            id: create_subscriptions_response.transactions?.subscription?.id,
             name: 'transactions',
             status: 'active',
             latest_request_id: null,
-            created_at: subscriptions_response.transactions?.subscription?.created_at,
-            updated_at: subscriptions_response.transactions?.subscription?.updated_at
+            created_at: create_subscriptions_response.transactions?.subscription?.created_at,
+            updated_at: create_subscriptions_response.transactions?.subscription?.updated_at
           }
         },
         'update.snapshot': {
           subscription: {
-            id: subscriptions_response['update.snapshot']?.subscription?.id,
+            id: create_subscriptions_response['update.snapshot']?.subscription?.id,
             name: 'update.snapshot',
             status: 'active',
             latest_request_id: null,
-            created_at: subscriptions_response['update.snapshot']?.subscription?.created_at,
-            updated_at: subscriptions_response['update.snapshot']?.subscription?.updated_at
+            created_at: create_subscriptions_response['update.snapshot']?.subscription?.created_at,
+            updated_at: create_subscriptions_response['update.snapshot']?.subscription?.updated_at
           }
         }
       };
 
+      create_subscriptions_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully list subscriptions.', async () => {
+      const subscriptions_response = await await client
+        .accounts(test_credit_card_account?.id || '')
+        .subscriptions
+        .list();
+
+      const expect_results = {
+        transactions: {
+          id: create_subscriptions_response?.transactions?.subscription?.id,
+          name: 'transactions',
+          status: 'active',
+          latest_request_id: null,
+          created_at: subscriptions_response?.transactions?.created_at,
+          updated_at: subscriptions_response?.transactions?.updated_at
+        },
+        'update.snapshot': {
+          id: create_subscriptions_response?.['update.snapshot']?.subscription?.id,
+          name: 'update.snapshot',
+          status: 'active',
+          latest_request_id: null,
+          created_at: subscriptions_response['update.snapshot']?.created_at,
+          updated_at: subscriptions_response['update.snapshot']?.updated_at
+        }
+      };
+
       subscriptions_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully retrieve a subscription.', async () => {
+      const retrieve_subscriptions_response = await client
+        .accounts(test_credit_card_account?.id || '')
+        .subscriptions
+        .retrieve(create_subscriptions_response?.transactions?.subscription?.id || '');
+
+      const expect_results = {
+        id: create_subscriptions_response?.transactions?.subscription?.id,
+        name: 'transactions',
+        status: 'active',
+        latest_request_id: null,
+        created_at: retrieve_subscriptions_response?.created_at,
+        updated_at: retrieve_subscriptions_response?.updated_at
+      };
+
+      retrieve_subscriptions_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully delete a subscription.', async () => {
+      const delete_subscriptions_response = await client
+        .accounts(test_credit_card_account?.id || '')
+        .subscriptions
+        .delete(create_subscriptions_response?.['update.snapshot']?.subscription?.id || '');
+
+      const expect_results = {
+        id: create_subscriptions_response?.['update.snapshot']?.subscription?.id,
+        name: 'update.snapshot',
+        status: 'inactive',
+        latest_request_id: null,
+        created_at: delete_subscriptions_response?.created_at,
+        updated_at: delete_subscriptions_response?.updated_at
+      };
+
+      delete_subscriptions_response.should.be.eql(expect_results);
     });
   });
 
