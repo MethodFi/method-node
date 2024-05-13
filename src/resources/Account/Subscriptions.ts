@@ -1,13 +1,6 @@
 import Resource, { IResourceError } from '../../resource';
 import Configuration from '../../configuration';
-
-export const AccountSubscriptionTypes = {
-  transactions: 'transactions',
-  update: 'update',
-  update_snapshot: 'update.snapshot',
-} as const;
-
-export type TAccountSubscriptionTypes = typeof AccountSubscriptionTypes[keyof typeof AccountSubscriptionTypes];
+import type { TAccountSubscriptionTypes } from './types';
 
 export const AccountSubscriptionStatuses = {
   active: 'active',

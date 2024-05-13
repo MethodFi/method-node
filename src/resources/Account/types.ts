@@ -33,6 +33,14 @@ export const AccountProducts = {
 
 export type TAccountProducts = keyof typeof AccountProducts;
 
+export const AccountSubscriptionTypes = {
+  transactions: 'transactions',
+  update: 'update',
+  update_snapshot: 'update.snapshot',
+} as const;
+
+export type TAccountSubscriptionTypes = typeof AccountSubscriptionTypes[keyof typeof AccountSubscriptionTypes];
+
 export const AccountLiabilityPaymentStatuses = {
   active: 'active',
   activating: 'activating',
@@ -211,7 +219,7 @@ export interface IAccountLiabilityStudentLoans extends IAccountLiabilityBase {
 export interface IAccountLiability {
   mch_id: string;
   mask: string | null;
-  ownership: string | null;
+  ownership: TAccountOwnership | null;
   fingerprint: string| null;
   type: string | null;
   name: string | null;
@@ -232,13 +240,13 @@ export interface IAccount {
   liability?: IAccountLiability;
   products: TAccountProducts[];
   restricted_products: TAccountProducts[];
-  subscriptions?: string[];
-  available_subscriptions?: string[];
-  restricted_subscriptions?: string[];
+  subscriptions?: TAccountSubscriptionTypes[];
+  available_subscriptions?: TAccountSubscriptionTypes[];
+  restricted_subscriptions?: TAccountSubscriptionTypes[];
   sensitive: string | IAccountSensitive | null;
   balance: string | IAccountBalance | null;
-  card_brand: string | IAccountCardBrand | null;
-  payoff: string | IAccountPayoff | null;
+  card_brand?: string | IAccountCardBrand | null;
+  payoff?: string | IAccountPayoff | null;
   transactions: string | IAccountTransaction[] | null;
   update: string | IAccountUpdate | null;
   latest_verification_session: string | IAccountVerificationSession | null;

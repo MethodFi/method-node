@@ -1,6 +1,8 @@
 import { IResourceError } from "../../resource";
 import { TEntityProductType } from "./Products";
 import { TEntitySubscriptionNames } from "./Subscriptions";
+import { IEntityConnect } from "./Connect";
+import { IEntityCreditScores } from "./CreditScores";
 
 export const CreditReportBureaus = {
   experian: 'experian',
@@ -132,8 +134,8 @@ export interface IEntity {
   available_subscriptions?: TEntitySubscriptionNames[];
   restricted_subscriptions?: TEntitySubscriptionNames[];
   verification?: IEntityVerification;
-  connect: string | null;
-  credit_score: string | null;
+  connect: string | IEntityConnect | null;
+  credit_score: string| IEntityCreditScores | null;
   created_at: string;
   updated_at: string;
 };
