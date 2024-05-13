@@ -42,6 +42,7 @@ describe('Accounts - core methods tests', () => {
         phone: '+15121231111'
       }
     });
+
     await client.entities(holder_1_response?.id || '').verificationSessions.create({
       type: 'phone',
       method: 'byo_sms',
@@ -49,17 +50,21 @@ describe('Accounts - core methods tests', () => {
         timestamp: '2021-09-01T00:00:00.000Z',
       },
     });
+
     await client.entities(holder_1_response?.id || '').verificationSessions.create({
       type: 'identity',
       method: 'kba',
       kba: {},
     });
+
     holder_connect_response = await client.entities(holder_1_response?.id || '').connect.create();
+    
     test_credit_card_account = (await client.accounts.list({
       holder_id: holder_1_response?.id || '',
       "liability.type": 'credit_card',
       "liability.mch_id": "mch_302086",
     }))[0];
+    
     test_auto_loan_account = (await client.accounts.list({
       holder_id: holder_1_response?.id || '',
       "liability.type": 'auto_loan',
@@ -163,7 +168,8 @@ describe('Accounts - core methods tests', () => {
         metadata: null,
         created_at: accounts_create_ach_response?.created_at,
         updated_at: accounts_get_response?.updated_at
-      }
+      };
+      
       accounts_get_response.should.be.eql(expect_results);
     });
   });
@@ -175,14 +181,15 @@ describe('Accounts - core methods tests', () => {
         type: 'liability',
         status: 'active',
       });
+
       const account_ids = accounts_list_response
         .map(account => account.id)
         .filter(acc_id => acc_id !== accounts_create_liability_response?.id)
         .sort((a, b) => a < b ? 1 : -1)
         .slice(0, holder_connect_response?.accounts?.length);
       
-      const connect_acc_ids = holder_connect_response?.accounts?.sort((a, b) => a < b ? 1 : -1) || ['no_data'];
-      const dupes = [...account_ids, ...connect_acc_ids]
+      const connect_acc_ids = holder_connect_response?.accounts?.sort((a, b) => a < b ? 1 : -1) || [ 'no_data' ];
+      const dupes = [...account_ids, ...connect_acc_ids];
       const test_length = Array.from(new Set(dupes)).length;
 
       accounts_list_response.should.be.not.null;
@@ -214,9 +221,9 @@ describe('Accounts - core methods tests', () => {
     it('should successfully retrieve the balance of an account.', async () => {
       const getAccountBalances = async () => {
         return client
-        .accounts(test_credit_card_account?.id || '')
-        .balances
-        .retrieve(balances_create_response?.id || '');
+          .accounts(test_credit_card_account?.id || '')
+          .balances
+          .retrieve(balances_create_response?.id || '');
       }
 
       const account_balances = await awaitResults(getAccountBalances);
@@ -624,6 +631,7 @@ describe('Accounts - core methods tests', () => {
   describe('accounts.withdrawConsent', () => {
     it('should successfully withdraw consent from an account.', async () => {
       const withdraw_consent_response = await client.accounts.withdrawConsent(test_credit_card_account?.id || '');
+      
       const expect_results = {
         id: test_credit_card_account?.id,
         holder_id: holder_1_response?.id,
@@ -646,7 +654,7 @@ describe('Accounts - core methods tests', () => {
         metadata: null,
         created_at: withdraw_consent_response.created_at,
         updated_at: withdraw_consent_response.updated_at
-      }
+      };
 
       withdraw_consent_response.should.be.eql(expect_results);
     });
