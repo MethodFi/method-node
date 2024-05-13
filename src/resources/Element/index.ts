@@ -164,21 +164,28 @@ export interface IAuthElementCreateOpts {
   entity?: IAuthElementEntityOpts
 }
 
-export interface IConnectElementCreateOpts extends IAuthElementCreateOpts {
+export interface IConnectElementFilterOpts {
+  selection_type?: TAuthElementAccountFilterSelectionTypes;
+  liability_types?: TAuthElementAccountFilterTypes[];
+};
+
+export interface IConnectElementCreateOpts {
   products: TElementProductTypes[];
   accounts?: string[];
-}
+  entity?: IAuthElementEntityOpts;
+  account_filters?: IConnectElementFilterOpts;
+};
 
 export interface IElementTokenCreateOpts {
-  entity_id?: string;
   type: TElementTypes;
+  entity_id?: string;
   team_name?: string;
   team_logo?: string | null;
   team_icon?: string | null;
   link?: ILinkElementCreateOpts;
   auth?: IAuthElementCreateOpts;
   connect?: IConnectElementCreateOpts;
-}
+};
 
 export interface IElement {
   element_token: string;
