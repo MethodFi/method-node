@@ -17,7 +17,7 @@ export default class AccountBalances extends Resource {
   }
 
   /**
-   * Retrieves the balance of an account
+   * Retrieves results of a Balance request for an account
    * 
    * @param bal_id ID of the balance
    * @returns IAccountBalance
@@ -28,7 +28,7 @@ export default class AccountBalances extends Resource {
   }
 
   /**
-   * Creates a request to get the balance of an account
+   * Creates a request to get the Balance of an account
    * 
    * @returns IAccountBalance
    */

@@ -9,15 +9,23 @@ export const AccountSubscriptionStatuses = {
 export type TAccountSubscriptionStatuses = keyof typeof AccountSubscriptionStatuses;
 
 export interface IAccountSubscription {
-  subscription?: {
-    id: string;
-    name: TAccountSubscriptionTypes;
-    status: TAccountSubscriptionStatuses;
-    latest_transaction_id: string;
-    created_at: string;
-    updated_at: string;
-  };
+  id: string;
+  name: TAccountSubscriptionTypes;
+  status: TAccountSubscriptionStatuses;
+  latest_transaction_id: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export interface IAccountWrappedSubscription {
+  subscription?: IAccountSubscription;
   error?: IResourceError;
+};
+
+export interface IAccountSubscriptionsCreateResponse {
+  transactions?: IAccountWrappedSubscription;
+  update?: IAccountWrappedSubscription;
+  'update.snapshot'?: IAccountWrappedSubscription;
 };
 
 export interface IAccountSubscriptionsResponse {
@@ -36,15 +44,49 @@ export default class AccountSubscriptions extends Resource {
   }
 
   /**
-   * Creates a subscription for an account
+   * Enrolls an Account to a list of Subscriptions. Once enrolled, the Subscription name and details will be present on the response object.
    * 
-   * @param data IAccountSubscriptionCreateOpts
-   * @returns IAccountSubscriptionsResponse
+   * Note: Subscription requests are processed individually, meaning the success or failure of one subscription does not affect others. The response object will detail any errors encountered.
+   * 
+   * @param data IAccountSubscriptionCreateOpts: https://docs-v2.methodfi.com/reference/accounts/subscriptions/create
+   * @returns Returns a map of Subscription name to Subscription object.
    */
 
   async create(data: IAccountSubscriptionCreateOpts) {
-    return super._create<IAccountSubscriptionsResponse, IAccountSubscriptionCreateOpts>(
+    return super._create<IAccountSubscriptionsCreateResponse, IAccountSubscriptionCreateOpts>(
       data
     )
+  }
+
+  /**
+   * Returns a map of Subscriptions names to Subscription objects associated with an Account, or an empty array if none have been created.
+   * 
+   * @returns Returns a map of Subscription names to Subscription objects.
+   */
+
+  async list() {
+    return super._get<IAccountSubscriptionsResponse>();
+  }
+
+  /**
+   * Retrieves a Subscription record for an Account.
+   * 
+   * @param sub_id ID of the Subscription
+   * @returns IAccountSubscription
+   */
+
+  async retrieve(sub_id: string) {
+    return super._getWithId<IAccountSubscription>(sub_id);
+  }
+
+  /**
+   * Deleting a Subscription means to unsubscribe or unenroll an Account from automatically receiving new Product resources.
+   * 
+   * @param sub_id ID of the Subscription
+   * @returns Returns a Subscription object.
+   */
+
+  async delete(sub_id: string) {
+    return super._delete<IAccountSubscription>(sub_id);
   }
 };

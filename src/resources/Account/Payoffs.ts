@@ -19,7 +19,7 @@ export default class AccountPayoffs extends Resource {
   }
 
   /**
-   * Retrieves results of a payoff request for an account
+   * Retrieves results of a Payoff request for an account
    * 
    * @param pyf_id payoff id
    * @returns AccountPayoff object
@@ -30,7 +30,7 @@ export default class AccountPayoffs extends Resource {
   }
 
   /**
-   * Creates a payoff request for an account
+   * Creates a Payoff request for an account
    * 
    * @returns AccountPayoff object
    */

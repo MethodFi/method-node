@@ -27,7 +27,7 @@ export default class AccountCardBrand extends Resource {
   }
 
   /**
-   * Creates a Card request for a credit card Account.
+   * Creates a Card Brand request for a credit card Account.
    * 
    * @returns Returns a Card object.
    */
@@ -37,7 +37,7 @@ export default class AccountCardBrand extends Resource {
   }
 
   /**
-   * Retrieves a Card object.
+   * Retrieves a Card Brand object.
    * 
    * @param crd_id ID of the Card
    * @returns Returns a Card object.
