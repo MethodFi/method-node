@@ -17,17 +17,6 @@ export interface IAccountSubscription {
   updated_at: string;
 };
 
-export interface IAccountWrappedSubscription {
-  subscription?: IAccountSubscription;
-  error?: IResourceError;
-};
-
-export interface IAccountSubscriptionsCreateResponse {
-  transactions?: IAccountWrappedSubscription;
-  update?: IAccountWrappedSubscription;
-  'update.snapshot'?: IAccountWrappedSubscription;
-};
-
 export interface IAccountSubscriptionsResponse {
   transactions?: IAccountSubscription;
   update?: IAccountSubscription;
@@ -35,7 +24,7 @@ export interface IAccountSubscriptionsResponse {
 };
 
 export interface IAccountSubscriptionCreateOpts {
-  enroll: TAccountSubscriptionTypes[];
+  enroll: TAccountSubscriptionTypes;
 };
 
 export default class AccountSubscriptions extends Resource {
@@ -52,9 +41,9 @@ export default class AccountSubscriptions extends Resource {
    * @returns Returns a map of Subscription name to Subscription object.
    */
 
-  async create(data: IAccountSubscriptionCreateOpts) {
-    return super._create<IAccountSubscriptionsCreateResponse, IAccountSubscriptionCreateOpts>(
-      data
+  async create(sub_name: TAccountSubscriptionTypes) {
+    return super._create<IAccountSubscriptionsResponse, IAccountSubscriptionCreateOpts>(
+      { enroll: sub_name }
     )
   }
 

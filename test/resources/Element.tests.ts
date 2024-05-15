@@ -57,6 +57,11 @@ describe('Elements - core methods tests', () => {
         type: 'connect',
         connect: {
           products: ['balance'],
+          accounts: [],
+          account_filters: {
+            selection_type: 'multiple',
+            liability_types: ['credit_card']
+          },
         }
       });
 

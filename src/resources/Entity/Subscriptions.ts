@@ -25,24 +25,13 @@ export interface IEntitySubscription {
   updated_at: string;
 };
 
-export interface IEntitySubscriptionCreateResponseOpts {
-  subscription?: IEntitySubscription;
-  error?: Partial<MethodError>;
-};
-
-export interface IEntitySubscriptionCreateResponse {
-  connect?: IEntitySubscriptionCreateResponseOpts;
-  credit_score?: IEntitySubscriptionCreateResponseOpts;
+export interface IEntitySubscriptionResponse {
+  connect?: IEntitySubscription;
+  credit_score?: IEntitySubscription;
 };
 
 export interface IEntitySubscriptionCreateOpts {
-  enroll: TEntitySubscriptionNames[];
-};
-
-export interface IEntitySubscriptionListResponse {
-  connect?: IEntitySubscription;
-  credit_score?: IEntitySubscription;
-  [key: string]: IEntitySubscription | undefined;
+  enroll: TEntitySubscriptionNames;
 };
 
 export default class EntitySubscriptions extends Resource {
@@ -54,13 +43,13 @@ export default class EntitySubscriptions extends Resource {
    * Enrolls an Entity to a list of Subscriptions. Once enrolled, the Subscription name and details will be present on the response object.
    * Being enrolled in a Subscription is independent of other Subscriptions. An error won’t prevent the Entity from being enrolled in other Subscriptions.
    * 
-   * @param opts A list of Subscription names to enroll the Entity in. enroll: ['connect', 'credit_score']
+   * @param sub_name A Subscription name to enroll the Entity in. enroll: ['connect', 'credit_score']
    * 
    * @returns Returns a map of Subscription name to either Subscription object or Error.
    */
 
-  async create(opts: IEntitySubscriptionCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IEntitySubscriptionCreateResponse, IEntitySubscriptionCreateOpts>(opts, requestConfig);
+  async create(sub_name: TEntitySubscriptionNames, requestConfig?: IRequestConfig) {
+    return super._create<IEntitySubscriptionResponse, IEntitySubscriptionCreateOpts>({ enroll: sub_name }, requestConfig);
   }
 
   /**
@@ -82,7 +71,7 @@ export default class EntitySubscriptions extends Resource {
    */
 
   async list() {
-    return super._get<IEntitySubscriptionListResponse>();
+    return super._get<IEntitySubscriptionResponse>();
   }
 
   /**
