@@ -223,7 +223,7 @@ export interface IAccountLiability {
   fingerprint: string| null;
   type: string | null;
   name: string | null;
-}
+};
 
 export interface IAccountACH {
   routing: string;
