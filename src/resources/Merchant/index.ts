@@ -25,37 +25,16 @@ export const MerchantTypes = {
   credit_builder: 'credit_builder',
 };
 
-export type TMerchantTypes =
-  | 'auto_loan'
-  | 'business_loan'
-  | 'credit_card'
-  | 'electric_utility'
-  | 'home_loan'
-  | 'insurance'
-  | 'internet_utility'
-  | 'loan'
-  | 'medical'
-  | 'personal_loan'
-  | 'student_loan'
-  | 'telephone_utility'
-  | 'television_utility'
-  | 'water_utility'
-  | 'bank'
-  | 'home_equity_loan'
-  | 'mortgage'
-  | 'utility'
-  | 'waste_utility'
-  | 'collection'
-  | 'credit_builder'
+export type TMerchantTypes = keyof typeof MerchantTypes;
 
 export interface IMerchantProviderIds {
   plaid: string[];
   mx: string[];
   finicity: string[];
-}
+};
 
 export interface IMerchant {
-  mch_id: string;
+  id: string;
   parent_name: string;
   name: string;
   logo: string;
@@ -66,29 +45,43 @@ export interface IMerchant {
   provider_ids: IMerchantProviderIds;
   customized_auth: boolean;
   is_temp: boolean;
-}
+};
 
 export interface IMerchantListOpts {
   page?: number | string | null;
   page_limit?: number | string | null;
-  type?: string | null;
-  name?: string,
-  creditor_name?:string,
-  'provider_id.plaid'?: string,
-  'provider_id.mx'?: string,
-  'provider_id.finicity'?: string,
-}
+  type?: TMerchantTypes | null;
+  name?: string;
+  creditor_name?: string;
+  'provider_id.plaid'?: string;
+  'provider_id.mx'?: string;
+  'provider_id.finicity'?: string;
+};
 
 export default class Merchant extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('merchants'));
   }
 
-  async get(id: string) {
-    return super._getWithId<IMerchant>(id);
+  /**
+   * Retrieves a merchant by id
+   * 
+   * @param mch_id Method merchant id
+   * @returns IMerchant
+   */
+
+  async retrieve(mch_id: string) {
+    return super._getWithId<IMerchant>(mch_id);
   }
 
-  async list(opts: IMerchantListOpts) {
+  /**
+   * Lists all merchants
+   * 
+   * @param opts IMerchantListOpts: https://docs.methodfi.com/api/core/merchants/list
+   * @returns IMerchant[]
+   */
+
+  async list(opts?: IMerchantListOpts) {
     return super._list<IMerchant, IMerchantListOpts>(opts);
   }
 };

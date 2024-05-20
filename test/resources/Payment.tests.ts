@@ -1,12 +1,11 @@
 import { should } from 'chai';
-import { MethodClient, Environments } from '../../src';
-import { IEntity } from '../../src/resources/Entity';
-import { IAccount } from '../../src/resources/Account';
+import { describe } from 'mocha';
+import { client } from '../config';
+import { IEntity } from '../../src/resources/Entity/types';
+import { IAccount } from '../../src/resources/Account/types';
 import { IPayment } from '../../src/resources/Payment';
 
 should();
-
-const client = new MethodClient({ apiKey: process.env.TEST_CLIENT_KEY, env: Environments.dev });
 
 describe('Payments - core methods tests', () => {
   let holder_1_response: IEntity | null = null;
@@ -29,6 +28,18 @@ describe('Payments - core methods tests', () => {
         phone: '+15121231111',
       },
     });
+    await client.entities(holder_1_response?.id || '').verificationSessions.create({
+      type: 'phone',
+      method: 'byo_sms',
+      byo_sms: {
+        timestamp: '2021-09-01T00:00:00.000Z',
+      },
+    });
+    await client.entities(holder_1_response?.id || '').verificationSessions.create({
+      type: 'identity',
+      method: 'kba',
+      kba: {},
+    });
     source_1_response = await client.accounts.create({
       holder_id: holder_1_response.id,
       ach: {
@@ -50,8 +61,8 @@ describe('Payments - core methods tests', () => {
     it('should successfully create a payment.', async () => {
       payments_create_response = await client.payments.create({
         amount: 5000,
-        source: source_1_response.id,
-        destination: destination_1_response.id,
+        source: source_1_response?.id || '',
+        destination: destination_1_response?.id || '',
         description: 'MethodNode',
       });
 
@@ -61,7 +72,7 @@ describe('Payments - core methods tests', () => {
 
   describe('payments.get', () => {
     it('should successfully get a payment.', async () => {
-      payments_get_response = await client.payments.get(payments_create_response.id);
+      payments_get_response = await client.payments.retrieve(payments_create_response?.id || '');
 
       (payments_get_response !== null).should.be.true;
     });
@@ -78,7 +89,7 @@ describe('Payments - core methods tests', () => {
 
   describe('payments.delete', () => {
     it('should successfully delete a payment.', async () => {
-      payments_delete_response = await client.payments.delete(payments_create_response.id);
+      payments_delete_response = await client.payments.delete(payments_create_response?.id || '');
 
       (payments_delete_response !== null).should.be.true;
     });

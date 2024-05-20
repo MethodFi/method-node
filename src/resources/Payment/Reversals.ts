@@ -9,21 +9,14 @@ export const ReversalStatuses = {
   failed: 'failed',
 };
 
-export type TReversalStatuses =
-  | 'pending_approval'
-  | 'pending'
-  | 'processing'
-  | 'sent'
-  | 'failed';
+export type TReversalStatuses = keyof typeof ReversalStatuses;
 
 export const ReversalDirections = {
   debit: 'debit',
   credit: 'credit',
 };
 
-export type TReversalDirections =
-  | 'debit'
-  | 'credit';
+export type TReversalDirections = keyof typeof ReversalDirections;
 
 export interface IReversal {
   id: string;
@@ -37,27 +30,48 @@ export interface IReversal {
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
-}
+};
 
 export interface IReversalUpdateOpts {
   status: TReversalStatuses;
   description?: string | null;
-}
+};
 
 export default class Reversal extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('reversals'));
   }
 
-  async get(id: string) {
-    return super._getWithId<IReversal>(id);
+  /**
+   * Retrieve a reversal
+   * 
+   * @param rvs_id id of the reversal
+   * @returns IReversal
+   */
+
+  async retrieve(rvs_id: string) {
+    return super._getWithId<IReversal>(rvs_id);
   }
+
+  /**
+   * Lists all reversals
+   * 
+   * @returns IReversal[]
+   */
 
   async list() {
     return super._list<IReversal>();
   }
 
-  async update(id: string, data: IReversalUpdateOpts) {
-    return super._updateWithId<IReversal, IReversalUpdateOpts>(id, data);
+  /**
+   * Update a reversal
+   * 
+   * @param rvs_id id of the reversal
+   * @param data IReversalUpdateOpts: https://docs.methodfi.com/api/core/payments/reversals/update
+   * @returns IReversal
+   */
+
+  async update(rvs_id: string, data: IReversalUpdateOpts) {
+    return super._updateWithId<IReversal, IReversalUpdateOpts>(rvs_id, data);
   }
-}
+};

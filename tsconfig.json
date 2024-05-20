@@ -4,7 +4,8 @@
     "module": "commonjs",
     "target": "esnext",
     "esModuleInterop": true,
-    "allowJs": false
+    "allowJs": false,
+    "strictNullChecks": true
   },
-  "include": ["./src/**/*"]
+  "include": ["./src/**/**/*"]
 }

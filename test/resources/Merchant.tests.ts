@@ -1,10 +1,9 @@
 import { should } from 'chai';
-import { MethodClient, Environments } from '../../src';
+import { describe } from 'mocha';
+import { client } from '../config';
 import { IMerchant } from '../../src/resources/Merchant';
 
 should();
-
-const client = new MethodClient({ apiKey: process.env.TEST_CLIENT_KEY, env: Environments.dev });
 
 describe('Merchants - core methods tests', () => {
   let merchants_get_response: IMerchant | null = null;
@@ -15,21 +14,65 @@ describe('Merchants - core methods tests', () => {
 
   describe('merchants.get', () => {
     it('should successfully get a merchant.', async () => {
-      merchants_get_response = await client.merchants.get(amex_mch_id);
+      merchants_get_response = await client.merchants.retrieve(amex_mch_id);
+      const expect_results = {
+        id: 'mch_3',
+        parent_name: 'American Express',
+        name: 'American Express - Credit Cards',
+        logo: 'https://static.methodfi.com/mch_logos/mch_3.png',
+        type: 'credit_card',
+        provider_ids: {
+          plaid: [ 'ins_10' ],
+          mx: [ 'amex' ],
+          finicity: [],
+          dpp: [ '120', '18954427', '11859365', '18947131', '16255844' ]
+        },
+        is_temp: false,
+        account_number_formats: []
+      };
 
-      (merchants_get_response !== null).should.be.true;
+      merchants_get_response.should.be.eql(expect_results);
     });
   });
 
   describe('merchants.list', () => {
     it('should successfully list merchants.', async () => {
       merchants_list_response = await client.merchants.list({ 'provider_id.plaid': amex_provider_id_plaid });
-
-      (merchants_list_response !== null).should.be.true;
+      merchants_list_response.should.not.be.null;
       Array.isArray(merchants_list_response).should.be.true;
+      const merchant_to_use = merchants_list_response[0];
+      
+      const expect_results = {
+        id: 'mch_300485',
+        parent_name: 'American Express',
+        name: 'American Express Credit Card',
+        logo: 'https://static.methodfi.com/mch_logos/mch_300485.png',
+        type: 'credit_card',
+        provider_ids: {
+            plaid: [
+                'ins_10'
+            ],
+            mx: [
+                'amex'
+            ],
+            finicity: [],
+            dpp: [
+                '7929257',
+                '120',
+                '18391555',
+                '18954427',
+                '11859365',
+                '18947131',
+                '16255844'
+            ]
+        },
+        is_temp: false,
+        account_number_formats: [
+            '###############'
+        ]
+      };
 
-      merchants_list_response.length.should.equal(1);
-      merchants_list_response[0].mch_id.should.equal(amex_expected_mch_id);
+      merchant_to_use.should.be.eql(expect_results);
     });
   });
 });

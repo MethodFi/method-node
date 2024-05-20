@@ -1,6 +1,6 @@
-import Resource, { IRequestConfig, IResourceError } from '../../resource';
+import Resource, { IRequestConfig, IResourceError, IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
-import Reversal from '../Reversal';
+import Reversal from './Reversals';
 
 export const PaymentStatuses = {
   pending: 'pending',
@@ -14,16 +14,7 @@ export const PaymentStatuses = {
   settled: 'settled',
 };
 
-export type TPaymentStatuses =
-  | 'pending'
-  | 'canceled'
-  | 'processing'
-  | 'failed'
-  | 'sent'
-  | 'reversed'
-  | 'reversal_required'
-  | 'reversal_processing'
-  | 'settled';
+export type TPaymentStatuses = keyof typeof PaymentStatuses;
 
 export const PaymentFundStatuses = {
   hold: 'hold',
@@ -33,39 +24,28 @@ export const PaymentFundStatuses = {
   failed: 'failed',
   sent: 'sent',
   unknown: 'unknown',
-}
+};
 
-export type TPaymentFundStatuses =
-  | 'hold'
-  | 'pending'
-  | 'requested'
-  | 'clearing'
-  | 'failed'
-  | 'sent'
-  | 'unknown';
+export type TPaymentFundStatuses = keyof typeof PaymentFundStatuses;
 
 export const PaymentTypes = {
   standard: 'standard',
   clearing: 'clearing',
 };
 
-export type TPaymentTypes =
-  | 'standard'
-  | 'clearing';
+export type TPaymentTypes = keyof typeof PaymentTypes;
 
 export const PaymentFeeTypes = {
   total: 'total',
   markup: 'markup',
 };
 
-export type TPaymentFeeTypes =
-  | 'total'
-  | 'markup';
+export type TPaymentFeeTypes = keyof typeof PaymentFeeTypes;
 
 export interface IPaymentFee {
   type: TPaymentFeeTypes;
   amount: number;
-}
+};
 
 export interface IPayment {
   id: string;
@@ -89,7 +69,7 @@ export interface IPayment {
   type: TPaymentTypes;
   created_at: string;
   updated_at: string;
-}
+};
 
 export interface IPaymentCreateOpts {
   amount: number;
@@ -98,14 +78,9 @@ export interface IPaymentCreateOpts {
   description: string;
   metadata?: {};
   fee?: IPaymentFee;
-}
+};
 
-export interface IPaymentListOpts {
-  to_date?: string | null;
-  from_date?: string | null;
-  page?: number | string | null;
-  page_limit?: number | string | null;
-  page_cursor?: string | null;
+export interface IPaymentListOpts extends IResourceListOpts {
   status?: string | null;
   type?: string | null;
   source?: string | null;
@@ -115,7 +90,7 @@ export interface IPaymentListOpts {
   destination_holder_id?: string;
   acc_id?: string;
   holder_id?: string;
-}
+};
 
 export class PaymentSubResources {
   reversals: Reversal;
@@ -123,11 +98,11 @@ export class PaymentSubResources {
   constructor(id: string, config: Configuration) {
     this.reversals = new Reversal(config.addPath(id));
   }
-}
+};
 
 export interface Payment {
   (id: string): PaymentSubResources;
-}
+};
 
 export class Payment extends Resource {
   constructor(config: Configuration) {
@@ -138,20 +113,49 @@ export class Payment extends Resource {
     return new PaymentSubResources(id, this.config);
   }
 
-  async get(id: string) {
-    return super._getWithId<IPayment>(id);
+  /**
+   * Retrieves payment by id
+   * 
+   * @param pmt_id id of the payment
+   * @returns IPayment
+   */
+
+  async retrieve(pmt_id: string) {
+    return super._getWithId<IPayment>(pmt_id);
   }
+
+  /**
+   * Lists all payments
+   * 
+   * @param opts IPaymentListOpts: https://docs.methodfi.com/api/core/payments/list
+   * @returns IPayment[]
+   */
 
   async list(opts?: IPaymentListOpts) {
     return super._list<IPayment, IPaymentListOpts>(opts);
   }
 
+  /**
+   * Creates a payment
+   * 
+   * @param opts IPaymentCreateOpts
+   * @param requestConfig Idempotency key: { idempotency_key: string}
+   * @returns IPayment
+   */
+
   async create(opts: IPaymentCreateOpts, requestConfig?: IRequestConfig) {
     return super._create<IPayment, IPaymentCreateOpts>(opts, requestConfig);
   }
 
-  async delete(id: string) {
-    return super._delete<IPayment>(id);
+  /**
+   * Cancels a payment
+   * 
+   * @param pmt_id id of the payment
+   * @returns IPayment
+   */
+
+  async delete(pmt_id: string) {
+    return super._delete<IPayment>(pmt_id);
   }
 };
 
