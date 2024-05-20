@@ -153,12 +153,12 @@ export default class AccountVerificationSession extends Resource {
   /**
    * Retrieve an AccountVerificationSession object by its ID.
    * 
-   * @param avs_id ID of the AccountVerificationSession object.
+   * @param avf_id ID of the AccountVerificationSession object.
    * @returns AccountVerificationSession object.
    */
 
-  async retrieve(avs_id: string) {
-    return super._getWithId<IAccountVerificationSession>(avs_id);
+  async retrieve(avf_id: string) {
+    return super._getWithId<IAccountVerificationSession>(avf_id);
   }
 
   /**
@@ -175,12 +175,12 @@ export default class AccountVerificationSession extends Resource {
   /**
    * Updates an existing AccountVerificationSession object
    * 
-   * @param avs_id ID of the AccountVerificationSession object.
+   * @param avf_id ID of the AccountVerificationSession object.
    * @param data Update data for the AccountVerificationSession object based on it's type.
    * @returns AccountVerificationSession object.
    */
 
-  async update(avs_id: string, data: IAccountVerificationSessionUpdateOpts) {
-    return super._updateWithId<IAccountVerificationSession, IAccountVerificationSessionUpdateOpts>(avs_id, data);
+  async update(avf_id: string, data: IAccountVerificationSessionUpdateOpts) {
+    return super._updateWithId<IAccountVerificationSession, IAccountVerificationSessionUpdateOpts>(avf_id, data);
   }
 };
