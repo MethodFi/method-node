@@ -106,11 +106,13 @@ export class Entity extends Resource {
   }
 
   /**
-   * Updates an entity
+   * Updates an Entity with the parameters sent.
+   * 
+   * Note: Once an Entity’s property has been set, that property can no longer be updated.
    * 
    * @param ent_id ent_id
    * @param opts IEntityUpdateOpts
-   * @returns Updated entity (IEntity)
+   * @returns Returns the entity with the updated fields.
    */
 
   async update(ent_id: string, opts: IEntityUpdateOpts) {
@@ -121,7 +123,7 @@ export class Entity extends Resource {
    * Retrieves an entity by id
    * 
    * @param ent_id ent_id
-   * @returns Retrieved entity (IEntity)
+   * @returns Returns the Entity associated with the ID.
    */
 
   async retrieve<K extends TEntityExpandableFields = never>(ent_id: string, opts?: { expand: K[] }) {
@@ -133,10 +135,10 @@ export class Entity extends Resource {
   }
 
   /**
-   * Lists all entities
+   * Returns all the Entities associated with your team, or an empty array if none have been created.
    * 
    * @param opts IEntityListOpts: https://docs.methodfi.com/api/core/entities/list
-   * @returns IEntity[]
+   * @returns Returns a list of Entities.
    */
 
   async list<K extends TEntityExpandableFields = never>(opts?: IEntityListOpts<K>) {

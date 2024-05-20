@@ -42,7 +42,7 @@ export default class EntityProducts extends Resource {
   /**
    * Retrieve an entity's product list
    * 
-   * @returns IEntityProductListResponse
+   * @returns Returns a map of Product names to Product objects for an Entity.
    */
 
   async list() {

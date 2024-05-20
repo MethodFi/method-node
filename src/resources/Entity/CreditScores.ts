@@ -38,10 +38,10 @@ export default class EntityCreditScores extends Resource {
   }
 
     /**
-     * Retrieve the result of a credit score request
+     * Retrieves a Credit Score record for an Entity.
      * 
      * @param crs_id id of the credit score request
-     * @returns IEntityCreditScores
+     * @returns Returns an Entity’s CreditScore object.
      */
 
     async retrieve(crs_id: string) {
@@ -49,7 +49,7 @@ export default class EntityCreditScores extends Resource {
     }
   
     /**
-     * Creates a credit score request
+     * Creates a new Credit Score request to retrieve the Entity’s credit score.
      * 
      * @returns IEntityCreditScores
      */

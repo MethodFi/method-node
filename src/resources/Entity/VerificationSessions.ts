@@ -100,7 +100,7 @@ export default class EntityVerificationSession extends Resource {
    * Create a verification session
    * 
    * @param data IEntityVerificationSessionCreateOpts
-   * @returns IEntityVerificationSession
+   * @returns Returns an EntityVerificationSession object.
    */
 
   async create(data: IEntityVerificationSessionCreateOpts) {
@@ -123,7 +123,7 @@ export default class EntityVerificationSession extends Resource {
    * 
    * @param evf_id Verification session id
    * @param data IEntityVerificationSessionUpdateOpts
-   * @returns IEntityVerificationSession
+   * @returns Returns an EntityVerificationSession object.
    */
 
   async update(evf_id: string, data: IEntityVerificationSessionUpdateOpts) {

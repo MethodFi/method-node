@@ -16,10 +16,10 @@ export default class EntityConnect extends Resource {
   }
 
   /**
-   * Retrieves the connection status of an entity
+   * Retrieves a Connect record for an Entity.
    * 
    * @param cxn_id id of the entity connection
-   * @returns IEntityConnectResponse
+   * @returns Returns a Connect object.
    */
 
   async retrieve(cxn_id: string) {
@@ -27,9 +27,9 @@ export default class EntityConnect extends Resource {
   }
 
   /**
-   * Creates an entity connection
+   * Creates a new Connect request to connect all liability accounts for the Entity.
    * 
-   * @returns IEntityConnectResponse
+   * @returns Returns a Connect object.
    */
 
   async create() {

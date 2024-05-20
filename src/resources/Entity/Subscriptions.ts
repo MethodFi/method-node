@@ -53,7 +53,7 @@ export default class EntitySubscriptions extends Resource {
   }
 
   /**
-   * Retrieve a subscription by id
+   * Retrieves a Subscription record for an Entity.
    * 
    * @param sub_id ID of the subscription
    * 
@@ -65,7 +65,7 @@ export default class EntitySubscriptions extends Resource {
   }
 
   /**
-   * Retrieve an entity's subscription list
+   * Returns a map of Subscriptions names to Subscription objects associated with an Entity, or an empty array if none have been created.
    * 
    * @returns Returns a map of Subscription names to Subscription objects.
    */
