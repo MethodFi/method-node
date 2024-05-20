@@ -8,7 +8,7 @@ import { IAccount } from '../../src/resources/Account/types';
 import { IEntityCreditScores } from '../../src/resources/Entity/CreditScores';
 import { IEntityIdentity } from '../../src/resources/Entity/Identities';
 import { IEntityProductListResponse } from '../../src/resources/Entity/Products';
-import { IEntitySubscriptionResponse } from '../../src/resources/Entity/Subscriptions';
+import { IEntitySubscription } from '../../src/resources/Entity/Subscriptions';
 import { IEntityVerificationSession } from '../../src/resources/Entity/VerificationSessions';
 
 should();
@@ -25,8 +25,8 @@ describe('Entities - core methods tests', () => {
   let entities_create_credit_score_response: IEntityCreditScores | null = null;
   let entities_create_idenitity_response: IEntityIdentity | null = null;
   let entities_get_product_list_response: IEntityProductListResponse | null = null;
-  let entities_create_connect_subscription_response: IEntitySubscriptionResponse | null = null;
-  let entities_create_credit_score_subscription_response: IEntitySubscriptionResponse | null = null;
+  let entities_create_connect_subscription_response: IEntitySubscription | null = null;
+  let entities_create_credit_score_subscription_response: IEntitySubscription | null = null;
   let entities_create_verification_session_response: IEntityVerificationSession | null = null;
 
   describe('entities.create', () => {
@@ -559,42 +559,48 @@ describe('Entities - core methods tests', () => {
       entities_create_connect_subscription_response = await client.entities(entities_create_response?.id || '').subscriptions.create('connect');
 
       const expect_connect_results = {
-        connect: {
-          id: entities_create_connect_subscription_response.connect?.id,
-          name: 'connect',
-          status: 'active',
-          latest_request_id: null,
-          created_at: entities_create_connect_subscription_response.connect?.created_at,
-          updated_at: entities_create_connect_subscription_response.connect?.updated_at,
-        }
+        id: entities_create_connect_subscription_response?.id,
+        name: 'connect',
+        status: 'active',
+        latest_request_id: null,
+        created_at: entities_create_connect_subscription_response?.created_at,
+        updated_at: entities_create_connect_subscription_response?.updated_at,
       };
 
       entities_create_connect_subscription_response.should.be.eql(expect_connect_results, 'connect');
     });
 
     it('should create a credit_score subscription for an entity', async () => {
-      entities_create_credit_score_subscription_response = await client.entities(entities_create_response?.id || '').subscriptions.create('credit_score');
+      entities_create_credit_score_subscription_response = await client
+        .entities(entities_create_response?.id || '')
+        .subscriptions
+        .create('credit_score');
 
       const expect_credit_score_results = {
-        credit_score: {
-          id: entities_create_credit_score_subscription_response.credit_score?.id,
-          name: 'credit_score',
-          status: 'active',
-          latest_request_id: null,
-          created_at: entities_create_credit_score_subscription_response.credit_score?.created_at,
-          updated_at: entities_create_credit_score_subscription_response.credit_score?.updated_at,
-        },
+        id: entities_create_credit_score_subscription_response.id,
+        name: 'credit_score',
+        status: 'active',
+        latest_request_id: null,
+        created_at: entities_create_credit_score_subscription_response.created_at,
+        updated_at: entities_create_credit_score_subscription_response.updated_at,
       };
 
       entities_create_credit_score_subscription_response.should.be.eql(expect_credit_score_results, 'credit_score');
     });
 
     it('should retrieve a subscription for an entity', async () => {
-      const entities_connect_subscription_response = await client.entities(entities_create_response?.id || '').subscriptions.retrieve(entities_create_connect_subscription_response?.connect?.id || '');
-      const entities_credit_score_subscription_response = await client.entities(entities_create_response?.id || '').subscriptions.retrieve(entities_create_credit_score_subscription_response?.credit_score?.id || '');
+      const entities_connect_subscription_response = await client
+        .entities(entities_create_response?.id || '')
+        .subscriptions
+        .retrieve(entities_create_connect_subscription_response?.id || '');
+
+      const entities_credit_score_subscription_response = await client
+        .entities(entities_create_response?.id || '')
+        .subscriptions
+        .retrieve(entities_create_credit_score_subscription_response?.id || '');
 
       const expect_connect_results = {
-        id: entities_create_connect_subscription_response?.connect?.id,
+        id: entities_create_connect_subscription_response?.id,
         name: 'connect',
         status: 'active',
         latest_request_id: null,
@@ -603,7 +609,7 @@ describe('Entities - core methods tests', () => {
       };
 
       const expect_credit_score_results = {
-        id: entities_create_credit_score_subscription_response?.credit_score?.id,
+        id: entities_create_credit_score_subscription_response?.id,
         name: 'credit_score',
         status: 'active',
         latest_request_id: null,
@@ -617,11 +623,14 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should list subscriptions for an entity', async () => {
-      const entities_subscription_list_response = await client.entities(entities_create_response?.id || '').subscriptions.list();
+      const entities_subscription_list_response = await client
+        .entities(entities_create_response?.id || '')
+        .subscriptions
+        .list();
 
       const expect_results = {
         connect: {
-          id: entities_create_connect_subscription_response?.connect?.id,
+          id: entities_create_connect_subscription_response?.id,
           name: 'connect',
           status: 'active',
           latest_request_id: null,
@@ -629,7 +638,7 @@ describe('Entities - core methods tests', () => {
           updated_at: entities_subscription_list_response?.connect?.updated_at,
         },
         credit_score: {
-          id: entities_create_credit_score_subscription_response?.credit_score?.id,
+          id: entities_create_credit_score_subscription_response?.id,
           name: 'credit_score',
           status: 'active',
           latest_request_id: null,
@@ -642,10 +651,13 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should delete a subscription for an entity', async () => {
-      const entities_subscription_delete_response = await client.entities(entities_create_response?.id || '').subscriptions.delete(entities_create_connect_subscription_response?.connect?.id || '');
+      const entities_subscription_delete_response = await client
+        .entities(entities_create_response?.id || '')
+        .subscriptions
+        .delete(entities_create_connect_subscription_response?.id || '');
 
       const expect_results = {
-        id: entities_create_connect_subscription_response?.connect?.id,
+        id: entities_create_connect_subscription_response?.id,
         name: 'connect',
         status: 'inactive',
         latest_request_id: null,
@@ -654,6 +666,36 @@ describe('Entities - core methods tests', () => {
       };
       
       entities_subscription_delete_response.should.be.eql(expect_results);
+    });
+  });
+
+  describe('entities.withdrawConsent', async () => {
+    it('should successfully withdraw consent for an entity', async () => {
+      const entities_withdraw_consent_response = await client
+        .entities
+        .withdrawConsent(entities_create_response?.id || '');
+
+      const expect_results = {
+        id: entities_create_response?.id,
+        type: null,
+        individual: null,
+        corporation: null,
+        receive_only: null,
+        verification: null,
+        error: {
+          type: 'ENTITY_DISABLED',
+          sub_type: 'ENTITY_CONSENT_WITHDRAWN',
+          code: 12004,
+          message: 'Entity was disabled due to consent withdrawal.'
+        },
+        address: {},
+        status: 'disabled',
+        metadata: null,
+        created_at: entities_withdraw_consent_response.created_at,
+        updated_at: entities_withdraw_consent_response.updated_at,
+      };
+
+      entities_withdraw_consent_response.should.be.eql(expect_results);
     });
   });
 });

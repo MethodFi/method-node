@@ -1,4 +1,4 @@
-import Resource, { IResourceError } from '../../resource';
+import Resource from '../../resource';
 import Configuration from '../../configuration';
 import type { TAccountSubscriptionTypes } from './types';
 
@@ -42,7 +42,7 @@ export default class AccountSubscriptions extends Resource {
    */
 
   async create(sub_name: TAccountSubscriptionTypes) {
-    return super._create<IAccountSubscriptionsResponse, IAccountSubscriptionCreateOpts>(
+    return super._create<IAccountSubscription, IAccountSubscriptionCreateOpts>(
       { enroll: sub_name }
     )
   }

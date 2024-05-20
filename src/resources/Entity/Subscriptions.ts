@@ -49,7 +49,7 @@ export default class EntitySubscriptions extends Resource {
    */
 
   async create(sub_name: TEntitySubscriptionNames, requestConfig?: IRequestConfig) {
-    return super._create<IEntitySubscriptionResponse, IEntitySubscriptionCreateOpts>({ enroll: sub_name }, requestConfig);
+    return super._create<IEntitySubscription, IEntitySubscriptionCreateOpts>({ enroll: sub_name }, requestConfig);
   }
 
   /**

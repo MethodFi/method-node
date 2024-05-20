@@ -171,7 +171,7 @@ export default class Resource extends ExtensibleFunction {
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
     if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
-    return (await this.client.post(path, data)).data.data;
+    return (await this.client.post(path, data, _requestConfig)).data.data;
   }
 
   protected async _updateWithId<Response, Data>(id: string, data: Data): Promise<Response> {

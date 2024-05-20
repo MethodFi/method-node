@@ -39,11 +39,11 @@ export default class AccountCardBrand extends Resource {
   /**
    * Retrieves a Card Brand object.
    * 
-   * @param crd_id ID of the Card
+   * @param cbrd_id ID of the Card
    * @returns Returns a Card object.
    */
 
-  async retrieve(crd_id: string) {
-    return super._getWithId<IAccountCardBrand>(crd_id);
+  async retrieve(cbrd_id: string) {
+    return super._getWithId<IAccountCardBrand>(cbrd_id);
   }
 };

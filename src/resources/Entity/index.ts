@@ -45,9 +45,10 @@ export interface IEntityUpdateOpts {
   individual?: Partial<IEntityIndividual>;
 };
 
-export interface IEntityListOpts extends IResourceListOpts {
+export interface IEntityListOpts<T extends TEntityExpandableFields> extends IResourceListOpts {
   status?: string | null;
   type?: string | null;
+  expand?: T[];
 };
 
 export interface IEntityWithdrawConsentOpts {
@@ -138,8 +139,12 @@ export class Entity extends Resource {
    * @returns IEntity[]
    */
 
-  async list(opts?: IEntityListOpts) {
-    return super._list<IEntity>(opts);
+  async list<K extends TEntityExpandableFields = never>(opts?: IEntityListOpts<K>) {
+    return super._list<{
+      [P in keyof IEntity]: P extends K
+      ? Exclude<IEntity[P], string>
+      : Extract<IEntity[P], string | null>
+    }, IEntityListOpts<K>| undefined>(opts);
   }
 
   /**

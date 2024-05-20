@@ -37,10 +37,11 @@ export interface ILiabilityCreateOpts extends IAccountCreateOpts {
   }
 };
 
-export interface IAccountListOpts extends IResourceListOpts {
+export interface IAccountListOpts<T extends TAccountExpandableFields> extends IResourceListOpts {
   status?: string | null;
   type?: string | null;
   holder_id?: string | null;
+  expand?: T[];
   'liability.mch_id'?: string | null;
   'liability.type'?: string | null;
 };
@@ -107,8 +108,12 @@ export class Account extends Resource {
    * @returns IAccount[]
    */
 
-  async list(opts?: IAccountListOpts) {
-    return super._list<IAccount, IAccountListOpts>(opts);
+  async list<K extends TAccountExpandableFields = never>(opts?: IAccountListOpts<K>) {
+    return super._list<{
+      [P in keyof IAccount]: P extends K
+      ? Exclude<IAccount[P], string>
+      : Extract<IAccount[P], string | null>
+    }, IAccountListOpts<K>| undefined>(opts);
   }
 
   /**
@@ -132,9 +137,9 @@ export class Account extends Resource {
    * @returns IAccount
    */
   
-  async withdrawConsent(id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
+  async withdrawConsent(acc_id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
     return super._createWithSubPath<IAccount, IAccountWithdrawConsentOpts>(
-      `/${id}/consent`,
+      `/${acc_id}/consent`,
       data,
     );
   }

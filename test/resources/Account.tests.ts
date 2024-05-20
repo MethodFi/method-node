@@ -10,8 +10,9 @@ import { IAccountCardBrand } from '../../src/resources/Account/CardBrands';
 import { IAccountPayoff } from '../../src/resources/Account/Payoffs';
 import { IAccountSensitive } from '../../src/resources/Account/Sensitive';
 import { IAccountTransaction } from '../../src/resources/Account/Transactions';
-import { IAccountSubscriptionsResponse } from '../../src/resources/Account/Subscriptions';
+import { IAccountSubscription } from '../../src/resources/Account/Subscriptions';
 import { IAccountVerificationSession } from '../../src/resources/Account/VerificationSessions';
+import { IAccountUpdate } from '../../src/resources/Account/Updates';
 
 should();
 
@@ -31,9 +32,10 @@ describe('Accounts - core methods tests', () => {
   let verification_session_update: IAccountVerificationSession | null = null;
   let sensitive_data_response: IAccountSensitive | null = null;
   let transactions_response: IAccountTransaction | null = null;
-  let create_txn_subscriptions_response: IAccountSubscriptionsResponse | null = null;
-  let create_update_subscriptions_response: IAccountSubscriptionsResponse | null = null;
-  let create_update_snapshot_subscriptions_response: IAccountSubscriptionsResponse | null = null;
+  let create_txn_subscriptions_response: IAccountSubscription | null = null;
+  let create_update_subscriptions_response: IAccountSubscription | null = null;
+  let create_update_snapshot_subscriptions_response: IAccountSubscription | null = null;
+  let create_updates_response: IAccountUpdate | null = null;
 
   before(async () => {
     holder_1_response = await client.entities.create({
@@ -112,6 +114,8 @@ describe('Accounts - core methods tests', () => {
         },
       });
 
+      accounts_create_liability_response.products.sort();
+
       const expect_results = {
         id: accounts_create_liability_response?.id,
         holder_id: holder_1_response?.id,
@@ -128,10 +132,10 @@ describe('Accounts - core methods tests', () => {
         balance: null,
         update: null,
         card_brand: null,
-        products: [ 'balance', 'payment', 'sensitive' ],
+        products: [ 'balance', 'payment', 'sensitive', 'update' ].sort(),
         restricted_products: accounts_create_liability_response?.restricted_products,
         subscriptions: accounts_create_liability_response.subscriptions,
-        available_subscriptions: [],
+        available_subscriptions: [ 'update' ],
         restricted_subscriptions: [],
         status: 'active',
         error: null,
@@ -509,14 +513,12 @@ describe('Accounts - core methods tests', () => {
         .create('transactions');
 
       const expect_results = {
-        transactions: {
-          id: create_txn_subscriptions_response.transactions?.id,
-          name: 'transactions',
-          status: 'active',
-          latest_request_id: null,
-          created_at: create_txn_subscriptions_response.transactions?.created_at,
-          updated_at: create_txn_subscriptions_response.transactions?.updated_at
-        }
+        id: create_txn_subscriptions_response.id,
+        name: 'transactions',
+        status: 'active',
+        latest_request_id: null,
+        created_at: create_txn_subscriptions_response.created_at,
+        updated_at: create_txn_subscriptions_response.updated_at
       };
 
       create_txn_subscriptions_response.should.be.eql(expect_results);
@@ -529,14 +531,12 @@ describe('Accounts - core methods tests', () => {
         .create('update');
 
       const expect_results = {
-        update: {
-          id: create_update_subscriptions_response.update?.id,
-          name: 'update',
-          status: 'active',
-          latest_request_id: null,
-          created_at: create_update_subscriptions_response.update?.created_at,
-          updated_at: create_update_subscriptions_response.update?.updated_at
-        }
+        id: create_update_subscriptions_response.id,
+        name: 'update',
+        status: 'active',
+        latest_request_id: null,
+        created_at: create_update_subscriptions_response.created_at,
+        updated_at: create_update_subscriptions_response.updated_at
       };
 
       create_update_subscriptions_response.should.be.eql(expect_results);
@@ -544,33 +544,36 @@ describe('Accounts - core methods tests', () => {
 
     it('should successfully create an update.snapshot subscription.', async () => {
       create_update_snapshot_subscriptions_response = await client
-        .accounts(test_credit_card_account?.id || '')
+        .accounts(test_auto_loan_account?.id || '')
         .subscriptions
         .create('update.snapshot');
 
       const expect_results = {
-        'update.snapshot': {
-          id: create_update_snapshot_subscriptions_response['update.snapshot']?.id,
-          name: 'update.snapshot',
-          status: 'active',
-          latest_request_id: null,
-          created_at: create_update_snapshot_subscriptions_response['update.snapshot']?.created_at,
-          updated_at: create_update_snapshot_subscriptions_response['update.snapshot']?.updated_at
-        }
+        id: create_update_snapshot_subscriptions_response.id,
+        name: 'update.snapshot',
+        status: 'active',
+        latest_request_id: null,
+        created_at: create_update_snapshot_subscriptions_response.created_at,
+        updated_at: create_update_snapshot_subscriptions_response.updated_at
       };
 
       create_update_snapshot_subscriptions_response.should.be.eql(expect_results);
     });
 
     it('should successfully list subscriptions.', async () => {
-      const subscriptions_response = await await client
+      const subscriptions_response = await client
         .accounts(test_credit_card_account?.id || '')
         .subscriptions
         .list();
 
-      const expect_results = {
+      const subscriptions_update_snapshot_response = await client
+        .accounts(test_auto_loan_account?.id || '')
+        .subscriptions
+        .list();
+
+      const expect_results_card = {
         transactions: {
-          id: create_txn_subscriptions_response?.transactions?.id,
+          id: create_txn_subscriptions_response?.id,
           name: 'transactions',
           status: 'active',
           latest_request_id: null,
@@ -578,34 +581,38 @@ describe('Accounts - core methods tests', () => {
           updated_at: subscriptions_response.transactions?.updated_at
         },
         update: {
-          id: create_update_subscriptions_response?.update?.id,
+          id: create_update_subscriptions_response?.id,
           name: 'update',
           status: 'active',
           latest_request_id: null,
           created_at: subscriptions_response.update?.created_at,
           updated_at: subscriptions_response.update?.updated_at
-        },
-        'update.snapshot': {
-          id: create_update_snapshot_subscriptions_response?.['update.snapshot']?.id,
-          name: 'update.snapshot',
-          status: 'active',
-          latest_request_id: null,
-          created_at: subscriptions_response['update.snapshot']?.created_at,
-          updated_at: subscriptions_response['update.snapshot']?.updated_at
         }
       };
 
-      subscriptions_response.should.be.eql(expect_results);
+      const expect_results_snapshot = {
+        'update.snapshot': {
+          id: create_update_snapshot_subscriptions_response?.id,
+          name: 'update.snapshot',
+          status: 'active',
+          latest_request_id: null,
+          created_at: subscriptions_update_snapshot_response['update.snapshot']?.created_at,
+          updated_at: subscriptions_update_snapshot_response['update.snapshot']?.updated_at
+        }
+      };
+
+      subscriptions_response.should.be.eql(expect_results_card);
+      subscriptions_update_snapshot_response.should.be.eql(expect_results_snapshot);
     });
 
     it('should successfully retrieve a transactions subscription.', async () => {
       const retrieve_subscriptions_response = await client
         .accounts(test_credit_card_account?.id || '')
         .subscriptions
-        .retrieve(create_txn_subscriptions_response?.transactions?.id || '');
+        .retrieve(create_txn_subscriptions_response?.id || '');
 
       const expect_results = {
-        id: create_txn_subscriptions_response?.transactions?.id,
+        id: create_txn_subscriptions_response?.id,
         name: 'transactions',
         status: 'active',
         latest_request_id: null,
@@ -620,11 +627,11 @@ describe('Accounts - core methods tests', () => {
       const retrieve_subscriptions_response = await client
         .accounts(test_credit_card_account?.id || '')
         .subscriptions
-        .retrieve(create_update_subscriptions_response?.transactions?.id || '');
+        .retrieve(create_update_subscriptions_response?.id || '');
 
       const expect_results = {
-        id: create_update_subscriptions_response?.transactions?.id,
-        name: 'transactions',
+        id: create_update_subscriptions_response?.id,
+        name: 'update',
         status: 'active',
         latest_request_id: null,
         created_at: retrieve_subscriptions_response?.created_at,
@@ -636,13 +643,13 @@ describe('Accounts - core methods tests', () => {
 
     it('should successfully retrieve an update.snapshot subscription.', async () => {
       const retrieve_subscriptions_response = await client
-        .accounts(test_credit_card_account?.id || '')
+        .accounts(test_auto_loan_account?.id || '')
         .subscriptions
-        .retrieve(create_update_snapshot_subscriptions_response?.transactions?.id || '');
+        .retrieve(create_update_snapshot_subscriptions_response?.id || '');
 
       const expect_results = {
-        id: create_update_snapshot_subscriptions_response?.transactions?.id,
-        name: 'transactions',
+        id: create_update_snapshot_subscriptions_response?.id,
+        name: 'update.snapshot',
         status: 'active',
         latest_request_id: null,
         created_at: retrieve_subscriptions_response?.created_at,
@@ -654,12 +661,12 @@ describe('Accounts - core methods tests', () => {
 
     it('should successfully delete a subscription.', async () => {
       const delete_subscriptions_response = await client
-        .accounts(test_credit_card_account?.id || '')
+        .accounts(test_auto_loan_account?.id || '')
         .subscriptions
-        .delete(create_update_snapshot_subscriptions_response?.['update.snapshot']?.id || '');
+        .delete(create_update_snapshot_subscriptions_response?.id || '');
 
       const expect_results = {
-        id: create_update_snapshot_subscriptions_response?.['update.snapshot']?.id,
+        id: create_update_snapshot_subscriptions_response?.id,
         name: 'update.snapshot',
         status: 'inactive',
         latest_request_id: null,
@@ -727,6 +734,116 @@ describe('Accounts - core methods tests', () => {
     });
   });
 
+  describe('accounts.updates', () => {
+    it('should successfully create an updates request', async () => {
+      create_updates_response = await client.accounts(test_credit_card_account?.id || '').updates.create();
+      
+      const expect_results = {
+        id: create_updates_response?.id,
+        account_id: test_credit_card_account?.id,
+        status: 'pending',
+        source: 'direct',
+        type: 'credit_card',
+        credit_card: {
+          sub_type: null,
+          opened_at: null,
+          closed_at: null,
+          balance: null,
+          last_payment_amount: null,
+          last_payment_date: null,
+          next_payment_due_date: null,
+          next_payment_minimum_amount: null,
+          interest_rate_type: null,
+          interest_rate_percentage_max: null,
+          interest_rate_percentage_min: null,
+          available_credit: null,
+          credit_limit: null,
+          usage_pattern: null
+        },
+        error: null,
+        created_at: create_updates_response?.created_at,
+        updated_at: create_updates_response?.updated_at
+      };
+
+      create_updates_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully retrieve results of an updates request', async () => {
+      const getAccountUpdates = async () => {
+        return await client
+          .accounts(test_credit_card_account?.id || '')
+          .updates
+          .retrieve(create_updates_response?.id || '');
+      };
+
+      const retrieve_updates_response = await awaitResults(getAccountUpdates);
+      
+      const expect_results = {
+        id: create_updates_response?.id,
+        account_id: test_credit_card_account?.id,
+        status: 'completed',
+        source: 'direct',
+        type: 'credit_card',
+        credit_card: {
+          sub_type: 'flexible_spending',
+          opened_at: '2016-12-20',
+          closed_at: null,
+          balance: 1866688,
+          last_payment_amount: 100000,
+          last_payment_date: '2023-01-04',
+          next_payment_due_date: '2023-02-09',
+          next_payment_minimum_amount: 51060,
+          interest_rate_type: 'variable',
+          interest_rate_percentage_max: null,
+          interest_rate_percentage_min: null,
+          available_credit: 930000,
+          credit_limit: 2800000,
+          usage_pattern: null
+        },
+        error: null,
+        created_at: retrieve_updates_response?.created_at,
+        updated_at: retrieve_updates_response?.updated_at
+      };
+
+      retrieve_updates_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully list updates for an account.', async () => {
+      const list_updates_response = await client.accounts(test_credit_card_account?.id || '').updates.list();
+      
+      const update_to_check = list_updates_response.find(update => update.id === create_updates_response?.id) || null;
+
+      const expect_results = {
+          id: create_updates_response?.id,
+          account_id: test_credit_card_account?.id,
+          status: 'completed',
+          source: 'direct',
+          type: 'credit_card',
+          credit_card: {
+            sub_type: 'flexible_spending',
+            opened_at: '2016-12-20',
+            closed_at: null,
+            balance: 1866688,
+            last_payment_amount: 100000,
+            last_payment_date: '2023-01-04',
+            next_payment_due_date: '2023-02-09',
+            next_payment_minimum_amount: 51060,
+            interest_rate_type: 'variable',
+            interest_rate_percentage_max: null,
+            interest_rate_percentage_min: null,
+            available_credit: 930000,
+            credit_limit: 2800000,
+            usage_pattern: null
+          },
+          error: null,
+          created_at: update_to_check?.created_at,
+          updated_at: update_to_check?.updated_at
+        };
+
+      update_to_check?.should.be.eql(expect_results);
+    });
+  });
+
   describe('accounts.withdrawConsent', () => {
     it('should successfully withdraw consent from an account.', async () => {
       const withdraw_consent_response = await client.accounts.withdrawConsent(test_credit_card_account?.id || '');
@@ -757,5 +874,5 @@ describe('Accounts - core methods tests', () => {
 
       withdraw_consent_response.should.be.eql(expect_results);
     });
-  })
+  });
 });

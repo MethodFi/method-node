@@ -11,14 +11,14 @@ export const Environments: EnvironmentsMapped = {
   production: 'production',
   sandbox: 'sandbox',
   dev: 'dev',
-}
+};
 
 export interface IRequestEvent {
   idempotency_key: string | null;
   method: string;
   path: string;
   request_start_time: number;
-}
+};
 
 export type TResponseEventIdemStatuses =
   | 'stored'
@@ -64,7 +64,7 @@ export interface IConfigurationOpts {
   onRequest?: TOnRequest;
   onResponse?: TOnResponse;
   axiosRetryConfig?: IAxiosRetryConfig;
-}
+};
 
 export default class Configuration {
   baseURL: string;

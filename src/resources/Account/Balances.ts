@@ -5,7 +5,7 @@ export interface IAccountBalance {
   id: string;
   account_id: string;
   status: TResourceStatus;
-  amount: number;
+  amount: number | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
