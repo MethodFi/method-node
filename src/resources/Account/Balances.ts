@@ -1,4 +1,4 @@
-import Resource, { IResourceError, TResourceStatus } from '../../resource';
+import Resource, { IResourceError, TResourceStatus, IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
 
 export interface IAccountBalance {
@@ -17,20 +17,31 @@ export default class AccountBalances extends Resource {
   }
 
   /**
-   * Retrieves results of a Balance request for an account
+   * Retrieve a Balance record for an Account.
    * 
    * @param bal_id ID of the balance
-   * @returns IAccountBalance
+   * @returns Returns a Balance object.
    */
 
   async retrieve(bal_id: string) {
     return super._getWithId<IAccountBalance>(bal_id);
   }
 
+  // TODO: Add back in when we have a list endpoint
+  // /**
+  //  * Retrieves a list of Balance objects for an account.
+  //  * 
+  //  * @returns Returns a list of Balances.
+  //  */
+
+  // async list(opts?: IResourceListOpts) {
+  //   return super._list<IAccountBalance>(opts);
+  // }
+
   /**
-   * Creates a request to get the Balance of an account
+   * Creates a new Balance request to retrieve the Account’s balance from the financial institution.
    * 
-   * @returns IAccountBalance
+   * @returns Returns a Balance object.
    */
 
   async create() {

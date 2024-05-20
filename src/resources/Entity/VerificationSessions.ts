@@ -97,7 +97,18 @@ export default class EntityVerificationSession extends Resource {
   }
 
   /**
-   * Create a verification session
+   * Retrieves a EntityVerificationSession for an entity.
+   * 
+   * @param evf_id ID of the verification session.
+   * @returns Returns an EntityVerificationSession object.
+   */
+
+  async retrieve(evf_id: string) {
+    return super._getWithId<IEntityVerificationSession>(evf_id);
+  }
+
+  /**
+   * Create a verification session.
    * 
    * @param data IEntityVerificationSessionCreateOpts
    * @returns Returns an EntityVerificationSession object.
@@ -108,20 +119,9 @@ export default class EntityVerificationSession extends Resource {
   }
 
   /**
-   * Retrieves a EntityVerificationSession for an entity.
-   * 
-   * @param evf_id id of the verification session
-   * @returns Returns an EntityVerificationSession object.
-   */
-
-  async retrieve(evf_id: string) {
-    return super._getWithId<IEntityVerificationSession>(evf_id);
-  }
-
-  /**
    * Update a verification session
    * 
-   * @param evf_id Verification session id
+   * @param evf_id ID of the verification session.
    * @param data IEntityVerificationSessionUpdateOpts
    * @returns Returns an EntityVerificationSession object.
    */

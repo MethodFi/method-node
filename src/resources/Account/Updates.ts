@@ -31,16 +31,6 @@ export default class AccountUpdates extends Resource {
   }
 
   /**
-   * Creates a new Update for a liability Account.
-   * 
-   * @returns Returns an Update object.
-   */
-
-  async create() {
-    return super._create<IAccountUpdate, {}>({});
-  }
-
-  /**
    * Retrieve an Update object by its ID.
    * 
    * @param upt_id ID of the Update
@@ -59,6 +49,16 @@ export default class AccountUpdates extends Resource {
 
   async list(opts?: IResourceListOpts) {
     return super._list<IAccountUpdate, IResourceListOpts>(opts);
+  }
+
+  /**
+   * Creates a new Update for a liability Account.
+   * 
+   * @returns Returns an Update object.
+   */
+
+  async create() {
+    return super._create<IAccountUpdate, {}>({});
   }
 };
 

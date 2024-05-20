@@ -47,26 +47,26 @@ export default class AccountSensitive extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('sensitive'));
   }
-
+  
   /**
-   * Creates an AccountSensitive request for an account.
+   * Retrieve a Sensitive record for an Account.
    * 
-   * @param data Sensitive fields to expand in the response. expand = ['number', 'billing_zip_code', 'exp_month', 'exp_year', 'cvv'];
-   * @returns An AccountSensitive object
-   */
-
-  async create(data: IAccountSensitiveCreateOpts) {
-    return super._create<IAccountSensitive, IAccountSensitiveCreateOpts>(data);
-  }
-
-  /**
-   * Retrieve an AccountSensitive object by its ID.
-   * 
-   * @param astv_id ID of the AccountSensitive object
-   * @returns An AccountSensitive object
+   * @param astv_id ID of the Sensitive object
+   * @returns A Sensitive object
    */
 
   async retrieve(astv_id: string) {
     return super._getWithId<IAccountSensitive>(astv_id);
+  }
+
+  /**
+   * Creates a new Sensitive request to retrieve sensitive Account information.
+   * 
+   * @param data Sensitive fields to expand in the response.
+   * @returns A Sensitive object
+   */
+
+  async create(data: IAccountSensitiveCreateOpts) {
+    return super._create<IAccountSensitive, IAccountSensitiveCreateOpts>(data);
   }
 };

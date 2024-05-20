@@ -245,7 +245,30 @@ describe('Accounts - core methods tests', () => {
       };
 
       account_balances.should.be.eql(expect_results);
-    });  
+    });
+    // TODO: Add back once this is live in API
+    // it('should successfully list balances for an account.', async () => {
+    //   const listAccountBalances = async () => {
+    //     return client
+    //       .accounts(test_credit_card_account?.id || '')
+    //       .balances
+    //       .list();
+    //   };
+
+    //   const account_balances = await awaitResults(listAccountBalances);
+
+    //   const expect_results = {
+    //     id: balances_create_response?.id,
+    //     account_id: test_credit_card_account?.id,
+    //     status: 'completed',
+    //     amount: 1866688,
+    //     error: null,
+    //     created_at: account_balances[0]?.created_at,
+    //     updated_at: account_balances[0]?.updated_at
+    //   };
+
+    //   account_balances[0].should.be.eql(expect_results);
+    // });
   });
 
   describe('accounts.cardBrands', () => {
@@ -364,6 +387,31 @@ describe('Accounts - core methods tests', () => {
 
       payoff_quote.should.be.eql(expect_results);
     });
+    // TODO: Add back once this is live in API
+    // it('should successfully list payoffs for an account.', async () => {
+    //   const listPayoffQuotes = async () => {
+    //     return await client
+    //       .accounts(test_auto_loan_account?.id || '')
+    //       .payoffs
+    //       .list();
+    //   };
+
+    //   const payoffs = await awaitResults(listPayoffQuotes);
+
+    //   const expect_results = {
+    //     id: payoff_create_response?.id,
+    //     account_id: test_auto_loan_account?.id,
+    //     amount: 6083988,
+    //     per_diem_amount: null,
+    //     term: 15,
+    //     status: 'completed',
+    //     error: null,
+    //     created_at: payoffs[0]?.created_at,
+    //     updated_at: payoffs[0]?.updated_at
+    //   };
+
+    //   payoffs[0].should.be.eql(expect_results);
+    // });
   });
 
   describe('accounts.verificationSessions', () => {

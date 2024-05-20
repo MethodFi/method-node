@@ -88,6 +88,36 @@ export class Entity extends Resource {
   }
 
   /**
+   * Retrieves an entity by id
+   * 
+   * @param ent_id ent_id
+   * @returns Returns the Entity associated with the ID.
+   */
+
+  async retrieve<K extends TEntityExpandableFields = never>(ent_id: string, opts?: { expand: K[] }) {
+    return super._getWithSubPathAndParams<{
+      [P in keyof IEntity]: P extends K
+        ? Exclude<IEntity[P], string>
+        : Extract<IEntity[P], string | null>
+      }, { expand: K[]; } | undefined>(ent_id, opts);
+  }
+
+  /**
+   * Returns all the Entities associated with your team, or an empty array if none have been created.
+   * 
+   * @param opts IEntityListOpts: https://docs.methodfi.com/api/core/entities/list
+   * @returns Returns a list of Entities.
+   */
+
+  async list<K extends TEntityExpandableFields = never>(opts?: IEntityListOpts<K>) {
+    return super._list<{
+      [P in keyof IEntity]: P extends K
+      ? Exclude<IEntity[P], string>
+      : Extract<IEntity[P], string | null>
+    }, IEntityListOpts<K>| undefined>(opts);
+  }
+
+  /**
    * Creates an entity
    * 
    * @param opts IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts,
@@ -117,36 +147,6 @@ export class Entity extends Resource {
 
   async update(ent_id: string, opts: IEntityUpdateOpts) {
     return super._updateWithId<IEntity, IEntityUpdateOpts>(ent_id, opts);
-  }
-
-  /**
-   * Retrieves an entity by id
-   * 
-   * @param ent_id ent_id
-   * @returns Returns the Entity associated with the ID.
-   */
-
-  async retrieve<K extends TEntityExpandableFields = never>(ent_id: string, opts?: { expand: K[] }) {
-    return super._getWithSubPathAndParams<{
-      [P in keyof IEntity]: P extends K
-        ? Exclude<IEntity[P], string>
-        : Extract<IEntity[P], string | null>
-      }, { expand: K[]; } | undefined>(ent_id, opts);
-  }
-
-  /**
-   * Returns all the Entities associated with your team, or an empty array if none have been created.
-   * 
-   * @param opts IEntityListOpts: https://docs.methodfi.com/api/core/entities/list
-   * @returns Returns a list of Entities.
-   */
-
-  async list<K extends TEntityExpandableFields = never>(opts?: IEntityListOpts<K>) {
-    return super._list<{
-      [P in keyof IEntity]: P extends K
-      ? Exclude<IEntity[P], string>
-      : Extract<IEntity[P], string | null>
-    }, IEntityListOpts<K>| undefined>(opts);
   }
 
   /**

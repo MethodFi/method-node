@@ -55,10 +55,10 @@ export default class AccountTransactions extends Resource {
   }
 
   /**
-   * Retrieves a transaction by ID.
+   * Retrieve a Transaction object for an Account.
    * 
    * @param txn_id ID of the transaction
-   * @returns IAccountTransaction
+   * @returns Returns a Transaction object.
    */
 
   async retrieve(txn_id: string) {
@@ -66,7 +66,7 @@ export default class AccountTransactions extends Resource {
   }
 
   /**
-   * Retrieve a list of Transactions for an Account.
+   * Retrieve a list of Transactions objects for a specific Account.
    * 
    * @returns Returns a list of transactions for the account.
    */

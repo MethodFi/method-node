@@ -20,7 +20,7 @@ export default class EntityIdentities extends Resource {
   /**
    * Retrieves an Identity request with the matched identity for an Entity.
    * 
-   * @param idn_id id of the identity
+   * @param idn_id ID of the identity
    * @returns Returns an Identity object.
    */
 

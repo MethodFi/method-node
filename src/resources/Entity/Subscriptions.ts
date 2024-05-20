@@ -40,19 +40,6 @@ export default class EntitySubscriptions extends Resource {
   }
 
   /**
-   * Enrolls an Entity to a list of Subscriptions. Once enrolled, the Subscription name and details will be present on the response object.
-   * Being enrolled in a Subscription is independent of other Subscriptions. An error won’t prevent the Entity from being enrolled in other Subscriptions.
-   * 
-   * @param sub_name A Subscription name to enroll the Entity in. enroll: ['connect', 'credit_score']
-   * 
-   * @returns Returns a map of Subscription name to either Subscription object or Error.
-   */
-
-  async create(sub_name: TEntitySubscriptionNames, requestConfig?: IRequestConfig) {
-    return super._create<IEntitySubscription, IEntitySubscriptionCreateOpts>({ enroll: sub_name }, requestConfig);
-  }
-
-  /**
    * Retrieves a Subscription record for an Entity.
    * 
    * @param sub_id ID of the subscription
@@ -72,6 +59,19 @@ export default class EntitySubscriptions extends Resource {
 
   async list() {
     return super._get<IEntitySubscriptionResponse>();
+  }
+
+  /**
+   * Enrolls an Entity to a list of Subscriptions. Once enrolled, the Subscription name and details will be present on the response object.
+   * Being enrolled in a Subscription is independent of other Subscriptions. An error won’t prevent the Entity from being enrolled in other Subscriptions.
+   * 
+   * @param sub_name A Subscription name to enroll the Entity in. enroll: ['connect', 'credit_score']
+   * 
+   * @returns Returns a map of Subscription name to either Subscription object or Error.
+   */
+
+  async create(sub_name: TEntitySubscriptionNames, requestConfig?: IRequestConfig) {
+    return super._create<IEntitySubscription, IEntitySubscriptionCreateOpts>({ enroll: sub_name }, requestConfig);
   }
 
   /**

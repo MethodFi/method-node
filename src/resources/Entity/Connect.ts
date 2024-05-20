@@ -18,7 +18,7 @@ export default class EntityConnect extends Resource {
   /**
    * Retrieves a Connect record for an Entity.
    * 
-   * @param cxn_id id of the entity connection
+   * @param cxn_id ID of the entity connection
    * @returns Returns a Connect object.
    */
 

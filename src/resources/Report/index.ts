@@ -43,6 +43,17 @@ export default class Report extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('reports'));
   }
+
+  /**
+   * Retrieves the Report associated with the ID.
+   * 
+   * @param rpt_id id of the report
+   * @returns Returns the Report associated with the ID.
+   */
+
+  async retrieve(rpt_id: string) {
+    return super._getWithId<IReport>(rpt_id);
+  }
   
   /**
    * Creates a new Report for a specific type. Once created, you can retrieve the Report results from the URL returned.
@@ -54,17 +65,6 @@ export default class Report extends Resource {
 
   async create(opts: IReportCreateOpts, requestConfig?: IRequestConfig) {
     return super._create<IReport, IReportCreateOpts>(opts, requestConfig);
-  }
-
-  /**
-   * Retrieves the Report associated with the ID.
-   * 
-   * @param rpt_id id of the report
-   * @returns Returns the Report associated with the ID.
-   */
-
-  async retrieve(rpt_id: string) {
-    return super._getWithId<IReport>(rpt_id);
   }
 
   /**

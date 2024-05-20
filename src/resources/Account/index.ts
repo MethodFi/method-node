@@ -87,10 +87,10 @@ export class Account extends Resource {
   }
 
   /**
-   * Retrieves an account by acc_id
+   * Returns the Account associated with the ID.
    * 
    * @param acc_id id of the account
-   * @returns IAccount
+   * @returns Returns the Account associated with the ID.
    */
 
   async retrieve<K extends TAccountExpandableFields = never>(acc_id: string, opts?: { expand: K[] }) {
@@ -102,10 +102,10 @@ export class Account extends Resource {
   }
 
   /**
-   * Lists all accounts
+   * Returns a list of Accounts.
    * 
    * @param opts IAccountListOpts: https://docs.methodfi.com/api/core/accounts/list
-   * @returns IAccount[]
+   * @returns Returns a list of Accounts.
    */
 
   async list<K extends TAccountExpandableFields = never>(opts?: IAccountListOpts<K>) {
@@ -117,11 +117,11 @@ export class Account extends Resource {
   }
 
   /**
-   * Creates a new account
+   * Creates a new Account for an Entity, either ach or liability, based on the parameters provided. An account is a unique representation of an ACH or Liability account.
    * 
    * @param data Create options: https://docs.methodfi.com/api/core/accounts/create
    * @param requestConfig Allows for idempotency: { idempotency_key?: string }
-   * @returns IAccount
+   * @returns Returns an Account object.
    */
 
   async create(data: IACHCreateOpts | ILiabilityCreateOpts, requestConfig?: IRequestConfig) {
@@ -130,11 +130,11 @@ export class Account extends Resource {
 
 
   /**
-   * Withdraws consent for an account
+   * Withdraws an Account’s consent. This endpoint deletes information on the account, sets its status to disabled, and removes all active Products or Subscriptions for the account.
    * 
    * @param acc_id id of the account
    * @param data IAccountWithdrawConsentOpts: { type: 'withdraw', reason: 'holder_withdrew_consent' | null }
-   * @returns IAccount
+   * @returns Returns the Account with status set to disabled.
    */
   
   async withdrawConsent(acc_id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {

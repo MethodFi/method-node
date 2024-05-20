@@ -33,18 +33,14 @@ export default class AccountSubscriptions extends Resource {
   }
 
   /**
-   * Enrolls an Account to a list of Subscriptions. Once enrolled, the Subscription name and details will be present on the response object.
+   * Retrieves a Subscription record for an Account.
    * 
-   * Note: Subscription requests are processed individually, meaning the success or failure of one subscription does not affect others. The response object will detail any errors encountered.
-   * 
-   * @param data IAccountSubscriptionCreateOpts: https://docs-v2.methodfi.com/reference/accounts/subscriptions/create
-   * @returns Returns a map of Subscription name to Subscription object.
+   * @param sub_id ID of the Subscription
+   * @returns IAccountSubscription
    */
 
-  async create(sub_name: TAccountSubscriptionTypes) {
-    return super._create<IAccountSubscription, IAccountSubscriptionCreateOpts>(
-      { enroll: sub_name }
-    )
+  async retrieve(sub_id: string) {
+    return super._getWithId<IAccountSubscription>(sub_id);
   }
 
   /**
@@ -58,16 +54,20 @@ export default class AccountSubscriptions extends Resource {
   }
 
   /**
-   * Retrieves a Subscription record for an Account.
+   * Enrolls an Account to a list of Subscriptions. Once enrolled, the Subscription name and details will be present on the response object.
    * 
-   * @param sub_id ID of the Subscription
-   * @returns IAccountSubscription
+   * Note: Subscription requests are processed individually, meaning the success or failure of one subscription does not affect others. The response object will detail any errors encountered.
+   * 
+   * @param data IAccountSubscriptionCreateOpts: https://docs-v2.methodfi.com/reference/accounts/subscriptions/create
+   * @returns Returns a map of Subscription name to Subscription object.
    */
 
-  async retrieve(sub_id: string) {
-    return super._getWithId<IAccountSubscription>(sub_id);
+  async create(sub_name: TAccountSubscriptionTypes) {
+    return super._create<IAccountSubscription, IAccountSubscriptionCreateOpts>(
+      { enroll: sub_name }
+    )
   }
-
+  
   /**
    * Deleting a Subscription means to unsubscribe or unenroll an Account from automatically receiving new Product resources.
    * 
