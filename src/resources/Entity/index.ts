@@ -19,9 +19,9 @@ export const EntityExpandableFields = {
   credit_score: 'credit_score',
   identity_latest_verification_session: 'identity.latest_verification_session',
   phone_latest_verification_session: 'phone.latest_verification_session',
-};
+} as const;
 
-export type TEntityExpandableFields = keyof typeof EntityExpandableFields;
+export type TEntityExpandableFields = typeof EntityExpandableFields[keyof typeof EntityExpandableFields];
 
 export interface IEntityCreateOpts {
   type: TEntityTypes;

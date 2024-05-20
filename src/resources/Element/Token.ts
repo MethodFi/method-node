@@ -183,7 +183,7 @@ export default class ElementToken extends Resource {
     super(config.addPath('token'));
   }
   
-    /**
+  /**
    * Creates token to be used with Element
    * 
    * @param opts IElementTokenCreateOpts
