@@ -37,7 +37,6 @@ export const PlaidTransactionTypes = {
 
 export type TPlaidTransactionTypes = keyof typeof PlaidTransactionTypes;
 
-
 export const PlaidTransactionPaymentChannelTypes = {
   online: 'online',
   in_store: 'in store',
