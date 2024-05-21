@@ -752,7 +752,6 @@ describe('Accounts - core methods tests', () => {
         updated_at: transactions_response?.updated_at
       };
 
-
       transactions_response.should.be.eql(expect_results);
     });
 
