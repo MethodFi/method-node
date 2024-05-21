@@ -85,7 +85,7 @@ export interface IEntityVerificationSession {
   byo_sms: IEntitySmsVerification | null;
   byo_kyc: IEntityByoKycVerification | null
   kba: IEntityKbaVerification | null;
-  auth_element: IEntityKbaVerification | null;
+  element: IEntityKbaVerification | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;

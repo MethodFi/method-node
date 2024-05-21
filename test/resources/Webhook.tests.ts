@@ -35,7 +35,7 @@ describe('Webhooks - core methods tests', () => {
 
   describe('webhooks.get', () => {
     it('should successfully get a webhook.', async () => {
-      webhooks_get_response = await client.webhooks.retrieve(webhooks_create_response.id || '');
+      webhooks_get_response = await client.webhooks.retrieve(webhooks_create_response.id);
 
       const expect_results = {
         id: webhooks_create_response.id,
@@ -62,7 +62,7 @@ describe('Webhooks - core methods tests', () => {
 
   describe('webhooks.delete', () => {
     it('should successfully delete a webhook.', async () => {
-      webhooks_delete_response = await client.webhooks.delete(webhooks_create_response.id || '');
+      webhooks_delete_response = await client.webhooks.delete(webhooks_create_response.id);
 
       (webhooks_delete_response === null).should.be.true;
     });

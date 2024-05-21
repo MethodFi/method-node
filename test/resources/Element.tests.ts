@@ -26,7 +26,7 @@ describe('Elements - core methods tests', () => {
   describe('elements.token.create', () => {
     it('should successfully create an auth element_token.', async () => {
       const element_create_auth_token_response = await client.elements.token.create({
-        entity_id: entity_1_response.id || '',
+        entity_id: entity_1_response.id,
         type: 'auth',
         auth: {
           account_filters: {
@@ -43,7 +43,7 @@ describe('Elements - core methods tests', () => {
 
     it('should successfully create a connect element_token.', async () => {
       element_create_connect_token_response = await client.elements.token.create({
-        entity_id: entity_1_response.id || '',
+        entity_id: entity_1_response.id,
         type: 'connect',
         connect: {
           products: ['balance'],
@@ -59,12 +59,12 @@ describe('Elements - core methods tests', () => {
     });
 
     it('should successfully retrieve the results of a created element_token.', async () => {
-      const element_retrieve_retults_response = await client.elements.token.results(element_create_connect_token_response.element_token || '');
+      const element_retrieve_retults_response = await client.elements.token.results(element_create_connect_token_response.element_token);
       const expect_results = {
         authenticated: false,
         cxn_id: null,
         accounts: [],
-        entity_id: entity_1_response.id || '',
+        entity_id: entity_1_response.id,
         events: []
       };
 

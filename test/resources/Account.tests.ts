@@ -155,7 +155,7 @@ describe('Accounts - core methods tests', () => {
 
   describe('accounts.retrieve', () => {
     it('should successfully retrieve an account by id.', async () => {
-      accounts_retrieve_response = await client.accounts.retrieve(accounts_create_ach_response.id || '12345');
+      accounts_retrieve_response = await client.accounts.retrieve(accounts_create_ach_response.id);
 
       const expect_results = {
         id: accounts_create_ach_response.id,
@@ -183,7 +183,7 @@ describe('Accounts - core methods tests', () => {
   describe('accounts.list', () => {
     it('should successfully list accounts.', async () => {
       accounts_list_response = await client.accounts.list({
-        holder_id: holder_1_response.id || '12345',
+        holder_id: holder_1_response.id,
         type: 'liability',
         status: 'active',
       });
@@ -366,9 +366,9 @@ describe('Accounts - core methods tests', () => {
     it('should successfully retrieve a payoff for an account.', async () => {
       const getPayoffQuotes = async () =>{
         return await client
-          .accounts(test_auto_loan_account.id || '12345')
+          .accounts(test_auto_loan_account.id)
           .payoffs
-          .retrieve(payoff_create_response.id || '12345');
+          .retrieve(payoff_create_response.id);
       };
 
       const payoff_quote = await awaitResults(getPayoffQuotes);
@@ -450,9 +450,9 @@ describe('Accounts - core methods tests', () => {
     it('should successfully update a verification session for an account.', async () => {
 
       verification_session_update = await client
-        .accounts(test_credit_card_account.id || '12345')
+        .accounts(test_credit_card_account.id)
         .verificationSessions
-        .update(verification_session_create.id || '12345', {
+        .update(verification_session_create.id, {
           pre_auth: {
             exp_month: '03',
             exp_year: '2028',
