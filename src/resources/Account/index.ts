@@ -14,12 +14,6 @@ import type {
   TAccountExpandableFields,
 } from './types';
 
-export const AccountClearingSubTypes = {
-  single_use: 'single_use',
-}
-
-export type TAccountClearingSubTypes = keyof typeof AccountClearingSubTypes;
-
 export interface IAccountCreateOpts {
   holder_id: string;
   metadata?: {};
