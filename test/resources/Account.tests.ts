@@ -153,7 +153,7 @@ describe('Accounts - core methods tests', () => {
     });
   });
 
-  describe('accounts.get', () => {
+  describe('accounts.retrieve', () => {
     it('should successfully get an account.', async () => {
       accounts_get_response = await client.accounts.retrieve(accounts_create_ach_response?.id || '12345');
 

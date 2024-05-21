@@ -7,7 +7,7 @@ export const EntityVerificationSessionTypes = {
   byo_sms: 'byo_sms',
   byo_kyc: 'byo_kyc',
   kba: 'kba',
-  auth_element: 'auth_element',
+  element: 'element',
 };
 
 export type IEntityVerificationSessionTypes = keyof typeof EntityVerificationSessionTypes;

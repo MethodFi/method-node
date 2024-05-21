@@ -2,6 +2,7 @@ import Resource from '../../resource';
 import Configuration from '../../configuration';
 
 export const UserEventType = {
+  // Auth session
   AUTH_INTRO_OPEN: 'AUTH_INTRO_OPEN',
   AUTH_INTRO_CONTINUE: 'AUTH_INTRO_CONTINUE',
   AUTH_INTRO_CLOSE: 'AUTH_INTRO_CLOSE',
@@ -16,6 +17,7 @@ export const UserEventType = {
 
   AUTH_PHONE_VERIFY_OPEN: 'AUTH_PHONE_VERIFY_OPEN',
   AUTH_PHONE_VERIFY_SUBMIT: 'AUTH_PHONE_VERIFY_SUBMIT',
+  AUTH_PHONE_VERIFY_RESEND_CODE: 'AUTH_PHONE_VERIFY_RESEND_CODE',
   AUTH_PHONE_VERIFY_CLOSE: 'AUTH_PHONE_VERIFY_CLOSE',
 
   AUTH_DOB_OPEN: 'AUTH_DOB_OPEN',
@@ -26,19 +28,14 @@ export const UserEventType = {
   AUTH_ADDRESS_CONTINUE: 'AUTH_ADDRESS_CONTINUE',
   AUTH_ADDRESS_CLOSE: 'AUTH_ADDRESS_CLOSE',
 
-  AUTH_INCORRECT_INFO_OPEN: 'AUTH_INCORRECT_INFO_OPEN',
-  AUTH_INCORRECT_INFO_TRY_AGAIN: 'AUTH_INCORRECT_INFO_TRY_AGAIN',
-
-  AUTH_INVALID_INFO_OPEN: 'AUTH_INVALID_INFO_OPEN',
-  AUTH_INVALID_INFO_EXIT: 'AUTH_INVALID_INFO_EXIT',
+  AUTH_SSN4_OPEN: 'AUTH_SSN4_OPEN',
+  AUTH_SSN4_CONTINUE: 'AUTH_SSN4_CONTINUE',
+  AUTH_SSN4_CLOSE: 'AUTH_SSN4_CLOSE',
 
   AUTH_SECQ_OPEN: 'AUTH_SECQ_OPEN',
   AUTH_SECQ_CONTINUE: 'AUTH_SECQ_CONTINUE',
   AUTH_SECQ_CLOSE: 'AUTH_SECQ_CLOSE',
-
-  AUTH_SECQ_INCORRECT_OPEN: 'AUTH_SECQ_INCORRECT_OPEN',
   AUTH_SECQ_INCORRECT_TRY_AGAIN: 'AUTH_SECQ_INCORRECT_TRY_AGAIN',
-  AUTH_SECQ_INCORRECT_CLOSE: 'AUTH_SECQ_INCORRECT_CLOSE',
 
   AUTH_CONSENT_OPEN: 'AUTH_CONSENT_OPEN',
   AUTH_CONSENT_CONTINUE: 'AUTH_CONSENT_CONTINUE',
@@ -46,8 +43,28 @@ export const UserEventType = {
 
   AUTH_SUCCESS_OPEN: 'AUTH_SUCCESS_OPEN',
   AUTH_SUCCESS_CONTINUE: 'AUTH_SUCCESS_CONTINUE',
+
   AUTH_FAILURE_OPEN: 'AUTH_FAILURE_OPEN',
   AUTH_FAILURE_CONTINUE: 'AUTH_FAILURE_CONTINUE',
+
+  AVF_ACCOUNT_LIST_OPEN: 'AVF_ACCOUNT_LIST_OPEN',
+  AVF_ACCOUNT_LIST_CLOSE: 'AVF_ACCOUNT_LIST_CLOSE',
+
+  AVF_LEARN_MORE_OPEN: 'AVF_LEARN_MORE_OPEN',
+  AVF_LEARN_MORE_CLOSE: 'AVF_LEARN_MORE_CLOSE',
+
+  AVF_ACCOUNT_VERIFY_OPEN: 'AVF_ACCOUNT_VERIFY_OPEN',
+  AVF_ACCOUNT_VERIFY_SUBMIT: 'AVF_ACCOUNT_VERIFY_SUBMIT',
+  AVF_ACCOUNT_VERIFY_CLOSE: 'AVF_ACCOUNT_VERIFY_CLOSE',
+
+  AVF_SUCCESS_OPEN: 'AVF_SUCCESS_OPEN',
+  AVF_SUCCESS_CONTINUE: 'AVF_SUCCESS_CONTINUE',
+
+  AVF_EMPTY_SUCCESS_OPEN: 'AVF_EMPTY_SUCCESS_OPEN',
+  AVF_EMPTY_SUCCESS_CONTINUE: 'AVF_EMPTY_SUCCESS_CONTINUE',
+
+  AVF_SKIP_ALL: 'AVF_SKIP_ALL',
+  AVF_ERROR: 'AVF_ERROR',
 };
 
 export type TUserEventType = keyof typeof UserEventType;
@@ -59,7 +76,6 @@ export interface IElementUserEvent {
 };
 
 export const ElementTypes = {
-  link: 'link',
   auth: 'auth',
   connect: 'connect',
   balance_transfer: 'balance_transfer',
@@ -71,8 +87,10 @@ export const ElementProducts = {
   balance: 'balance',
   payoff: 'payoff',
   transactions: 'transactions',
-  card: 'card',
+  card_brand: 'card_brand',
   update: 'update',
+  sensitive: 'sensitive',
+  payment: 'payment',
 };
 
 export type TElementProductTypes = keyof typeof ElementProducts;
@@ -92,7 +110,6 @@ export type TAuthElementAccountFilterTypes =
   | 'mortgage'
   | 'credit_card'
   | 'loan'
-  | 'student_loan'
   | 'student_loans'
   | 'personal_loan';
 
@@ -152,7 +169,6 @@ export interface IElementTokenCreateOpts {
   team_logo?: string | null;
   team_icon?: string | null;
   connect?: IConnectElementCreateOpts;
-  link?: ILinkElementCreateOpts;
   auth?: IAuthElementCreateOpts;
 };
 

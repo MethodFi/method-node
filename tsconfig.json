@@ -7,5 +7,5 @@
     "allowJs": false,
     "strictNullChecks": true
   },
-  "include": ["./src/**/**/*"]
+  "include": ["./src/**/*"]
 }

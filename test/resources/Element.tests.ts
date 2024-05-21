@@ -24,17 +24,6 @@ describe('Elements - core methods tests', () => {
   });
 
   describe('elements.token.create', () => {
-    it('should successfully create a link element_token.', async () => {
-      const element_create_link_token_response = await client.elements.token.create({
-        entity_id: entity_1_response?.id || '',
-        type: 'link',
-        link: {},
-      });
-      
-      Object.keys(element_create_link_token_response).should.include('element_token');
-      Object.keys(element_create_link_token_response).should.be.length(1);
-    });
-
     it('should successfully create an auth element_token.', async () => {
       const element_create_auth_token_response = await client.elements.token.create({
         entity_id: entity_1_response?.id || '',
@@ -49,7 +38,8 @@ describe('Elements - core methods tests', () => {
       });
 
       Object.keys(element_create_auth_token_response).should.include('element_token');
-      Object.keys(element_create_auth_token_response).should.be.length(1);    });
+      Object.keys(element_create_auth_token_response).should.be.length(1);
+    });
 
     it('should successfully create a connect element_token.', async () => {
       element_create_connect_token_response = await client.elements.token.create({
@@ -57,7 +47,6 @@ describe('Elements - core methods tests', () => {
         type: 'connect',
         connect: {
           products: ['balance'],
-          accounts: [],
           account_filters: {
             selection_type: 'multiple',
             liability_types: ['credit_card']

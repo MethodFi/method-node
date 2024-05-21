@@ -76,8 +76,6 @@ export interface IAccountVerificationSessionInstant {
 export interface IAccountVerificationSessionPreAuth extends IAccountVerificationSessionInstant {
   cvv?: string | null;
   cvv_check?: TAccountVerificationPassFail | null;
-  exp_month?: string | null;
-  exp_year?: string | null;
   billing_zip_code?: string | null;
   billing_zip_code_check?: TAccountVerificationPassFail | null;
   pre_auth_check?: TAccountVerificationPassFail | null;
