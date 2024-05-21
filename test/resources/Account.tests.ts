@@ -539,7 +539,7 @@ describe('Accounts - core methods tests', () => {
           credit_card: {
             billing_zip_code: null,
             number: '5555555555551580',
-            exp_month: '09',
+            exp_month: '03',
             exp_year: '2028',
             cvv: null
           },

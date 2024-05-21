@@ -174,12 +174,23 @@ export default class Resource extends ExtensibleFunction {
     return (await this.client.post(path, data, _requestConfig)).data.data;
   }
 
-  protected async _updateWithId<Response, Data>(id: string, data: Data): Promise<Response> {
-    return (await this.client.put(`/${id}`, data)).data.data;
+  protected async _updateWithId<Response, Data>(
+    id: string,
+    data: Data,
+    requestConfig: IRequestConfig = {},
+  ): Promise<Response> {
+    const _requestConfig = { headers: {} };
+    if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
+    return (await this.client.put(`/${id}`, data, _requestConfig)).data.data;
   }
 
-  protected async _update<Response, Data>(data: Data): Promise<Response> {
-    return (await this.client.put('', data)).data.data;
+  protected async _update<Response, Data>(
+    data: Data,
+    requestConfig: IRequestConfig = {},
+  ): Promise<Response> {
+    const _requestConfig = { headers: {} };
+    if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
+    return (await this.client.put('', data, _requestConfig)).data.data;
   }
 
   protected async _updateWithSubPath<Response, Data>(
