@@ -114,7 +114,7 @@ export class Entity extends Resource {
       [P in keyof IEntity]: P extends K
       ? Exclude<IEntity[P], string>
       : Extract<IEntity[P], string | null>
-    }, IEntityListOpts<K>| undefined>(opts);
+    }, IEntityListOpts<K> | undefined>(opts);
   }
 
   /**

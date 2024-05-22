@@ -107,7 +107,7 @@ export class Account extends Resource {
       [P in keyof IAccount]: P extends K
       ? Exclude<IAccount[P], string>
       : Extract<IAccount[P], string | null>
-    }, IAccountListOpts<K>| undefined>(opts);
+    }, IAccountListOpts<K> | undefined>(opts);
   }
 
   /**
