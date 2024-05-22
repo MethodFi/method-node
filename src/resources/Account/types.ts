@@ -68,17 +68,10 @@ export type TAccountAccountUpdateSources = keyof typeof AccountUpdateSources;
 export const AccountLiabilityTypes = {
   auto_loan: 'auto_loan',
   credit_card: 'credit_card',
+  collection: 'collection',
   mortgage: 'mortgage',
   personal_loan: 'personal_loan',
   student_loans: 'student_loans',
-  collection: 'collection',
-  business_loan: 'business_loan',
-  insurance: 'insurance',
-  credit_builder: 'credit_builder',
-  subscription: 'subscription',
-  utility: 'utility',
-  medical: 'medical',
-  loan: 'loan',
 };
 
 export type TAccountLiabilityTypes = keyof typeof AccountLiabilityTypes;
@@ -194,6 +187,8 @@ export interface IAccountLiabilityCreditCard extends IAccountLiabilityBase {
   sub_type: TAccountLiabilityCreditCardSubTypes | null;
   usage_pattern: TAccountLiabilityCreditCardUsageTypes | null;
 };
+
+export interface IAccountLiabilityCollection extends IAccountLiabilityBase {};
 
 export interface IAccountLiabilityMortgage extends IAccountLiabilityLoanBase {
   sub_type: TAccountLiabilityMortgageSubTypes | null;

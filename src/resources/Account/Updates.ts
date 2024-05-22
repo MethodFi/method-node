@@ -4,11 +4,11 @@ import type {
   TAccountLiabilityTypes,
   IAccountLiabilityAutoLoan,
   IAccountLiabilityCreditCard,
+  IAccountLiabilityCollection,
   IAccountLiabilityMortgage,
   IAccountLiabilityPersonalLoan,
   IAccountLiabilityStudentLoans,
 } from './types';
-
 
 export interface IAccountUpdate {
   id: string;
@@ -17,6 +17,7 @@ export interface IAccountUpdate {
   type: TAccountLiabilityTypes;
   auto_loan?: IAccountLiabilityAutoLoan;
   credit_card?: IAccountLiabilityCreditCard;
+  collection?: IAccountLiabilityCollection;
   mortgage?: IAccountLiabilityMortgage;
   personal_loan?: IAccountLiabilityPersonalLoan;
   student_loans?: IAccountLiabilityStudentLoans;

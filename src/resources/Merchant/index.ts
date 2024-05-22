@@ -3,26 +3,11 @@ import Configuration from '../../configuration';
 
 export const MerchantTypes = {
   auto_loan: 'auto_loan',
-  business_loan: 'business_loan',
   credit_card: 'credit_card',
-  electric_utility: 'electric_utility',
-  home_loan: 'home_loan',
-  insurance: 'insurance',
-  internet_utility: 'internet_utility',
-  loan: 'loan',
-  medical: 'medical',
+  collection: 'collection',
   personal_loan: 'personal_loan',
   student_loan: 'student_loan',
-  telephone_utility: 'telephone_utility',
-  television_utility: 'television_utility',
-  water_utility: 'water_utility',
-  bank: 'bank',
-  home_equity_loan: 'home_equity_loan',
   mortgage: 'mortgage',
-  utility: 'utility',
-  waste_utility: 'waste_utility',
-  collection: 'collection',
-  credit_builder: 'credit_builder',
 };
 
 export type TMerchantTypes = keyof typeof MerchantTypes;
@@ -31,6 +16,7 @@ export interface IMerchantProviderIds {
   plaid: string[];
   mx: string[];
   finicity: string[];
+  dpp: string[];
 };
 
 export interface IMerchant {
@@ -38,13 +24,10 @@ export interface IMerchant {
   parent_name: string;
   name: string;
   logo: string;
-  description: string | null;
-  note: string | null;
-  types: TMerchantTypes[];
-  account_prefixes: string[];
+  type: TMerchantTypes;
   provider_ids: IMerchantProviderIds;
-  customized_auth: boolean;
   is_temp: boolean;
+  account_number_formats: string[];
 };
 
 export interface IMerchantListOpts {
@@ -56,6 +39,7 @@ export interface IMerchantListOpts {
   'provider_id.plaid'?: string;
   'provider_id.mx'?: string;
   'provider_id.finicity'?: string;
+  'provider_id.dpp'?: string;
 };
 
 export default class Merchant extends Resource {
