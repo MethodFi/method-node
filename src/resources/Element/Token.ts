@@ -1,5 +1,6 @@
 import Resource from '../../resource';
 import Configuration from '../../configuration';
+import { TAccountLiabilityTypes } from '../Account/types';
 
 export const UserEventType = {
   // Auth session
@@ -105,14 +106,6 @@ export const ElementMetadataOpTypes = {
 
 export type TElementMetadataOpTypes = keyof typeof ElementMetadataOpTypes;
 
-export type TAuthElementAccountFilterTypes =
-  | 'auto_loan'
-  | 'mortgage'
-  | 'credit_card'
-  | 'loan'
-  | 'student_loans'
-  | 'personal_loan';
-
 export type TAuthElementAccountFilterCapabilities =
   | 'payments:receive'
   | 'data:sync';
@@ -129,7 +122,7 @@ export interface ILinkElementCreateOpts {
 export interface IAuthElementAccountFiltersOpts {
   selection_type?: TAuthElementAccountFilterSelectionTypes;
   capabilities?: TAuthElementAccountFilterCapabilities[];
-  types?: TAuthElementAccountFilterTypes[];
+  types?: TAccountLiabilityTypes[];
 };
 
 export interface IElementEntityOpts {
@@ -152,7 +145,7 @@ export interface IAuthElementCreateOpts {
 
 export interface IConnectElementFilterOpts {
   selection_type?: TAuthElementAccountFilterSelectionTypes;
-  liability_types?: TAuthElementAccountFilterTypes[];
+  liability_types?: TAccountLiabilityTypes[];
 };
 
 export interface IConnectElementCreateOpts {
