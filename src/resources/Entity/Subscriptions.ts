@@ -20,7 +20,7 @@ export interface IEntitySubscription {
   id: string;
   name: TEntitySubscriptionNames;
   status: TEntitySubscriptionStatuses;
-  last_request_id: string | null;
+  latest_request_id: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -62,7 +62,7 @@ export default class EntitySubscriptions extends Resource {
   }
 
   /**
-   * Enrolls an Entity to a list of Subscriptions. Once enrolled, the Subscription name and details will be present on the response object.
+   * Enrolls an Entity to a Subscription. Once enrolled, the Subscription name and details will be present on the response object.
    * Being enrolled in a Subscription is independent of other Subscriptions. An error won’t prevent the Entity from being enrolled in other Subscriptions.
    * 
    * @param sub_name A Subscription name to enroll the Entity in. enroll: ['connect', 'credit_score']

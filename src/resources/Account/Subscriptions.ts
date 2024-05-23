@@ -54,7 +54,7 @@ export default class AccountSubscriptions extends Resource {
   }
 
   /**
-   * Enrolls an Account to a list of Subscriptions. Once enrolled, the Subscription name and details will be present on the response object.
+   * Enrolls an Account to a Subscription. Once enrolled, the Subscription name and details will be present on the response object.
    * 
    * Note: Subscription requests are processed individually, meaning the success or failure of one subscription does not affect others. The response object will detail any errors encountered.
    * 
