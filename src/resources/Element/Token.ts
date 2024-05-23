@@ -149,7 +149,7 @@ export interface IConnectElementFilterOpts {
 };
 
 export interface IConnectElementCreateOpts {
-  products: TElementProductTypes[];
+  products?: TElementProductTypes[];
   accounts?: string[];
   entity?: IElementEntityOpts;
   account_filters?: IConnectElementFilterOpts;
