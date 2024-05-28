@@ -13,29 +13,16 @@ export const ReportTypes = {
   ach_pull_nightly: 'ach.pull.nightly',
   ach_reversals_nightly: 'ach.reversals.nightly',
   entities_created_previous_day: 'entities.created.previous_day'
-};
+} as const;
 
-export type TReportTypes =
-  | 'payments.created.current'
-  | 'payments.created.previous'
-  | 'payments.updated.current'
-  | 'payments.updated.previous'
-  | 'payments.created.previous_day'
-  | 'payments.failed.previous_day'
-  | 'ach.pull.upcoming'
-  | 'ach.pull.previous'
-  | 'ach.pull.nightly'
-  | 'ach.reversals.nightly'
-  | 'entities.created.previous_day';
+export type TReportTypes = typeof ReportTypes[keyof typeof ReportTypes];
 
 export const ReportStatuses = {
   processing: 'processing',
   completed: 'completed',
-}
+};
 
-export type TReportStatuses =
-  | 'processing'
-  | 'completed';
+export type TReportStatuses = keyof typeof ReportStatuses;
 
 export interface IReport {
   id: string;
@@ -45,27 +32,49 @@ export interface IReport {
   metadata: {} | null;
   created_at: string;
   updated_at: string;
-}
+};
 
 export interface IReportCreateOpts {
   type: TReportTypes;
   metadata?: {};
-}
+};
 
 export default class Report extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('reports'));
   }
 
-  async get(id: string) {
-    return super._getWithId<IReport>(id);
+  /**
+   * Retrieves the Report associated with the ID.
+   * 
+   * @param rpt_id id of the report
+   * @returns Returns the Report associated with the ID.
+   */
+
+  async retrieve(rpt_id: string) {
+    return super._getWithId<IReport>(rpt_id);
   }
+  
+  /**
+   * Creates a new Report for a specific type. Once created, you can retrieve the Report results from the URL returned.
+   * 
+   * @param opts IReportCreateOpts: https://docs.methodfi.com/api/core/reports/create
+   * @param requestConfig Idempotency key: { idempotency_key: string}
+   * @returns Returns a Report object.
+   */
 
   async create(opts: IReportCreateOpts, requestConfig?: IRequestConfig) {
     return super._create<IReport, IReportCreateOpts>(opts, requestConfig);
   }
 
-  async download(id: string) {
-    return super._download<string>(id);
+  /**
+   * Download a report
+   * 
+   * @param rpt_id id of the report
+   * @returns Returns the Report’s results in CSV format.
+   */
+
+  async download(rpt_id: string) {
+    return super._download<string>(rpt_id);
   }
 };

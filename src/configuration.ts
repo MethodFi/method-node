@@ -11,14 +11,14 @@ export const Environments: EnvironmentsMapped = {
   production: 'production',
   sandbox: 'sandbox',
   dev: 'dev',
-}
+};
 
 export interface IRequestEvent {
   idempotency_key: string | null;
   method: string;
   path: string;
   request_start_time: number;
-}
+};
 
 export type TResponseEventIdemStatuses =
   | 'stored'
@@ -32,7 +32,7 @@ export interface IResponseEventPagination {
   total_count: number;
   page_cursor_next: string | null;
   page_cursor_prev: string | null;
-}
+};
 
 export interface IResponseEvent {
   request_id: string | null;
@@ -43,7 +43,7 @@ export interface IResponseEvent {
   request_start_time: number;
   request_end_time: number;
   pagination: IResponseEventPagination,
-}
+};
 
 export type TOnRequest = (event: IRequestEvent) => void;
 
@@ -64,7 +64,7 @@ export interface IConfigurationOpts {
   onRequest?: TOnRequest;
   onResponse?: TOnResponse;
   axiosRetryConfig?: IAxiosRetryConfig;
-}
+};
 
 export default class Configuration {
   baseURL: string;
@@ -72,7 +72,7 @@ export default class Configuration {
   httpsAgent?: any;
   onResponse: TOnResponse | null;
   onRequest: TOnRequest | null;
-  axiosRetryConfig?: IAxiosRetryConfig;
+  axiosRetryConfig?: IAxiosRetryConfig | null;
 
   constructor(opts: IConfigurationOpts) {
     Configuration._validateConfiguration(opts);
@@ -96,4 +96,4 @@ export default class Configuration {
     if (!Environments[opts.env]) throw new Error(`Invalid env: ${opts.env}`);
     if (!opts.apiKey) throw new Error(`Invalid apiKey: ${opts.apiKey}`);
   }
-}
+};
