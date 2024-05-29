@@ -130,7 +130,7 @@ describe('Accounts - core methods tests', () => {
         },
         latest_verification_session: accounts_create_liability_response.latest_verification_session,
         balance: null,
-        update: null,
+        update: accounts_create_liability_response.update,
         card_brand: null,
         products: [ 'balance', 'payment', 'sensitive', 'update' ].sort(),
         restricted_products: accounts_create_liability_response.restricted_products,
@@ -285,19 +285,8 @@ describe('Accounts - core methods tests', () => {
           status: 'completed',
           issuer: null,
           last4: '1580',
-          brands: [
-            {
-              art_id: 'art_FJ84yL4Q4er8g',
-              url: 'https://static.methodfi.com/cards/art_FJ84yL4Q4er8g.png',
-              name: 'Chase Freedom Unlimited'
-            },
-            {
-              art_id: 'art_9TzzmXDWGNrzf',
-              url: 'https://static.methodfi.com/cards/art_9TzzmXDWGNrzf.png',
-              name: 'Chase Freedom Visa Signature'
-            }
-          ],
-          shared: true,
+          brands: card_create_response.brands,
+          shared: false,
           error: null,
           created_at: card_create_response.created_at,
           updated_at: card_create_response.updated_at
@@ -319,19 +308,8 @@ describe('Accounts - core methods tests', () => {
         status: 'completed',
         issuer: null,
         last4: '1580',
-        brands: [
-          {
-            art_id: 'art_FJ84yL4Q4er8g',
-            url: 'https://static.methodfi.com/cards/art_FJ84yL4Q4er8g.png',
-            name: 'Chase Freedom Unlimited'
-          },
-          {
-            art_id: 'art_9TzzmXDWGNrzf',
-            url: 'https://static.methodfi.com/cards/art_9TzzmXDWGNrzf.png',
-            name: 'Chase Freedom Visa Signature'
-          }
-        ],
-        shared: true,
+        brands: card_create_response.brands,
+        shared: false,
         error: null,
         created_at: card_retrieve_response.created_at,
         updated_at: card_retrieve_response.updated_at
