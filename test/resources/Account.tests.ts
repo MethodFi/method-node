@@ -4,7 +4,7 @@ import { client } from '../config';
 import { awaitResults } from '../utils';
 import { IEntity } from '../../src/resources/Entity/types';
 import { IEntityConnect } from '../../src/resources/Entity/Connect';
-import { IAccount } from '../../src/resources/Account/types';
+import { IAccount, TAccountProducts } from '../../src/resources/Account/types';
 import { IAccountBalance } from '../../src/resources/Account/Balances';
 import { IAccountCardBrand } from '../../src/resources/Account/CardBrands';
 import { IAccountPayoff } from '../../src/resources/Account/Payoffs';
@@ -87,7 +87,7 @@ describe('Accounts - core methods tests', () => {
         },
       });
 
-      const expect_results = {
+      const expect_results: IAccount = {
         id: accounts_create_ach_response.id,
         holder_id: holder_1_response.id,
         type: 'ach',
@@ -116,7 +116,7 @@ describe('Accounts - core methods tests', () => {
 
       accounts_create_liability_response.products.sort();
 
-      const expect_results = {
+      const expect_results: IAccount = {
         id: accounts_create_liability_response.id,
         holder_id: holder_1_response.id,
         type: 'liability',
@@ -132,7 +132,7 @@ describe('Accounts - core methods tests', () => {
         balance: null,
         update: accounts_create_liability_response.update,
         card_brand: null,
-        products: [ 'balance', 'payment', 'sensitive', 'update' ].sort(),
+        products: [ 'balance', 'payment', 'sensitive', 'update' ].sort() as TAccountProducts[],
         restricted_products: accounts_create_liability_response.restricted_products,
         subscriptions: accounts_create_liability_response.subscriptions,
         available_subscriptions: [ 'update' ],
@@ -152,7 +152,7 @@ describe('Accounts - core methods tests', () => {
     it('should successfully retrieve an account by id.', async () => {
       accounts_retrieve_response = await client.accounts.retrieve(accounts_create_ach_response.id);
 
-      const expect_results = {
+      const expect_results: IAccount = {
         id: accounts_create_ach_response.id,
         holder_id: holder_1_response.id,
         type: 'ach',
@@ -206,7 +206,7 @@ describe('Accounts - core methods tests', () => {
         .balances
         .create();
 
-      const expect_results = {
+      const expect_results: IAccountBalance = {
         id: balances_create_response.id,
         account_id: test_credit_card_account.id,
         status: 'pending',
@@ -229,7 +229,7 @@ describe('Accounts - core methods tests', () => {
 
       const account_balances = await awaitResults(getAccountBalances);
 
-      const expect_results = {
+      const expect_results: IAccountBalance = {
         id: balances_create_response.id,
         account_id: test_credit_card_account.id,
         status: 'completed',
@@ -273,7 +273,7 @@ describe('Accounts - core methods tests', () => {
         .cardBrands
         .create();
 
-        const expect_results = {
+        const expect_results: IAccountCardBrand = {
           id: card_create_response.id,
           account_id: test_credit_card_account.id,
           network: 'visa',
@@ -296,7 +296,7 @@ describe('Accounts - core methods tests', () => {
         .cardBrands
         .retrieve(card_create_response.id);
 
-      const expect_results = {
+      const expect_results: IAccountCardBrand = {
         id: card_create_response.id,
         account_id: test_credit_card_account.id,
         network: 'visa',
@@ -321,7 +321,7 @@ describe('Accounts - core methods tests', () => {
         .payoffs
         .create();
 
-      const expect_results = {
+      const expect_results: IAccountPayoff = {
         id: payoff_create_response.id,
         account_id: test_auto_loan_account.id,
         amount: null,
@@ -346,7 +346,7 @@ describe('Accounts - core methods tests', () => {
 
       const payoff_quote = await awaitResults(getPayoffQuotes);
 
-      const expect_results = {
+      const expect_results: IAccountPayoff = {
         id: payoff_create_response.id,
         account_id: test_auto_loan_account.id,
         amount: 6083988,
@@ -396,7 +396,7 @@ describe('Accounts - core methods tests', () => {
           type: 'pre_auth'
         });
 
-        const expect_results = {
+        const expect_results: IAccountVerificationSession = {
           id: verification_session_create.id,
           account_id: test_credit_card_account.id,
           status: 'pending',
@@ -434,7 +434,7 @@ describe('Accounts - core methods tests', () => {
           }  
         });
 
-      const expect_results = {
+      const expect_results: IAccountVerificationSession = {
         id: verification_session_update.id,
         account_id: test_credit_card_account.id,
         status: 'verified',
@@ -468,7 +468,7 @@ describe('Accounts - core methods tests', () => {
 
       const verification_session = await awaitResults(getVerificationSession);
 
-      const expect_results = {
+      const expect_results: IAccountVerificationSession = {
         id: verification_session_update.id,
         account_id: test_credit_card_account.id,
         status: 'verified',
@@ -505,7 +505,7 @@ describe('Accounts - core methods tests', () => {
         ] 
       });
 
-        const expect_results = {
+        const expect_results: IAccountSensitive = {
           id: sensitive_data_response.id,
           account_id: test_credit_card_account.id,
           type: 'credit_card',
@@ -533,7 +533,7 @@ describe('Accounts - core methods tests', () => {
         .subscriptions
         .create('transactions');
 
-      const expect_results = {
+      const expect_results: IAccountSubscription = {
         id: create_txn_subscriptions_response.id,
         name: 'transactions',
         status: 'active',

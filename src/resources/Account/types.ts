@@ -230,12 +230,12 @@ export interface IAccount {
   subscriptions?: TAccountSubscriptionTypes[];
   available_subscriptions?: TAccountSubscriptionTypes[];
   restricted_subscriptions?: TAccountSubscriptionTypes[];
-  sensitive: string | IAccountSensitive | null;
-  balance: string | IAccountBalance | null;
+  sensitive?: string | IAccountSensitive | null;
+  balance?: string | IAccountBalance | null;
   card_brand?: string | IAccountCardBrand | null;
   payoff?: string | IAccountPayoff | null;
-  transactions: string | IAccountTransaction[] | null;
-  update: string | IAccountUpdate | null;
+  transactions?: string | IAccountTransaction[] | null;
+  update?: string | IAccountUpdate | null;
   latest_verification_session: string | IAccountVerificationSession | null;
   error: IResourceError | null;
   created_at: string;
