@@ -222,9 +222,10 @@ export interface IAccount {
   id: string;
   holder_id: string;
   status: TAccountStatuses;
-  type: TAccountTypes;
-  ach?: IAccountACH;
-  liability?: IAccountLiability;
+  type: TAccountTypes | null;
+  ach?: IAccountACH | null;
+  liability?: IAccountLiability | null;
+  clearing?: null;
   products: TAccountProducts[];
   restricted_products: TAccountProducts[];
   subscriptions?: TAccountSubscriptionTypes[];
@@ -236,7 +237,7 @@ export interface IAccount {
   payoff?: string | IAccountPayoff | null;
   transactions?: string | IAccountTransaction[] | null;
   update?: string | IAccountUpdate | null;
-  latest_verification_session: string | IAccountVerificationSession | null;
+  latest_verification_session?: string | IAccountVerificationSession | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;

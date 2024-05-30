@@ -4,6 +4,7 @@ import type { TAccountSubscriptionTypes } from './types';
 
 export const AccountSubscriptionStatuses = {
   active: 'active',
+  inactive: 'inactive',
 };
 
 export type TAccountSubscriptionStatuses = keyof typeof AccountSubscriptionStatuses;

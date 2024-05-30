@@ -38,7 +38,7 @@ export interface IAccountTransaction {
   account_id: string;
   merchant: IAccountTransactionMerchant;
   network: string;
-  network_data: IAccountTransactionNetworkData;
+  network_data: IAccountTransactionNetworkData | null;
   amount: number;
   currency: TAccountCurrencyTypes;
   billing_amount: number;

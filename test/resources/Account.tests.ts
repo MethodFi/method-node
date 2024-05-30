@@ -10,7 +10,7 @@ import { IAccountCardBrand } from '../../src/resources/Account/CardBrands';
 import { IAccountPayoff } from '../../src/resources/Account/Payoffs';
 import { IAccountSensitive } from '../../src/resources/Account/Sensitive';
 import { IAccountTransaction } from '../../src/resources/Account/Transactions';
-import { IAccountSubscription } from '../../src/resources/Account/Subscriptions';
+import { IAccountSubscription, IAccountSubscriptionsResponse } from '../../src/resources/Account/Subscriptions';
 import { IAccountVerificationSession } from '../../src/resources/Account/VerificationSessions';
 import { IAccountUpdate } from '../../src/resources/Account/Updates';
 
@@ -551,7 +551,7 @@ describe('Accounts - core methods tests', () => {
         .subscriptions
         .create('update');
 
-      const expect_results = {
+      const expect_results: IAccountSubscription = {
         id: create_update_subscriptions_response.id,
         name: 'update',
         status: 'active',
@@ -569,7 +569,7 @@ describe('Accounts - core methods tests', () => {
         .subscriptions
         .create('update.snapshot');
 
-      const expect_results = {
+      const expect_results: IAccountSubscription = {
         id: create_update_snapshot_subscriptions_response.id,
         name: 'update.snapshot',
         status: 'active',
@@ -592,33 +592,33 @@ describe('Accounts - core methods tests', () => {
         .subscriptions
         .list();
 
-      const expect_results_card = {
+      const expect_results_card: IAccountSubscriptionsResponse = {
         transactions: {
           id: create_txn_subscriptions_response.id,
           name: 'transactions',
           status: 'active',
           latest_request_id: null,
-          created_at: subscriptions_response.transactions?.created_at,
-          updated_at: subscriptions_response.transactions?.updated_at
+          created_at: subscriptions_response.transactions?.created_at || '',
+          updated_at: subscriptions_response.transactions?.updated_at || ''
         },
         update: {
           id: create_update_subscriptions_response.id,
           name: 'update',
           status: 'active',
           latest_request_id: null,
-          created_at: subscriptions_response.update?.created_at,
-          updated_at: subscriptions_response.update?.updated_at
+          created_at: subscriptions_response.update?.created_at || '',
+          updated_at: subscriptions_response.update?.updated_at || ''
         }
       };
 
-      const expect_results_snapshot = {
+      const expect_results_snapshot: IAccountSubscriptionsResponse = {
         'update.snapshot': {
           id: create_update_snapshot_subscriptions_response.id,
           name: 'update.snapshot',
           status: 'active',
           latest_request_id: null,
-          created_at: subscriptions_update_snapshot_response['update.snapshot']?.created_at,
-          updated_at: subscriptions_update_snapshot_response['update.snapshot']?.updated_at
+          created_at: subscriptions_update_snapshot_response['update.snapshot']?.created_at || '',
+          updated_at: subscriptions_update_snapshot_response['update.snapshot']?.updated_at || ''
         }
       };
 
@@ -632,7 +632,7 @@ describe('Accounts - core methods tests', () => {
         .subscriptions
         .retrieve(create_txn_subscriptions_response.id);
 
-      const expect_results = {
+      const expect_results: IAccountSubscription = {
         id: create_txn_subscriptions_response.id,
         name: 'transactions',
         status: 'active',
@@ -650,7 +650,7 @@ describe('Accounts - core methods tests', () => {
         .subscriptions
         .retrieve(create_update_subscriptions_response.id);
 
-      const expect_results = {
+      const expect_results: IAccountSubscription = {
         id: create_update_subscriptions_response.id,
         name: 'update',
         status: 'active',
@@ -668,7 +668,7 @@ describe('Accounts - core methods tests', () => {
         .subscriptions
         .retrieve(create_update_snapshot_subscriptions_response.id);
 
-      const expect_results = {
+      const expect_results: IAccountSubscription = {
         id: create_update_snapshot_subscriptions_response.id,
         name: 'update.snapshot',
         status: 'active',
@@ -686,7 +686,7 @@ describe('Accounts - core methods tests', () => {
         .subscriptions
         .delete(create_update_snapshot_subscriptions_response.id);
 
-      const expect_results = {
+      const expect_results: IAccountSubscription = {
         id: create_update_snapshot_subscriptions_response.id,
         name: 'update.snapshot',
         status: 'inactive',
@@ -709,7 +709,7 @@ describe('Accounts - core methods tests', () => {
 
       transactions_response = res[0];
 
-      const expect_results = {
+      const expect_results: IAccountTransaction = {
         id: transactions_response.id,
         account_id: test_credit_card_account.id,
         merchant,
@@ -734,7 +734,7 @@ describe('Accounts - core methods tests', () => {
         .transactions
         .retrieve(transactions_response.id);
 
-      const expect_results = {
+      const expect_results: IAccountTransaction = {
         id: transactions_response.id,
         account_id: test_credit_card_account.id,
         merchant: transactions_response.merchant,
@@ -758,7 +758,7 @@ describe('Accounts - core methods tests', () => {
     it('should successfully create an updates request', async () => {
       create_updates_response = await client.accounts(test_credit_card_account.id).updates.create();
       
-      const expect_results = {
+      const expect_results: IAccountUpdate = {
         id: create_updates_response.id,
         account_id: test_credit_card_account.id,
         status: 'pending',
@@ -798,7 +798,7 @@ describe('Accounts - core methods tests', () => {
 
       const retrieve_updates_response = await awaitResults(getAccountUpdates);
       
-      const expect_results = {
+      const expect_results: IAccountUpdate = {
         id: create_updates_response.id,
         account_id: test_credit_card_account.id,
         status: 'completed',
@@ -833,7 +833,7 @@ describe('Accounts - core methods tests', () => {
       
       const update_to_check = list_updates_response.find(update => update.id === create_updates_response.id);
 
-      const expect_results = {
+      const expect_results: IAccountUpdate = {
           id: create_updates_response.id,
           account_id: test_credit_card_account.id,
           status: 'completed',
@@ -856,8 +856,8 @@ describe('Accounts - core methods tests', () => {
             usage_pattern: null
           },
           error: null,
-          created_at: update_to_check?.created_at,
-          updated_at: update_to_check?.updated_at
+          created_at: update_to_check?.created_at || '',
+          updated_at: update_to_check?.updated_at || ''
         };
 
       update_to_check?.should.be.eql(expect_results);
@@ -868,7 +868,7 @@ describe('Accounts - core methods tests', () => {
     it('should successfully withdraw consent from an account.', async () => {
       const withdraw_consent_response = await client.accounts.withdrawConsent(test_credit_card_account.id);
       
-      const expect_results = {
+      const expect_results: IAccount = {
         id: test_credit_card_account.id,
         holder_id: holder_1_response.id,
         status: 'disabled',
