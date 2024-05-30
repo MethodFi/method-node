@@ -8,12 +8,14 @@ import type {
   IAccountLiabilityMortgage,
   IAccountLiabilityPersonalLoan,
   IAccountLiabilityStudentLoans,
+  TAccountUpdateSources
 } from './types';
 
 export interface IAccountUpdate {
   id: string;
   status: TResourceStatus;
   account_id: string;
+  source: TAccountUpdateSources;
   type: TAccountLiabilityTypes;
   auto_loan?: IAccountLiabilityAutoLoan;
   credit_card?: IAccountLiabilityCreditCard;

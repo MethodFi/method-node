@@ -144,12 +144,7 @@ describe('Accounts - core methods tests', () => {
         updated_at: accounts_create_liability_response.updated_at
       };
 
-      const accounts_create_liability_response_sorted = {
-        ...accounts_create_liability_response,
-        products: accounts_create_liability_response.products.sort(),
-      };
-
-      accounts_create_liability_response_sorted.should.be.eql(expect_results);
+      accounts_create_liability_response.should.be.eql(expect_results);
     });
   });
 

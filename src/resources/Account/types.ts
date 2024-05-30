@@ -41,14 +41,6 @@ export const AccountSubscriptionTypes = {
 
 export type TAccountSubscriptionTypes = typeof AccountSubscriptionTypes[keyof typeof AccountSubscriptionTypes];
 
-export const AccountLiabilityPaymentStatuses = {
-  active: 'active',
-  activating: 'activating',
-  unavailable: 'unavailable',
-};
-
-export type TAccountLiabilityPaymentStatuses = keyof typeof AccountLiabilityPaymentStatuses;
-
 export const AccountOwnership = {
   primary: 'primary',
   authorized: 'authorized',
@@ -63,7 +55,7 @@ export const AccountUpdateSources = {
   snapshot: 'snapshot',
 };
 
-export type TAccountAccountUpdateSources = keyof typeof AccountUpdateSources;
+export type TAccountUpdateSources = keyof typeof AccountUpdateSources;
 
 export const AccountLiabilityTypes = {
   auto_loan: 'auto_loan',
