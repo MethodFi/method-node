@@ -3,6 +3,7 @@ import Configuration from "../../configuration";
 
 export interface IEntityConnect {
   id: string;
+  entity_id: string;
   status: TResourceStatus;
   accounts: string[] | null;
   error: IResourceError | null;

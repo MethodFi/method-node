@@ -20,7 +20,7 @@ describe('Webhooks - core methods tests', () => {
         auth_token: Math.random().toString(),
       });
 
-      const expect_results = {
+      const expect_results: IWebhook = {
         id: webhooks_create_response.id,
         type: 'payment.create',
         url: 'https://dev.methodfi.com',
@@ -37,7 +37,7 @@ describe('Webhooks - core methods tests', () => {
     it('should successfully get a webhook.', async () => {
       webhooks_get_response = await client.webhooks.retrieve(webhooks_create_response.id);
 
-      const expect_results = {
+      const expect_results: IWebhook = {
         id: webhooks_create_response.id,
         type: 'payment.create',
         url: 'https://dev.methodfi.com',

@@ -1,17 +1,21 @@
-import Resource, { IRequestConfig, IResourceListOpts } from '../../resource';
+import Resource, { IRequestConfig, IResourceListOpts, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
-import AccountCardBrand from './CardBrands';
-import AccountPayoffs from './Payoffs';
-import AccountUpdates from './Updates';
-import AccountBalances from './Balances';
-import AccountSensitive from './Sensitive';
-import AccountTransactions from './Transactions';
+import AccountCardBrand, { IAccountCardBrand } from './CardBrands';
+import AccountPayoffs, { IAccountPayoff } from './Payoffs';
+import AccountUpdates, { IAccountUpdate } from './Updates';
+import AccountBalances, { IAccountBalance } from './Balances';
+import AccountSensitive, { IAccountSensitive } from './Sensitive';
+import AccountTransactions, { IAccountTransaction } from './Transactions';
 import AccountSubscriptions from './Subscriptions';
-import AccountVerificationSession from './VerificationSessions';
+import AccountVerificationSession, { IAccountVerificationSession } from './VerificationSessions';
 import type {
-  IAccount,
   IAccountACH,
+  IAccountLiability,
   TAccountExpandableFields,
+  TAccountProducts,
+  TAccountStatuses,
+  TAccountSubscriptionTypes,
+  TAccountTypes,
 } from './types';
 
 export interface IAccountCreateOpts {
@@ -43,6 +47,33 @@ export interface IAccountListOpts<T extends TAccountExpandableFields> extends IR
 export interface IAccountWithdrawConsentOpts {
   type: 'withdraw';
   reason: 'holder_withdrew_consent' | null;
+};
+
+
+export interface IAccount {
+  id: string;
+  holder_id: string;
+  status: TAccountStatuses;
+  type: TAccountTypes | null;
+  ach?: IAccountACH | null;
+  liability?: IAccountLiability | null;
+  clearing?: null;
+  products: TAccountProducts[];
+  restricted_products: TAccountProducts[];
+  subscriptions?: TAccountSubscriptionTypes[];
+  available_subscriptions?: TAccountSubscriptionTypes[];
+  restricted_subscriptions?: TAccountSubscriptionTypes[];
+  sensitive?: string | IAccountSensitive | null;
+  balance?: string | IAccountBalance | null;
+  card_brand?: string | IAccountCardBrand | null;
+  payoff?: string | IAccountPayoff | null;
+  transactions?: string | IAccountTransaction[] | null;
+  update?: string | IAccountUpdate | null;
+  latest_verification_session?: string | IAccountVerificationSession | null;
+  error: IResourceError | null;
+  created_at: string;
+  updated_at: string;
+  metadata: {} | null;
 };
 
 export class AccountSubResources {

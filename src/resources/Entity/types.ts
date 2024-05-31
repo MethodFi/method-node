@@ -1,9 +1,3 @@
-import { IResourceError } from "../../resource";
-import { TEntityProductType } from "./Products";
-import { TEntitySubscriptionNames } from "./Subscriptions";
-import { IEntityConnect } from "./Connect";
-import { IEntityCreditScores } from "./CreditScores";
-
 export const CreditReportBureaus = {
   experian: 'experian',
   equifax: 'equifax',
@@ -89,7 +83,6 @@ export interface IEntityKYCAddressRecordData {
   city: string;
   postal_code: string;
   state: string;
-  address_term: number;
 };
 
 export interface IEntityIdentityType {
@@ -117,25 +110,4 @@ export interface IEntityVerificationPhone {
 export interface IEntityVerification {
   identity?: IEntityVerificationIdentity;
   phone?: IEntityVerificationPhone;
-};
-
-export interface IEntity {
-  id: string;
-  type: TEntityTypes;
-  individual?: IEntityIndividual | null;
-  corporation?: IEntityCorporation | null;
-  address: IEntityAddress;
-  status: TEntityStatuses;
-  error: IResourceError | null;
-  metadata: {} | null;
-  products?: TEntityProductType[];
-  restricted_products?: TEntityProductType[];
-  subscriptions?: TEntitySubscriptionNames[];
-  available_subscriptions?: TEntitySubscriptionNames[];
-  restricted_subscriptions?: TEntitySubscriptionNames[];
-  verification?: IEntityVerification;
-  connect: string | IEntityConnect | null;
-  credit_score: string| IEntityCreditScores | null;
-  created_at: string;
-  updated_at: string;
 };

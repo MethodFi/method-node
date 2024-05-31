@@ -17,7 +17,7 @@ describe('Reports - core methods tests', () => {
         type: 'payments.created.current',
       });
 
-      const expect_results = {
+      const expect_results: IReport = {
         id: reports_create_response.id,
         type: 'payments.created.current',
         url: `https://dev.methodfi.com/reports/${reports_create_response.id}/download`,
@@ -35,7 +35,7 @@ describe('Reports - core methods tests', () => {
     it('should successfully get a report.', async () => {
       reports_retrieve_response = await client.reports.retrieve(reports_create_response.id);
       
-      const expect_results = {
+      const expect_results: IReport = {
         id: reports_create_response.id,
         type: 'payments.created.current',
         url: `https://dev.methodfi.com/reports/${reports_create_response.id}/download`,

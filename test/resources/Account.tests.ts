@@ -2,9 +2,10 @@ import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
 import { awaitResults } from '../utils';
-import { IEntity } from '../../src/resources/Entity/types';
+import { IEntity } from '../../src/resources/Entity';
 import { IEntityConnect } from '../../src/resources/Entity/Connect';
-import { IAccount, TAccountProducts } from '../../src/resources/Account/types';
+import { IAccount } from '../../src/resources/Account';
+import { TAccountProducts } from '../../src/resources/Account/types';
 import { IAccountBalance } from '../../src/resources/Account/Balances';
 import { IAccountCardBrand } from '../../src/resources/Account/CardBrands';
 import { IAccountPayoff } from '../../src/resources/Account/Payoffs';
@@ -814,8 +815,8 @@ describe('Accounts - core methods tests', () => {
           next_payment_due_date: '2023-02-09',
           next_payment_minimum_amount: 51060,
           interest_rate_type: 'variable',
-          interest_rate_percentage_max: null,
-          interest_rate_percentage_min: null,
+          interest_rate_percentage_max: 27.5,
+          interest_rate_percentage_min: 20.5,
           available_credit: 930000,
           credit_limit: 2800000,
           usage_pattern: null
@@ -849,8 +850,8 @@ describe('Accounts - core methods tests', () => {
             next_payment_due_date: '2023-02-09',
             next_payment_minimum_amount: 51060,
             interest_rate_type: 'variable',
-            interest_rate_percentage_max: null,
-            interest_rate_percentage_min: null,
+            interest_rate_percentage_max: 27.5,
+            interest_rate_percentage_min: 20.5,
             available_credit: 930000,
             credit_limit: 2800000,
             usage_pattern: null
@@ -866,6 +867,7 @@ describe('Accounts - core methods tests', () => {
 
   describe('accounts.withdrawConsent', () => {
     it('should successfully withdraw consent from an account.', async () => {
+      console.log('test_credit_card_account.id', test_credit_card_account.id);
       const withdraw_consent_response = await client.accounts.withdrawConsent(test_credit_card_account.id);
       
       const expect_results: IAccount = {

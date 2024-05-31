@@ -1,16 +1,17 @@
-import Resource, { IRequestConfig, IResourceListOpts } from '../../resource';
+import Resource, { IRequestConfig, IResourceListOpts, IResourceError } from '../../resource';
 import Configuration from '../../configuration';
-import EntityConnect from './Connect';
-import EntityProducts from './Products';
+import EntityConnect, { IEntityConnect } from './Connect';
+import EntityProducts, { TEntityProductType } from './Products';
 import EntityIdentities from './Identities';
-import EntityCreditScores from './CreditScores';
-import EntitySubscriptions from './Subscriptions';
+import EntityCreditScores, { IEntityCreditScores } from './CreditScores';
+import EntitySubscriptions, { TEntitySubscriptionNames } from './Subscriptions';
 import EntityVerificationSession from './VerificationSessions';
 import type {
-  IEntity,
   IEntityAddress,
   IEntityIndividual,
   IEntityCorporation,
+  IEntityVerification,
+  TEntityStatuses,
   TEntityTypes
 } from './types';
 
@@ -54,6 +55,27 @@ export interface IEntityListOpts<T extends TEntityExpandableFields> extends IRes
 export interface IEntityWithdrawConsentOpts {
   type: 'withdraw',
   reason: 'entity_withdrew_consent' | null,
+};
+export interface IEntity {
+  id: string;
+  type: TEntityTypes | null;
+  individual?: IEntityIndividual | null;
+  corporation?: IEntityCorporation | null;
+  receive_only?: boolean | null;
+  address: IEntityAddress | {};
+  status: TEntityStatuses;
+  error: IResourceError | null;
+  metadata: {} | null;
+  products?: TEntityProductType[];
+  restricted_products?: TEntityProductType[];
+  subscriptions?: TEntitySubscriptionNames[];
+  available_subscriptions?: TEntitySubscriptionNames[];
+  restricted_subscriptions?: TEntitySubscriptionNames[];
+  verification?: IEntityVerification | null;
+  connect?: string | IEntityConnect | null;
+  credit_score?: string| IEntityCreditScores | null;
+  created_at: string;
+  updated_at: string;
 };
 
 export class EntitySubResources {

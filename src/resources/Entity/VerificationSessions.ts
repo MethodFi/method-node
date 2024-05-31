@@ -1,7 +1,16 @@
-import Resource, { IResourceError, TResourceStatus } from '../../resource';
+import Resource, { IResourceError } from '../../resource';
 import Configuration from '../../configuration';
 
-export const EntityVerificationSessionTypes = {
+export const EntityVerificationSessionStatuses = {
+  pending: 'pending',
+  in_progress: 'in_progress',
+  verified: 'verified',
+  failed: 'failed',
+};
+
+export type IEntityVerificationSessionStatuses = keyof typeof EntityVerificationSessionStatuses;
+
+export const EntityVerificationSessionMethods = {
   sms: 'sms',
   sna: 'sna',
   byo_sms: 'byo_sms',
@@ -10,14 +19,14 @@ export const EntityVerificationSessionTypes = {
   element: 'element',
 };
 
-export type IEntityVerificationSessionTypes = keyof typeof EntityVerificationSessionTypes;
+export type IEntityVerificationSessionMethods = keyof typeof EntityVerificationSessionMethods;
 
-export const EntityVerificationSessionCategories = {
+export const EntityVerificationSessionTypes = {
   phone: 'phone',
   identity: 'identity',
 };
 
-export type IEntityVerificationSessionCategories = keyof typeof EntityVerificationSessionCategories;
+export type IEntityVerificationSessionTypes = keyof typeof EntityVerificationSessionTypes;
 
 export interface IEntitySmsVerification {
   timestamp: string;
@@ -58,8 +67,8 @@ export interface IEntityKbaVerification {
 };
 
 export interface IEntityVerificationSessionCreateOpts {
-  type: IEntityVerificationSessionCategories;
-  method: IEntityVerificationSessionTypes;
+  type: IEntityVerificationSessionTypes;
+  method: IEntityVerificationSessionMethods;
   sms?: {};
   sna?: {};
   byo_sms?: IEntitySmsVerification;
@@ -68,7 +77,7 @@ export interface IEntityVerificationSessionCreateOpts {
 };
 
 export interface IEntityVerificationSessionUpdateOpts {
-  type: IEntityVerificationSessionTypes;
+  type: IEntityVerificationSessionMethods;
   sms?: IEntitySmsVerificationUpdate;
   sna?: {};
   kba?: IEntityKbaVerificationAnswerUpdate;
@@ -77,15 +86,15 @@ export interface IEntityVerificationSessionUpdateOpts {
 export interface IEntityVerificationSession {
   id: string;
   entity_id: string;
-  status: TResourceStatus;
+  status: IEntityVerificationSessionStatuses;
   type: IEntityVerificationSessionTypes;
-  category: IEntityVerificationSessionCategories;
-  sms: IEntitySmsVerification | null;
-  sna: IEntitySnaVerification | null;
-  byo_sms: IEntitySmsVerification | null;
-  byo_kyc: IEntityByoKycVerification | null
-  kba: IEntityKbaVerification | null;
-  element: IEntityKbaVerification | null;
+  method: IEntityVerificationSessionMethods;
+  sms?: IEntitySmsVerification | null;
+  sna?: IEntitySnaVerification | null;
+  byo_sms?: IEntitySmsVerification | null;
+  byo_kyc?: IEntityByoKycVerification | null
+  kba?: IEntityKbaVerification | null;
+  element?: IEntityKbaVerification | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;

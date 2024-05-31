@@ -1,12 +1,3 @@
-import { IResourceError } from "../../resource";
-import type { IAccountSensitive } from "./Sensitive";
-import type { IAccountBalance } from "./Balances";
-import type { IAccountCardBrand } from "./CardBrands";
-import type { IAccountPayoff } from "./Payoffs";
-import type { IAccountTransaction } from "./Transactions";
-import type { IAccountVerificationSession } from "./VerificationSessions";
-import type { IAccountUpdate } from "./Updates";
-
 export const AccountTypes = {
   ach: 'ach',
   liability: 'liability',
@@ -216,30 +207,4 @@ export interface IAccountACH {
   routing: string;
   number: string;
   type: TAchAccountSubTypes;
-};
-
-export interface IAccount {
-  id: string;
-  holder_id: string;
-  status: TAccountStatuses;
-  type: TAccountTypes | null;
-  ach?: IAccountACH | null;
-  liability?: IAccountLiability | null;
-  clearing?: null;
-  products: TAccountProducts[];
-  restricted_products: TAccountProducts[];
-  subscriptions?: TAccountSubscriptionTypes[];
-  available_subscriptions?: TAccountSubscriptionTypes[];
-  restricted_subscriptions?: TAccountSubscriptionTypes[];
-  sensitive?: string | IAccountSensitive | null;
-  balance?: string | IAccountBalance | null;
-  card_brand?: string | IAccountCardBrand | null;
-  payoff?: string | IAccountPayoff | null;
-  transactions?: string | IAccountTransaction[] | null;
-  update?: string | IAccountUpdate | null;
-  latest_verification_session?: string | IAccountVerificationSession | null;
-  error: IResourceError | null;
-  created_at: string;
-  updated_at: string;
-  metadata: {} | null;
 };
