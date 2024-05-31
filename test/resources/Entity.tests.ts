@@ -115,7 +115,13 @@ describe('Entities - core methods tests', () => {
           ssn: null,
           ssn_4: null
         },
-        address: { line1: null, line2: null, city: null, state: null, zip: null },
+        address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          zip: null
+        },
         verification: {
           identity: {
             verified: false,
@@ -168,7 +174,7 @@ describe('Entities - core methods tests', () => {
         },
       );
 
-      entities_update_response.available_subscriptions?.sort();
+      entities_update_response.restricted_subscriptions?.sort();
       entities_update_response.restricted_products?.sort();
       
       const expect_results: IEntity = {
@@ -183,7 +189,13 @@ describe('Entities - core methods tests', () => {
           ssn: null,
           ssn_4: null
         },
-        address: { line1: null, line2: null, city: null, state: null, zip: null },
+        address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          zip: null
+        },
         verification: {
           identity: {
             verified: false,

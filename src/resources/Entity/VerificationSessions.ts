@@ -17,6 +17,7 @@ export const EntityVerificationSessionMethods = {
   byo_kyc: 'byo_kyc',
   kba: 'kba',
   element: 'element',
+  method_verified: 'method_verified',
 };
 
 export type IEntityVerificationSessionMethods = keyof typeof EntityVerificationSessionMethods;
@@ -77,7 +78,8 @@ export interface IEntityVerificationSessionCreateOpts {
 };
 
 export interface IEntityVerificationSessionUpdateOpts {
-  type: IEntityVerificationSessionMethods;
+  type: IEntityVerificationSessionTypes;
+  method: IEntityVerificationSessionMethods;
   sms?: IEntitySmsVerificationUpdate;
   sna?: {};
   kba?: IEntityKbaVerificationAnswerUpdate;
