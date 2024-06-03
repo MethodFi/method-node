@@ -41,7 +41,8 @@ export interface IAccountListOpts<T extends TAccountExpandableFields> extends IR
   holder_id?: string | null;
   expand?: T[];
   'liability.mch_id'?: string | null;
-  'liability.type'?: string | null;
+  'liability.type'?: TAccountLiabilityTypes | null;
+  'liability.ownership'?: TAccountOwnership | null;
 };
 
 export interface IAccountWithdrawConsentOpts {
@@ -112,7 +113,7 @@ export class Account extends Resource {
 
   /**
    * Returns the Account associated with the ID.
-   * 
+   *
    * @param acc_id id of the account
    * @returns Returns the Account associated with the ID.
    */
@@ -127,7 +128,7 @@ export class Account extends Resource {
 
   /**
    * Returns a list of Accounts.
-   * 
+   *
    * @param opts IAccountListOpts: https://docs.methodfi.com/api/core/accounts/list
    * @returns Returns a list of Accounts.
    */
@@ -142,7 +143,7 @@ export class Account extends Resource {
 
   /**
    * Creates a new Account for an Entity, either ach or liability, based on the parameters provided. An account is a unique representation of an ACH or Liability account.
-   * 
+   *
    * @param data Create options: https://docs.methodfi.com/api/core/accounts/create
    * @param requestConfig Allows for idempotency: { idempotency_key?: string }
    * @returns Returns an Account object.
@@ -155,12 +156,12 @@ export class Account extends Resource {
 
   /**
    * Withdraws an Account’s consent. This endpoint deletes information on the account, sets its status to disabled, and removes all active Products or Subscriptions for the account.
-   * 
+   *
    * @param acc_id id of the account
    * @param data IAccountWithdrawConsentOpts: { type: 'withdraw', reason: 'holder_withdrew_consent' | null }
    * @returns Returns the Account with status set to disabled.
    */
-  
+
   async withdrawConsent(acc_id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
     return super._createWithSubPath<IAccount, IAccountWithdrawConsentOpts>(
       `/${acc_id}/consent`,
