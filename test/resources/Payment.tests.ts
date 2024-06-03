@@ -28,6 +28,7 @@ describe('Payments - core methods tests', () => {
         phone: '+15121231111',
       },
     });
+
     await client.entities(holder_1_response.id).verificationSessions.create({
       type: 'phone',
       method: 'byo_sms',
@@ -35,11 +36,13 @@ describe('Payments - core methods tests', () => {
         timestamp: '2021-09-01T00:00:00.000Z',
       },
     });
+
     await client.entities(holder_1_response.id).verificationSessions.create({
       type: 'identity',
       method: 'kba',
       kba: {},
     });
+
     source_1_response = await client.accounts.create({
       holder_id: holder_1_response.id,
       ach: {
@@ -48,6 +51,7 @@ describe('Payments - core methods tests', () => {
         type: 'checking',
       },
     });
+    
     destination_1_response = await client.accounts.create({
       holder_id: holder_1_response.id,
       liability: {

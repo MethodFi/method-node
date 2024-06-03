@@ -3,7 +3,6 @@ import Configuration from '../../configuration';
 import { TAccountLiabilityTypes } from '../Account/types';
 
 export const UserEventType = {
-  // Auth session
   AUTH_INTRO_OPEN: 'AUTH_INTRO_OPEN',
   AUTH_INTRO_CONTINUE: 'AUTH_INTRO_CONTINUE',
   AUTH_INTRO_CLOSE: 'AUTH_INTRO_CLOSE',
@@ -70,14 +69,7 @@ export const UserEventType = {
 
 export type TUserEventType = keyof typeof UserEventType;
 
-export interface IElementUserEvent {
-  type: TUserEventType,
-  timestamp: string,
-  metadata: {} | null,
-};
-
 export const ElementTypes = {
-  auth: 'auth',
   connect: 'connect',
   balance_transfer: 'balance_transfer',
 };
@@ -106,23 +98,14 @@ export const ElementMetadataOpTypes = {
 
 export type TElementMetadataOpTypes = keyof typeof ElementMetadataOpTypes;
 
-export type TAuthElementAccountFilterCapabilities =
-  | 'payments:receive'
-  | 'data:sync';
-
-export type TAuthElementAccountFilterSelectionTypes =
+export type TElementSelectionTypes =
   | 'single'
   | 'multiple';
 
-export interface ILinkElementCreateOpts {
-  mch_id?: string;
-  mask?: string;
-};
-
-export interface IAuthElementAccountFiltersOpts {
-  selection_type?: TAuthElementAccountFilterSelectionTypes;
-  capabilities?: TAuthElementAccountFilterCapabilities[];
-  types?: TAccountLiabilityTypes[];
+export interface IElementUserEvent {
+  type: TUserEventType,
+  timestamp: string,
+  metadata: {} | null,
 };
 
 export interface IElementEntityOpts {
@@ -138,13 +121,8 @@ export interface IElementEntityOpts {
   };
 };
 
-export interface IAuthElementCreateOpts {
-  account_filters?: IAuthElementAccountFiltersOpts;
-  entity?: IElementEntityOpts;
-};
-
 export interface IConnectElementFilterOpts {
-  selection_type?: TAuthElementAccountFilterSelectionTypes;
+  selection_type?: TElementSelectionTypes;
   liability_types?: TAccountLiabilityTypes[];
 };
 
@@ -155,6 +133,16 @@ export interface IConnectElementCreateOpts {
   account_filters?: IConnectElementFilterOpts;
 };
 
+export interface IBalanceTransferElementCreateOpts {
+  payout_amount_min: number;
+  minimum_loan_amount: number;
+  payout_residual_amount_max: number;
+  loan_details_requested_amount: number;
+  loan_details_requested_rate: number;
+  loan_details_requested_term: number;
+  loan_details_requested_monthly_payment: number;
+};
+
 export interface IElementTokenCreateOpts {
   type: TElementTypes;
   entity_id?: string;
@@ -162,16 +150,11 @@ export interface IElementTokenCreateOpts {
   team_logo?: string | null;
   team_icon?: string | null;
   connect?: IConnectElementCreateOpts;
-  auth?: IAuthElementCreateOpts;
+  balance_transfer?: IBalanceTransferElementCreateOpts;
 };
 
 export interface IElementToken {
   element_token: string;
-};
-
-export interface IElementExchangePublicAccountOpts {
-  public_account_token?: string;
-  public_account_tokens?: string[];
 };
 
 export interface IElementMetadata {
