@@ -56,6 +56,7 @@ export interface IEntityWithdrawConsentOpts {
   type: 'withdraw',
   reason: 'entity_withdrew_consent' | null,
 };
+
 export interface IEntity {
   id: string;
   type: TEntityTypes | null;
