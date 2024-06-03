@@ -16,6 +16,8 @@ import type {
   TAccountStatuses,
   TAccountSubscriptionTypes,
   TAccountTypes,
+  TAccountLiabilityTypes,
+  TAccountOwnership,
 } from './types';
 
 export interface IAccountCreateOpts {
