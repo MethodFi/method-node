@@ -49,7 +49,6 @@ export interface IAccountWithdrawConsentOpts {
   reason: 'holder_withdrew_consent' | null;
 };
 
-
 export interface IAccount {
   id: string;
   holder_id: string;
