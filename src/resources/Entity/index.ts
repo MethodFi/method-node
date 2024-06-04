@@ -11,6 +11,7 @@ import type {
   IEntityIndividual,
   IEntityCorporation,
   IEntityVerification,
+  IEntityReceiveOnly,
   TEntityStatuses,
   TEntityTypes
 } from './types';
@@ -62,7 +63,7 @@ export interface IEntity {
   type: TEntityTypes | null;
   individual?: IEntityIndividual | null;
   corporation?: IEntityCorporation | null;
-  receive_only?: boolean | null;
+  receive_only?: IEntityReceiveOnly | null;
   address: IEntityAddress | {};
   status: TEntityStatuses;
   error: IResourceError | null;
