@@ -72,12 +72,6 @@ export interface IEntityCorporation {
   owners: IEntityCorporationOwner[];
 };
 
-export interface IEntityReceiveOnly {
-  name: string;
-  phone: string | null;
-  email: string | null;
-};
-
 export interface IEntityKYCAddressRecordData {
   address: string;
   city: string;

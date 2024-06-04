@@ -697,8 +697,6 @@ describe('Entities - core methods tests', () => {
         id: entities_create_response.id,
         type: null,
         individual: null,
-        corporation: null,
-        receive_only: null,
         verification: null,
         error: {
           type: 'ENTITY_DISABLED',

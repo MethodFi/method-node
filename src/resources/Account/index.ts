@@ -59,7 +59,6 @@ export interface IAccount {
   type: TAccountTypes | null;
   ach?: IAccountACH | null;
   liability?: IAccountLiability | null;
-  clearing?: null;
   products: TAccountProducts[];
   restricted_products: TAccountProducts[];
   subscriptions?: TAccountSubscriptionTypes[];
