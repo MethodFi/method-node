@@ -4,6 +4,7 @@ import type { TAccountSubscriptionTypes } from './types';
 
 export const AccountSubscriptionStatuses = {
   active: 'active',
+  inactive: 'inactive',
 };
 
 export type TAccountSubscriptionStatuses = keyof typeof AccountSubscriptionStatuses;
@@ -12,7 +13,7 @@ export interface IAccountSubscription {
   id: string;
   name: TAccountSubscriptionTypes;
   status: TAccountSubscriptionStatuses;
-  latest_transaction_id: string;
+  latest_request_id: string | null;
   created_at: string;
   updated_at: string;
 };

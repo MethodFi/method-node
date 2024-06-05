@@ -2,13 +2,13 @@ import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
 import { awaitResults } from '../utils';
-import { IEntity } from '../../src/resources/Entity/types';
+import { IEntity } from '../../src/resources/Entity';
 import { IEntityConnect } from '../../src/resources/Entity/Connect';
-import { IAccount } from '../../src/resources/Account/types';
+import { IAccount } from '../../src/resources/Account';
 import { IEntityCreditScores } from '../../src/resources/Entity/CreditScores';
 import { IEntityIdentity } from '../../src/resources/Entity/Identities';
-import { IEntityProductListResponse } from '../../src/resources/Entity/Products';
-import { IEntitySubscription } from '../../src/resources/Entity/Subscriptions';
+import { IEntityProduct, IEntityProductListResponse, TEntityProductType } from '../../src/resources/Entity/Products';
+import { IEntitySubscription, IEntitySubscriptionResponse, TEntitySubscriptionNames } from '../../src/resources/Entity/Subscriptions';
 import { IEntityVerificationSession } from '../../src/resources/Entity/VerificationSessions';
 
 should();
@@ -39,7 +39,7 @@ describe('Entities - core methods tests', () => {
 
       entities_create_response.restricted_subscriptions?.sort();
 
-      const expect_results = {
+      const expect_results: IEntity = {
         id: entities_create_response.id,
         type: 'individual',
         individual: {
@@ -51,7 +51,13 @@ describe('Entities - core methods tests', () => {
           ssn: null,
           ssn_4: null
         },
-        address: { line1: null, line2: null, city: null, state: null, zip: null },
+        address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          zip: null
+        },
         verification: {
           identity: {
             verified: false,
@@ -79,7 +85,7 @@ describe('Entities - core methods tests', () => {
         restricted_products: entities_create_response.restricted_products,
         subscriptions: [],
         available_subscriptions: [],
-        restricted_subscriptions: [ 'connect', 'credit_score' ].sort(),
+        restricted_subscriptions: [ 'connect', 'credit_score' ].sort() as TEntitySubscriptionNames[],
         status: 'incomplete',
         error: null,
         metadata: {},
@@ -97,7 +103,7 @@ describe('Entities - core methods tests', () => {
       entities_retrieve_response.restricted_products?.sort();
       entities_retrieve_response.restricted_subscriptions?.sort();
 
-      const expect_results = {
+      const expect_results: IEntity = {
         id: entities_create_response.id,
         type: 'individual',
         individual: {
@@ -109,7 +115,13 @@ describe('Entities - core methods tests', () => {
           ssn: null,
           ssn_4: null
         },
-        address: { line1: null, line2: null, city: null, state: null, zip: null },
+        address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          zip: null
+        },
         verification: {
           identity: {
             verified: false,
@@ -134,10 +146,10 @@ describe('Entities - core methods tests', () => {
         connect: null,
         credit_score: null,
         products: [],
-        restricted_products: [ 'connect', 'identity', 'credit_score' ].sort(),
+        restricted_products: [ 'connect', 'identity', 'credit_score' ].sort() as TEntityProductType[],
         subscriptions: [],
         available_subscriptions: [],
-        restricted_subscriptions: [ 'connect', 'credit_score' ].sort(),
+        restricted_subscriptions: [ 'connect', 'credit_score' ].sort() as TEntitySubscriptionNames[],
         status: 'incomplete',
         error: null,
         metadata: {},
@@ -162,10 +174,10 @@ describe('Entities - core methods tests', () => {
         },
       );
 
-      entities_update_response.available_subscriptions?.sort();
+      entities_update_response.restricted_subscriptions?.sort();
       entities_update_response.restricted_products?.sort();
       
-      const expect_results = {
+      const expect_results: IEntity = {
         id: entities_create_response.id,
         type: 'individual',
         individual: {
@@ -177,12 +189,18 @@ describe('Entities - core methods tests', () => {
           ssn: null,
           ssn_4: null
         },
-        address: { line1: null, line2: null, city: null, state: null, zip: null },
+        address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          zip: null
+        },
         verification: {
           identity: {
             verified: false,
             matched: true,
-            latest_verification_session: entities_update_response.verification?.identity?.latest_verification_session,
+            latest_verification_session: entities_update_response.verification?.identity?.latest_verification_session || null,
             methods: [
               'element',
               'kba'
@@ -190,7 +208,7 @@ describe('Entities - core methods tests', () => {
           },
           phone: {
             verified: false,
-            latest_verification_session: entities_update_response.verification?.phone?.latest_verification_session,
+            latest_verification_session: entities_update_response.verification?.phone?.latest_verification_session || null,
             methods: [
               'element',
               'sna',
@@ -202,10 +220,10 @@ describe('Entities - core methods tests', () => {
         connect: null,
         credit_score: null,
         products: [ 'identity' ],
-        restricted_products: ['connect', 'credit_score'].sort(),
+        restricted_products: ['connect', 'credit_score'].sort() as TEntityProductType[],
         subscriptions: [],
         available_subscriptions: [],
-        restricted_subscriptions: [ 'connect', 'credit_score' ].sort(),
+        restricted_subscriptions: [ 'connect', 'credit_score' ].sort() as TEntitySubscriptionNames[],
         status: 'incomplete',
         error: null,
         metadata: {},
@@ -236,7 +254,7 @@ describe('Entities - core methods tests', () => {
         },
       });
 
-      const expect_results = {
+      const expect_results: IEntityVerificationSession = {
         id: entities_create_phone_verification_session_response.id,
         entity_id: entities_create_response.id,
         byo_sms: {
@@ -260,7 +278,7 @@ describe('Entities - core methods tests', () => {
         kba: {},
       });
 
-      const expect_results = {
+      const expect_results: IEntityVerificationSession = {
         id: entities_create_verification_session_response.id,
         entity_id: entities_create_response.id,
         kba: {
@@ -286,7 +304,7 @@ describe('Entities - core methods tests', () => {
       entities_account_list_response = await client.accounts.list({ holder_id: entities_create_response.id, type: 'liability' });
       entities_account_ids = entities_account_list_response.map(account => account.id).sort();
       
-      const expect_results = {
+      const expect_results: IEntityConnect = {
         id: entities_connect_create_response.id,
         entity_id: entities_create_response.id,
         status: 'completed',
@@ -303,7 +321,7 @@ describe('Entities - core methods tests', () => {
       let entities_connect_results_response = await client.entities(entities_create_response.id).connect.retrieve(entities_connect_create_response.id);
       entities_connect_results_response.accounts = entities_connect_results_response.accounts?.sort() || null;
 
-      const expect_results = {
+      const expect_results: IEntityConnect = {
         id: entities_connect_create_response.id,
         entity_id: entities_create_response.id,
         status: 'completed',
@@ -321,7 +339,7 @@ describe('Entities - core methods tests', () => {
     it('should successfully create a credit score request for an entity', async () => {
       entities_create_credit_score_response = await client.entities(entities_create_response.id).creditScores.create();
 
-      const expect_results = {
+      const expect_results: IEntityCreditScores = {
         id: entities_create_credit_score_response.id,
         entity_id: entities_create_response.id,
         status: 'pending',
@@ -344,7 +362,7 @@ describe('Entities - core methods tests', () => {
 
       const credit_scores = await awaitResults(getCreditScores);
 
-      const expect_results = {
+      const expect_results: IEntityCreditScores = {
         id: entities_create_credit_score_response.id,
         entity_id: entities_create_response.id,
         status: 'completed',
@@ -379,7 +397,7 @@ describe('Entities - core methods tests', () => {
 
       entities_create_idenitity_response = await client.entities(entitiy_with_identity_cap.id).identities.create();
 
-      const expect_results = {
+      const expect_results: IEntityIdentity = {
         id: entities_create_idenitity_response.id,
         entity_id: entitiy_with_identity_cap.id,
         status: 'completed',
@@ -429,7 +447,7 @@ describe('Entities - core methods tests', () => {
 
       const identities = await awaitResults(getIdentities);
 
-      const expect_results = {
+      const expect_results: IEntityIdentity = {
         id: entities_create_idenitity_response.id,
         entity_id: entitiy_with_identity_cap.id,
         status: 'completed',
@@ -474,36 +492,36 @@ describe('Entities - core methods tests', () => {
     it('should successfully list products for an entity', async () => {
       entities_retrieve_product_list_response = await client.entities(entities_create_response.id).products.list();
 
-      const expect_results = {
+      const expect_results: IEntityProductListResponse = {
         connect: {
-          id: entities_retrieve_product_list_response.connect?.id,
+          id: entities_retrieve_product_list_response.connect?.id || '',
           name: 'connect',
           status: 'available',
           status_error: null,
-          latest_request_id: entities_retrieve_product_list_response.connect?.latest_request_id,
+          latest_request_id: entities_retrieve_product_list_response.connect?.latest_request_id || null,
           is_subscribable: true,
-          created_at: entities_retrieve_product_list_response.connect?.created_at,
-          updated_at: entities_retrieve_product_list_response.connect?.updated_at,
+          created_at: entities_retrieve_product_list_response.connect?.created_at || '',
+          updated_at: entities_retrieve_product_list_response.connect?.updated_at || '',
         },
         credit_score: {
-          id: entities_retrieve_product_list_response.credit_score?.id,
+          id: entities_retrieve_product_list_response.credit_score?.id || '',
           name: 'credit_score',
           status: 'available',
           status_error: null,
-          latest_request_id: entities_retrieve_product_list_response.credit_score?.latest_request_id,
+          latest_request_id: entities_retrieve_product_list_response.credit_score?.latest_request_id || null,
           is_subscribable: true,
-          created_at: entities_retrieve_product_list_response.credit_score?.created_at,
-          updated_at: entities_retrieve_product_list_response.credit_score?.updated_at,
+          created_at: entities_retrieve_product_list_response.credit_score?.created_at || '',
+          updated_at: entities_retrieve_product_list_response.credit_score?.updated_at || '',
         },
         identity: {
-          id: entities_retrieve_product_list_response.identity?.id,
+          id: entities_retrieve_product_list_response.identity?.id || '',
           name: 'identity',
           status: 'available',
           status_error: null,
-          latest_request_id: entities_retrieve_product_list_response.identity?.latest_request_id,
+          latest_request_id: entities_retrieve_product_list_response.identity?.latest_request_id || null,
           is_subscribable: false,
-          created_at: entities_retrieve_product_list_response.identity?.created_at,
-          updated_at: entities_retrieve_product_list_response.identity?.updated_at,
+          created_at: entities_retrieve_product_list_response.identity?.created_at || '',
+          updated_at: entities_retrieve_product_list_response.identity?.updated_at || '',
         }
       };
 
@@ -515,8 +533,8 @@ describe('Entities - core methods tests', () => {
       const entity_credit_score_product = await client.entities(entities_create_response.id).products.retrieve(entities_retrieve_product_list_response.credit_score?.id || '');
       const entity_identity_product = await client.entities(entities_create_response.id).products.retrieve(entities_retrieve_product_list_response.identity?.id || '');
       
-      const expect_connect_results = {
-        id: entities_retrieve_product_list_response.connect?.id,
+      const expect_connect_results: IEntityProduct = {
+        id: entities_retrieve_product_list_response.connect?.id || '',
         name: 'connect',
         status: 'available',
         status_error: null,
@@ -526,8 +544,8 @@ describe('Entities - core methods tests', () => {
         updated_at: entity_connect_product.updated_at,
       };
 
-      const expect_credit_score_results = {
-        id: entities_retrieve_product_list_response.credit_score?.id,
+      const expect_credit_score_results: IEntityProduct = {
+        id: entities_retrieve_product_list_response.credit_score?.id || '',
         name: 'credit_score',
         status: 'available',
         status_error: null,
@@ -537,8 +555,8 @@ describe('Entities - core methods tests', () => {
         updated_at: entity_credit_score_product.updated_at,
       };
 
-      const expect_identity_results = {
-        id: entities_retrieve_product_list_response.identity?.id,
+      const expect_identity_results: IEntityProduct = {
+        id: entities_retrieve_product_list_response.identity?.id || '',
         name: 'identity',
         status: 'available',
         status_error: null,
@@ -558,7 +576,7 @@ describe('Entities - core methods tests', () => {
     it('should create a connect subscription for an entity', async () => {
       entities_create_connect_subscription_response = await client.entities(entities_create_response.id).subscriptions.create('connect');
 
-      const expect_connect_results = {
+      const expect_connect_results: IEntitySubscription = {
         id: entities_create_connect_subscription_response.id,
         name: 'connect',
         status: 'active',
@@ -576,7 +594,7 @@ describe('Entities - core methods tests', () => {
         .subscriptions
         .create('credit_score');
 
-      const expect_credit_score_results = {
+      const expect_credit_score_results: IEntitySubscription = {
         id: entities_create_credit_score_subscription_response.id,
         name: 'credit_score',
         status: 'active',
@@ -599,7 +617,7 @@ describe('Entities - core methods tests', () => {
         .subscriptions
         .retrieve(entities_create_credit_score_subscription_response.id);
 
-      const expect_connect_results = {
+      const expect_connect_results: IEntitySubscription = {
         id: entities_create_connect_subscription_response.id,
         name: 'connect',
         status: 'active',
@@ -608,7 +626,7 @@ describe('Entities - core methods tests', () => {
         updated_at: entities_connect_subscription_response.updated_at,
       };
 
-      const expect_credit_score_results = {
+      const expect_credit_score_results: IEntitySubscription = {
         id: entities_create_credit_score_subscription_response.id,
         name: 'credit_score',
         status: 'active',
@@ -628,22 +646,22 @@ describe('Entities - core methods tests', () => {
         .subscriptions
         .list();
 
-      const expect_results = {
+      const expect_results: IEntitySubscriptionResponse = {
         connect: {
           id: entities_create_connect_subscription_response.id,
           name: 'connect',
           status: 'active',
           latest_request_id: null,
-          created_at: entities_subscription_list_response.connect?.created_at,
-          updated_at: entities_subscription_list_response.connect?.updated_at,
+          created_at: entities_subscription_list_response.connect?.created_at || '',
+          updated_at: entities_subscription_list_response.connect?.updated_at || '',
         },
         credit_score: {
           id: entities_create_credit_score_subscription_response.id,
           name: 'credit_score',
           status: 'active',
           latest_request_id: null,
-          created_at: entities_subscription_list_response.credit_score?.created_at,
-          updated_at: entities_subscription_list_response.credit_score?.updated_at,
+          created_at: entities_subscription_list_response.credit_score?.created_at || '',
+          updated_at: entities_subscription_list_response.credit_score?.updated_at || '',
         }
       };
 
@@ -656,7 +674,7 @@ describe('Entities - core methods tests', () => {
         .subscriptions
         .delete(entities_create_connect_subscription_response.id);
 
-      const expect_results = {
+      const expect_results: IEntitySubscription = {
         id: entities_create_connect_subscription_response.id,
         name: 'connect',
         status: 'inactive',
@@ -675,12 +693,10 @@ describe('Entities - core methods tests', () => {
         .entities
         .withdrawConsent(entities_create_response.id);
 
-      const expect_results = {
+      const expect_results: IEntity = {
         id: entities_create_response.id,
         type: null,
         individual: null,
-        corporation: null,
-        receive_only: null,
         verification: null,
         error: {
           type: 'ENTITY_DISABLED',

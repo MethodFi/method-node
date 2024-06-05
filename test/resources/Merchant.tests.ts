@@ -14,7 +14,8 @@ describe('Merchants - core methods tests', () => {
   describe('merchants.retrieve', () => {
     it('should successfully retroeve a merchant by id.', async () => {
       merchants_retrieve_response = await client.merchants.retrieve(amex_mch_id);
-      const expect_results = {
+      
+      const expect_results: IMerchant = {
         id: 'mch_3',
         parent_name: 'American Express',
         name: 'American Express - Credit Cards',
@@ -41,7 +42,7 @@ describe('Merchants - core methods tests', () => {
       Array.isArray(merchants_list_response).should.be.true;
       const merchant_to_use = merchants_list_response[0];
       
-      const expect_results = {
+      const expect_results: IMerchant = {
         id: 'mch_300485',
         parent_name: 'American Express',
         name: 'American Express Credit Card',

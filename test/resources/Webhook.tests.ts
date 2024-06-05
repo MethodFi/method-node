@@ -8,7 +8,7 @@ should();
 // TODO: Add tests for each webhook type
 describe('Webhooks - core methods tests', () => {
   let webhooks_create_response: IWebhook;
-  let webhooks_get_response: IWebhook;
+  let webhooks_retrieve_response: IWebhook;
   let webhooks_list_response: IWebhook[];
   let webhooks_delete_response: {};
 
@@ -20,7 +20,7 @@ describe('Webhooks - core methods tests', () => {
         auth_token: Math.random().toString(),
       });
 
-      const expect_results = {
+      const expect_results: IWebhook = {
         id: webhooks_create_response.id,
         type: 'payment.create',
         url: 'https://dev.methodfi.com',
@@ -33,20 +33,20 @@ describe('Webhooks - core methods tests', () => {
     });
   });
 
-  describe('webhooks.get', () => {
-    it('should successfully get a webhook.', async () => {
-      webhooks_get_response = await client.webhooks.retrieve(webhooks_create_response.id);
+  describe('webhooks.retrieve', () => {
+    it('should successfully retrieve a webhook.', async () => {
+      webhooks_retrieve_response = await client.webhooks.retrieve(webhooks_create_response.id);
 
-      const expect_results = {
+      const expect_results: IWebhook = {
         id: webhooks_create_response.id,
         type: 'payment.create',
         url: 'https://dev.methodfi.com',
         metadata: null,
-        created_at: webhooks_get_response.created_at,
-        updated_at: webhooks_get_response.updated_at,
+        created_at: webhooks_retrieve_response.created_at,
+        updated_at: webhooks_retrieve_response.updated_at,
       };
 
-      webhooks_get_response.should.be.eql(expect_results);
+      webhooks_retrieve_response.should.be.eql(expect_results);
     });
   });
 

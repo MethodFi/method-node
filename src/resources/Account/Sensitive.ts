@@ -1,5 +1,6 @@
 import Resource, { IResourceError } from '../../resource';
 import Configuration from '../../configuration';
+import { TAccountLiabilityTypes } from './types';
 
 export const AccountSensitiveFields = {
   auto_loan_number: 'auto_loan.number',
@@ -29,6 +30,7 @@ export interface IAccountSensitiveCreditCard {
 export interface IAccountSensitive {
   id: string;
   account_id: string;
+  type: TAccountLiabilityTypes;
   auto_loan?: IAccountSensitiveLoan;
   credit_card?: IAccountSensitiveCreditCard;
   mortgage?: IAccountSensitiveLoan;

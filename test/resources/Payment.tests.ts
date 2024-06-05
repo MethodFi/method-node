@@ -1,8 +1,8 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import { IEntity } from '../../src/resources/Entity/types';
-import { IAccount } from '../../src/resources/Account/types';
+import { IEntity } from '../../src/resources/Entity';
+import { IAccount } from '../../src/resources/Account';
 import { IPayment } from '../../src/resources/Payment';
 
 should();
@@ -28,6 +28,7 @@ describe('Payments - core methods tests', () => {
         phone: '+15121231111',
       },
     });
+
     await client.entities(holder_1_response.id).verificationSessions.create({
       type: 'phone',
       method: 'byo_sms',
@@ -35,11 +36,13 @@ describe('Payments - core methods tests', () => {
         timestamp: '2021-09-01T00:00:00.000Z',
       },
     });
+
     await client.entities(holder_1_response.id).verificationSessions.create({
       type: 'identity',
       method: 'kba',
       kba: {},
     });
+
     source_1_response = await client.accounts.create({
       holder_id: holder_1_response.id,
       ach: {
@@ -48,6 +51,7 @@ describe('Payments - core methods tests', () => {
         type: 'checking',
       },
     });
+    
     destination_1_response = await client.accounts.create({
       holder_id: holder_1_response.id,
       liability: {
@@ -66,7 +70,7 @@ describe('Payments - core methods tests', () => {
         description: 'MethodNode',
       });
 
-      const expect_results = {
+      const expect_results: IPayment = {
         id: payments_create_response.id,
         source: source_1_response.id,
         destination: destination_1_response.id,
@@ -97,7 +101,7 @@ describe('Payments - core methods tests', () => {
     it('should successfully retrieve a payment by id.', async () => {
       payments_retrieve_response = await client.payments.retrieve(payments_create_response.id);
       
-      const expect_results = {
+      const expect_results: IPayment = {
         id: payments_create_response.id,
         source: source_1_response.id,
         destination: destination_1_response.id,
@@ -137,7 +141,7 @@ describe('Payments - core methods tests', () => {
     it('should successfully delete a payment.', async () => {
       payments_delete_response = await client.payments.delete(payments_create_response.id);
       
-      const expect_results = {
+      const expect_results: IPayment = {
         id: payments_create_response.id,
         source: source_1_response.id,
         destination: destination_1_response.id,

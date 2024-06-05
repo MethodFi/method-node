@@ -4,7 +4,7 @@ type AwaitResultsFn = <T>(fn: () => Promise<T>) => Promise<any>;
 
 export const awaitResults: AwaitResultsFn = async (fn) => {
   let result;
-  let retries = 5;
+  let retries = 10;
   while (retries > 0) {
     try {
       result = await fn();
@@ -13,7 +13,7 @@ export const awaitResults: AwaitResultsFn = async (fn) => {
       }
       await sleep(5000);
     } catch (error) {
-      console.error('Error occurred while retrieving account balances:', error);
+      console.error('Error occurred during awaited request:', error);
       throw error; // Rethrow the error to fail the test
     }
     retries--;

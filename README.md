@@ -827,7 +827,7 @@ const verification = await method
 ```jsx
 const verification = await method
   .accounts('acc_b9q2XVAnNFbp3')
-  .verification
+  .verificationSessions
   .retrieve('avf_DjkdemgTQfqRD');
 ```
 

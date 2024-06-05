@@ -10,9 +10,9 @@ export interface IAccountCardBrandInfo {
 export interface IAccountCardBrand {
   id: string;
   account_id: string;
-  network: string;
-  issuer: string;
-  last4: string;
+  network: string | null;
+  issuer: string | null;
+  last4: string | null;
   brands: IAccountCardBrandInfo[];
   status: 'completed' | 'failed';
   shared: boolean;
