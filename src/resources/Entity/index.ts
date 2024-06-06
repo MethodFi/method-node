@@ -58,7 +58,7 @@ export class Entity extends Resource {
     return super._getWithSubPathAndParams<{
       [P in keyof IEntity]: P extends K
         ? Exclude<IEntity[P], string>
-        : Extract<IEntity[P], string | null>
+        : IEntity[P]
       }, { expand: K[]; } | undefined>(ent_id, opts);
   }
 
@@ -73,7 +73,7 @@ export class Entity extends Resource {
     return super._list<{
       [P in keyof IEntity]: P extends K
       ? Exclude<IEntity[P], string>
-      : Extract<IEntity[P], string | null>
+      : IEntity[P]
     }, IEntityListOpts<K> | undefined>(opts);
   }
 

@@ -63,7 +63,7 @@ export class Account extends Resource {
     return super._getWithSubPathAndParams<{
       [P in keyof IAccount]: P extends K
         ? Exclude<IAccount[P], string>
-        : Extract<IAccount[P], string | null>
+        : IAccount[P]
       }, { expand: K[]; } | undefined>(acc_id, opts);
   }
 
@@ -78,7 +78,7 @@ export class Account extends Resource {
     return super._list<{
       [P in keyof IAccount]: P extends K
       ? Exclude<IAccount[P], string>
-      : Extract<IAccount[P], string | null>
+      : IAccount[P]
     }, IAccountListOpts<K> | undefined>(opts);
   }
 
