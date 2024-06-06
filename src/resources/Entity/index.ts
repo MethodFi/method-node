@@ -43,7 +43,7 @@ export class Entity extends Resource {
     super(config.addPath('entities'));
   }
 
-  protected _call(ent_id): EntitySubResources {
+  protected _call(ent_id: string): EntitySubResources {
     return new EntitySubResources(ent_id, this.config);
   }
 

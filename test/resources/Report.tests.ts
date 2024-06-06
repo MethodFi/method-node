@@ -1,7 +1,7 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import { IReport } from '../../src/resources/Report';
+import type { IReport } from '../../src/resources/Report';
 
 should();
 

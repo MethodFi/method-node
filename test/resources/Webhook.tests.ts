@@ -1,7 +1,7 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import { IWebhook } from '../../src/resources/Webhook';
+import type { IWebhook } from '../../src/resources/Webhook';
 
 should();
 

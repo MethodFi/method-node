@@ -3,7 +3,7 @@ import { describe } from 'mocha';
 import { client } from '../config';
 import { awaitResults } from '../utils';
 import type { IEntity, IEntityConnect } from '../../src/resources/Entity';
-import {
+import type {
   IAccount,
   IAccountBalance,
   IAccountCardBrand,
@@ -14,7 +14,7 @@ import {
   IAccountSubscriptionsResponse,
   IAccountVerificationSession,
   IAccountUpdate,
-  TAccountProducts
+  TAccountProducts,
 } from '../../src/resources/Account';
 
 should();

@@ -1,6 +1,10 @@
 import Resource from '../../resource';
 import Configuration from '../../configuration';
-import type { IElementToken, IElementTokenCreateOpts, IElementResults } from './types';
+import type {
+  IElementToken,
+  IElementTokenCreateOpts,
+  IElementResults,
+} from './types';
 
 export default class ElementToken extends Resource {
   constructor(config: Configuration) {
