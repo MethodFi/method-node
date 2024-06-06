@@ -3,7 +3,7 @@ import Configuration from '../../configuration';
 import type {
   IAccountVerificationSession,
   IAccountVerificationSessionCreateOpts,
-  IAccountVerificationSessionUpdateOpts
+  IAccountVerificationSessionUpdateOpts,
 } from './types';
 
 export default class AccountVerificationSession extends Resource {
