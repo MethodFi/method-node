@@ -119,7 +119,7 @@ export class Account extends Resource {
    * @returns Returns the Account associated with the ID.
    */
 
-  async retrieve<K extends TAccountExpandableFields = never>(acc_id: string, opts?: { expand: K[] }) {
+  async retrieve<K extends TAccountExpandableFields>(acc_id: string, opts?: { expand: K[] }) {
     return super._getWithSubPathAndParams<{
       [P in keyof IAccount]: P extends K
         ? Exclude<IAccount[P], string>
@@ -134,7 +134,7 @@ export class Account extends Resource {
    * @returns Returns a list of Accounts.
    */
 
-  async list<K extends TAccountExpandableFields = never>(opts?: IAccountListOpts<K>) {
+  async list<K extends TAccountExpandableFields>(opts?: IAccountListOpts<K>) {
     return super._list<{
       [P in keyof IAccount]: P extends K
       ? Exclude<IAccount[P], string>
@@ -172,3 +172,4 @@ export class Account extends Resource {
 };
 
 export default Account;
+export * from './types';
