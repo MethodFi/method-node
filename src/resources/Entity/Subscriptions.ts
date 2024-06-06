@@ -1,38 +1,11 @@
 import Resource, { IRequestConfig } from '../../resource';
-import { MethodError } from '../../errors';
 import Configuration from '../../configuration';
-
-export const EntitySubscriptionNames = {
-  connect: 'connect',
-  credit_score: 'credit_score',
-};
-
-export type TEntitySubscriptionNames = keyof typeof EntitySubscriptionNames;
-
-export const EntitySubscriptionStatuses = {
-  active: 'active',
-  inactive: 'inactive',
-};
-
-export type TEntitySubscriptionStatuses = keyof typeof EntitySubscriptionStatuses;
-
-export interface IEntitySubscription {
-  id: string;
-  name: TEntitySubscriptionNames;
-  status: TEntitySubscriptionStatuses;
-  latest_request_id: string | null;
-  created_at: string;
-  updated_at: string;
-};
-
-export interface IEntitySubscriptionResponse {
-  connect?: IEntitySubscription;
-  credit_score?: IEntitySubscription;
-};
-
-export interface IEntitySubscriptionCreateOpts {
-  enroll: TEntitySubscriptionNames;
-};
+import type {
+  IEntitySubscription,
+  IEntitySubscriptionCreateOpts,
+  IEntitySubscriptionResponse,
+  TEntitySubscriptionNames,
+} from './types';
 
 export default class EntitySubscriptions extends Resource {
   constructor(config: Configuration) {

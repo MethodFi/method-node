@@ -1,53 +1,6 @@
-import Resource, { IResourceError, IResourceListOpts } from '../../resource';
+import Resource, { IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
-
-export const AccountCurrencyTypes = {
-  USD: 'USD',
-};
-
-export type TAccountCurrencyTypes = keyof typeof AccountCurrencyTypes;
-
-export const AccountTransactionStatuses = {
-  cleared: 'cleared',
-  auth: 'auth',
-  refund: 'refund',
-  unknown: 'unknown',
-};
-
-export type TAccountTransactionStatuses = keyof typeof AccountTransactionStatuses;
-
-export interface IAccountTransactionMerchant {
-  name: string;
-  category_code: string;
-  city: string;
-  state: string;
-  country: string;
-  acquirer_bin: string;
-  acquirer_card_acceptor_id: string;
-};
-
-export interface IAccountTransactionNetworkData {
-  visa_merchant_id: string | null;
-  visa_merchant_name: string | null;
-  visa_store_id: string | null;
-  visa_store_name: string | null;
-};
-
-export interface IAccountTransaction {
-  id: string;
-  account_id: string;
-  merchant: IAccountTransactionMerchant;
-  network: string;
-  network_data: IAccountTransactionNetworkData | null;
-  amount: number;
-  currency: TAccountCurrencyTypes;
-  billing_amount: number;
-  billing_currency: TAccountCurrencyTypes;
-  status: TAccountTransactionStatuses;
-  error: IResourceError | null;
-  created_at: string;
-  updated_at: string;
-};
+import type { IAccountTransaction } from './types';
 
 export default class AccountTransactions extends Resource {
   constructor(config: Configuration) {

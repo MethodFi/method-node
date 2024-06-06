@@ -1,25 +1,6 @@
-import Resource, { IResourceError } from '../../resource';
+import Resource from '../../resource';
 import Configuration from '../../configuration';
-
-export interface IAccountCardBrandInfo {
-  art_id: string;
-  url: string;
-  name: string;
-};
-
-export interface IAccountCardBrand {
-  id: string;
-  account_id: string;
-  network: string | null;
-  issuer: string | null;
-  last4: string | null;
-  brands: IAccountCardBrandInfo[];
-  status: 'completed' | 'failed';
-  shared: boolean;
-  error: IResourceError | null;
-  created_at: string;
-  updated_at: string;
-};
+import type { IAccountCardBrand } from './types';
 
 export default class AccountCardBrand extends Resource {
   constructor(config: Configuration) {

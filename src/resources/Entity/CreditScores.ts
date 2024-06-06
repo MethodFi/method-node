@@ -1,36 +1,6 @@
-import Resource, { IResourceError, TResourceStatus } from "../../resource";
+import Resource from "../../resource";
 import Configuration from "../../configuration";
-import { TCreditReportBureaus } from "./types";
-
-export const CreditScoresModel = {
-  vantage_4: 'vantage_4',
-  vantage_3: 'vantage_3',
-};
-
-export type TCreditScoresModel = keyof typeof CreditScoresModel;
-
-export interface IEntityCreditScoresFactorsType {
-  code: string,
-  description: string,
-};
-
-export interface IEntityCreditScoresType {
-  score: number,
-  source: TCreditReportBureaus,
-  model: TCreditScoresModel,
-  factors: IEntityCreditScoresFactorsType[],
-  created_at: string,
-};
-
-export interface IEntityCreditScores {
-  id: string,
-  entity_id: string,
-  status: TResourceStatus,
-  scores: IEntityCreditScoresType[] | null,
-  error: IResourceError | null,
-  created_at: string,
-  updated_at: string,
-};
+import type { IEntityCreditScores } from "./types";
 
 export default class EntityCreditScores extends Resource {
   constructor(config: Configuration) {

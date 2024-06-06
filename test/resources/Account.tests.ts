@@ -2,18 +2,20 @@ import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
 import { awaitResults } from '../utils';
-import { IEntity } from '../../src/resources/Entity';
-import { IEntityConnect } from '../../src/resources/Entity/Connect';
-import { IAccount } from '../../src/resources/Account';
-import { TAccountProducts } from '../../src/resources/Account/types';
-import { IAccountBalance } from '../../src/resources/Account/Balances';
-import { IAccountCardBrand } from '../../src/resources/Account/CardBrands';
-import { IAccountPayoff } from '../../src/resources/Account/Payoffs';
-import { IAccountSensitive } from '../../src/resources/Account/Sensitive';
-import { IAccountTransaction } from '../../src/resources/Account/Transactions';
-import { IAccountSubscription, IAccountSubscriptionsResponse } from '../../src/resources/Account/Subscriptions';
-import { IAccountVerificationSession } from '../../src/resources/Account/VerificationSessions';
-import { IAccountUpdate } from '../../src/resources/Account/Updates';
+import type { IEntity, IEntityConnect } from '../../src/resources/Entity';
+import {
+  IAccount,
+  IAccountBalance,
+  IAccountCardBrand,
+  IAccountPayoff,
+  IAccountSensitive,
+  IAccountTransaction,
+  IAccountSubscription,
+  IAccountSubscriptionsResponse,
+  IAccountVerificationSession,
+  IAccountUpdate,
+  TAccountProducts
+} from '../../src/resources/Account';
 
 should();
 

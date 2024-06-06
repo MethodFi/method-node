@@ -1,15 +1,6 @@
-import Resource, { IResourceError, TResourceStatus } from "../../resource";
+import Resource from "../../resource";
 import Configuration from "../../configuration";
-
-export interface IEntityConnect {
-  id: string;
-  entity_id: string;
-  status: TResourceStatus;
-  accounts: string[] | null;
-  error: IResourceError | null;
-  created_at: string;
-  updated_at: string;
-};
+import type { IEntityConnect } from "./types";
 
 export default class EntityConnect extends Resource {
   constructor(config: Configuration) {

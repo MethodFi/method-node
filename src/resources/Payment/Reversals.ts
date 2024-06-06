@@ -1,41 +1,6 @@
-import Resource, { IResourceError } from '../../resource';
+import Resource from '../../resource';
 import Configuration from '../../configuration';
-
-export const ReversalStatuses = {
-  pending_approval: 'pending_approval',
-  pending: 'pending',
-  processing: 'processing',
-  sent: 'sent',
-  failed: 'failed',
-};
-
-export type TReversalStatuses = keyof typeof ReversalStatuses;
-
-export const ReversalDirections = {
-  debit: 'debit',
-  credit: 'credit',
-};
-
-export type TReversalDirections = keyof typeof ReversalDirections;
-
-export interface IReversal {
-  id: string;
-  pmt_id: string;
-  target_account: string;
-  trace_id: string | null;
-  direction: TReversalDirections;
-  description: string;
-  amount: number;
-  status: TReversalStatuses;
-  error: IResourceError | null;
-  created_at: string;
-  updated_at: string;
-};
-
-export interface IReversalUpdateOpts {
-  status: TReversalStatuses;
-  description?: string | null;
-};
+import type { IReversal, IReversalUpdateOpts } from './types';
 
 export default class Reversal extends Resource {
   constructor(config: Configuration) {
