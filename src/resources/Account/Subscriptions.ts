@@ -1,32 +1,11 @@
 import Resource from '../../resource';
 import Configuration from '../../configuration';
-import type { TAccountSubscriptionTypes } from './types';
-
-export const AccountSubscriptionStatuses = {
-  active: 'active',
-  inactive: 'inactive',
-};
-
-export type TAccountSubscriptionStatuses = keyof typeof AccountSubscriptionStatuses;
-
-export interface IAccountSubscription {
-  id: string;
-  name: TAccountSubscriptionTypes;
-  status: TAccountSubscriptionStatuses;
-  latest_request_id: string | null;
-  created_at: string;
-  updated_at: string;
-};
-
-export interface IAccountSubscriptionsResponse {
-  transactions?: IAccountSubscription;
-  update?: IAccountSubscription;
-  'update.snapshot'?: IAccountSubscription;
-};
-
-export interface IAccountSubscriptionCreateOpts {
-  enroll: TAccountSubscriptionTypes;
-};
+import type {
+  IAccountSubscription,
+  IAccountSubscriptionCreateOpts,
+  IAccountSubscriptionsResponse,
+  TAccountSubscriptionTypes,
+} from './types';
 
 export default class AccountSubscriptions extends Resource {
   constructor(config: Configuration) {

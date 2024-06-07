@@ -1,16 +1,6 @@
-import Resource, { IResourceError, TResourceStatus } from '../../resource';
+import Resource from '../../resource';
 import Configuration from '../../configuration';
-import { IEntityIdentityType } from './types';
-
-export interface IEntityIdentity {
-  id: string;
-  entity_id: string;
-  status: TResourceStatus;
-  identities: IEntityIdentityType[];
-  error: IResourceError | null;
-  created_at: string;
-  updated_at: string;
-};
+import type { IEntityIdentity } from './types';
 
 export default class EntityIdentities extends Resource {
   constructor(config: Configuration) {

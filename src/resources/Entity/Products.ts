@@ -1,38 +1,6 @@
-import Resource, { IResourceError } from "../../resource";
+import Resource from "../../resource";
 import Configuration from "../../configuration";
-
-export const EntityProductTypeStatuses = {
-  unavailable: 'unavailable',
-  available: 'available',
-  restricted: 'restricted',
-};
-
-export type TEntityProductTypeStatuses = keyof typeof EntityProductTypeStatuses;
-
-export const EntityProductType = {
-  connect: 'connect',
-  credit_score: 'credit_score',
-  identity: 'identity',
-};
-
-export type TEntityProductType = keyof typeof EntityProductType;
-
-export interface IEntityProduct {
-  id: string;
-  name: string;
-  status: TEntityProductTypeStatuses;
-  status_error: IResourceError | null;
-  latest_request_id: string | null;
-  is_subscribable: boolean;
-  created_at: string;
-  updated_at: string;
-};
-
-export interface IEntityProductListResponse {
-  connect?: IEntityProduct;
-  credit_score?: IEntityProduct;
-  identity?: IEntityProduct;
-};
+import type { IEntityProduct, IEntityProductListResponse } from "./types";
 
 export default class EntityProducts extends Resource {
   constructor(config: Configuration) {

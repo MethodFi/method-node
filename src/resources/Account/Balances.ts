@@ -1,15 +1,6 @@
-import Resource, { IResourceError, TResourceStatus, IResourceListOpts } from '../../resource';
+import Resource from '../../resource';
 import Configuration from '../../configuration';
-
-export interface IAccountBalance {
-  id: string;
-  account_id: string;
-  status: TResourceStatus;
-  amount: number | null;
-  error: IResourceError | null;
-  created_at: string;
-  updated_at: string;
-};
+import type { IAccountBalance } from './types';
 
 export default class AccountBalances extends Resource {
   constructor(config: Configuration) {

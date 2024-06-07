@@ -1,9 +1,9 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import { IEntity } from '../../src/resources/Entity';
-import { IAccount } from '../../src/resources/Account';
-import { IPayment } from '../../src/resources/Payment';
+import type { IEntity } from '../../src/resources/Entity';
+import type { IAccount } from '../../src/resources/Account';
+import type { IPayment } from '../../src/resources/Payment';
 
 should();
 

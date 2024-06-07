@@ -1,8 +1,8 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import { IEntity } from '../../src/resources/Entity';
-import { IElementResults, IElementToken } from '../../src/resources/Element/Token';
+import type { IEntity } from '../../src/resources/Entity';
+import type { IElementResults, IElementToken } from '../../src/resources/Element';
 
 should();
 

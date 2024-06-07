@@ -11,3 +11,5 @@ export default class Element extends Resource {
     this.token = new Token(_config);
   }
 };
+
+export * from './types'

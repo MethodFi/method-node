@@ -1,82 +1,20 @@
-import Resource, { IRequestConfig, IResourceListOpts, IResourceError } from '../../resource';
+import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
-import EntityConnect, { IEntityConnect } from './Connect';
-import EntityProducts, { TEntityProductType } from './Products';
+import EntityConnect from './Connect';
+import EntityProducts from './Products';
 import EntityIdentities from './Identities';
-import EntityCreditScores, { IEntityCreditScores } from './CreditScores';
-import EntitySubscriptions, { TEntitySubscriptionNames } from './Subscriptions';
+import EntityCreditScores from './CreditScores';
+import EntitySubscriptions from './Subscriptions';
 import EntityVerificationSession from './VerificationSessions';
 import type {
-  IEntityAddress,
-  IEntityIndividual,
-  IEntityCorporation,
-  IEntityVerification,
-  TEntityStatuses,
-  TEntityTypes
+  IEntity,
+  IEntityListOpts,
+  IEntityUpdateOpts,
+  IEntityWithdrawConsentOpts,
+  IIndividualCreateOpts,
+  ICorporationCreateOpts,
+  TEntityExpandableFields,
 } from './types';
-
-export const EntityExpandableFields = {
-  connect: 'connect',
-  credit_score: 'credit_score',
-  identity_latest_verification_session: 'identity.latest_verification_session',
-  phone_latest_verification_session: 'phone.latest_verification_session',
-} as const;
-
-export type TEntityExpandableFields = typeof EntityExpandableFields[keyof typeof EntityExpandableFields];
-
-export interface IEntityCreateOpts {
-  type: TEntityTypes;
-  address?: IEntityAddress | null;
-  metadata?: {} | null;
-};
-
-export interface IIndividualCreateOpts extends IEntityCreateOpts {
-  type: 'individual';
-  individual: Partial<IEntityIndividual>;
-};
-
-export interface ICorporationCreateOpts extends IEntityCreateOpts {
-  type: 'corporation';
-  corporation: Partial<IEntityCorporation>;
-};
-
-export interface IEntityUpdateOpts {
-  address?: IEntityAddress;
-  corporation?: Partial<IEntityCorporation>;
-  individual?: Partial<IEntityIndividual>;
-};
-
-export interface IEntityListOpts<T extends TEntityExpandableFields> extends IResourceListOpts {
-  status?: string | null;
-  type?: string | null;
-  expand?: T[];
-};
-
-export interface IEntityWithdrawConsentOpts {
-  type: 'withdraw',
-  reason: 'entity_withdrew_consent' | null,
-};
-
-export interface IEntity {
-  id: string;
-  type: TEntityTypes | null;
-  individual?: IEntityIndividual | null;
-  corporation?: IEntityCorporation | null;
-  address: IEntityAddress | {};
-  status: TEntityStatuses;
-  error: IResourceError | null;
-  metadata: {} | null;
-  products?: TEntityProductType[];
-  restricted_products?: TEntityProductType[];
-  subscriptions?: TEntitySubscriptionNames[];
-  available_subscriptions?: TEntitySubscriptionNames[];
-  restricted_subscriptions?: TEntitySubscriptionNames[];
-  verification?: IEntityVerification | null;
-  connect?: string | IEntityConnect | null;
-  credit_score?: string| IEntityCreditScores | null;
-  created_at: string;
-  updated_at: string;
-};
 
 export class EntitySubResources {
   connect: EntityConnect;
@@ -105,7 +43,7 @@ export class Entity extends Resource {
     super(config.addPath('entities'));
   }
 
-  protected _call(ent_id): EntitySubResources {
+  protected _call(ent_id: string): EntitySubResources {
     return new EntitySubResources(ent_id, this.config);
   }
 
@@ -120,7 +58,7 @@ export class Entity extends Resource {
     return super._getWithSubPathAndParams<{
       [P in keyof IEntity]: P extends K
         ? Exclude<IEntity[P], string>
-        : Extract<IEntity[P], string | null>
+        : IEntity[P]
       }, { expand: K[]; } | undefined>(ent_id, opts);
   }
 
@@ -135,7 +73,7 @@ export class Entity extends Resource {
     return super._list<{
       [P in keyof IEntity]: P extends K
       ? Exclude<IEntity[P], string>
-      : Extract<IEntity[P], string | null>
+      : IEntity[P]
     }, IEntityListOpts<K> | undefined>(opts);
   }
 
@@ -188,3 +126,4 @@ export class Entity extends Resource {
 };
 
 export default Entity;
+export * from './types'

@@ -1,32 +1,6 @@
-import Resource, { IResourceError, IResourceListOpts, TResourceStatus } from '../../resource';
+import Resource, { IResourceListOpts } from '../../resource';
 import Configuration from '../../configuration';
-import type {
-  TAccountLiabilityTypes,
-  IAccountLiabilityAutoLoan,
-  IAccountLiabilityCreditCard,
-  IAccountLiabilityCollection,
-  IAccountLiabilityMortgage,
-  IAccountLiabilityPersonalLoan,
-  IAccountLiabilityStudentLoans,
-  TAccountUpdateSources
-} from './types';
-
-export interface IAccountUpdate {
-  id: string;
-  status: TResourceStatus;
-  account_id: string;
-  source: TAccountUpdateSources;
-  type: TAccountLiabilityTypes;
-  auto_loan?: IAccountLiabilityAutoLoan;
-  credit_card?: IAccountLiabilityCreditCard;
-  collection?: IAccountLiabilityCollection;
-  mortgage?: IAccountLiabilityMortgage;
-  personal_loan?: IAccountLiabilityPersonalLoan;
-  student_loans?: IAccountLiabilityStudentLoans;
-  error: IResourceError | null;
-  created_at: string;
-  updated_at: string;
-};
+import type { IAccountUpdate } from './types';
 
 export default class AccountUpdates extends Resource {
   constructor(config: Configuration) {

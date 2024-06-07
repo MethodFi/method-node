@@ -1,81 +1,21 @@
-import Resource, { IRequestConfig, IResourceListOpts, IResourceError } from '../../resource';
+import Resource, { IRequestConfig } from '../../resource';
 import Configuration from '../../configuration';
-import AccountCardBrand, { IAccountCardBrand } from './CardBrands';
-import AccountPayoffs, { IAccountPayoff } from './Payoffs';
-import AccountUpdates, { IAccountUpdate } from './Updates';
-import AccountBalances, { IAccountBalance } from './Balances';
-import AccountSensitive, { IAccountSensitive } from './Sensitive';
-import AccountTransactions, { IAccountTransaction } from './Transactions';
+import AccountCardBrand from './CardBrands';
+import AccountPayoffs from './Payoffs';
+import AccountUpdates from './Updates';
+import AccountBalances from './Balances';
+import AccountSensitive from './Sensitive';
+import AccountTransactions from './Transactions';
 import AccountSubscriptions from './Subscriptions';
-import AccountVerificationSession, { IAccountVerificationSession } from './VerificationSessions';
+import AccountVerificationSession from './VerificationSessions';
 import type {
-  IAccountACH,
-  IAccountLiability,
+  IAccount,
+  IAccountListOpts,
+  IACHCreateOpts,
+  ILiabilityCreateOpts,
+  IAccountWithdrawConsentOpts,
   TAccountExpandableFields,
-  TAccountProducts,
-  TAccountStatuses,
-  TAccountSubscriptionTypes,
-  TAccountTypes,
-  TAccountLiabilityTypes,
-  TAccountOwnership,
 } from './types';
-
-export interface IAccountCreateOpts {
-  holder_id: string;
-  metadata?: {};
-};
-
-export interface IACHCreateOpts extends IAccountCreateOpts {
-  ach: IAccountACH;
-};
-
-export interface ILiabilityCreateOpts extends IAccountCreateOpts {
-  liability: {
-    mch_id: string;
-    account_number?: string;
-    number?: string;
-  }
-};
-
-export interface IAccountListOpts<T extends TAccountExpandableFields> extends IResourceListOpts {
-  status?: string | null;
-  type?: string | null;
-  holder_id?: string | null;
-  expand?: T[];
-  'liability.mch_id'?: string | null;
-  'liability.type'?: TAccountLiabilityTypes | null;
-  'liability.ownership'?: TAccountOwnership | null;
-};
-
-export interface IAccountWithdrawConsentOpts {
-  type: 'withdraw';
-  reason: 'holder_withdrew_consent' | null;
-};
-
-export interface IAccount {
-  id: string;
-  holder_id: string;
-  status: TAccountStatuses;
-  type: TAccountTypes | null;
-  ach?: IAccountACH | null;
-  liability?: IAccountLiability | null;
-  products: TAccountProducts[];
-  restricted_products: TAccountProducts[];
-  subscriptions?: TAccountSubscriptionTypes[];
-  available_subscriptions?: TAccountSubscriptionTypes[];
-  restricted_subscriptions?: TAccountSubscriptionTypes[];
-  sensitive?: string | IAccountSensitive | null;
-  balance?: string | IAccountBalance | null;
-  card_brand?: string | IAccountCardBrand | null;
-  payoff?: string | IAccountPayoff | null;
-  transactions?: string | IAccountTransaction[] | null;
-  update?: string | IAccountUpdate | null;
-  latest_verification_session?: string | IAccountVerificationSession | null;
-  error: IResourceError | null;
-  created_at: string;
-  updated_at: string;
-  metadata: {} | null;
-};
 
 export class AccountSubResources {
   balances: AccountBalances;
@@ -123,7 +63,7 @@ export class Account extends Resource {
     return super._getWithSubPathAndParams<{
       [P in keyof IAccount]: P extends K
         ? Exclude<IAccount[P], string>
-        : Extract<IAccount[P], string | null>
+        : IAccount[P]
       }, { expand: K[]; } | undefined>(acc_id, opts);
   }
 
@@ -138,7 +78,7 @@ export class Account extends Resource {
     return super._list<{
       [P in keyof IAccount]: P extends K
       ? Exclude<IAccount[P], string>
-      : Extract<IAccount[P], string | null>
+      : IAccount[P]
     }, IAccountListOpts<K> | undefined>(opts);
   }
 
@@ -172,3 +112,4 @@ export class Account extends Resource {
 };
 
 export default Account;
+export * from './types';

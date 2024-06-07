@@ -2,14 +2,20 @@ import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
 import { awaitResults } from '../utils';
-import { IEntity } from '../../src/resources/Entity';
-import { IEntityConnect } from '../../src/resources/Entity/Connect';
-import { IAccount } from '../../src/resources/Account';
-import { IEntityCreditScores } from '../../src/resources/Entity/CreditScores';
-import { IEntityIdentity } from '../../src/resources/Entity/Identities';
-import { IEntityProduct, IEntityProductListResponse, TEntityProductType } from '../../src/resources/Entity/Products';
-import { IEntitySubscription, IEntitySubscriptionResponse, TEntitySubscriptionNames } from '../../src/resources/Entity/Subscriptions';
-import { IEntityVerificationSession } from '../../src/resources/Entity/VerificationSessions';
+import type {
+  IEntity,
+  IEntityConnect,
+  IEntityCreditScores,
+  IEntityIdentity,
+  IEntityProduct,
+  IEntityProductListResponse,
+  TEntityProductType,
+  IEntitySubscription,
+  IEntitySubscriptionResponse,
+  TEntitySubscriptionNames,
+  IEntityVerificationSession,
+} from '../../src/resources/Entity';
+import type { IAccount } from '../../src/resources/Account';
 
 should();
 

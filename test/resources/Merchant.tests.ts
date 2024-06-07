@@ -1,7 +1,7 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import { IMerchant } from '../../src/resources/Merchant';
+import type { IMerchant } from '../../src/resources/Merchant';
 
 should();
 
