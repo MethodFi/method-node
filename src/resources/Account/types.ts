@@ -213,7 +213,7 @@ export interface IAccountLiability {
   mask: string | null;
   ownership: TAccountOwnership | null;
   fingerprint: string| null;
-  type: string | null;
+  type: TAccountLiabilityTypes | null;
   name: string | null;
 };
 
