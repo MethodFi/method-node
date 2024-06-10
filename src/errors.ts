@@ -1,10 +1,10 @@
-const MethodErrorTypes = {
+export const MethodErrorTypes = {
    INVALID_AUTHORIZATION: 'INVALID_AUTHORIZATION',
    INVALID_REQUEST: 'INVALID_REQUEST',
    API_ERROR: 'API_ERROR',
-};
+} as const;
 
-type TMethodErrorTypes = keyof typeof MethodErrorTypes;
+export type TMethodErrorTypes = keyof typeof MethodErrorTypes;
 
 export interface MethodErrorOpts {
   type: TMethodErrorTypes;

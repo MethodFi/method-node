@@ -33,7 +33,7 @@ export const PlaidTransactionTypes = {
   Place: 'place',
   Special: 'special',
   Unresolved: 'unresolved',
-};
+} as const;
 
 export type TPlaidTransactionTypes = keyof typeof PlaidTransactionTypes;
 
@@ -70,7 +70,7 @@ export const PlaidCounterpartyType = {
   marketplace: 'marketplace',
   payment_terminal: 'payment_terminal',
   income_source: 'income_source',
-}
+} as const;
 
 export type TPlaidCounterpartyType = keyof typeof PlaidCounterpartyType;
 

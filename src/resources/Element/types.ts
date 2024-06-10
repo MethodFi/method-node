@@ -63,14 +63,14 @@ export const UserEventType = {
 
   AVF_SKIP_ALL: 'AVF_SKIP_ALL',
   AVF_ERROR: 'AVF_ERROR',
-};
+} as const;
 
 export type TUserEventType = keyof typeof UserEventType;
 
 export const ElementTypes = {
   connect: 'connect',
   balance_transfer: 'balance_transfer',
-};
+} as const;
 
 export type TElementTypes = keyof typeof ElementTypes;
 
@@ -82,7 +82,7 @@ export const ElementProducts = {
   update: 'update',
   sensitive: 'sensitive',
   payment: 'payment',
-};
+} as const;
 
 export type TElementProductTypes = keyof typeof ElementProducts;
 
@@ -92,7 +92,7 @@ export const ElementMetadataOpTypes = {
   close: 'close',
   success: 'success',
   exit: 'exit',
-};
+} as const;
 
 export type TElementMetadataOpTypes = keyof typeof ElementMetadataOpTypes;
 
