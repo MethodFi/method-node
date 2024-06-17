@@ -2,6 +2,7 @@ export * from './method';
 export {Method as MethodClient} from './method';
 export * from './errors';
 export * from './configuration';
+export { ResourceStatus, TResourceStatus, IResourceListOpts, IResourceError } from './resource';
 export * from './resources/Account';
 export * from './resources/Element';
 export * from './resources/Entity';

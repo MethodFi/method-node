@@ -69,6 +69,11 @@ export const AccountLiabilityTypes = {
   mortgage: 'mortgage',
   personal_loan: 'personal_loan',
   student_loans: 'student_loans',
+  loan: 'loan',
+  credit_builder: 'credit_builder',
+  insurance: 'insurance',
+  medical: 'medical',
+  utility: 'utility',
 } as const;
 
 export type TAccountLiabilityTypes = keyof typeof AccountLiabilityTypes;
@@ -185,8 +190,6 @@ export interface IAccountLiabilityCreditCard extends IAccountLiabilityBase {
   usage_pattern: TAccountLiabilityCreditCardUsageTypes | null;
 };
 
-export interface IAccountLiabilityCollection extends IAccountLiabilityBase {};
-
 export interface IAccountLiabilityMortgage extends IAccountLiabilityLoanBase {
   sub_type: TAccountLiabilityMortgageSubTypes | null;
 };
@@ -206,6 +209,30 @@ export interface IAccountLiabilityStudentLoans extends IAccountLiabilityBase {
   original_loan_amount: number | null;
   sub_type: TAccountLiabilityStudentLoansSubTypes | null;
   term_length: number | null;
+};
+
+export interface IAccountLiabilityCollection extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
+export interface IAccountLiabilityCreditBuilder extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
+export interface IAccountLiabilityLoan extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
+export interface IAccountLiabilityInsurance extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
+export interface IAccountLiabilityMedical extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
+export interface IAccountLiabilityUtility extends IAccountLiabilityBase {
+  sub_type: string;
 };
 
 export interface IAccountLiability {
@@ -346,6 +373,11 @@ export interface IAccountUpdate {
   mortgage?: IAccountLiabilityMortgage;
   personal_loan?: IAccountLiabilityPersonalLoan;
   student_loans?: IAccountLiabilityStudentLoans;
+  credit_builder?: IAccountLiabilityCreditBuilder;
+  loan?: IAccountLiabilityLoan;
+  insurance?: IAccountLiabilityInsurance;
+  medical?: IAccountLiabilityMedical;
+  utility?: IAccountLiabilityUtility;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
