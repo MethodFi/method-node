@@ -1,17 +1,12 @@
 import { AxiosResponse } from 'axios';
 
-type TEnvironments =
-  | 'production'
-  | 'sandbox'
-  | 'dev';
-
-type EnvironmentsMapped = { [key in TEnvironments]: key };
-
-export const Environments: EnvironmentsMapped = {
+export const Environments = {
   production: 'production',
   sandbox: 'sandbox',
   dev: 'dev',
-};
+} as const;
+
+export type TEnvironments = keyof typeof Environments
 
 export interface IRequestEvent {
   idempotency_key: string | null;

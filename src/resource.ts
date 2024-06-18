@@ -236,7 +236,7 @@ export const ResourceStatus = {
   in_progress: 'in_progress',
   pending: 'pending',
   failed: 'failed',
-};
+} as const;
 
 export type TResourceStatus = keyof typeof ResourceStatus;
 

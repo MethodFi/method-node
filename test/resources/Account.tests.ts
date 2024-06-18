@@ -125,7 +125,7 @@ describe('Accounts - core methods tests', () => {
         type: 'liability',
         liability: {
           fingerprint: null,
-          mch_id: 'mch_183',
+          mch_id: 'mch_302086',
           mask: '8721',
           ownership: 'unknown',
           type: 'credit_card',

@@ -10,7 +10,7 @@ export const PaymentStatuses = {
   reversal_required: 'reversal_required',
   reversal_processing: 'reversal_processing',
   settled: 'settled',
-};
+} as const;
 
 export type TPaymentStatuses = keyof typeof PaymentStatuses;
 
@@ -22,21 +22,21 @@ export const PaymentFundStatuses = {
   failed: 'failed',
   sent: 'sent',
   unknown: 'unknown',
-};
+} as const;
 
 export type TPaymentFundStatuses = keyof typeof PaymentFundStatuses;
 
 export const PaymentTypes = {
   standard: 'standard',
   clearing: 'clearing',
-};
+} as const;
 
 export type TPaymentTypes = keyof typeof PaymentTypes;
 
 export const PaymentFeeTypes = {
   total: 'total',
   markup: 'markup',
-};
+} as const;
 
 export type TPaymentFeeTypes = keyof typeof PaymentFeeTypes;
 
@@ -96,14 +96,14 @@ export const ReversalStatuses = {
   processing: 'processing',
   sent: 'sent',
   failed: 'failed',
-};
+} as const;
 
 export type TReversalStatuses = keyof typeof ReversalStatuses;
 
 export const ReversalDirections = {
   debit: 'debit',
   credit: 'credit',
-};
+} as const;
 
 export type TReversalDirections = keyof typeof ReversalDirections;
 

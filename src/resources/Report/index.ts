@@ -20,7 +20,7 @@ export type TReportTypes = typeof ReportTypes[keyof typeof ReportTypes];
 export const ReportStatuses = {
   processing: 'processing',
   completed: 'completed',
-};
+} as const;
 
 export type TReportStatuses = keyof typeof ReportStatuses;
 

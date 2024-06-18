@@ -15,7 +15,7 @@ import type {
 export const AccountTypes = {
   ach: 'ach',
   liability: 'liability',
-};
+} as const;
 
 export type TAccountTypes = keyof typeof AccountTypes;
 
@@ -23,7 +23,7 @@ export const AccountStatuses = {
   disabled: 'disabled',
   active: 'active',
   closed: 'closed',
-};
+} as const;
 
 export type TAccountStatuses = keyof typeof AccountStatuses;
 
@@ -34,7 +34,7 @@ export const AccountProducts = {
   card_brand: 'card_brand',
   payoff: 'payoff',
   update: 'update',
-};
+} as const;
 
 export type TAccountProducts = keyof typeof AccountProducts;
 
@@ -51,14 +51,14 @@ export const AccountOwnership = {
   authorized: 'authorized',
   joint: 'joint',
   unknown: 'unknown',
-};
+} as const;
 
 export type TAccountOwnership = keyof typeof AccountOwnership;
 
 export const AccountUpdateSources = {
   direct: 'direct',
   snapshot: 'snapshot',
-};
+} as const;
 
 export type TAccountUpdateSources = keyof typeof AccountUpdateSources;
 
@@ -69,28 +69,33 @@ export const AccountLiabilityTypes = {
   mortgage: 'mortgage',
   personal_loan: 'personal_loan',
   student_loans: 'student_loans',
-};
+  loan: 'loan',
+  credit_builder: 'credit_builder',
+  insurance: 'insurance',
+  medical: 'medical',
+  utility: 'utility',
+} as const;
 
 export type TAccountLiabilityTypes = keyof typeof AccountLiabilityTypes;
 
 export const AchAccountSubTypes = {
   savings: 'savings',
   checking: 'checking',
-};
+} as const;
 
 export type TAchAccountSubTypes = keyof typeof AchAccountSubTypes;
 
 export const AccountExpandableFields = {
   ...AccountProducts,
   latest_verification_session: 'latest_verification_session',
-};
+} as const;
 
 export type TAccountExpandableFields = keyof typeof AccountExpandableFields;
 
 export const AccountLiabilityInterestRateTypes = {
   fixed: 'fixed',
   variable: 'variable',
-};
+} as const;
 
 export type TAccountLiabilityInterestRateTypes = keyof typeof AccountLiabilityInterestRateTypes;
 
@@ -98,14 +103,14 @@ export const AccountLiabilityInterestRateSources = {
   financial_institution: 'financial_institution',
   public_data: 'public_data',
   method: 'method',
-};
+} as const;
 
 export type TAccountLiabilityInterestRateSources = keyof typeof AccountLiabilityInterestRateSources;
 
 export const AccountAutoLoanSubTypes = {
   lease: 'lease',
   loan: 'loan',
-};
+} as const;
 
 export type TAccountAutoLoanSubTypes = keyof typeof AccountAutoLoanSubTypes;
 
@@ -116,7 +121,7 @@ export const AccountLiabilityCreditCardSubTypes = {
   unsecured: 'unsecured',
   purchase: 'purchase',
   business: 'business',
-};
+} as const;
 
 export type TAccountLiabilityCreditCardSubTypes = keyof typeof AccountLiabilityCreditCardSubTypes;
 
@@ -125,13 +130,13 @@ export const AccountLiabilityCreditCardUsageTypes = {
   revolver: 'revolver',
   dormant: 'dormant',
   unknown: 'unknown',
-};
+} as const;
 
 export type TAccountLiabilityCreditCardUsageTypes = keyof typeof AccountLiabilityCreditCardUsageTypes;
 
 export const AccountLiabilityMortgageSubTypes = {
   loan: 'loan',
-};
+} as const;
 
 export type TAccountLiabilityMortgageSubTypes = keyof typeof AccountLiabilityMortgageSubTypes;
 
@@ -141,14 +146,14 @@ export const AccountLiabilityPersonalLoanSubTypes = {
   heloc: 'heloc',
   line_of_credit: 'line_of_credit',
   note: 'note',
-};
+} as const;
 
 export type TAccountLiabilityPersonalLoanSubTypes = keyof typeof AccountLiabilityPersonalLoanSubTypes;
 
 export const AccountLiabilityStudentLoansSubTypes = {
   federal: 'federal',
   private: 'private',
-};
+} as const;
 
 export type TAccountLiabilityStudentLoansSubTypes = keyof typeof AccountLiabilityStudentLoansSubTypes;
 
@@ -185,8 +190,6 @@ export interface IAccountLiabilityCreditCard extends IAccountLiabilityBase {
   usage_pattern: TAccountLiabilityCreditCardUsageTypes | null;
 };
 
-export interface IAccountLiabilityCollection extends IAccountLiabilityBase {};
-
 export interface IAccountLiabilityMortgage extends IAccountLiabilityLoanBase {
   sub_type: TAccountLiabilityMortgageSubTypes | null;
 };
@@ -208,12 +211,36 @@ export interface IAccountLiabilityStudentLoans extends IAccountLiabilityBase {
   term_length: number | null;
 };
 
+export interface IAccountLiabilityCollection extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
+export interface IAccountLiabilityCreditBuilder extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
+export interface IAccountLiabilityLoan extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
+export interface IAccountLiabilityInsurance extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
+export interface IAccountLiabilityMedical extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
+export interface IAccountLiabilityUtility extends IAccountLiabilityBase {
+  sub_type: string;
+};
+
 export interface IAccountLiability {
   mch_id: string;
   mask: string | null;
   ownership: TAccountOwnership | null;
   fingerprint: string| null;
-  type: string | null;
+  type: TAccountLiabilityTypes | null;
   name: string | null;
 };
 
@@ -346,6 +373,11 @@ export interface IAccountUpdate {
   mortgage?: IAccountLiabilityMortgage;
   personal_loan?: IAccountLiabilityPersonalLoan;
   student_loans?: IAccountLiabilityStudentLoans;
+  credit_builder?: IAccountLiabilityCreditBuilder;
+  loan?: IAccountLiabilityLoan;
+  insurance?: IAccountLiabilityInsurance;
+  medical?: IAccountLiabilityMedical;
+  utility?: IAccountLiabilityUtility;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
@@ -362,7 +394,7 @@ export const AccountTransactionStatuses = {
   auth: 'auth',
   refund: 'refund',
   unknown: 'unknown',
-};
+} as const;
 
 export type TAccountTransactionStatuses = keyof typeof AccountTransactionStatuses;
 
@@ -404,7 +436,7 @@ export const AccountVerificationSessionStatuses = {
   in_progress: 'in_progress',
   verified: 'verified',
   failed: 'failed',
-};
+} as const;
 
 export type TAccountVerificationSessionStatuses = keyof typeof AccountVerificationSessionStatuses;
 
@@ -416,14 +448,14 @@ export const AccountVerificationSessionTypes = {
   standard: 'standard',
   instant: 'instant',
   pre_auth: 'pre_auth',
-};
+} as const;
 
 export type TAccountVerificaionSessionTypes = keyof typeof AccountVerificationSessionTypes;
 
 export const AccountVerificationCheckStatusTypes = {
   pass: 'pass',
   fail: 'fail',
-};
+} as const;
 
 export type TAccountVerificationPassFail = keyof typeof AccountVerificationCheckStatusTypes;
 

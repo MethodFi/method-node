@@ -8,14 +8,14 @@ export const CreditReportBureaus = {
   experian: 'experian',
   equifax: 'equifax',
   transunion: 'transunion',
-};
+} as const;
 
 export type TCreditReportBureaus = keyof typeof CreditReportBureaus;
 
 export const EntityTypes = {
   individual: 'individual',
   corporation: 'corporation',
-};
+} as const;
 
 export type TEntityTypes = keyof typeof EntityTypes;
 
@@ -23,7 +23,7 @@ export const EntityStatuses = {
   active: 'active',
   incomplete: 'incomplete',
   disabled: 'disabled',
-};
+} as const;
 
 export type TEntityStatuses = keyof typeof EntityStatuses;
 
@@ -31,7 +31,7 @@ export const EntityVerificationIdentityMethods = {
   kba: 'kba',
   byo_kyc: 'byo_kyc',
   element: 'element',
-};
+} as const;
 
 export type TEntityVerificationIdentityMethods = keyof typeof EntityVerificationIdentityMethods;
 
@@ -40,7 +40,7 @@ export const EntityVerificationPhoneMethods = {
   sna: 'sna',
   byo_sms: 'byo_sms',
   element: 'element',
-};
+} as const;
 
 export type TEntityVerificationPhoneMethods = keyof typeof EntityVerificationPhoneMethods;
 
@@ -125,7 +125,7 @@ export interface IEntityConnect {
 export const CreditScoresModel = {
   vantage_4: 'vantage_4',
   vantage_3: 'vantage_3',
-};
+} as const;
 
 export type TCreditScoresModel = keyof typeof CreditScoresModel;
 
@@ -166,7 +166,7 @@ export const EntityProductTypeStatuses = {
   unavailable: 'unavailable',
   available: 'available',
   restricted: 'restricted',
-};
+} as const;
 
 export type TEntityProductTypeStatuses = keyof typeof EntityProductTypeStatuses;
 
@@ -174,7 +174,7 @@ export const EntityProductType = {
   connect: 'connect',
   credit_score: 'credit_score',
   identity: 'identity',
-};
+} as const;
 
 export type TEntityProductType = keyof typeof EntityProductType;
 
@@ -198,14 +198,14 @@ export interface IEntityProductListResponse {
 export const EntitySubscriptionNames = {
   connect: 'connect',
   credit_score: 'credit_score',
-};
+} as const;
 
 export type TEntitySubscriptionNames = keyof typeof EntitySubscriptionNames;
 
 export const EntitySubscriptionStatuses = {
   active: 'active',
   inactive: 'inactive',
-};
+} as const;
 
 export type TEntitySubscriptionStatuses = keyof typeof EntitySubscriptionStatuses;
 
@@ -232,7 +232,7 @@ export const EntityVerificationSessionStatuses = {
   in_progress: 'in_progress',
   verified: 'verified',
   failed: 'failed',
-};
+} as const;
 
 export type IEntityVerificationSessionStatuses = keyof typeof EntityVerificationSessionStatuses;
 
@@ -244,14 +244,14 @@ export const EntityVerificationSessionMethods = {
   kba: 'kba',
   element: 'element',
   method_verified: 'method_verified',
-};
+} as const;
 
 export type IEntityVerificationSessionMethods = keyof typeof EntityVerificationSessionMethods;
 
 export const EntityVerificationSessionTypes = {
   phone: 'phone',
   identity: 'identity',
-};
+} as const;
 
 export type IEntityVerificationSessionTypes = keyof typeof EntityVerificationSessionTypes;
 
