@@ -2,12 +2,13 @@ import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
 import type { IMerchant } from '../../src/resources/Merchant';
+import { IResponse } from '../../src/configuration';
 
 should();
 
 describe('Merchants - core methods tests', () => {
-  let merchants_retrieve_response: IMerchant;
-  let merchants_list_response: IMerchant[];
+  let merchants_retrieve_response: IResponse<IMerchant>;
+  let merchants_list_response: IResponse<IMerchant>[];
   const amex_mch_id = 'mch_3';
   const amex_provider_id_plaid = 'ins_10';
 
@@ -28,7 +29,7 @@ describe('Merchants - core methods tests', () => {
           dpp: [ '120', '18954427', '11859365', '18947131', '16255844' ]
         },
         is_temp: false,
-        account_number_formats: []
+        account_number_formats: [],
       };
 
       merchants_retrieve_response.should.be.eql(expect_results);
@@ -69,7 +70,7 @@ describe('Merchants - core methods tests', () => {
         is_temp: false,
         account_number_formats: [
             '###############'
-        ]
+        ],
       };
 
       merchant_to_use.should.be.eql(expect_results);
