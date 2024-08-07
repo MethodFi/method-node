@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import { IPayment, TPaymentStatuses } from '../Payment';
 
 export interface ISimulatePaymentsUpdateOpts {
@@ -21,6 +21,6 @@ export default class SimulatePayments extends Resource {
    */
 
   async update(id: string, data: ISimulatePaymentsUpdateOpts) {
-    return super._postWithId<IPayment, ISimulatePaymentsUpdateOpts>(id, data);
+    return super._postWithId<IResponse<IPayment>, ISimulatePaymentsUpdateOpts>(id, data);
   }
 };

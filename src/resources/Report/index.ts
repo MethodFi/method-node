@@ -1,5 +1,5 @@
 import Resource, { IRequestConfig } from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 
 export const ReportTypes = {
   payments_created_current: 'payments.created.current',
@@ -52,7 +52,7 @@ export default class Report extends Resource {
    */
 
   async retrieve(rpt_id: string) {
-    return super._getWithId<IReport>(rpt_id);
+    return super._getWithId<IResponse<IReport>>(rpt_id);
   }
   
   /**
@@ -64,7 +64,7 @@ export default class Report extends Resource {
    */
 
   async create(opts: IReportCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IReport, IReportCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IReport>, IReportCreateOpts>(opts, requestConfig);
   }
 
   /**
@@ -75,6 +75,6 @@ export default class Report extends Resource {
    */
 
   async download(rpt_id: string) {
-    return super._download<string>(rpt_id);
+    return super._download<IResponse<string>>(rpt_id);
   }
 };

@@ -1,5 +1,5 @@
 import Resource, { IResourceListOpts } from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import type { IAccountUpdate } from './types';
 
 export default class AccountUpdates extends Resource {
@@ -15,7 +15,7 @@ export default class AccountUpdates extends Resource {
    */
 
   async retrieve(upt_id: string) {
-    return super._getWithId<IAccountUpdate>(upt_id);
+    return super._getWithId<IResponse<IAccountUpdate>>(upt_id);
   }
 
   /**
@@ -25,7 +25,7 @@ export default class AccountUpdates extends Resource {
    */
 
   async list(opts?: IResourceListOpts) {
-    return super._list<IAccountUpdate, IResourceListOpts>(opts);
+    return super._list<IResponse<IAccountUpdate>, IResourceListOpts>(opts);
   }
 
   /**
@@ -35,7 +35,7 @@ export default class AccountUpdates extends Resource {
    */
 
   async create() {
-    return super._create<IAccountUpdate, {}>({});
+    return super._create<IResponse<IAccountUpdate>, {}>({});
   }
 };
 

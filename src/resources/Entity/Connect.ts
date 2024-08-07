@@ -1,5 +1,5 @@
 import Resource from "../../resource";
-import Configuration from "../../configuration";
+import Configuration, { IResponse } from "../../configuration";
 import type { IEntityConnect } from "./types";
 
 export default class EntityConnect extends Resource {
@@ -15,7 +15,7 @@ export default class EntityConnect extends Resource {
    */
 
   async retrieve(cxn_id: string) {
-    return super._getWithId<IEntityConnect>(cxn_id);
+    return super._getWithId<IResponse<IEntityConnect>>(cxn_id);
   }
 
   /**
@@ -25,6 +25,6 @@ export default class EntityConnect extends Resource {
    */
 
   async create() {
-    return super._create<IEntityConnect, {}>({});
+    return super._create<IResponse<IEntityConnect>, {}>({});
   }
 };

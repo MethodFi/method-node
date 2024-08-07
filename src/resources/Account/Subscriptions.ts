@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import type {
   IAccountSubscription,
   IAccountSubscriptionCreateOpts,
@@ -20,7 +20,7 @@ export default class AccountSubscriptions extends Resource {
    */
 
   async retrieve(sub_id: string) {
-    return super._getWithId<IAccountSubscription>(sub_id);
+    return super._getWithId<IResponse<IAccountSubscription>>(sub_id);
   }
 
   /**
@@ -30,7 +30,7 @@ export default class AccountSubscriptions extends Resource {
    */
 
   async list() {
-    return super._get<IAccountSubscriptionsResponse>();
+    return super._get<IResponse<IAccountSubscriptionsResponse>>();
   }
 
   /**
@@ -43,7 +43,7 @@ export default class AccountSubscriptions extends Resource {
    */
 
   async create(sub_name: TAccountSubscriptionTypes) {
-    return super._create<IAccountSubscription, IAccountSubscriptionCreateOpts>(
+    return super._create<IResponse<IAccountSubscription>, IAccountSubscriptionCreateOpts>(
       { enroll: sub_name }
     )
   }
@@ -56,6 +56,6 @@ export default class AccountSubscriptions extends Resource {
    */
 
   async delete(sub_id: string) {
-    return super._delete<IAccountSubscription>(sub_id);
+    return super._delete<IResponse<IAccountSubscription>>(sub_id);
   }
 };

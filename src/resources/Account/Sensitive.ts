@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import type { IAccountSensitive, IAccountSensitiveCreateOpts } from './types';
 
 export default class AccountSensitive extends Resource {
@@ -15,7 +15,7 @@ export default class AccountSensitive extends Resource {
    */
 
   async retrieve(astv_id: string) {
-    return super._getWithId<IAccountSensitive>(astv_id);
+    return super._getWithId<IResponse<IAccountSensitive>>(astv_id);
   }
 
   /**
@@ -26,6 +26,6 @@ export default class AccountSensitive extends Resource {
    */
 
   async create(data: IAccountSensitiveCreateOpts) {
-    return super._create<IAccountSensitive, IAccountSensitiveCreateOpts>(data);
+    return super._create<IResponse<IAccountSensitive>, IAccountSensitiveCreateOpts>(data);
   }
 };

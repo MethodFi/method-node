@@ -1,5 +1,5 @@
 import Resource, { IRequestConfig } from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 
 export const WebhookTypes = {
   payment_create: 'payment.create',
@@ -53,7 +53,7 @@ export default class Webhook extends Resource {
    */
 
   async retrieve(whk_id: string) {
-    return super._getWithId<IWebhook>(whk_id);
+    return super._getWithId<IResponse<IWebhook>>(whk_id);
   }
 
   /**
@@ -63,7 +63,7 @@ export default class Webhook extends Resource {
    */
 
   async list() {
-    return super._list<IWebhook>();
+    return super._list<IResponse<IWebhook>>();
   }
 
   /**
@@ -76,7 +76,7 @@ export default class Webhook extends Resource {
    */
 
   async create(opts: IWebhookCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IWebhook, IWebhookCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IWebhook>, IWebhookCreateOpts>(opts, requestConfig);
   }
 
   /**
@@ -87,6 +87,6 @@ export default class Webhook extends Resource {
    */
 
   async delete(whk_id: string) {
-    return super._delete<{}>(whk_id);
+    return super._delete<IResponse<{}>>(whk_id);
   }
 };

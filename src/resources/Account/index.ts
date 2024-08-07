@@ -1,5 +1,5 @@
 import Resource, { IRequestConfig } from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import AccountCardBrand from './CardBrands';
 import AccountPayoffs from './Payoffs';
 import AccountUpdates from './Updates';
@@ -60,11 +60,11 @@ export class Account extends Resource {
    */
 
   async retrieve<K extends TAccountExpandableFields = never>(acc_id: string, opts?: { expand: K[] }) {
-    return super._getWithSubPathAndParams<{
+    return super._getWithSubPathAndParams<IResponse<{
       [P in keyof IAccount]: P extends K
         ? Exclude<IAccount[P], string>
         : IAccount[P]
-      }, { expand: K[]; } | undefined>(acc_id, opts);
+      }>, { expand: K[]; } | undefined>(acc_id, opts);
   }
 
   /**
@@ -75,11 +75,11 @@ export class Account extends Resource {
    */
 
   async list<K extends TAccountExpandableFields = never>(opts?: IAccountListOpts<K>) {
-    return super._list<{
+    return super._list<IResponse<{
       [P in keyof IAccount]: P extends K
       ? Exclude<IAccount[P], string>
       : IAccount[P]
-    }, IAccountListOpts<K> | undefined>(opts);
+    }>, IAccountListOpts<K> | undefined>(opts);
   }
 
   /**
@@ -91,7 +91,7 @@ export class Account extends Resource {
    */
 
   async create(data: IACHCreateOpts | ILiabilityCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IAccount, IACHCreateOpts | ILiabilityCreateOpts>(data, requestConfig);
+    return super._create<IResponse<IAccount>, IACHCreateOpts | ILiabilityCreateOpts>(data, requestConfig);
   }
 
 
@@ -104,7 +104,7 @@ export class Account extends Resource {
    */
 
   async withdrawConsent(acc_id: string, data: IAccountWithdrawConsentOpts = { type: 'withdraw', reason: 'holder_withdrew_consent' }) {
-    return super._createWithSubPath<IAccount, IAccountWithdrawConsentOpts>(
+    return super._createWithSubPath<IResponse<IAccount>, IAccountWithdrawConsentOpts>(
       `/${acc_id}/consent`,
       data,
     );

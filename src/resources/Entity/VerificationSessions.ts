@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import type {
   IEntityVerificationSession,
   IEntityVerificationSessionCreateOpts,
@@ -19,7 +19,7 @@ export default class EntityVerificationSession extends Resource {
    */
 
   async retrieve(evf_id: string) {
-    return super._getWithId<IEntityVerificationSession>(evf_id);
+    return super._getWithId<IResponse<IEntityVerificationSession>>(evf_id);
   }
 
   /**
@@ -30,7 +30,7 @@ export default class EntityVerificationSession extends Resource {
    */
 
   async create(data: IEntityVerificationSessionCreateOpts) {
-    return super._create<IEntityVerificationSession, IEntityVerificationSessionCreateOpts>(data);
+    return super._create<IResponse<IEntityVerificationSession>, IEntityVerificationSessionCreateOpts>(data);
   }
 
   /**
@@ -42,6 +42,6 @@ export default class EntityVerificationSession extends Resource {
    */
 
   async update(evf_id: string, data: IEntityVerificationSessionUpdateOpts) {
-    return super._updateWithId<IEntityVerificationSession, IEntityVerificationSessionUpdateOpts>(evf_id, data);
+    return super._updateWithId<IResponse<IEntityVerificationSession>, IEntityVerificationSessionUpdateOpts>(evf_id, data);
   }
 };

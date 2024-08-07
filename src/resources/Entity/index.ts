@@ -1,5 +1,5 @@
 import Resource, { IRequestConfig } from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import EntityConnect from './Connect';
 import EntityProducts from './Products';
 import EntityIdentities from './Identities';
@@ -55,11 +55,11 @@ export class Entity extends Resource {
    */
 
   async retrieve<K extends TEntityExpandableFields = never>(ent_id: string, opts?: { expand: K[] }) {
-    return super._getWithSubPathAndParams<{
+    return super._getWithSubPathAndParams<IResponse<{
       [P in keyof IEntity]: P extends K
         ? Exclude<IEntity[P], string>
         : IEntity[P]
-      }, { expand: K[]; } | undefined>(ent_id, opts);
+      }>, { expand: K[]; } | undefined>(ent_id, opts);
   }
 
   /**
@@ -70,11 +70,11 @@ export class Entity extends Resource {
    */
 
   async list<K extends TEntityExpandableFields = never>(opts?: IEntityListOpts<K>) {
-    return super._list<{
+    return super._list<IResponse<{
       [P in keyof IEntity]: P extends K
       ? Exclude<IEntity[P], string>
       : IEntity[P]
-    }, IEntityListOpts<K> | undefined>(opts);
+    }>, IEntityListOpts<K> | undefined>(opts);
   }
 
   /**
@@ -89,7 +89,7 @@ export class Entity extends Resource {
     opts: IIndividualCreateOpts | ICorporationCreateOpts,
     requestConfig?: IRequestConfig,
   ) {
-    return super._create<IEntity, IIndividualCreateOpts | ICorporationCreateOpts>(
+    return super._create<IResponse<IEntity>, IIndividualCreateOpts | ICorporationCreateOpts>(
       opts,
       requestConfig,
     );
@@ -106,7 +106,7 @@ export class Entity extends Resource {
    */
 
   async update(ent_id: string, opts: IEntityUpdateOpts) {
-    return super._updateWithId<IEntity, IEntityUpdateOpts>(ent_id, opts);
+    return super._updateWithId<IResponse<IEntity>, IEntityUpdateOpts>(ent_id, opts);
   }
 
   /**
@@ -118,7 +118,7 @@ export class Entity extends Resource {
    */
 
   async withdrawConsent(ent_id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
-    return super._createWithSubPath<IEntity, IEntityWithdrawConsentOpts>(
+    return super._createWithSubPath<IResponse<IEntity>, IEntityWithdrawConsentOpts>(
       `/${ent_id}/consent`,
       data,
     );

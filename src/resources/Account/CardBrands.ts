@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import type { IAccountCardBrand } from './types';
 
 export default class AccountCardBrand extends Resource {
@@ -15,7 +15,7 @@ export default class AccountCardBrand extends Resource {
    */
 
   async retrieve(cbrd_id: string) {
-    return super._getWithId<IAccountCardBrand>(cbrd_id);
+    return super._getWithId<IResponse<IAccountCardBrand>>(cbrd_id);
   }
   
   /**
@@ -25,6 +25,6 @@ export default class AccountCardBrand extends Resource {
    */
 
   async create() {
-    return super._create<IAccountCardBrand, {}>({});
+    return super._create<IResponse<IAccountCardBrand>, {}>({});
   }
 };

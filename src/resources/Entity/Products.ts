@@ -1,5 +1,5 @@
 import Resource from "../../resource";
-import Configuration from "../../configuration";
+import Configuration, { IResponse } from "../../configuration";
 import type { IEntityProduct, IEntityProductListResponse } from "./types";
 
 export default class EntityProducts extends Resource {
@@ -15,7 +15,7 @@ export default class EntityProducts extends Resource {
    */
 
   async retrieve(prd_id: string) {
-    return super._getWithId<IEntityProduct>(prd_id);
+    return super._getWithId<IResponse<IEntityProduct>>(prd_id);
   }
 
   /**
@@ -25,6 +25,6 @@ export default class EntityProducts extends Resource {
    */
 
   async list() {
-    return super._get<IEntityProductListResponse>();
+    return super._get<IResponse<IEntityProductListResponse>>();
   }
 };

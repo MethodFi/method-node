@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration,{ IResponse }  from '../../configuration';
 
 
 export interface IPingResponse {
@@ -20,6 +20,6 @@ export default class HealthCheck extends Resource {
    */
 
   async retrieve() {
-    return super._getRaw<IPingResponse>();
+    return super._getRaw<IResponse<IPingResponse>>();
   }
 };

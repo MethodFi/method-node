@@ -1,5 +1,5 @@
 import Resource, { IRequestConfig } from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import Reversal from './Reversals';
 import type {
   IPayment,
@@ -36,7 +36,7 @@ export class Payment extends Resource {
    */
 
   async retrieve(pmt_id: string) {
-    return super._getWithId<IPayment>(pmt_id);
+    return super._getWithId<IResponse<IPayment>>(pmt_id);
   }
 
   /**
@@ -47,7 +47,7 @@ export class Payment extends Resource {
    */
 
   async list(opts?: IPaymentListOpts) {
-    return super._list<IPayment, IPaymentListOpts>(opts);
+    return super._list<IResponse<IPayment>, IPaymentListOpts>(opts);
   }
 
   /**
@@ -59,7 +59,7 @@ export class Payment extends Resource {
    */
 
   async create(opts: IPaymentCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IPayment, IPaymentCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IPayment>, IPaymentCreateOpts>(opts, requestConfig);
   }
 
   /**
@@ -70,7 +70,7 @@ export class Payment extends Resource {
    */
 
   async delete(pmt_id: string) {
-    return super._delete<IPayment>(pmt_id);
+    return super._delete<IResponse<IPayment>>(pmt_id);
   }
 };
 

@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import type { IReversal, IReversalUpdateOpts } from './types';
 
 export default class Reversal extends Resource {
@@ -15,7 +15,7 @@ export default class Reversal extends Resource {
    */
 
   async retrieve(rvs_id: string) {
-    return super._getWithId<IReversal>(rvs_id);
+    return super._getWithId<IResponse<IReversal>>(rvs_id);
   }
 
   /**
@@ -25,7 +25,7 @@ export default class Reversal extends Resource {
    */
 
   async list() {
-    return super._list<IReversal>();
+    return super._list<IResponse<IReversal>>();
   }
 
   /**
@@ -37,6 +37,6 @@ export default class Reversal extends Resource {
    */
 
   async update(rvs_id: string, data: IReversalUpdateOpts) {
-    return super._updateWithId<IReversal, IReversalUpdateOpts>(rvs_id, data);
+    return super._updateWithId<IResponse<IReversal>, IReversalUpdateOpts>(rvs_id, data);
   }
 };

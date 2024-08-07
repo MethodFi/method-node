@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import type { IAccountBalance } from './types';
 
 export default class AccountBalances extends Resource {
@@ -15,7 +15,7 @@ export default class AccountBalances extends Resource {
    */
 
   async retrieve(bal_id: string) {
-    return super._getWithId<IAccountBalance>(bal_id);
+    return super._getWithId<IResponse<IAccountBalance>>(bal_id);
   }
 
   // TODO: Add back in when we have a list endpoint
@@ -36,6 +36,6 @@ export default class AccountBalances extends Resource {
    */
 
   async create() {
-    return super._create<IAccountBalance, {}>({});
+    return super._create<IResponse<IAccountBalance>, {}>({});
   }
 };

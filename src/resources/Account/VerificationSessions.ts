@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import type {
   IAccountVerificationSession,
   IAccountVerificationSessionCreateOpts,
@@ -19,7 +19,7 @@ export default class AccountVerificationSession extends Resource {
    */
 
   async retrieve(avf_id: string) {
-    return super._getWithId<IAccountVerificationSession>(avf_id);
+    return super._getWithId<IResponse<IAccountVerificationSession>>(avf_id);
   }
 
   /**
@@ -30,7 +30,7 @@ export default class AccountVerificationSession extends Resource {
    */
 
   async create(data: IAccountVerificationSessionCreateOpts) {
-    return super._create<IAccountVerificationSession, IAccountVerificationSessionCreateOpts>(data);
+    return super._create<IResponse<IAccountVerificationSession>, IAccountVerificationSessionCreateOpts>(data);
   }
   // TODO: Add URL of docs page for this method.
   /**
@@ -42,6 +42,6 @@ export default class AccountVerificationSession extends Resource {
    */
 
   async update(avf_id: string, data: IAccountVerificationSessionUpdateOpts) {
-    return super._updateWithId<IAccountVerificationSession, IAccountVerificationSessionUpdateOpts>(avf_id, data);
+    return super._updateWithId<IResponse<IAccountVerificationSession>, IAccountVerificationSessionUpdateOpts>(avf_id, data);
   }
 };

@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import type {
   IElementToken,
   IElementTokenCreateOpts,
@@ -19,7 +19,7 @@ export default class ElementToken extends Resource {
    */
 
   async create(opts: IElementTokenCreateOpts) {
-    return super._create<IElementToken, IElementTokenCreateOpts>(opts);
+    return super._create<IResponse<IElementToken>, IElementTokenCreateOpts>(opts);
   }
 
   /**
@@ -30,6 +30,6 @@ export default class ElementToken extends Resource {
    */
   
   async results(pk_elem_id: string) {
-    return super._getWithSubPath<IElementResults>(`${pk_elem_id}/results`);
+    return super._getWithSubPath<IResponse<IElementResults>>(`${pk_elem_id}/results`);
   }
 };

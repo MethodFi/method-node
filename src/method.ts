@@ -1,4 +1,4 @@
-import Configuration, { IConfigurationOpts } from './configuration';
+import Configuration, { IConfigurationOpts, IResponse } from './configuration';
 import Account from './resources/Account';
 import Element from './resources/Element';
 import Entity from './resources/Entity';
@@ -35,7 +35,7 @@ export class Method {
     this.simulate = new Simulate(config);
   }
 
-  public async ping(): Promise<IPingResponse> {
+  public async ping(): Promise<IResponse<IPingResponse>> {
     return this.healthcheck.retrieve();
   }
 };

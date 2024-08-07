@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import { TAccountLiabilityTypes } from '../Account/types';
 
 export interface IMerchantProviderIds {
@@ -45,7 +45,7 @@ export default class Merchant extends Resource {
    */
 
   async retrieve(mch_id: string) {
-    return super._getWithId<IMerchant>(mch_id);
+    return super._getWithId<IResponse<IMerchant>>(mch_id);
   }
 
   /**
@@ -56,6 +56,6 @@ export default class Merchant extends Resource {
    */
 
   async list(opts?: IMerchantListOpts) {
-    return super._list<IMerchant, IMerchantListOpts>(opts);
+    return super._list<IResponse<IMerchant>, IMerchantListOpts>(opts);
   }
 };

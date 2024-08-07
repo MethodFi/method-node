@@ -1,5 +1,5 @@
 import Resource from "../../resource";
-import Configuration from "../../configuration";
+import Configuration, { IResponse } from "../../configuration";
 import type { IEntityCreditScores } from "./types";
 
 export default class EntityCreditScores extends Resource {
@@ -15,7 +15,7 @@ export default class EntityCreditScores extends Resource {
    */
 
   async retrieve(crs_id: string) {
-    return super._getWithId<IEntityCreditScores>(crs_id);
+    return super._getWithId<IResponse<IEntityCreditScores>>(crs_id);
   }
 
   /**
@@ -25,6 +25,6 @@ export default class EntityCreditScores extends Resource {
    */
 
   async create() {
-    return super._create<IEntityCreditScores, {}>({});
+    return super._create<IResponse<IEntityCreditScores>, {}>({});
   }
 };

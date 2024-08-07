@@ -1,5 +1,5 @@
 import Resource from '../../../resource';
-import Configuration from '../../../configuration';
+import Configuration, { IResponse } from '../../../configuration';
 import type { IAccountTransaction } from '../../Account';
 
 export default class SimulateTransactions extends Resource {
@@ -14,6 +14,6 @@ export default class SimulateTransactions extends Resource {
    */
 
   async create() {
-    return super._create<IAccountTransaction, {}>({});
+    return super._create<IResponse<IAccountTransaction>, {}>({});
   }
 };

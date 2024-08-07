@@ -1,5 +1,5 @@
 import Resource, { IRequestConfig } from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import type {
   IEntitySubscription,
   IEntitySubscriptionCreateOpts,
@@ -21,7 +21,7 @@ export default class EntitySubscriptions extends Resource {
    */
 
   async retrieve(sub_id: string) {
-    return super._getWithId<IEntitySubscription>(sub_id);
+    return super._getWithId<IResponse<IEntitySubscription>>(sub_id);
   }
 
   /**
@@ -31,7 +31,7 @@ export default class EntitySubscriptions extends Resource {
    */
 
   async list() {
-    return super._get<IEntitySubscriptionResponse>();
+    return super._get<IResponse<IEntitySubscriptionResponse>>();
   }
 
   /**
@@ -44,7 +44,7 @@ export default class EntitySubscriptions extends Resource {
    */
 
   async create(sub_name: TEntitySubscriptionNames, requestConfig?: IRequestConfig) {
-    return super._create<IEntitySubscription, IEntitySubscriptionCreateOpts>({ enroll: sub_name }, requestConfig);
+    return super._create<IResponse<IEntitySubscription>, IEntitySubscriptionCreateOpts>({ enroll: sub_name }, requestConfig);
   }
 
   /**
@@ -55,6 +55,6 @@ export default class EntitySubscriptions extends Resource {
    */
 
   async delete(sub_id: string) {
-    return super._delete<IEntitySubscription>(sub_id);
+    return super._delete<IResponse<IEntitySubscription>>(sub_id);
   }
 };

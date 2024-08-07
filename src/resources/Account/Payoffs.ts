@@ -1,5 +1,5 @@
 import Resource from "../../resource";
-import Configuration from "../../configuration";
+import Configuration, { IResponse } from "../../configuration";
 import type { IAccountPayoff } from "./types";
 
 export default class AccountPayoffs extends Resource {
@@ -15,7 +15,7 @@ export default class AccountPayoffs extends Resource {
    */
 
   async retrieve(pyf_id: string) {
-    return super._getWithId<IAccountPayoff>(pyf_id);
+    return super._getWithId<IResponse<IAccountPayoff>>(pyf_id);
   }
 
   // TODO: Add back in when we have a list endpoint
@@ -36,6 +36,6 @@ export default class AccountPayoffs extends Resource {
    */
 
   async create() {
-    return super._create<IAccountPayoff, {}>({});
+    return super._create<IResponse<IAccountPayoff>, {}>({});
   }
 };
