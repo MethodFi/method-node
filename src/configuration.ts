@@ -40,6 +40,10 @@ export interface IResponseEvent {
   pagination: IResponseEventPagination,
 };
 
+export type IResponse<T> = T & {
+  last_response: IResponseEvent;
+};
+
 export type TOnRequest = (event: IRequestEvent) => void;
 
 export type TOnResponse = (event: IResponseEvent, axios_response: AxiosResponse) => void;
