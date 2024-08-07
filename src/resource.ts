@@ -137,38 +137,17 @@ export default class Resource extends ExtensibleFunction {
         if (this.config.onResponse)
           this.config.onResponse(eventResponse, response);
 
-        // if (response.data.data == null) {
-        //   if (typeof response.data === "string") {
-        //     Object.defineProperty(String.prototype, "last_response", {
-        //       get: function () {
-        //         return eventResponse;
-        //       },
-        //     });
-        //   } else {
-        //     Object.defineProperty(response.data, "last_response", {
-        //       enumerable: false,
-        //       writable: false,
-        //       value: eventResponse,
-        //     });
-        //   }
-        // } else {
-        //   Object.defineProperty(response.data.data, "last_response", {
-        //     enumerable: false,
-        //     writable: false,
-        //     value: eventResponse,
-        //   });
-        // }
-
-        // FIXME: add last_response to string type data (GET /reports/id/download)
-        Object.defineProperty(
-          response.data.data != null ? response.data.data : response.data,
-          "last_response",
-          {
-            enumerable: false,
-            writable: false,
-            value: eventResponse,
-          }
-        );
+        if (typeof response.data === "object") {
+          Object.defineProperty(
+            response.data.data != null ? response.data.data : response.data,
+            "last_response",
+            {
+              enumerable: false,
+              writable: false,
+              value: eventResponse,
+            }
+          );
+        }
 
         return response;
       },
