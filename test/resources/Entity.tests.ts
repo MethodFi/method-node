@@ -628,7 +628,7 @@ describe('Entities - core methods tests', () => {
         id: entities_create_connect_subscription_response.id,
         name: 'connect',
         status: 'active',
-        latest_request_id: entities_create_connect_subscription_response.latest_request_id,
+        latest_request_id: entities_connect_subscription_response.latest_request_id,
         created_at: entities_connect_subscription_response.created_at,
         updated_at: entities_connect_subscription_response.updated_at,
       };
@@ -637,7 +637,7 @@ describe('Entities - core methods tests', () => {
         id: entities_create_credit_score_subscription_response.id,
         name: 'credit_score',
         status: 'active',
-        latest_request_id: entities_create_credit_score_subscription_response.latest_request_id,
+        latest_request_id: entities_credit_score_subscription_response.latest_request_id,
         created_at: entities_credit_score_subscription_response.created_at,
         updated_at: entities_credit_score_subscription_response.updated_at,
       }
