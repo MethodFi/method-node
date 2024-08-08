@@ -75,6 +75,6 @@ export default class Report extends Resource {
    */
 
   async download(rpt_id: string) {
-    return super._download<IResponse<string>>(rpt_id);
+    return super._download<string>(rpt_id);
   }
 };

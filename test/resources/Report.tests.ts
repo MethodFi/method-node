@@ -10,7 +10,7 @@ should();
 describe('Reports - core methods tests', () => {
   let reports_create_response: IResponse<IReport>;
   let reports_retrieve_response: IResponse<IReport>;
-  let reports_download_response: IResponse<string>;
+  let reports_download_response: string;
 
   describe('reports.create', () => {
     it('should successfully create a report.', async () => {

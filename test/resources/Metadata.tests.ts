@@ -48,13 +48,3 @@ describe("API Resources - last_response check", () => {
     });
   });
 });
-
-// accounts: Account;
-// elements: Element;
-// entities: Entity;
-// merchants: Merchant;
-// payments: Payment;
-// reports: Report;
-// webhooks: Webhook;
-// healthcheck: HealthCheck;
-// simulate: Simulate;
