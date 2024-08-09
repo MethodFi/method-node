@@ -1,5 +1,5 @@
 import Resource from '../../resource';
-import Configuration,{ IResponse }  from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 
 
 export interface IPingResponse {
@@ -15,7 +15,7 @@ export default class HealthCheck extends Resource {
 
   /**
    * Check that the service is up and running
-   * 
+   *
    * @returns IPingResponse
    */
 

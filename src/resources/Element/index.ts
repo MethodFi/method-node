@@ -12,4 +12,4 @@ export default class Element extends Resource {
   }
 };
 
-export * from './types'
+export * from './types';

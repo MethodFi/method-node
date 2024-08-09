@@ -14,7 +14,7 @@ export default class SimulatePayments extends Resource {
 
   /**
    * Updates a Payment’s status.
-   * 
+   *
    * @param id ID of the Payment
    * @param data The desired payment status or error code.
    * @returns A Payment with the updated status.

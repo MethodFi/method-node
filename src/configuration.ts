@@ -85,7 +85,7 @@ export default class Configuration {
   }
 
   public addPath(path: string): Configuration {
-    const clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this)
+    const clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
     clone.baseURL = `${clone.baseURL}/${path}`;
 
     return clone;

@@ -1,7 +1,7 @@
 export const MethodErrorTypes = {
-   INVALID_AUTHORIZATION: 'INVALID_AUTHORIZATION',
-   INVALID_REQUEST: 'INVALID_REQUEST',
-   API_ERROR: 'API_ERROR',
+  INVALID_AUTHORIZATION: 'INVALID_AUTHORIZATION',
+  INVALID_REQUEST: 'INVALID_REQUEST',
+  API_ERROR: 'API_ERROR',
 } as const;
 
 export type TMethodErrorTypes = keyof typeof MethodErrorTypes;
@@ -27,13 +27,13 @@ export class MethodError extends Error {
     this.code = opts.code;
   }
 
-  static generate(opts: MethodErrorOpts): MethodError {   
+  static generate(opts: MethodErrorOpts): MethodError {
     switch (opts.type) {
       case MethodErrorTypes.API_ERROR: return new MethodInternalError(opts);
       case MethodErrorTypes.INVALID_REQUEST: return new MethodInvalidRequestError(opts);
       case MethodErrorTypes.INVALID_AUTHORIZATION: return new MethodAuthorizationError(opts);
       default: return new MethodInternalError(opts);
-    } 
+    }
   }
 };
 

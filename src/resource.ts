@@ -1,14 +1,14 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
-import axios_retry from "axios-retry";
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios_retry from 'axios-retry';
 import Configuration, {
   IResponseEvent,
   TResponseEventIdemStatuses,
-} from "./configuration";
-import { MethodError } from "./errors";
-import { AccountSubResources } from "./resources/Account";
-import { PaymentSubResources } from "./resources/Payment";
-import { EntitySubResources } from "./resources/Entity";
-import { SimulateAccountsSubResources } from "./resources/Simulate/Accounts";
+} from './configuration';
+import { MethodError } from './errors';
+import { AccountSubResources } from './resources/Account';
+import { PaymentSubResources } from './resources/Payment';
+import { EntitySubResources } from './resources/Entity';
+import { SimulateAccountsSubResources } from './resources/Simulate/Accounts';
 
 type TSubResources =
   | AccountSubResources
@@ -38,8 +38,8 @@ export default class Resource extends ExtensibleFunction {
       baseURL: config.baseURL,
       headers: {
         Authorization: `Bearer ${config.apiKey}`,
-        "User-Agent": this.getDefaultUserAgent(),
-        "method-version": "2024-04-04",
+        'User-Agent': this.getDefaultUserAgent(),
+        'method-version': '2024-04-04',
       },
       httpsAgent: config.httpsAgent,
     });
@@ -56,24 +56,25 @@ export default class Resource extends ExtensibleFunction {
     // @ts-ignore
     return `Method-Node/v${
       require(// @ts-ignore
-      process.env.NODE_ENV === "TEST"
-        ? "../../package.json"
-        : "../package.json").version
+        process.env.NODE_ENV === 'TEST'
+          ? '../../package.json'
+          : '../package.json',
+      ).version
     }`;
   }
 
   private configureRequestInterceptors(): void {
     this.client.interceptors.request.use((request) => {
-      if (request.headers) request.headers["request-start-time"] = Date.now();
+      if (request.headers) request.headers['request-start-time'] = Date.now();
 
       if (this.config.onRequest) {
         this.config.onRequest({
           method: request?.method?.toUpperCase() as string,
           idempotency_key:
-            (request?.headers?.["Idempotency-Key"] as string) || null,
+            (request?.headers?.['Idempotency-Key'] as string) || null,
           path: new URL(`${request.baseURL}${request.url}`).pathname,
           request_start_time: request?.headers?.[
-            "request-start-time"
+            'request-start-time'
           ] as number,
         });
       }
@@ -85,16 +86,16 @@ export default class Resource extends ExtensibleFunction {
   private configureResponseInterceptors(): void {
     const extractResponseEvent = (response: AxiosResponse) => {
       const payload: IResponseEvent = {
-        request_id: response.headers["idem-request-id"] || "",
+        request_id: response.headers['idem-request-id'] || '',
         idempotency_status:
-          (response.headers["idem-status"] as TResponseEventIdemStatuses) || "",
-        method: response?.config?.method?.toUpperCase() || "",
+          (response.headers['idem-status'] as TResponseEventIdemStatuses) || '',
+        method: response?.config?.method?.toUpperCase() || '',
         path:
           new URL(`${response.config.baseURL}${response.config.url}`)
-            .pathname || "",
+            .pathname || '',
         status: response.status || 0,
         request_start_time: response?.config?.headers?.[
-          "request-start-time"
+          'request-start-time'
         ] as number,
         request_end_time: Date.now(),
         pagination: {
@@ -102,31 +103,29 @@ export default class Resource extends ExtensibleFunction {
           page_count: 1,
           page_limit: 1,
           total_count: 1,
-          page_cursor_next: "",
-          page_cursor_prev: "",
+          page_cursor_next: '',
+          page_cursor_prev: '',
         },
       };
 
-      if (response.headers["pagination-page"])
-        payload.pagination.page = Number(response.headers["pagination-page"]);
-      if (response.headers["pagination-page-count"])
+      if (response.headers['pagination-page']) payload.pagination.page = Number(response.headers['pagination-page']);
+      if (response.headers['pagination-page-count']) {
         payload.pagination.page_count = Number(
-          response.headers["pagination-page-count"]
+          response.headers['pagination-page-count'],
         );
-      if (response.headers["pagination-page-limit"])
+      }
+      if (response.headers['pagination-page-limit']) {
         payload.pagination.page_limit = Number(
-          response.headers["pagination-page-limit"]
+          response.headers['pagination-page-limit'],
         );
-      if (response.headers["pagination-total-count"])
+      }
+      if (response.headers['pagination-total-count']) {
         payload.pagination.total_count = Number(
-          response.headers["pagination-total-count"]
+          response.headers['pagination-total-count'],
         );
-      if (response.headers["pagination-page-cursor-next"])
-        payload.pagination.page_cursor_next =
-          response.headers["pagination-page-cursor-next"];
-      if (response.headers["pagination-page-cursor-prev"])
-        payload.pagination.page_cursor_prev =
-          response.headers["pagination-page-cursor-prev"];
+      }
+      if (response.headers['pagination-page-cursor-next']) payload.pagination.page_cursor_next = response.headers['pagination-page-cursor-next'];
+      if (response.headers['pagination-page-cursor-prev']) payload.pagination.page_cursor_prev = response.headers['pagination-page-cursor-prev'];
 
       return payload;
     };
@@ -134,18 +133,17 @@ export default class Resource extends ExtensibleFunction {
     this.client.interceptors.response.use(
       (response) => {
         const eventResponse = extractResponseEvent(response);
-        if (this.config.onResponse)
-          this.config.onResponse(eventResponse, response);
+        if (this.config.onResponse) this.config.onResponse(eventResponse, response);
 
-        if (typeof response.data === "object") {
+        if (typeof response.data === 'object') {
           Object.defineProperty(
             response.data.data != null ? response.data.data : response.data,
-            "last_response",
+            'last_response',
             {
               enumerable: false,
               writable: false,
               value: eventResponse,
-            }
+            },
           );
         }
 
@@ -155,14 +153,13 @@ export default class Resource extends ExtensibleFunction {
         if (this.config.onResponse && error.response) {
           this.config.onResponse(
             extractResponseEvent(error.response),
-            error.response
+            error.response,
           );
         }
 
-        if (error.response && error.response.data && error.response.data.data)
-          throw MethodError.generate(error.response.data.data.error);
+        if (error.response && error.response.data && error.response.data.data) throw MethodError.generate(error.response.data.data.error);
         throw error;
-      }
+      },
     );
   }
 
@@ -171,11 +168,11 @@ export default class Resource extends ExtensibleFunction {
   }
 
   protected async _getRaw<Response>(): Promise<Response> {
-    return (await this.client.get("")).data;
+    return (await this.client.get('')).data;
   }
 
   protected async _get<Response>(): Promise<Response> {
-    return (await this.client.get("")).data.data;
+    return (await this.client.get('')).data.data;
   }
 
   protected async _getWithId<Response>(id: string): Promise<Response> {
@@ -187,84 +184,89 @@ export default class Resource extends ExtensibleFunction {
   }
 
   protected async _getWithParams<Response, Params = {}>(
-    params: Params
+    params: Params,
   ): Promise<Response> {
-    return (await this.client.get("", { params })).data.data;
+    return (await this.client.get('', { params })).data.data;
   }
 
   protected async _getWithSubPathAndParams<Response, Params = {}>(
     path: string,
-    params: Params
+    params: Params,
   ): Promise<Response> {
     return (await this.client.get(path, { params })).data.data;
   }
 
   protected async _list<Response, Params = {}>(
-    params?: Params
+    params?: Params,
   ): Promise<Response[]> {
-    return (await this.client.get("", { params })).data.data;
+    return (await this.client.get('', { params })).data.data;
   }
 
   protected async _create<Response, Data>(
     data: Data,
-    requestConfig: IRequestConfig = {}
+    requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key)
+    if (requestConfig.idempotency_key) {
       _requestConfig.headers = {
-        "Idempotency-Key": requestConfig.idempotency_key,
+        'Idempotency-Key': requestConfig.idempotency_key,
       };
-    return (await this.client.post("", data, _requestConfig)).data.data;
+    }
+    return (await this.client.post('', data, _requestConfig)).data.data;
   }
 
   protected async _createWithSubPath<Response, Data>(
     path: string,
     data: Data,
-    requestConfig: IRequestConfig = {}
+    requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key)
+    if (requestConfig.idempotency_key) {
       _requestConfig.headers = {
-        "Idempotency-Key": requestConfig.idempotency_key,
+        'Idempotency-Key': requestConfig.idempotency_key,
       };
+    }
     return (await this.client.post(path, data, _requestConfig)).data.data;
   }
 
   protected async _updateWithId<Response, Data>(
     id: string,
     data: Data,
-    requestConfig: IRequestConfig = {}
+    requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key)
+    if (requestConfig.idempotency_key) {
       _requestConfig.headers = {
-        "Idempotency-Key": requestConfig.idempotency_key,
+        'Idempotency-Key': requestConfig.idempotency_key,
       };
+    }
     return (await this.client.put(`/${id}`, data, _requestConfig)).data.data;
   }
 
   protected async _update<Response, Data>(
     data: Data,
-    requestConfig: IRequestConfig = {}
+    requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key)
+    if (requestConfig.idempotency_key) {
       _requestConfig.headers = {
-        "Idempotency-Key": requestConfig.idempotency_key,
+        'Idempotency-Key': requestConfig.idempotency_key,
       };
-    return (await this.client.put("", data, _requestConfig)).data.data;
+    }
+    return (await this.client.put('', data, _requestConfig)).data.data;
   }
 
   protected async _updateWithSubPath<Response, Data>(
     path: string,
     data: Data,
-    requestConfig: IRequestConfig = {}
+    requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key)
+    if (requestConfig.idempotency_key) {
       _requestConfig.headers = {
-        "Idempotency-Key": requestConfig.idempotency_key,
+        'Idempotency-Key': requestConfig.idempotency_key,
       };
+    }
 
     return (await this.client.put(path, data)).data.data;
   }
@@ -275,7 +277,7 @@ export default class Resource extends ExtensibleFunction {
 
   protected async _deleteWithSubPath<Response>(
     path: string,
-    requestConfig: IRequestConfig = {}
+    requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     return (await this.client.delete(path)).data.data;
   }
@@ -286,7 +288,7 @@ export default class Resource extends ExtensibleFunction {
 
   protected async _postWithId<Response, Data>(
     id: string,
-    data: Data
+    data: Data,
   ): Promise<Response> {
     return (await this.client.post(`/${id}`, data)).data.data;
   }
@@ -300,10 +302,10 @@ export interface IResourceError {
 }
 
 export const ResourceStatus = {
-  completed: "completed",
-  in_progress: "in_progress",
-  pending: "pending",
-  failed: "failed",
+  completed: 'completed',
+  in_progress: 'in_progress',
+  pending: 'pending',
+  failed: 'failed',
 } as const;
 
 export type TResourceStatus = keyof typeof ResourceStatus;

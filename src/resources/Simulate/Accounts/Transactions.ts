@@ -9,7 +9,7 @@ export default class SimulateTransactions extends Resource {
 
   /**
    * For Accounts that have been successfully verified, you may simulate Transactions in the dev environment.
-   * 
+   *
    * @returns Returns the created Transaction.
    */
 

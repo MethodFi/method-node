@@ -1,6 +1,6 @@
-import Resource from "../../resource";
-import Configuration, { IResponse } from "../../configuration";
-import type { IEntityProduct, IEntityProductListResponse } from "./types";
+import Resource from '../../resource';
+import Configuration, { IResponse } from '../../configuration';
+import type { IEntityProduct, IEntityProductListResponse } from './types';
 
 export default class EntityProducts extends Resource {
   constructor(config: Configuration) {
@@ -9,7 +9,7 @@ export default class EntityProducts extends Resource {
 
   /**
    * Retrieve an entity's product.
-   * 
+   *
    * @param prd_id ID of the product.
    * @returns Returns a Product object.
    */
@@ -20,7 +20,7 @@ export default class EntityProducts extends Resource {
 
   /**
    * Retrieve an entity's product list.
-   * 
+   *
    * @returns Returns a map of Product names to Product objects for an Entity.
    */
 

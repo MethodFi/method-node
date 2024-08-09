@@ -12,7 +12,7 @@ export const ReportTypes = {
   ach_pull_previous: 'ach.pull.previous',
   ach_pull_nightly: 'ach.pull.nightly',
   ach_reversals_nightly: 'ach.reversals.nightly',
-  entities_created_previous_day: 'entities.created.previous_day'
+  entities_created_previous_day: 'entities.created.previous_day',
 } as const;
 
 export type TReportTypes = typeof ReportTypes[keyof typeof ReportTypes];
@@ -46,7 +46,7 @@ export default class Report extends Resource {
 
   /**
    * Retrieves the Report associated with the ID.
-   * 
+   *
    * @param rpt_id id of the report
    * @returns Returns the Report associated with the ID.
    */
@@ -54,10 +54,10 @@ export default class Report extends Resource {
   async retrieve(rpt_id: string) {
     return super._getWithId<IResponse<IReport>>(rpt_id);
   }
-  
+
   /**
    * Creates a new Report for a specific type. Once created, you can retrieve the Report results from the URL returned.
-   * 
+   *
    * @param opts IReportCreateOpts: https://docs.methodfi.com/api/core/reports/create
    * @param requestConfig Idempotency key: { idempotency_key: string}
    * @returns Returns a Report object.
@@ -69,7 +69,7 @@ export default class Report extends Resource {
 
   /**
    * Download a report
-   * 
+   *
    * @param rpt_id id of the report
    * @returns Returns the Report’s results in CSV format.
    */

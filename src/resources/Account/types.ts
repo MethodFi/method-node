@@ -562,7 +562,7 @@ export interface IAccountVerificationSession {
   three_ds?: IAccountVerificationSessionThreeDS | null;
   issuer?: IAccountVerificationSessionIssuer | null;
   created_at: string;
-  updated_at: string; 
+  updated_at: string;
 };
 
 export interface IAccountCreateOpts {
@@ -622,4 +622,4 @@ export interface IAccount {
   metadata: {} | null;
 };
 
-export * from './externalTypes'
+export * from './externalTypes';

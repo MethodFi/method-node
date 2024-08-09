@@ -1,6 +1,6 @@
-import Resource from "../../resource";
-import Configuration, { IResponse } from "../../configuration";
-import type { IAccountPayoff } from "./types";
+import Resource from '../../resource';
+import Configuration, { IResponse } from '../../configuration';
+import type { IAccountPayoff } from './types';
 
 export default class AccountPayoffs extends Resource {
   constructor(config: Configuration) {
@@ -9,7 +9,7 @@ export default class AccountPayoffs extends Resource {
 
   /**
    * Retrieve a Payoff record for an Account.
-   * 
+   *
    * @param pyf_id ID of the payoff
    * @returns Returns a Payoff object.
    */
@@ -21,7 +21,7 @@ export default class AccountPayoffs extends Resource {
   // TODO: Add back in when we have a list endpoint
   // /**
   //  * Retrieves a list of Payoff requests for a specific account.
-  //  * 
+  //  *
   //  * @returns Returns a list of Payoffs.
   //  */
 
@@ -31,7 +31,7 @@ export default class AccountPayoffs extends Resource {
 
   /**
    * Creates a new Payoff request to retrieve a payoff quote from the Account’s financial institution / lender.
-   * 
+   *
    * @returns Returns a Payoff object.
    */
 

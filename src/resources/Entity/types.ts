@@ -2,7 +2,7 @@ import type {
   IResourceError,
   TResourceStatus,
   IResourceListOpts,
-} from "../../resource";
+} from '../../resource';
 
 export const CreditReportBureaus = {
   experian: 'experian',

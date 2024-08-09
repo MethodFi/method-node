@@ -49,7 +49,7 @@ export class Entity extends Resource {
 
   /**
    * Retrieves an entity by id
-   * 
+   *
    * @param ent_id ent_id
    * @returns Returns the Entity associated with the ID.
    */
@@ -64,7 +64,7 @@ export class Entity extends Resource {
 
   /**
    * Returns all the Entities associated with your team, or an empty array if none have been created.
-   * 
+   *
    * @param opts IEntityListOpts: https://docs.methodfi.com/api/core/entities/list
    * @returns Returns a list of Entities.
    */
@@ -79,7 +79,7 @@ export class Entity extends Resource {
 
   /**
    * Creates an entity
-   * 
+   *
    * @param opts IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts,
    * @param requestConfig Idempotency Key { idempotency_key?: string }
    * @returns Created entity (IEntity)
@@ -97,9 +97,9 @@ export class Entity extends Resource {
 
   /**
    * Updates an Entity with the parameters sent.
-   * 
+   *
    * Note: Once an Entity’s property has been set, that property can no longer be updated.
-   * 
+   *
    * @param ent_id ent_id
    * @param opts IEntityUpdateOpts
    * @returns Returns the entity with the updated fields.
@@ -111,7 +111,7 @@ export class Entity extends Resource {
 
   /**
    * Withdraws consent for an entity
-   * 
+   *
    * @param ent_id ent_id
    * @param data IEntityWithdrawConsentOpts: { type: 'withdraw', reason: 'entity_withdrew_consent' }
    * @returns Deactivated entity (IEntity)
@@ -126,4 +126,4 @@ export class Entity extends Resource {
 };
 
 export default Entity;
-export * from './types'
+export * from './types';

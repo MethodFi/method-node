@@ -9,7 +9,7 @@ export default class AccountUpdates extends Resource {
 
   /**
    * Retrieve an Update object by its ID.
-   * 
+   *
    * @param upt_id ID of the Update
    * @returns Returns an Update object.
    */
@@ -20,7 +20,7 @@ export default class AccountUpdates extends Resource {
 
   /**
    * Retrieve a list of Updates for a specific Account.
-   * 
+   *
    * @returns Returns a list of Updates.
    */
 
@@ -30,7 +30,7 @@ export default class AccountUpdates extends Resource {
 
   /**
    * Creates a new Update for a liability Account.
-   * 
+   *
    * @returns Returns an Update object.
    */
 
@@ -38,4 +38,3 @@ export default class AccountUpdates extends Resource {
     return super._create<IResponse<IAccountUpdate>, {}>({});
   }
 };
-

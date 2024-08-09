@@ -9,7 +9,7 @@ export default class AccountBalances extends Resource {
 
   /**
    * Retrieve a Balance record for an Account.
-   * 
+   *
    * @param bal_id ID of the balance
    * @returns Returns a Balance object.
    */
@@ -21,7 +21,7 @@ export default class AccountBalances extends Resource {
   // TODO: Add back in when we have a list endpoint
   // /**
   //  * Retrieves a list of Balance objects for an account.
-  //  * 
+  //  *
   //  * @returns Returns a list of Balances.
   //  */
 
@@ -31,7 +31,7 @@ export default class AccountBalances extends Resource {
 
   /**
    * Creates a new Balance request to retrieve the Account’s balance from the financial institution.
-   * 
+   *
    * @returns Returns a Balance object.
    */
 

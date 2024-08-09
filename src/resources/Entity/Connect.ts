@@ -1,6 +1,6 @@
-import Resource from "../../resource";
-import Configuration, { IResponse } from "../../configuration";
-import type { IEntityConnect } from "./types";
+import Resource from '../../resource';
+import Configuration, { IResponse } from '../../configuration';
+import type { IEntityConnect } from './types';
 
 export default class EntityConnect extends Resource {
   constructor(config: Configuration) {
@@ -9,7 +9,7 @@ export default class EntityConnect extends Resource {
 
   /**
    * Retrieves a Connect record for an Entity.
-   * 
+   *
    * @param cxn_id ID of the entity connection
    * @returns Returns a Connect object.
    */
@@ -20,7 +20,7 @@ export default class EntityConnect extends Resource {
 
   /**
    * Creates a new Connect request to connect all liability accounts for the Entity.
-   * 
+   *
    * @returns Returns a Connect object.
    */
 

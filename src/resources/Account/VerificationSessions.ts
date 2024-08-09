@@ -13,7 +13,7 @@ export default class AccountVerificationSession extends Resource {
 
   /**
    * Retrieve an AccountVerificationSession object by its ID.
-   * 
+   *
    * @param avf_id ID of the AccountVerificationSession object.
    * @returns AccountVerificationSession object.
    */
@@ -24,7 +24,7 @@ export default class AccountVerificationSession extends Resource {
 
   /**
    * Creates an AccountVerificationSession of the provided type.
-   * 
+   *
    * @param data IAccountVerificationSessionCreateOpts: { type: TAccountVerificaionSessionTypes }
    * @returns AccountVerificationSession object.
    */
@@ -35,7 +35,7 @@ export default class AccountVerificationSession extends Resource {
   // TODO: Add URL of docs page for this method.
   /**
    * Updates an existing AccountVerificationSession object
-   * 
+   *
    * @param avf_id ID of the AccountVerificationSession object.
    * @param data Update data for the AccountVerificationSession object based on it's type.
    * @returns AccountVerificationSession object.

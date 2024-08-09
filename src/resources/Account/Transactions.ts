@@ -9,7 +9,7 @@ export default class AccountTransactions extends Resource {
 
   /**
    * Retrieve a Transaction object for an Account.
-   * 
+   *
    * @param txn_id ID of the transaction
    * @returns Returns a Transaction object.
    */
@@ -20,7 +20,7 @@ export default class AccountTransactions extends Resource {
 
   /**
    * Retrieve a list of Transactions objects for a specific Account.
-   * 
+   *
    * @returns Returns a list of transactions for the account.
    */
 

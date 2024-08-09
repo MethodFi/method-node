@@ -9,7 +9,7 @@ export default class Reversal extends Resource {
 
   /**
    * Retrieve a reversal
-   * 
+   *
    * @param rvs_id id of the reversal
    * @returns IReversal
    */
@@ -20,7 +20,7 @@ export default class Reversal extends Resource {
 
   /**
    * Lists all reversals
-   * 
+   *
    * @returns IReversal[]
    */
 
@@ -30,7 +30,7 @@ export default class Reversal extends Resource {
 
   /**
    * Update a reversal
-   * 
+   *
    * @param rvs_id id of the reversal
    * @param data IReversalUpdateOpts: https://docs.methodfi.com/api/core/payments/reversals/update
    * @returns IReversal
