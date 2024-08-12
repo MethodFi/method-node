@@ -40,6 +40,10 @@ export interface IResponseEvent {
   pagination: IResponseEventPagination,
 };
 
+export type IResponse<T> = T & {
+  last_response: IResponseEvent;
+};
+
 export type TOnRequest = (event: IRequestEvent) => void;
 
 export type TOnResponse = (event: IResponseEvent, axios_response: AxiosResponse) => void;
@@ -81,7 +85,7 @@ export default class Configuration {
   }
 
   public addPath(path: string): Configuration {
-    const clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this)
+    const clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
     clone.baseURL = `${clone.baseURL}/${path}`;
 
     return clone;

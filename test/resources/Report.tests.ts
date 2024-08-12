@@ -2,13 +2,14 @@ import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
 import type { IReport } from '../../src/resources/Report';
+import { IResponse } from '../../src/configuration';
 
 should();
 
 //TODO: Add tests for each report type
 describe('Reports - core methods tests', () => {
-  let reports_create_response: IReport;
-  let reports_retrieve_response: IReport;
+  let reports_create_response: IResponse<IReport>;
+  let reports_retrieve_response: IResponse<IReport>;
   let reports_download_response: string;
 
   describe('reports.create', () => {

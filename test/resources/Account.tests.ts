@@ -16,29 +16,30 @@ import type {
   IAccountUpdate,
   TAccountProducts,
 } from '../../src/resources/Account';
+import { IResponse } from '../../src/configuration';
 
 should();
 
 describe('Accounts - core methods tests', () => {
-  let holder_1_response: IEntity;
-  let holder_connect_response: IEntityConnect;
-  let accounts_create_ach_response: IAccount;
-  let accounts_create_liability_response: IAccount;
-  let accounts_retrieve_response: IAccount;
-  let accounts_list_response: IAccount[];
-  let balances_create_response: IAccountBalance;
-  let test_credit_card_account: IAccount;
-  let test_auto_loan_account: IAccount;
-  let card_create_response: IAccountCardBrand;
-  let payoff_create_response: IAccountPayoff;
-  let verification_session_create: IAccountVerificationSession;
-  let verification_session_update: IAccountVerificationSession;
-  let sensitive_data_response: IAccountSensitive;
-  let transactions_response: IAccountTransaction;
-  let create_txn_subscriptions_response: IAccountSubscription;
-  let create_update_subscriptions_response: IAccountSubscription;
-  let create_update_snapshot_subscriptions_response: IAccountSubscription;
-  let create_updates_response: IAccountUpdate;
+  let holder_1_response: IResponse<IEntity>;
+  let holder_connect_response: IResponse<IEntityConnect>;
+  let accounts_create_ach_response: IResponse<IAccount>;
+  let accounts_create_liability_response: IResponse<IAccount>;
+  let accounts_retrieve_response: IResponse<IAccount>;
+  let accounts_list_response: IResponse<IAccount>[];
+  let balances_create_response: IResponse<IAccountBalance>;
+  let test_credit_card_account: IResponse<IAccount>;
+  let test_auto_loan_account: IResponse<IAccount>;
+  let card_create_response: IResponse<IAccountCardBrand>;
+  let payoff_create_response: IResponse<IAccountPayoff>;
+  let verification_session_create: IResponse<IAccountVerificationSession>;
+  let verification_session_update: IResponse<IAccountVerificationSession>;
+  let sensitive_data_response: IResponse<IAccountSensitive>;
+  let transactions_response: IResponse<IAccountTransaction>;
+  let create_txn_subscriptions_response: IResponse<IAccountSubscription>;
+  let create_update_subscriptions_response: IResponse<IAccountSubscription>;
+  let create_update_snapshot_subscriptions_response: IResponse<IAccountSubscription>;
+  let create_updates_response: IResponse<IAccountUpdate>;
 
   before(async () => {
     holder_1_response = await client.entities.create({

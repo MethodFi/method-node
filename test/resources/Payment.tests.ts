@@ -4,18 +4,19 @@ import { client } from '../config';
 import type { IEntity } from '../../src/resources/Entity';
 import type { IAccount } from '../../src/resources/Account';
 import type { IPayment } from '../../src/resources/Payment';
+import { IResponse } from '../../src/configuration';
 
 should();
 
 describe('Payments - core methods tests', () => {
-  let holder_1_response: IEntity;
-  let source_1_response: IAccount;
-  let destination_1_response: IAccount;
+  let holder_1_response: IResponse<IEntity>;
+  let source_1_response: IResponse<IAccount>;
+  let destination_1_response: IResponse<IAccount>;
 
-  let payments_create_response: IPayment;
-  let payments_retrieve_response: IPayment;
-  let payments_list_response: IPayment[];
-  let payments_delete_response: IPayment;
+  let payments_create_response: IResponse<IPayment>;
+  let payments_retrieve_response: IResponse<IPayment>;
+  let payments_list_response: IResponse<IPayment>[];
+  let payments_delete_response: IResponse<IPayment>;
 
   before(async () => {
     holder_1_response = await client.entities.create({
@@ -122,7 +123,7 @@ describe('Payments - core methods tests', () => {
         metadata: null,
         created_at: payments_retrieve_response.created_at,
         updated_at: payments_retrieve_response.updated_at,
-        fund_status: 'pending'
+        fund_status: 'pending',
       };
 
       payments_retrieve_response.should.be.eql(expect_results);

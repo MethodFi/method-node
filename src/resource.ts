@@ -1,6 +1,9 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import axios_retry from 'axios-retry';
-import Configuration, { TResponseEventIdemStatuses } from './configuration';
+import Configuration, {
+  IResponseEvent,
+  TResponseEventIdemStatuses,
+} from './configuration';
 import { MethodError } from './errors';
 import { AccountSubResources } from './resources/Account';
 import { PaymentSubResources } from './resources/Payment';
@@ -12,17 +15,17 @@ type TSubResources =
   | PaymentSubResources
   | EntitySubResources
   | SimulateAccountsSubResources;
-  
+
 export interface IRequestConfig {
   idempotency_key?: string;
-};
+}
 
 class ExtensibleFunction extends Function {
   // @ts-ignore
   constructor(f) {
     return Object.setPrototypeOf(f, new.target.prototype);
   }
-};
+}
 
 export default class Resource extends ExtensibleFunction {
   private client: AxiosInstance;
@@ -36,7 +39,7 @@ export default class Resource extends ExtensibleFunction {
       headers: {
         Authorization: `Bearer ${config.apiKey}`,
         'User-Agent': this.getDefaultUserAgent(),
-        'method-version': '2024-04-04'
+        'method-version': '2024-04-04',
       },
       httpsAgent: config.httpsAgent,
     });
@@ -51,10 +54,13 @@ export default class Resource extends ExtensibleFunction {
 
   private getDefaultUserAgent(): string {
     // @ts-ignore
-    return `Method-Node/v${require(
-      // @ts-ignore
-      process.env.NODE_ENV === 'TEST' ? '../../package.json' : '../package.json'
-    ).version}`;
+    return `Method-Node/v${
+      require(// @ts-ignore
+        process.env.NODE_ENV === 'TEST'
+          ? '../../package.json'
+          : '../package.json',
+      ).version
+    }`;
   }
 
   private configureRequestInterceptors(): void {
@@ -64,9 +70,12 @@ export default class Resource extends ExtensibleFunction {
       if (this.config.onRequest) {
         this.config.onRequest({
           method: request?.method?.toUpperCase() as string,
-          idempotency_key: request?.headers?.['Idempotency-Key'] as string || null,
+          idempotency_key:
+            (request?.headers?.['Idempotency-Key'] as string) || null,
           path: new URL(`${request.baseURL}${request.url}`).pathname,
-          request_start_time: request?.headers?.['request-start-time'] as number,
+          request_start_time: request?.headers?.[
+            'request-start-time'
+          ] as number,
         });
       }
 
@@ -76,13 +85,18 @@ export default class Resource extends ExtensibleFunction {
 
   private configureResponseInterceptors(): void {
     const extractResponseEvent = (response: AxiosResponse) => {
-      const payload = {
+      const payload: IResponseEvent = {
         request_id: response.headers['idem-request-id'] || '',
-        idempotency_status: response.headers['idem-status'] as TResponseEventIdemStatuses || '',
+        idempotency_status:
+          (response.headers['idem-status'] as TResponseEventIdemStatuses) || '',
         method: response?.config?.method?.toUpperCase() || '',
-        path: new URL(`${response.config.baseURL}${response.config.url}`).pathname || '',
+        path:
+          new URL(`${response.config.baseURL}${response.config.url}`)
+            .pathname || '',
         status: response.status || 0,
-        request_start_time: response?.config?.headers?.['request-start-time'] as number,
+        request_start_time: response?.config?.headers?.[
+          'request-start-time'
+        ] as number,
         request_end_time: Date.now(),
         pagination: {
           page: 1,
@@ -95,9 +109,21 @@ export default class Resource extends ExtensibleFunction {
       };
 
       if (response.headers['pagination-page']) payload.pagination.page = Number(response.headers['pagination-page']);
-      if (response.headers['pagination-page-count']) payload.pagination.page_count = Number(response.headers['pagination-page-count']);
-      if (response.headers['pagination-page-limit']) payload.pagination.page_limit = Number(response.headers['pagination-page-limit']);
-      if (response.headers['pagination-total-count']) payload.pagination.total_count = Number(response.headers['pagination-total-count']);
+      if (response.headers['pagination-page-count']) {
+        payload.pagination.page_count = Number(
+          response.headers['pagination-page-count'],
+        );
+      }
+      if (response.headers['pagination-page-limit']) {
+        payload.pagination.page_limit = Number(
+          response.headers['pagination-page-limit'],
+        );
+      }
+      if (response.headers['pagination-total-count']) {
+        payload.pagination.total_count = Number(
+          response.headers['pagination-total-count'],
+        );
+      }
       if (response.headers['pagination-page-cursor-next']) payload.pagination.page_cursor_next = response.headers['pagination-page-cursor-next'];
       if (response.headers['pagination-page-cursor-prev']) payload.pagination.page_cursor_prev = response.headers['pagination-page-cursor-prev'];
 
@@ -106,18 +132,32 @@ export default class Resource extends ExtensibleFunction {
 
     this.client.interceptors.response.use(
       (response) => {
-        if (this.config.onResponse) this.config.onResponse(extractResponseEvent(response), response);
+        const eventResponse = extractResponseEvent(response);
+        if (this.config.onResponse) this.config.onResponse(eventResponse, response);
+
+        if (typeof response.data === 'object') {
+          Object.defineProperty(
+            response.data.data != null ? response.data.data : response.data,
+            'last_response',
+            {
+              enumerable: false,
+              writable: false,
+              value: eventResponse,
+            },
+          );
+        }
 
         return response;
       },
       (error) => {
         if (this.config.onResponse && error.response) {
-          this.config.onResponse(extractResponseEvent(error.response), error.response);
+          this.config.onResponse(
+            extractResponseEvent(error.response),
+            error.response,
+          );
         }
 
-        if (error.response
-          && error.response.data
-          && error.response.data.data) throw MethodError.generate(error.response.data.data.error);
+        if (error.response && error.response.data && error.response.data.data) throw MethodError.generate(error.response.data.data.error);
         throw error;
       },
     );
@@ -143,15 +183,22 @@ export default class Resource extends ExtensibleFunction {
     return (await this.client.get(path)).data.data;
   }
 
-  protected async _getWithParams<Response, Params = {}>(params: Params): Promise<Response> {
+  protected async _getWithParams<Response, Params = {}>(
+    params: Params,
+  ): Promise<Response> {
     return (await this.client.get('', { params })).data.data;
   }
 
-  protected async _getWithSubPathAndParams<Response, Params = {}>(path: string, params: Params): Promise<Response> {
+  protected async _getWithSubPathAndParams<Response, Params = {}>(
+    path: string,
+    params: Params,
+  ): Promise<Response> {
     return (await this.client.get(path, { params })).data.data;
   }
 
-  protected async _list<Response, Params = {}>(params?: Params): Promise<Response[]> {
+  protected async _list<Response, Params = {}>(
+    params?: Params,
+  ): Promise<Response[]> {
     return (await this.client.get('', { params })).data.data;
   }
 
@@ -160,7 +207,11 @@ export default class Resource extends ExtensibleFunction {
     requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
+    if (requestConfig.idempotency_key) {
+      _requestConfig.headers = {
+        'Idempotency-Key': requestConfig.idempotency_key,
+      };
+    }
     return (await this.client.post('', data, _requestConfig)).data.data;
   }
 
@@ -170,7 +221,11 @@ export default class Resource extends ExtensibleFunction {
     requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
+    if (requestConfig.idempotency_key) {
+      _requestConfig.headers = {
+        'Idempotency-Key': requestConfig.idempotency_key,
+      };
+    }
     return (await this.client.post(path, data, _requestConfig)).data.data;
   }
 
@@ -180,7 +235,11 @@ export default class Resource extends ExtensibleFunction {
     requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
+    if (requestConfig.idempotency_key) {
+      _requestConfig.headers = {
+        'Idempotency-Key': requestConfig.idempotency_key,
+      };
+    }
     return (await this.client.put(`/${id}`, data, _requestConfig)).data.data;
   }
 
@@ -189,7 +248,11 @@ export default class Resource extends ExtensibleFunction {
     requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
+    if (requestConfig.idempotency_key) {
+      _requestConfig.headers = {
+        'Idempotency-Key': requestConfig.idempotency_key,
+      };
+    }
     return (await this.client.put('', data, _requestConfig)).data.data;
   }
 
@@ -199,7 +262,11 @@ export default class Resource extends ExtensibleFunction {
     requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key) _requestConfig.headers = { 'Idempotency-Key': requestConfig.idempotency_key };
+    if (requestConfig.idempotency_key) {
+      _requestConfig.headers = {
+        'Idempotency-Key': requestConfig.idempotency_key,
+      };
+    }
 
     return (await this.client.put(path, data)).data.data;
   }
@@ -219,17 +286,20 @@ export default class Resource extends ExtensibleFunction {
     return (await this.client.get(`/${id}/download`)).data;
   }
 
-  protected async _postWithId<Response, Data>(id: string, data: Data): Promise<Response> {
+  protected async _postWithId<Response, Data>(
+    id: string,
+    data: Data,
+  ): Promise<Response> {
     return (await this.client.post(`/${id}`, data)).data.data;
   }
-};
+}
 
 export interface IResourceError {
   type: string;
   code: number;
   sub_type: string;
   message: string;
-};
+}
 
 export const ResourceStatus = {
   completed: 'completed',
@@ -246,4 +316,4 @@ export interface IResourceListOpts {
   page?: number | string | null;
   page_limit?: number | string | null;
   page_cursor?: string | null;
-};
+}

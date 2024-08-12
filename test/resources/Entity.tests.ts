@@ -16,24 +16,25 @@ import type {
   IEntityVerificationSession,
 } from '../../src/resources/Entity';
 import type { IAccount } from '../../src/resources/Account';
+import { IResponse } from '../../src/configuration';
 
 should();
 
 describe('Entities - core methods tests', () => {
-  let entities_create_response: IEntity;
-  let entitiy_with_identity_cap: IEntity;
-  let entities_retrieve_response: IEntity;
-  let entities_update_response: IEntity;
-  let entities_list_response: IEntity[];
-  let entities_connect_create_response: IEntityConnect;
-  let entities_account_list_response: IAccount[];
+  let entities_create_response: IResponse<IEntity>;
+  let entitiy_with_identity_cap: IResponse<IEntity>;
+  let entities_retrieve_response: IResponse<IEntity>;
+  let entities_update_response: IResponse<IEntity>;
+  let entities_list_response: IResponse<IEntity>[];
+  let entities_connect_create_response: IResponse<IEntityConnect>;
+  let entities_account_list_response: IResponse<IAccount>[];
   let entities_account_ids: string[];
-  let entities_create_credit_score_response: IEntityCreditScores;
-  let entities_create_idenitity_response: IEntityIdentity;
-  let entities_retrieve_product_list_response: IEntityProductListResponse;
-  let entities_create_connect_subscription_response: IEntitySubscription;
-  let entities_create_credit_score_subscription_response: IEntitySubscription;
-  let entities_create_verification_session_response: IEntityVerificationSession;
+  let entities_create_credit_score_response: IResponse<IEntityCreditScores>;
+  let entities_create_idenitity_response: IResponse<IEntityIdentity>;
+  let entities_retrieve_product_list_response: IResponse<IEntityProductListResponse>;
+  let entities_create_connect_subscription_response: IResponse<IEntitySubscription>;
+  let entities_create_credit_score_subscription_response: IResponse<IEntitySubscription>;
+  let entities_create_verification_session_response: IResponse<IEntityVerificationSession>;
 
   describe('entities.create', () => {
     it('should successfully create an entity.', async () => {
@@ -96,7 +97,7 @@ describe('Entities - core methods tests', () => {
         error: null,
         metadata: {},
         created_at: entities_create_response.created_at,
-        updated_at: entities_create_response.updated_at
+        updated_at: entities_create_response.updated_at,
       };
 
       entities_create_response.should.be.eql(expect_results);
@@ -160,7 +161,7 @@ describe('Entities - core methods tests', () => {
         error: null,
         metadata: {},
         created_at: entities_retrieve_response.created_at,
-        updated_at: entities_retrieve_response.updated_at
+        updated_at: entities_retrieve_response.updated_at,
       };
 
       entities_retrieve_response.should.be.eql(expect_results);
@@ -234,7 +235,7 @@ describe('Entities - core methods tests', () => {
         error: null,
         metadata: {},
         created_at: entities_update_response.created_at,
-        updated_at: entities_update_response.updated_at
+        updated_at: entities_update_response.updated_at,
       };
 
       entities_update_response.should.be.eql(expect_results);
@@ -528,7 +529,7 @@ describe('Entities - core methods tests', () => {
           is_subscribable: false,
           created_at: entities_retrieve_product_list_response.identity?.created_at || '',
           updated_at: entities_retrieve_product_list_response.identity?.updated_at || '',
-        }
+        },
       };
 
       entities_retrieve_product_list_response.should.be.eql(expect_results);
@@ -627,7 +628,7 @@ describe('Entities - core methods tests', () => {
         id: entities_create_connect_subscription_response.id,
         name: 'connect',
         status: 'active',
-        latest_request_id: null,
+        latest_request_id: entities_connect_subscription_response.latest_request_id,
         created_at: entities_connect_subscription_response.created_at,
         updated_at: entities_connect_subscription_response.updated_at,
       };
@@ -636,7 +637,7 @@ describe('Entities - core methods tests', () => {
         id: entities_create_credit_score_subscription_response.id,
         name: 'credit_score',
         status: 'active',
-        latest_request_id: null,
+        latest_request_id: entities_credit_score_subscription_response.latest_request_id,
         created_at: entities_credit_score_subscription_response.created_at,
         updated_at: entities_credit_score_subscription_response.updated_at,
       }
@@ -657,7 +658,7 @@ describe('Entities - core methods tests', () => {
           id: entities_create_connect_subscription_response.id,
           name: 'connect',
           status: 'active',
-          latest_request_id: null,
+          latest_request_id: entities_create_connect_subscription_response.latest_request_id,
           created_at: entities_subscription_list_response.connect?.created_at || '',
           updated_at: entities_subscription_list_response.connect?.updated_at || '',
         },
@@ -665,10 +666,10 @@ describe('Entities - core methods tests', () => {
           id: entities_create_credit_score_subscription_response.id,
           name: 'credit_score',
           status: 'active',
-          latest_request_id: null,
+          latest_request_id: entities_create_credit_score_subscription_response.latest_request_id,
           created_at: entities_subscription_list_response.credit_score?.created_at || '',
           updated_at: entities_subscription_list_response.credit_score?.updated_at || '',
-        }
+        },
       };
 
       entities_subscription_list_response.should.be.eql(expect_results);

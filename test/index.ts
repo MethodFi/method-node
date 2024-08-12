@@ -7,3 +7,5 @@ require('./resources/Merchant.tests');
 require('./resources/Payment.tests');
 require('./resources/Report.tests');
 require('./resources/Webhook.tests');
+require('./resources/HealthCheck.tests');
+require('./resources/Metadata.tests');

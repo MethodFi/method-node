@@ -3,12 +3,13 @@ import { describe } from 'mocha';
 import { client } from '../config';
 import type { IEntity } from '../../src/resources/Entity';
 import type { IElementResults, IElementToken } from '../../src/resources/Element';
+import { IResponse } from '../../src/configuration';
 
 should();
 
 describe('Elements - core methods tests', () => {
-  let entity_1_response: IEntity;
-  let element_create_connect_token_response: IElementToken;
+  let entity_1_response: IResponse<IEntity>;
+  let element_create_connect_token_response: IResponse<IElementToken>;
 
   before(async () => {
     entity_1_response = await client.entities.create({
@@ -68,7 +69,7 @@ describe('Elements - core methods tests', () => {
         cxn_id: null,
         accounts: [],
         entity_id: entity_1_response.id,
-        events: []
+        events: [],
       };
 
       element_retrieve_retults_response.should.be.eql(expect_results);

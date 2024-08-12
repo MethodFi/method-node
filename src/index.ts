@@ -1,8 +1,10 @@
 export * from './method';
-export {Method as MethodClient} from './method';
+export { Method as MethodClient } from './method';
 export * from './errors';
 export * from './configuration';
-export { ResourceStatus, type TResourceStatus, type IResourceListOpts, type IResourceError } from './resource';
+export {
+  ResourceStatus, type TResourceStatus, type IResourceListOpts, type IResourceError,
+} from './resource';
 export * from './resources/Account';
 export * from './resources/Element';
 export * from './resources/Entity';

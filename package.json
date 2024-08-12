@@ -1,6 +1,6 @@
 {
   "name": "method-node",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Node.js library for the Method API",
   "main": "dist/index.ts",
   "module": "dist/index.mjs",
@@ -13,7 +13,9 @@
     "build": "./node_modules/.bin/rollup -c",
     "dev": "./node_modules/.bin/rollup -c -w",
     "pretest": "./node_modules/.bin/tsc -p tsconfig-test.json",
-    "test": "NODE_ENV=TEST ./node_modules/.bin/mocha --exit --timeout 100000 ./test-dist/test/index.js"
+    "test": "NODE_ENV=TEST ./node_modules/.bin/mocha --exit --timeout 100000 ./test-dist/test/index.js",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
   },
   "repository": {
     "type": "git",

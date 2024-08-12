@@ -1,5 +1,5 @@
 import Resource, { IRequestConfig } from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 
 export const WebhookTypes = {
   payment_create: 'payment.create',
@@ -47,46 +47,46 @@ export default class Webhook extends Resource {
 
   /**
    * Returns the webhook associated with the id.
-   * 
+   *
    * @param whk_id ID of the webhook
    * @returns Returns the Webhook associated with the ID.
    */
 
   async retrieve(whk_id: string) {
-    return super._getWithId<IWebhook>(whk_id);
+    return super._getWithId<IResponse<IWebhook>>(whk_id);
   }
 
   /**
    * Returns all the webhook associated with your team, or an empty array is none have been created.
-   * 
+   *
    * @returns Returns a list of Webhook objects.
    */
 
   async list() {
-    return super._list<IWebhook>();
+    return super._list<IResponse<IWebhook>>();
   }
 
   /**
    * Creating a new Webhook means registering a URL to receive updates for a specific event type.
    * Once a resource is created or updated, your application will be notified via an HTTP POST request with the event information.
-   * 
+   *
    * @param opts IWebhookCreateOpts: https://docs.methodfi.com/api/core/webhooks/create
    * @param requestConfig Idempotency key: { idempotency_key: string}
    * @returns Returns the newly created Webhook object.
    */
 
   async create(opts: IWebhookCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IWebhook, IWebhookCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IWebhook>, IWebhookCreateOpts>(opts, requestConfig);
   }
 
   /**
    * Deletes the webhook associated with the id.
-   * 
+   *
    * @param whk_id id of the webhook
    * @returns Returns 200 with an empty object on success.
    */
 
   async delete(whk_id: string) {
-    return super._delete<{}>(whk_id);
+    return super._delete<IResponse<{}>>(whk_id);
   }
 };

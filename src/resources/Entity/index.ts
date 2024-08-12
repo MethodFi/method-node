@@ -1,5 +1,5 @@
 import Resource, { IRequestConfig } from '../../resource';
-import Configuration from '../../configuration';
+import Configuration, { IResponse } from '../../configuration';
 import EntityConnect from './Connect';
 import EntityProducts from './Products';
 import EntityIdentities from './Identities';
@@ -49,37 +49,37 @@ export class Entity extends Resource {
 
   /**
    * Retrieves an entity by id
-   * 
+   *
    * @param ent_id ent_id
    * @returns Returns the Entity associated with the ID.
    */
 
   async retrieve<K extends TEntityExpandableFields = never>(ent_id: string, opts?: { expand: K[] }) {
-    return super._getWithSubPathAndParams<{
+    return super._getWithSubPathAndParams<IResponse<{
       [P in keyof IEntity]: P extends K
         ? Exclude<IEntity[P], string>
         : IEntity[P]
-      }, { expand: K[]; } | undefined>(ent_id, opts);
+      }>, { expand: K[]; } | undefined>(ent_id, opts);
   }
 
   /**
    * Returns all the Entities associated with your team, or an empty array if none have been created.
-   * 
+   *
    * @param opts IEntityListOpts: https://docs.methodfi.com/api/core/entities/list
    * @returns Returns a list of Entities.
    */
 
   async list<K extends TEntityExpandableFields = never>(opts?: IEntityListOpts<K>) {
-    return super._list<{
+    return super._list<IResponse<{
       [P in keyof IEntity]: P extends K
       ? Exclude<IEntity[P], string>
       : IEntity[P]
-    }, IEntityListOpts<K> | undefined>(opts);
+    }>, IEntityListOpts<K> | undefined>(opts);
   }
 
   /**
    * Creates an entity
-   * 
+   *
    * @param opts IIndividualCreateOpts | ICorporationCreateOpts | IReceiveOnlyCreateOpts,
    * @param requestConfig Idempotency Key { idempotency_key?: string }
    * @returns Created entity (IEntity)
@@ -89,7 +89,7 @@ export class Entity extends Resource {
     opts: IIndividualCreateOpts | ICorporationCreateOpts,
     requestConfig?: IRequestConfig,
   ) {
-    return super._create<IEntity, IIndividualCreateOpts | ICorporationCreateOpts>(
+    return super._create<IResponse<IEntity>, IIndividualCreateOpts | ICorporationCreateOpts>(
       opts,
       requestConfig,
     );
@@ -97,28 +97,28 @@ export class Entity extends Resource {
 
   /**
    * Updates an Entity with the parameters sent.
-   * 
+   *
    * Note: Once an Entity’s property has been set, that property can no longer be updated.
-   * 
+   *
    * @param ent_id ent_id
    * @param opts IEntityUpdateOpts
    * @returns Returns the entity with the updated fields.
    */
 
   async update(ent_id: string, opts: IEntityUpdateOpts) {
-    return super._updateWithId<IEntity, IEntityUpdateOpts>(ent_id, opts);
+    return super._updateWithId<IResponse<IEntity>, IEntityUpdateOpts>(ent_id, opts);
   }
 
   /**
    * Withdraws consent for an entity
-   * 
+   *
    * @param ent_id ent_id
    * @param data IEntityWithdrawConsentOpts: { type: 'withdraw', reason: 'entity_withdrew_consent' }
    * @returns Deactivated entity (IEntity)
    */
 
   async withdrawConsent(ent_id: string, data: IEntityWithdrawConsentOpts = { type: 'withdraw', reason: 'entity_withdrew_consent' }) {
-    return super._createWithSubPath<IEntity, IEntityWithdrawConsentOpts>(
+    return super._createWithSubPath<IResponse<IEntity>, IEntityWithdrawConsentOpts>(
       `/${ent_id}/consent`,
       data,
     );
@@ -126,4 +126,4 @@ export class Entity extends Resource {
 };
 
 export default Entity;
-export * from './types'
+export * from './types';

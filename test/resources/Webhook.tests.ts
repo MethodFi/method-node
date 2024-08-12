@@ -2,15 +2,16 @@ import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
 import type { IWebhook } from '../../src/resources/Webhook';
+import { IResponse } from '../../src/configuration';
 
 should();
 
 // TODO: Add tests for each webhook type
 describe('Webhooks - core methods tests', () => {
-  let webhooks_create_response: IWebhook;
-  let webhooks_retrieve_response: IWebhook;
-  let webhooks_list_response: IWebhook[];
-  let webhooks_delete_response: {};
+  let webhooks_create_response: IResponse<IWebhook>;
+  let webhooks_retrieve_response: IResponse<IWebhook>;
+  let webhooks_list_response: IResponse<IWebhook>[];
+  let webhooks_delete_response: IResponse<{}>;
 
   describe('webhooks.create', () => {
     it('should successfully create a webhook.', async () => {
