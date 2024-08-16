@@ -641,7 +641,6 @@ describe('Entities - core methods tests', () => {
         created_at: entities_credit_score_subscription_response.created_at,
         updated_at: entities_credit_score_subscription_response.updated_at,
       }
-        
 
       entities_connect_subscription_response.should.be.eql(expect_connect_results);
       entities_credit_score_subscription_response.should.be.eql(expect_credit_score_results);
@@ -658,7 +657,7 @@ describe('Entities - core methods tests', () => {
           id: entities_create_connect_subscription_response.id,
           name: 'connect',
           status: 'active',
-          latest_request_id: null,
+          latest_request_id: entities_subscription_list_response.connect?.latest_request_id || null,
           created_at: entities_subscription_list_response.connect?.created_at || '',
           updated_at: entities_subscription_list_response.connect?.updated_at || '',
         },
@@ -666,7 +665,7 @@ describe('Entities - core methods tests', () => {
           id: entities_create_credit_score_subscription_response.id,
           name: 'credit_score',
           status: 'active',
-          latest_request_id: null,
+          latest_request_id: entities_subscription_list_response.credit_score?.latest_request_id || null,
           created_at: entities_subscription_list_response.credit_score?.created_at || '',
           updated_at: entities_subscription_list_response.credit_score?.updated_at || '',
         },
