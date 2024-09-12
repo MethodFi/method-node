@@ -4,6 +4,7 @@ import EntityConnect from './Connect';
 import EntityProducts from './Products';
 import EntityIdentities from './Identities';
 import EntityCreditScores from './CreditScores';
+import EntityAttributes from './Attributes';
 import EntitySubscriptions from './Subscriptions';
 import EntityVerificationSession from './VerificationSessions';
 import type {
@@ -20,6 +21,7 @@ export class EntitySubResources {
   connect: EntityConnect;
   creditScores: EntityCreditScores;
   identities: EntityIdentities;
+  attributes: EntityAttributes;
   products: EntityProducts;
   subscriptions: EntitySubscriptions;
   verificationSessions: EntityVerificationSession;
@@ -28,6 +30,7 @@ export class EntitySubResources {
     this.connect = new EntityConnect(config.addPath(id));
     this.creditScores = new EntityCreditScores(config.addPath(id));
     this.identities = new EntityIdentities(config.addPath(id));
+    this.attributes = new EntityAttributes(config.addPath(id));
     this.products = new EntityProducts(config.addPath(id));
     this.subscriptions = new EntitySubscriptions(config.addPath(id));
     this.verificationSessions = new EntityVerificationSession(config.addPath(id));

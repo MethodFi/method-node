@@ -152,6 +152,32 @@ export interface IEntityCreditScores {
   updated_at: string,
 };
 
+export type TCreditHealthAttributeRating = 'excellent' | 'good' | 'fair' | 'needs_work';
+
+export interface ICreditHealthAttribute {
+  value: number;
+  rating: TCreditHealthAttributeRating;
+}
+
+export interface IEntityAttributesType {
+  credit_health_credit_card_usage: ICreditHealthAttribute;
+  credit_health_derogatory_marks: ICreditHealthAttribute;
+  credit_health_hard_inquiries: ICreditHealthAttribute;
+  credit_health_total_accounts: ICreditHealthAttribute;
+  credit_health_credit_age: ICreditHealthAttribute;
+  credit_health_payment_history: ICreditHealthAttribute;
+}
+
+export interface IEntityAttributes {
+  id: string;
+  entity_id: string;
+  status: TResourceStatus;
+  attributes: IEntityAttributesType | null;
+  error: IResourceError | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface IEntityIdentity {
   id: string;
   entity_id: string;
@@ -174,6 +200,7 @@ export const EntityProductType = {
   connect: 'connect',
   credit_score: 'credit_score',
   identity: 'identity',
+  attribute: 'attribute',
 } as const;
 
 export type TEntityProductType = keyof typeof EntityProductType;
@@ -193,6 +220,7 @@ export interface IEntityProductListResponse {
   connect?: IEntityProduct;
   credit_score?: IEntityProduct;
   identity?: IEntityProduct;
+  attribute?: IEntityProduct;
 };
 
 export const EntitySubscriptionNames = {
@@ -331,6 +359,7 @@ export interface IEntityVerificationSession {
 export const EntityExpandableFields = {
   connect: 'connect',
   credit_score: 'credit_score',
+  attribute: 'attribute',
   identity_latest_verification_session: 'identity_latest_verification_session',
   phone_latest_verification_session: 'phone_latest_verification_session',
 } as const;
@@ -387,6 +416,7 @@ export interface IEntity {
   verification?: IEntityVerification | null;
   connect?: string | IEntityConnect | null;
   credit_score?: string| IEntityCreditScores | null;
+  attributes?: string | IEntityAttributes | null;
   created_at: string;
   updated_at: string;
 };
