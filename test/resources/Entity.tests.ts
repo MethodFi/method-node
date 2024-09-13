@@ -14,6 +14,7 @@ import type {
   IEntitySubscriptionResponse,
   TEntitySubscriptionNames,
   IEntityVerificationSession,
+  IEntityAttributes,
 } from '../../src/resources/Entity';
 import type { IAccount } from '../../src/resources/Account';
 import { IResponse } from '../../src/configuration';
@@ -30,6 +31,7 @@ describe('Entities - core methods tests', () => {
   let entities_account_list_response: IResponse<IAccount>[];
   let entities_account_ids: string[];
   let entities_create_credit_score_response: IResponse<IEntityCreditScores>;
+  let entities_create_attribute_response: IResponse<IEntityAttributes>;
   let entities_create_idenitity_response: IResponse<IEntityIdentity>;
   let entities_retrieve_product_list_response: IResponse<IEntityProductListResponse>;
   let entities_create_connect_subscription_response: IResponse<IEntitySubscription>;
@@ -88,6 +90,7 @@ describe('Entities - core methods tests', () => {
         },
         connect: null,
         credit_score: null,
+        attribute: null,
         products: [],
         restricted_products: entities_create_response.restricted_products,
         subscriptions: [],
@@ -152,8 +155,9 @@ describe('Entities - core methods tests', () => {
         },
         connect: null,
         credit_score: null,
+        attribute: null,
         products: [],
-        restricted_products: [ 'connect', 'identity', 'credit_score' ].sort() as TEntityProductType[],
+        restricted_products: [ 'connect', 'identity', 'credit_score', 'attribute' ].sort() as TEntityProductType[],
         subscriptions: [],
         available_subscriptions: [],
         restricted_subscriptions: [ 'connect', 'credit_score' ].sort() as TEntitySubscriptionNames[],
@@ -226,8 +230,9 @@ describe('Entities - core methods tests', () => {
         },
         connect: null,
         credit_score: null,
+        attribute: null,
         products: [ 'identity' ],
-        restricted_products: ['connect', 'credit_score'].sort() as TEntityProductType[],
+        restricted_products: ['connect', 'credit_score', 'attribute'].sort() as TEntityProductType[],
         subscriptions: [],
         available_subscriptions: [],
         restricted_subscriptions: [ 'connect', 'credit_score' ].sort() as TEntitySubscriptionNames[],
@@ -391,6 +396,47 @@ describe('Entities - core methods tests', () => {
     });
   });
 
+  describe('entities.attributes', () => {
+    it('should successfully create an attributes request for an entity', async () => {
+      entities_create_attribute_response = await client.entities(entities_create_response.id).attributes.create();
+
+      const expect_results: IEntityAttributes = {
+        id: entities_create_attribute_response.id,
+        entity_id: entities_create_response.id,
+        status: entities_create_attribute_response.status,
+        attributes: entities_create_attribute_response.attributes,
+        error: null,
+        created_at: entities_create_attribute_response.created_at,
+        updated_at: entities_create_attribute_response.updated_at,
+      };
+
+      entities_create_attribute_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully retrieve the results of an attributes request for an entity', async () => {
+      const getAttributes = async () => {
+        return await client
+          .entities(entities_create_response.id)
+          .attributes
+          .retrieve(entities_create_attribute_response.id);
+      };
+
+      const attributes = await awaitResults(getAttributes);
+
+      const expect_results: IEntityAttributes = {
+        id: attributes.id,
+        entity_id: entities_create_response.id,
+        status: attributes.status,
+        attributes: attributes.attributes,
+        error: null,
+        created_at: attributes.created_at,
+        updated_at: attributes.updated_at,
+      };
+
+      attributes.should.be.eql(expect_results);
+    });
+  });
+
   describe('entities.identites', () => {
     it('should successfully create a request for an identity', async () => {
       entitiy_with_identity_cap = await client.entities.create({
@@ -530,6 +576,16 @@ describe('Entities - core methods tests', () => {
           created_at: entities_retrieve_product_list_response.identity?.created_at || '',
           updated_at: entities_retrieve_product_list_response.identity?.updated_at || '',
         },
+        attribute: {
+          id: entities_retrieve_product_list_response.attribute?.id || '',
+          name: 'attribute',
+          status: 'available',
+          status_error: null,
+          latest_request_id: entities_retrieve_product_list_response.attribute?.latest_request_id || null,
+          is_subscribable: false,
+          created_at: entities_retrieve_product_list_response.attribute?.created_at || '',
+          updated_at: entities_retrieve_product_list_response.attribute?.updated_at || '',
+        }
       };
 
       entities_retrieve_product_list_response.should.be.eql(expect_results);
@@ -539,6 +595,7 @@ describe('Entities - core methods tests', () => {
       const entity_connect_product = await client.entities(entities_create_response.id).products.retrieve(entities_retrieve_product_list_response.connect?.id || '');
       const entity_credit_score_product = await client.entities(entities_create_response.id).products.retrieve(entities_retrieve_product_list_response.credit_score?.id || '');
       const entity_identity_product = await client.entities(entities_create_response.id).products.retrieve(entities_retrieve_product_list_response.identity?.id || '');
+      const entity_attribute_product = await client.entities(entities_create_response.id).products.retrieve(entities_retrieve_product_list_response.attribute?.id || '');
       
       const expect_connect_results: IEntityProduct = {
         id: entities_retrieve_product_list_response.connect?.id || '',
@@ -573,9 +630,21 @@ describe('Entities - core methods tests', () => {
         updated_at: entity_identity_product.updated_at,
       };
 
+      const expect_attribute_results: IEntityProduct = {
+        id: entities_retrieve_product_list_response.attribute?.id || '',
+        name: 'attribute',
+        status: 'available',
+        status_error: null,
+        latest_request_id: entity_attribute_product.latest_request_id,
+        is_subscribable: false,
+        created_at: entity_attribute_product.created_at,
+        updated_at: entity_attribute_product.updated_at,
+      };
+
       entity_connect_product.should.be.eql(expect_connect_results);
       entity_credit_score_product.should.be.eql(expect_credit_score_results);
       entity_identity_product.should.be.eql(expect_identity_results);
+      entity_attribute_product.should.be.eql(expect_attribute_results);
     });
   });
 
