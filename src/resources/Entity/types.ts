@@ -417,7 +417,6 @@ export interface IEntity {
   connect?: string | IEntityConnect | null;
   credit_score?: string| IEntityCreditScores | null;
   attribute?: string | IEntityAttributes | null;
-  attributes?: string | IEntityAttributes | null;
   created_at: string;
   updated_at: string;
 };
