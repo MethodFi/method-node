@@ -4,8 +4,8 @@ import { TWebhookTypes } from '../Webhook';
 export const EventResourceTypes = {
   account: 'account',
   credit_score: 'credit_score',
-  payment: 'payment',
-  entity: 'entity',
+  attribute: 'attribute',
+  connect: 'connect',
 } as const;
 
 export interface IEventDiff {

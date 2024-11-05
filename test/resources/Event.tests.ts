@@ -1,117 +1,185 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import { awaitResults } from '../utils';
 import type { IEvent } from '../../src/resources/Event';
-import type { IWebhook } from '../../src/resources/Webhook';
-import type { IEntity } from '../../src/resources/Entity';
+import type { 
+  IEntity,
+  IEntityConnect,
+  IEntityAttributes,
+  IEntityCreditScores,
+} from '../../src/resources/Entity/types';
 import type { IAccount } from '../../src/resources/Account';
-import type { IPayment } from '../../src/resources/Payment';
 import { IResponse } from '../../src/configuration';
 
 should();
 
 describe('Events - core methods tests', () => {
-  // Store responses
-  let webhook_response: IResponse<IWebhook>;
   let entity_response: IResponse<IEntity>;
-  let source_account: IResponse<IAccount>;
-  let destination_account: IResponse<IAccount>;
-  let payment_response: IResponse<IPayment>;
+  let connect_response: IResponse<IEntityConnect>;
+  let attribute_response: IResponse<IEntityAttributes>;
+  let credit_score_response: IResponse<IEntityCreditScores>;
   let event_response: IResponse<IEvent>;
-  let events_list_response: IResponse<IEvent>[];
+  let account_response: IResponse<IAccount>[];
 
   before(async () => {
-    // Create webhook for payment.update
-    webhook_response = await client.webhooks.create({
-      type: 'payment.update',
-      url: 'https://dev.methodfi.com',
-      auth_token: Math.random().toString(),
-    });
-
-    // Create entity
     entity_response = await client.entities.create({
       type: 'individual',
       individual: {
         first_name: 'Kevin',
         last_name: 'Doyle',
-        phone: '+15121231111'
-      }
-    });
-
-    // Create source account
-    source_account = await client.accounts.create({
-      holder_id: entity_response.id,
-      ach: {
-        routing: '062103000',
-        number: '123456789',
-        type: 'checking',
+        phone: '+15121231111',
       },
     });
 
-    // Get a liability account for destination
-    destination_account = (await client.accounts.list({
+    await client.entities(entity_response.id).verificationSessions.create({
+      type: 'phone',
+      method: 'byo_sms',
+      byo_sms: {
+        timestamp: new Date().toISOString(),
+      },
+    });
+
+    await client.entities(entity_response.id).verificationSessions.create({
+      type: 'identity',
+      method: 'kba',
+      kba: {
+      },
+    });
+
+    connect_response = await client.entities(entity_response.id).connect.create();
+
+    account_response = await client.accounts.list({
       holder_id: entity_response.id,
-    }))[0];
-
-    // Create payment
-    payment_response = await client.payments.create({
-      amount: 5000,
-      source: source_account.id,
-      destination: destination_account.id,
-      description: 'Test payment for events',
     });
 
-    // Simulate payment update
-    await client.simulate.payments.update(payment_response.id, {
-      status: 'processing'
-    });
+    attribute_response = await client.entities(entity_response.id).attributes.create();
+
+    credit_score_response = await client.entities(entity_response.id).creditScores.create();
   });
 
-  describe('events.retrieve', () => {
-    it('should successfully retrieve a payment.update event', async () => {
-      // Get list of events to find our payment.update event
-      const events = await client.events.list({
-        type: 'payment.update',
-        resource_id: payment_response.id
+  describe('simulate.events', () => {
+    it('should simulate an account closed event', async () => {
+      await client.simulate.events.create({
+        type: 'account.closed',
+        account_id: account_response[0].id,
       });
-      
-      event_response = await client.events.retrieve(events[0].id);
+
+      // timeout to allow event to be created
+      await new Promise((resolve) => { setTimeout(resolve, 5000); });
+
+      const events_list_response = await client.events.list({
+        resource_id: account_response[0].id,
+      });
+
+      [event_response] = events_list_response;
+
+      const response = await client.events.retrieve(event_response.id);
 
       const expect_results: IEvent = {
         id: event_response.id,
-        type: 'payment.update',
-        resource_id: payment_response.id,
-        resource_type: 'payment',
-        data: event_response.data, // Full payment object snapshot
-        diff: event_response.diff,
         created_at: event_response.created_at,
-        updated_at: event_response.updated_at
+        updated_at: event_response.updated_at,
+        type: 'account.closed',
+        resource_id: account_response[0].id,
+        resource_type: 'account',
+        data: event_response.data,
+        diff: event_response.diff,
       };
 
-      event_response.should.be.eql(expect_results);
+      response.should.be.eql(expect_results);
     });
-  });
 
-  describe('events.list', () => {
-    it('should successfully list events filtered by payment.update type', async () => {
-      events_list_response = await client.events.list({
-        type: 'payment.update'
+    it('should simulate an account opened event', async () => {
+      await client.simulate.events.create({
+        type: 'account.opened',
+        entity_id: entity_response.id,
       });
 
-      Array.isArray(events_list_response).should.be.true;
-      events_list_response.length.should.be.greaterThan(0);
-      
-      const event = events_list_response.find(e => e.id === event_response.id);
-      event?.should.not.be.undefined;
-      event?.type.should.equal('payment.update');
-      event?.resource_id.should.equal(payment_response.id);
+      // timeout to allow event to be created
+      await new Promise((resolve) => { setTimeout(resolve, 5000); });
+
+      const events_list_response = await client.events.list({
+        type: 'account.opened',
+      });
+
+      [event_response] = events_list_response;
+
+      const response = await client.events.retrieve(event_response.id);
+
+      const expect_results: IEvent = {
+        id: event_response.id,
+        created_at: event_response.created_at,
+        updated_at: event_response.updated_at,
+        type: 'account.opened',
+        resource_id: event_response.resource_id,
+        resource_type: 'account',
+        data: event_response.data,
+        diff: event_response.diff,
+      };
+
+      response.should.be.eql(expect_results);
+    });
+
+    it('should simulate an attribute created event', async () => {
+      await client.simulate.events.create({
+        type: 'attribute.credit_health_credit_card_usage.increased',
+        entity_id: entity_response.id,
+      });
+
+      // timeout to allow event to be created
+      await new Promise((resolve) => { setTimeout(resolve, 5000); });
+
+      const events_list_response = await client.events.list({
+        type: 'attribute.credit_health_credit_card_usage.increased',
+      });
+
+      [event_response] = events_list_response;
+
+      const response = await client.events.retrieve(event_response.id);
+
+      const expect_results: IEvent = {
+        id: event_response.id,
+        created_at: event_response.created_at,
+        updated_at: event_response.updated_at,
+        type: 'attribute.credit_health_credit_card_usage.increased',
+        resource_id: event_response.resource_id,
+        resource_type: 'attribute',
+        data: event_response.data,
+        diff: event_response.diff,
+      };
+
+      response.should.be.eql(expect_results);
+    });
+
+    it('should simulate a credit score created event', async () => {
+      await client.simulate.events.create({
+        type: 'credit_score.increased',
+        entity_id: entity_response.id,
+      });
+
+      // timeout to allow event to be created
+      await new Promise((resolve) => { setTimeout(resolve, 5000); });
+
+      const events_list_response = await client.events.list({
+        type: 'credit_score.increased',
+      });
+
+      [event_response] = events_list_response;
+
+      const response = await client.events.retrieve(event_response.id);
+
+      const expect_results: IEvent = {
+        id: event_response.id,
+        created_at: event_response.created_at,
+        updated_at: event_response.updated_at,
+        type: 'credit_score.increased',
+        resource_id: event_response.resource_id,
+        resource_type: 'credit_score',
+        data: event_response.data,
+        diff: event_response.diff,
+      };
+
+      response.should.be.eql(expect_results);
     });
   });
-
-  after(async () => {
-    // Cleanup
-    await client.webhooks.delete(webhook_response.id);
-    await client.payments.delete(payment_response.id);
-  });
-}); 
+});
