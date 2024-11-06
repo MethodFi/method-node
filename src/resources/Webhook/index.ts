@@ -71,6 +71,7 @@ export interface IWebhook {
   metadata: {} | null;
   created_at: string;
   updated_at: string;
+  expand_event: boolean;
 };
 
 export interface IWebhookCreateOpts {

@@ -28,6 +28,7 @@ describe('Webhooks - core methods tests', () => {
         metadata: null,
         created_at: webhooks_create_response.created_at,
         updated_at: webhooks_create_response.updated_at,
+        expand_event: false,
       };
 
       webhooks_create_response.should.be.eql(expect_results);
@@ -45,6 +46,7 @@ describe('Webhooks - core methods tests', () => {
         metadata: null,
         created_at: webhooks_retrieve_response.created_at,
         updated_at: webhooks_retrieve_response.updated_at,
+        expand_event: false,
       };
 
       webhooks_retrieve_response.should.be.eql(expect_results);
