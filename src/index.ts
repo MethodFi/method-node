@@ -8,6 +8,7 @@ export {
 export * from './resources/Account';
 export * from './resources/Element';
 export * from './resources/Entity';
+export * from './resources/Event';
 export * from './resources/Merchant';
 export * from './resources/Payment';
 export * from './resources/Report';

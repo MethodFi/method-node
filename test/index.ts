@@ -9,3 +9,4 @@ require('./resources/Report.tests');
 require('./resources/Webhook.tests');
 require('./resources/HealthCheck.tests');
 require('./resources/Metadata.tests');
+require('./resources/Event.tests');

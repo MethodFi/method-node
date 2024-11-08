@@ -132,8 +132,9 @@ describe('Payments - core methods tests', () => {
 
   describe('payments.list', () => {
     it('should successfully list payments.', async () => {
-      payments_list_response = await client.payments.list();
+      payments_list_response = await client.payments.list({ from_date: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString().split('T')[0] });
       const payment_ids = payments_list_response.map((payment) => payment.id);
+      
       payment_ids.should.contain(payments_create_response.id);
     });
   });
