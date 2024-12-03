@@ -245,29 +245,29 @@ describe('Accounts - core methods tests', () => {
 
       account_balances.should.be.eql(expect_results);
     });
-    // TODO: Add back once this is live in API
-    // it('should successfully list balances for an account.', async () => {
-    //   const listAccountBalances = async () => {
-    //     return client
-    //       .accounts(test_credit_card_account.id)
-    //       .balances
-    //       .list();
-    //   };
 
-    //   const account_balances = await awaitResults(listAccountBalances);
+    it('should successfully list balances for an account.', async () => {
+      const listAccountBalances = async () => {
+        return client
+          .accounts(test_credit_card_account.id)
+          .balances
+          .list();
+      };
 
-    //   const expect_results = {
-    //     id: balances_create_response.id,
-    //     account_id: test_credit_card_account.id,
-    //     status: 'completed',
-    //     amount: 1866688,
-    //     error: null,
-    //     created_at: account_balances[0].created_at,
-    //     updated_at: account_balances[0].updated_at
-    //   };
+      const account_balances = await awaitResults(listAccountBalances);
 
-    //   account_balances[0].should.be.eql(expect_results);
-    // });
+      const expect_results = {
+        id: balances_create_response.id,
+        account_id: test_credit_card_account.id,
+        status: 'completed',
+        amount: 1866688,
+        error: null,
+        created_at: account_balances[0].created_at,
+        updated_at: account_balances[0].updated_at
+      };
+
+      account_balances[0].should.be.eql(expect_results);
+    });
   });
 
   describe('accounts.cardBrands', () => {
@@ -315,6 +315,19 @@ describe('Accounts - core methods tests', () => {
       };
 
       card_retrieve_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully list card brands for an account.', async () => {
+      const listCardBrands = async () => {
+        return client
+          .accounts(test_credit_card_account.id)
+          .cardBrands
+          .list();
+      };
+
+      const card_brands = await awaitResults(listCardBrands);
+
+      card_brands[0].should.be.eql(card_create_response);
     });
   });
 
@@ -364,31 +377,31 @@ describe('Accounts - core methods tests', () => {
 
       payoff_quote.should.be.eql(expect_results);
     });
-    // TODO: Add back once this is live in API
-    // it('should successfully list payoffs for an account.', async () => {
-    //   const listPayoffQuotes = async () => {
-    //     return await client
-    //       .accounts(test_auto_loan_account.id)
-    //       .payoffs
-    //       .list();
-    //   };
 
-    //   const payoffs = await awaitResults(listPayoffQuotes);
+    it('should successfully list payoffs for an account.', async () => {
+      const listPayoffQuotes = async () => {
+        return await client
+          .accounts(test_auto_loan_account.id)
+          .payoffs
+          .list();
+      };
 
-    //   const expect_results = {
-    //     id: payoff_create_response.id,
-    //     account_id: test_auto_loan_account.id,
-    //     amount: 6083988,
-    //     per_diem_amount: null,
-    //     term: 15,
-    //     status: 'completed',
-    //     error: null,
-    //     created_at: payoffs[0].created_at,
-    //     updated_at: payoffs[0].updated_at
-    //   };
+      const payoffs = await awaitResults(listPayoffQuotes);
 
-    //   payoffs[0].should.be.eql(expect_results);
-    // });
+      const expect_results = {
+        id: payoff_create_response.id,
+        account_id: test_auto_loan_account.id,
+        amount: 6083988,
+        per_diem_amount: null,
+        term: 15,
+        status: 'completed',
+        error: null,
+        created_at: payoffs[0].created_at,
+        updated_at: payoffs[0].updated_at
+      };
+
+      payoffs[0].should.be.eql(expect_results);
+    });
   });
 
   describe('accounts.verificationSessions', () => {
@@ -495,6 +508,40 @@ describe('Accounts - core methods tests', () => {
 
       verification_session.should.be.eql(expect_results);
     });
+
+    it('should successfully list verification sessions for an account.', async () => {
+      const listVerificationSessions = async () => {
+        return await client
+          .accounts(test_credit_card_account.id)
+          .verificationSessions
+          .list();
+      };
+
+      const verification_sessions = await awaitResults(listVerificationSessions);
+
+      const expect_results: IAccountVerificationSession = {
+        id: verification_session_update.id,
+        account_id: test_credit_card_account.id,
+        status: 'verified',
+        type: 'pre_auth',
+        error: null,
+        pre_auth: {
+          billing_zip_code: 'xxxxx',
+          billing_zip_code_check: 'pass',
+          cvv: 'xxx',
+          cvv_check: 'pass',
+          exp_check: "pass",
+          exp_month: "xx",
+          exp_year: "xxxx",
+          number: "xxxxxxxxxxxxxxxx",
+          pre_auth_check: "pass"
+        },
+        created_at: verification_sessions[0].created_at,
+        updated_at: verification_sessions[0].updated_at
+      };
+
+      verification_sessions[0].should.be.eql(expect_results);
+    });
   });
 
   describe('accounts.sensitive', () => {
@@ -527,6 +574,19 @@ describe('Accounts - core methods tests', () => {
         };
 
       sensitive_data_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully list sensitive data for an account.', async () => {
+      const listSensitiveData = async () => {
+        return await client
+          .accounts(test_credit_card_account.id)
+          .sensitive
+          .list();
+      };
+
+      const sensitive_data = await awaitResults(listSensitiveData);
+
+      sensitive_data[0].should.be.eql(sensitive_data_response);
     });
   });
 

@@ -37,6 +37,7 @@ describe('Entities - core methods tests', () => {
   let entities_create_connect_subscription_response: IResponse<IEntitySubscription>;
   let entities_create_credit_score_subscription_response: IResponse<IEntitySubscription>;
   let entities_create_verification_session_response: IResponse<IEntityVerificationSession>;
+  let entities_create_phone_verification_session_response: IResponse<IEntityVerificationSession>;
 
   describe('entities.create', () => {
     it('should successfully create an entity.', async () => {
@@ -258,7 +259,7 @@ describe('Entities - core methods tests', () => {
 
   describe('entities.verification_sessions', () => {
     it('should create a phone verification session for an entity', async () => {
-      const entities_create_phone_verification_session_response = await client.entities(entities_create_response.id).verificationSessions.create({
+      entities_create_phone_verification_session_response = await client.entities(entities_create_response.id).verificationSessions.create({
         type: 'phone',
         method: 'byo_sms',
         byo_sms: {
@@ -307,6 +308,20 @@ describe('Entities - core methods tests', () => {
 
       entities_create_verification_session_response.should.be.eql(expect_results);
     });
+
+    it('should successfully list verification sessions for an entity', async () => {
+      const listVerificationSessions = async () => {
+        return await client
+          .entities(entities_create_response.id)
+          .verificationSessions
+          .list();
+      };
+
+      const verification_sessions = await awaitResults(listVerificationSessions);
+
+      verification_sessions[0].should.be.eql(entities_create_phone_verification_session_response);
+      verification_sessions[1].should.be.eql(entities_create_verification_session_response);
+    });
   });
 
   describe('entities.connect', () => {
@@ -344,6 +359,30 @@ describe('Entities - core methods tests', () => {
       };
 
       entities_connect_results_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully list connections for an entity', async () => {
+      const listConnections = async () => {
+        return await client
+          .entities(entities_create_response.id)
+          .connect
+          .list();
+      };
+
+      const connections = await awaitResults(listConnections);
+      connections[0].accounts = connections[0].accounts?.sort() || null;
+
+      const expect_results: IEntityConnect = {
+        id: entities_connect_create_response.id,
+        entity_id: entities_create_response.id,
+        status: 'completed',
+        accounts: entities_account_ids,
+        error: null,
+        created_at: entities_connect_create_response.created_at,
+        updated_at: entities_connect_create_response.updated_at,
+      };
+
+      connections[0].should.be.eql(expect_results);
     });
   });
 
@@ -394,6 +433,37 @@ describe('Entities - core methods tests', () => {
 
       credit_scores.should.be.eql(expect_results);
     });
+
+    it('should successfully list credit scores for an entity', async () => {
+      const listCreditScores = async () => {
+        return await client
+          .entities(entities_create_response.id)
+          .creditScores
+          .list();
+      };
+
+      const credit_scores = await awaitResults(listCreditScores);
+
+      const expect_results: IEntityCreditScores = {
+        id: entities_create_credit_score_response.id,
+        entity_id: entities_create_response.id,
+        status: 'completed',
+        scores: [
+          {
+            score: credit_scores[0].scores[0].score,
+            source: 'equifax',
+            model: 'vantage_4',
+            factors: credit_scores[0].scores[0].factors,
+            created_at: credit_scores[0].scores[0].created_at,
+          }
+        ],
+        error: null,
+        created_at: entities_create_credit_score_response.created_at,
+        updated_at: credit_scores[0].updated_at,
+      };
+
+      credit_scores[0].should.be.eql(expect_results);
+    });
   });
 
   describe('entities.attributes', () => {
@@ -434,6 +504,19 @@ describe('Entities - core methods tests', () => {
       };
 
       attributes.should.be.eql(expect_results);
+    });
+
+    it('should successfully list attributes for an entity', async () => {
+      const listAttributes = async () => {
+        return await client
+          .entities(entities_create_response.id)
+          .attributes
+          .list();
+      };
+
+      const attributes = await awaitResults(listAttributes);
+
+      attributes[0].should.be.eql(entities_create_attribute_response);
     });
   });
 
@@ -538,6 +621,19 @@ describe('Entities - core methods tests', () => {
       };
 
       identities.should.be.eql(expect_results);
+    });
+
+    it('should successfully list identities for an entity', async () => {
+      const listIdentities = async () => {
+        return await client
+          .entities(entitiy_with_identity_cap.id)
+          .identities
+          .list();
+      };
+
+      const identities = await awaitResults(listIdentities);
+
+      identities[0].should.be.eql(entities_create_idenitity_response);
     });
   });
 

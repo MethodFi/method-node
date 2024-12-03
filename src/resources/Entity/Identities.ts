@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type { IEntityIdentity } from './types';
 
@@ -16,6 +16,16 @@ export default class EntityIdentities extends Resource {
 
   async retrieve(idn_id: string) {
     return super._getWithId<IResponse<IEntityIdentity>>(idn_id);
+  }
+
+  /**
+   * Retrieves a list of Identity objects for an entity.
+   *
+   * @returns Returns a list of Identity objects.
+   */
+
+  async list(opts?: IResourceListOpts) {
+    return super._list<IResponse<IEntityIdentity>>(opts);
   }
 
   /**

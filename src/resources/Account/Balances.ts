@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type { IAccountBalance } from './types';
 
@@ -18,16 +18,15 @@ export default class AccountBalances extends Resource {
     return super._getWithId<IResponse<IAccountBalance>>(bal_id);
   }
 
-  // TODO: Add back in when we have a list endpoint
-  // /**
-  //  * Retrieves a list of Balance objects for an account.
-  //  *
-  //  * @returns Returns a list of Balances.
-  //  */
+  /**
+   * Retrieves a list of Balance objects for an account.
+   *
+   * @returns Returns a list of Balances.
+   */
 
-  // async list(opts?: IResourceListOpts) {
-  //   return super._list<IAccountBalance>(opts);
-  // }
+  async list(opts?: IResourceListOpts) {
+    return super._list<IResponse<IAccountBalance>>(opts);
+  }
 
   /**
    * Creates a new Balance request to retrieve the Account’s balance from the financial institution.

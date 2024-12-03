@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type {
   IEntityVerificationSession,
@@ -20,6 +20,16 @@ export default class EntityVerificationSession extends Resource {
 
   async retrieve(evf_id: string) {
     return super._getWithId<IResponse<IEntityVerificationSession>>(evf_id);
+  }
+
+  /**
+   * Retrieves a list of VerificationSession objects for an entity.
+   *
+   * @returns Returns a list of VerificationSession objects.
+   */
+
+  async list(opts?: IResourceListOpts) {
+    return super._list<IResponse<IEntityVerificationSession>>(opts);
   }
 
   /**
