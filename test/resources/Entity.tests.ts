@@ -310,8 +310,11 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully list verification sessions for an entity', async () => {
+      const date = new Date(Date.now() - 5 * 60 * 1000);
+      const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}-${date.getFullYear()}`;
+
       const verification_sessions = await client.entities(entities_create_response.id).verificationSessions.list({
-        from_date: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+        from_date: formattedDate,
       });
       verification_sessions[0].should.be.eql(entities_create_phone_verification_session_response);
       verification_sessions[1].should.be.eql(entities_create_verification_session_response);
