@@ -43,7 +43,7 @@ describe('Webhooks - core methods tests', () => {
 
       const expect_results: IWebhook = {
         id: webhooks_create_response.id,
-        type: 'payment.create',
+        type: 'payment.update',
         url: 'https://dev.methodfi.com',
         metadata: null,
         created_at: webhooks_retrieve_response.created_at,
