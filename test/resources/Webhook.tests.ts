@@ -49,6 +49,8 @@ describe('Webhooks - core methods tests', () => {
         created_at: webhooks_retrieve_response.created_at,
         updated_at: webhooks_retrieve_response.updated_at,
         expand_event: false,
+        error: webhooks_retrieve_response.error,
+        status: webhooks_retrieve_response.status,
       };
 
       webhooks_retrieve_response.should.be.eql(expect_results);
