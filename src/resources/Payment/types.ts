@@ -6,6 +6,7 @@ export const PaymentStatuses = {
   processing: 'processing',
   failed: 'failed',
   sent: 'sent',
+  posted: 'posted',
   reversed: 'reversed',
   reversal_required: 'reversal_required',
   reversal_processing: 'reversal_processing',
@@ -21,6 +22,7 @@ export const PaymentFundStatuses = {
   clearing: 'clearing',
   failed: 'failed',
   sent: 'sent',
+  posted: 'posted',
   unknown: 'unknown',
 } as const;
 
