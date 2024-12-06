@@ -6,11 +6,11 @@ export const PaymentStatuses = {
   processing: 'processing',
   failed: 'failed',
   sent: 'sent',
+  posted: 'posted',
   reversed: 'reversed',
   reversal_required: 'reversal_required',
   reversal_processing: 'reversal_processing',
   settled: 'settled',
-  posted: 'posted',
 } as const;
 
 export type TPaymentStatuses = keyof typeof PaymentStatuses;
@@ -22,8 +22,8 @@ export const PaymentFundStatuses = {
   clearing: 'clearing',
   failed: 'failed',
   sent: 'sent',
-  unknown: 'unknown',
   posted: 'posted',
+  unknown: 'unknown',
 } as const;
 
 export type TPaymentFundStatuses = keyof typeof PaymentFundStatuses;
