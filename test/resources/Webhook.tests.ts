@@ -16,19 +16,21 @@ describe('Webhooks - core methods tests', () => {
   describe('webhooks.create', () => {
     it('should successfully create a webhook.', async () => {
       webhooks_create_response = await client.webhooks.create({
-        type: 'payment.create',
+        type: 'payment.update',
         url: 'https://dev.methodfi.com',
         auth_token: Math.random().toString(),
       });
 
       const expect_results: IWebhook = {
         id: webhooks_create_response.id,
-        type: 'payment.create',
+        type: 'payment.update',
         url: 'https://dev.methodfi.com',
         metadata: null,
         created_at: webhooks_create_response.created_at,
         updated_at: webhooks_create_response.updated_at,
         expand_event: false,
+        error: webhooks_create_response.error,
+        status: webhooks_create_response.status,
       };
 
       webhooks_create_response.should.be.eql(expect_results);
@@ -41,12 +43,14 @@ describe('Webhooks - core methods tests', () => {
 
       const expect_results: IWebhook = {
         id: webhooks_create_response.id,
-        type: 'payment.create',
+        type: 'payment.update',
         url: 'https://dev.methodfi.com',
         metadata: null,
         created_at: webhooks_retrieve_response.created_at,
         updated_at: webhooks_retrieve_response.updated_at,
         expand_event: false,
+        error: webhooks_retrieve_response.error,
+        status: webhooks_retrieve_response.status,
       };
 
       webhooks_retrieve_response.should.be.eql(expect_results);

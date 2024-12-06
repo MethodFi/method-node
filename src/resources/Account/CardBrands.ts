@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type { IAccountCardBrand } from './types';
 
@@ -16,6 +16,16 @@ export default class AccountCardBrand extends Resource {
 
   async retrieve(cbrd_id: string) {
     return super._getWithId<IResponse<IAccountCardBrand>>(cbrd_id);
+  }
+
+  /**
+   * Retrieves a list of CardBrand objects for an account.
+   *
+   * @returns Returns a list of CardBrand objects.
+   */
+
+  async list(opts?: IResourceListOpts) {
+    return super._list<IResponse<IAccountCardBrand>>(opts);
   }
 
   /**

@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type { IEntityAttributes } from './types';
 
@@ -16,6 +16,16 @@ export default class EntityAttributes extends Resource {
 
   async retrieve(attr_id: string) {
     return super._getWithId<IResponse<IEntityAttributes>>(attr_id);
+  }
+
+  /**
+   * Retrieves a list of Attributes objects for an entity.
+   *
+   * @returns Returns a list of Attributes objects.
+   */
+
+  async list(opts?: IResourceListOpts) {
+    return super._list<IResponse<IEntityAttributes>>(opts);
   }
 
   /**

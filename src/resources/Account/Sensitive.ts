@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type { IAccountSensitive, IAccountSensitiveCreateOpts } from './types';
 
@@ -16,6 +16,16 @@ export default class AccountSensitive extends Resource {
 
   async retrieve(astv_id: string) {
     return super._getWithId<IResponse<IAccountSensitive>>(astv_id);
+  }
+
+  /**
+   * Retrieves a list of Sensitive objects for an account.
+   *
+   * @returns Returns a list of Sensitive objects.
+   */
+
+  async list(opts?: IResourceListOpts) {
+    return super._list<IResponse<IAccountSensitive>>(opts);
   }
 
   /**

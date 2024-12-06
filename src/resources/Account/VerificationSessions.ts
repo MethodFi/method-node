@@ -1,4 +1,4 @@
-import Resource from '../../resource';
+import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type {
   IAccountVerificationSession,
@@ -20,6 +20,16 @@ export default class AccountVerificationSession extends Resource {
 
   async retrieve(avf_id: string) {
     return super._getWithId<IResponse<IAccountVerificationSession>>(avf_id);
+  }
+
+  /**
+   * Retrieves a list of AccountVerificationSession objects for an account.
+   *
+   * @returns Returns a list of AccountVerificationSession objects.
+   */
+
+  async list(opts?: IResourceListOpts) {
+    return super._list<IResponse<IAccountVerificationSession>>(opts);
   }
 
   /**
