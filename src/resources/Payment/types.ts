@@ -23,6 +23,7 @@ export const PaymentFundStatuses = {
   failed: 'failed',
   sent: 'sent',
   unknown: 'unknown',
+  posted: 'posted',
 } as const;
 
 export type TPaymentFundStatuses = keyof typeof PaymentFundStatuses;
