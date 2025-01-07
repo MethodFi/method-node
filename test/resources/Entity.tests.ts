@@ -15,6 +15,7 @@ import type {
   TEntitySubscriptionNames,
   IEntityVerificationSession,
   IEntityAttributes,
+  IEntityVehicles,
 } from '../../src/resources/Entity';
 import type { IAccount } from '../../src/resources/Account';
 import { IResponse } from '../../src/configuration';
@@ -23,7 +24,8 @@ should();
 
 describe('Entities - core methods tests', () => {
   let entities_create_response: IResponse<IEntity>;
-  let entitiy_with_identity_cap: IResponse<IEntity>;
+  let entity_with_identity_cap: IResponse<IEntity>;
+  let entity_with_vehicle: IResponse<IEntity>;
   let entities_retrieve_response: IResponse<IEntity>;
   let entities_update_response: IResponse<IEntity>;
   let entities_list_response: IResponse<IEntity>[];
@@ -33,6 +35,7 @@ describe('Entities - core methods tests', () => {
   let entities_create_credit_score_response: IResponse<IEntityCreditScores>;
   let entities_create_attribute_response: IResponse<IEntityAttributes>;
   let entities_create_idenitity_response: IResponse<IEntityIdentity>;
+  let entities_create_vehicle_response: IResponse<IEntityVehicles>;
   let entities_retrieve_product_list_response: IResponse<IEntityProductListResponse>;
   let entities_create_connect_subscription_response: IResponse<IEntitySubscription>;
   let entities_create_credit_score_subscription_response: IResponse<IEntitySubscription>;
@@ -68,6 +71,7 @@ describe('Entities - core methods tests', () => {
           state: null,
           zip: null,
         },
+        vehicle: null,
         verification: {
           identity: {
             verified: false,
@@ -88,10 +92,7 @@ describe('Entities - core methods tests', () => {
         restricted_products: entities_create_response.restricted_products,
         subscriptions: [],
         available_subscriptions: [],
-        restricted_subscriptions: [
-          'connect',
-          'credit_score',
-        ].sort() as TEntitySubscriptionNames[],
+        restricted_subscriptions: entities_create_response.restricted_subscriptions,
         status: 'incomplete',
         error: null,
         metadata: {},
@@ -144,21 +145,14 @@ describe('Entities - core methods tests', () => {
           },
         },
         connect: null,
+        vehicle: null,
         credit_score: null,
         attribute: null,
-        products: [],
-        restricted_products: [
-          'connect',
-          'identity',
-          'credit_score',
-          'attribute',
-        ].sort() as TEntityProductType[],
-        subscriptions: [],
-        available_subscriptions: [],
-        restricted_subscriptions: [
-          'connect',
-          'credit_score',
-        ].sort() as TEntitySubscriptionNames[],
+        products: entities_retrieve_response.products,
+        restricted_products: entities_retrieve_response.restricted_products,
+        subscriptions: entities_retrieve_response.subscriptions,
+        available_subscriptions: entities_retrieve_response.available_subscriptions,
+        restricted_subscriptions: entities_retrieve_response.restricted_subscriptions,
         status: 'incomplete',
         error: null,
         metadata: {},
@@ -223,20 +217,14 @@ describe('Entities - core methods tests', () => {
           },
         },
         connect: null,
+        vehicle: null,
         credit_score: null,
         attribute: null,
-        products: ['identity'],
-        restricted_products: [
-          'connect',
-          'credit_score',
-          'attribute',
-        ].sort() as TEntityProductType[],
-        subscriptions: [],
-        available_subscriptions: [],
-        restricted_subscriptions: [
-          'connect',
-          'credit_score',
-        ].sort() as TEntitySubscriptionNames[],
+        products: entities_update_response.products,
+        restricted_products: entities_update_response.restricted_products,
+        subscriptions: entities_update_response.subscriptions,
+        available_subscriptions: entities_update_response.available_subscriptions,
+        restricted_subscriptions: entities_update_response.restricted_subscriptions,
         status: 'incomplete',
         error: null,
         metadata: {},
@@ -547,7 +535,7 @@ describe('Entities - core methods tests', () => {
 
   describe('entities.identites', () => {
     it('should successfully create a request for an identity', async () => {
-      entitiy_with_identity_cap = await client.entities.create({
+      entity_with_identity_cap = await client.entities.create({
         type: 'individual',
         individual: {
           first_name: 'Kevin',
@@ -557,12 +545,12 @@ describe('Entities - core methods tests', () => {
       });
 
       entities_create_idenitity_response = await client
-        .entities(entitiy_with_identity_cap.id)
+        .entities(entity_with_identity_cap.id)
         .identities.create();
 
       const expect_results: IEntityIdentity = {
         id: entities_create_idenitity_response.id,
-        entity_id: entitiy_with_identity_cap.id,
+        entity_id: entity_with_identity_cap.id,
         status: 'completed',
         identities: [
           {
@@ -603,7 +591,7 @@ describe('Entities - core methods tests', () => {
     it('should successfully retrieve the results of a request for an identity', async () => {
       const getIdentities = async () => {
         return await client
-          .entities(entitiy_with_identity_cap.id)
+          .entities(entity_with_identity_cap.id)
           .identities.retrieve(entities_create_idenitity_response.id);
       };
 
@@ -611,7 +599,7 @@ describe('Entities - core methods tests', () => {
 
       const expect_results: IEntityIdentity = {
         id: entities_create_idenitity_response.id,
-        entity_id: entitiy_with_identity_cap.id,
+        entity_id: entity_with_identity_cap.id,
         status: 'completed',
         identities: [
           {
@@ -652,13 +640,93 @@ describe('Entities - core methods tests', () => {
     it('should successfully list identities for an entity', async () => {
       const listIdentities = async () => {
         return await client
-          .entities(entitiy_with_identity_cap.id)
+          .entities(entity_with_identity_cap.id)
           .identities.list();
       };
 
       const identities = await awaitResults(listIdentities);
 
       identities[0].should.be.eql(entities_create_idenitity_response);
+    });
+  });
+
+  describe('entities.vehicles', () => {
+    it('should successfully create a request for a vehicle', async () => {
+      entity_with_vehicle = await client.entities.create({
+        type: 'individual',
+        individual: {
+          first_name: 'Kevin',
+          last_name: 'Doyle',
+          phone: '+15121231122',
+        },
+      });
+
+      await client.entities(entity_with_vehicle.id).verificationSessions.create({
+          type: 'phone',
+          method: 'byo_sms',
+          byo_sms: {
+            timestamp: '2021-09-01T00:00:00.000Z',
+          },
+      });
+
+      await client.entities(entity_with_vehicle.id).verificationSessions.create({
+        type: 'identity',
+        method: 'kba',
+        kba: {},
+      });
+
+      await client.entities(entity_with_vehicle.id).connect.create();
+
+
+      entities_create_vehicle_response = await client
+        .entities(entity_with_vehicle.id)
+        .vehicles.create();
+
+      const expect_results: IEntityVehicles = {
+        id: entities_create_vehicle_response.id,
+        entity_id: entity_with_vehicle.id,
+        status: 'completed',
+        vehicles: entities_create_vehicle_response.vehicles,
+        error: null,
+        created_at: entities_create_vehicle_response.created_at,
+        updated_at: entities_create_vehicle_response.updated_at,
+      };
+
+      entities_create_vehicle_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully retrieve the results of a request for a vehicle', async () => {
+      const getVehicles = async () => {
+        return await client
+          .entities(entity_with_vehicle.id)
+          .vehicles.retrieve(entities_create_vehicle_response.id);
+      };
+
+      const vehicles = await awaitResults(getVehicles);
+
+      const expect_results: IEntityVehicles = {
+        id: entities_create_vehicle_response.id,
+        entity_id: entity_with_vehicle.id,
+        status: 'completed',
+        vehicles: vehicles.vehicles,
+        error: null,
+        created_at: entities_create_vehicle_response.created_at,
+        updated_at: vehicles.updated_at,
+      };
+
+      vehicles.should.be.eql(expect_results);
+    });
+
+    it('should successfully list vehicles for an entity', async () => {
+      const listVehicles = async () => {
+        return await client
+          .entities(entity_with_vehicle.id)
+          .vehicles.list();
+      };
+
+      const vehicles = await awaitResults(listVehicles);
+
+      vehicles[0].should.be.eql(entities_create_vehicle_response);
     });
   });
 
@@ -727,6 +795,30 @@ describe('Entities - core methods tests', () => {
           updated_at:
             entities_retrieve_product_list_response.attribute?.updated_at || '',
         },
+        vehicle: {
+          id: entities_retrieve_product_list_response.vehicle?.id || '',
+          name: 'vehicle',
+          status: 'available',
+          status_error: null,
+          latest_request_id:
+            entities_retrieve_product_list_response.vehicle
+              ?.latest_request_id || null,
+          is_subscribable: false,
+          created_at: entities_retrieve_product_list_response.vehicle?.created_at || '',
+          updated_at: entities_retrieve_product_list_response.vehicle?.updated_at || '',
+        },
+        manual_connect: {
+          id: entities_retrieve_product_list_response.manual_connect?.id || '',
+          name: 'manual_connect',
+          status: 'restricted',
+          status_error: entities_retrieve_product_list_response.manual_connect?.status_error || null,
+          latest_request_id:
+            entities_retrieve_product_list_response.manual_connect
+              ?.latest_request_id || null,
+          is_subscribable: false,
+          created_at: entities_retrieve_product_list_response.manual_connect?.created_at || '',
+          updated_at: entities_retrieve_product_list_response.manual_connect?.updated_at || '',
+        }
       };
 
       entities_retrieve_product_list_response.should.be.eql(expect_results);
@@ -752,6 +844,11 @@ describe('Entities - core methods tests', () => {
         .entities(entities_create_response.id)
         .products.retrieve(
           entities_retrieve_product_list_response.attribute?.id || ''
+        );
+      const entity_vehicle_product = await client
+        .entities(entities_create_response.id)
+        .products.retrieve(
+          entities_retrieve_product_list_response.vehicle?.id || ''
         );
 
       const expect_connect_results: IEntityProduct = {
@@ -798,6 +895,18 @@ describe('Entities - core methods tests', () => {
         updated_at: entity_attribute_product.updated_at,
       };
 
+      const expect_vehicle_results: IEntityProduct = {
+        id: entities_retrieve_product_list_response.vehicle?.id || '',
+        name: 'vehicle',
+        status: 'available',
+        status_error: null,
+        latest_request_id: entity_vehicle_product.latest_request_id,
+        is_subscribable: false,
+        created_at: entity_vehicle_product.created_at,
+        updated_at: entity_vehicle_product.updated_at,
+      };
+
+      entity_vehicle_product.should.be.eql(expect_vehicle_results);
       entity_connect_product.should.be.eql(expect_connect_results);
       entity_credit_score_product.should.be.eql(expect_credit_score_results);
       entity_identity_product.should.be.eql(expect_identity_results);
