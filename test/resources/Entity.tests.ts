@@ -220,11 +220,11 @@ describe('Entities - core methods tests', () => {
         vehicle: null,
         credit_score: null,
         attribute: null,
-        products: entities_retrieve_response.products,
-        restricted_products: entities_retrieve_response.restricted_products,
-        subscriptions: entities_retrieve_response.subscriptions,
-        available_subscriptions: entities_retrieve_response.available_subscriptions,
-        restricted_subscriptions: entities_retrieve_response.restricted_subscriptions,
+        products: entities_update_response.products,
+        restricted_products: entities_update_response.restricted_products,
+        subscriptions: entities_update_response.subscriptions,
+        available_subscriptions: entities_update_response.available_subscriptions,
+        restricted_subscriptions: entities_update_response.restricted_subscriptions,
         status: 'incomplete',
         error: null,
         metadata: {},
@@ -671,8 +671,8 @@ describe('Entities - core methods tests', () => {
 
       await client.entities(entity_with_vehicle.id).verificationSessions.create({
         type: 'identity',
-        method: 'byo_kyc',
-        byo_kyc: {},
+        method: 'kba',
+        kba: {},
       });
 
       await client.entities(entity_with_vehicle.id).connect.create();
