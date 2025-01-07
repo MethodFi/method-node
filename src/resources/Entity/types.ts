@@ -178,6 +178,26 @@ export interface IEntityAttributes {
   updated_at: string;
 }
 
+export interface IEntityVehiclesType {
+  vin: string | null;
+  year: string | null;
+  make: string | null;
+  model: string | null;
+  series: string | null;
+  major_color: string | null;
+  style: string | null;
+};
+
+export interface IEntityVehicles {
+  id: string;
+  entity_id: string;
+  status: TResourceStatus;
+  vehicles: IEntityVehiclesType[] | null;
+  error: IResourceError | null;
+  created_at: string;
+  updated_at: string;
+};
+
 export interface IEntityIdentity {
   id: string;
   entity_id: string;
@@ -201,6 +221,8 @@ export const EntityProductType = {
   credit_score: 'credit_score',
   identity: 'identity',
   attribute: 'attribute',
+  vehicle: 'vehicle',
+  manual_connect: 'manual_connect',
 } as const;
 
 export type TEntityProductType = keyof typeof EntityProductType;
@@ -221,6 +243,8 @@ export interface IEntityProductListResponse {
   credit_score?: IEntityProduct;
   identity?: IEntityProduct;
   attribute?: IEntityProduct;
+  vehicle?: IEntityProduct;
+  manual_connect?: IEntityProduct;
 };
 
 export const EntitySubscriptionNames = {
@@ -360,6 +384,7 @@ export const EntityExpandableFields = {
   connect: 'connect',
   credit_score: 'credit_score',
   attribute: 'attribute',
+  vehicle: 'vehicle',
   identity_latest_verification_session: 'identity_latest_verification_session',
   phone_latest_verification_session: 'phone_latest_verification_session',
 } as const;
@@ -417,6 +442,7 @@ export interface IEntity {
   connect?: string | IEntityConnect | null;
   credit_score?: string| IEntityCreditScores | null;
   attribute?: string | IEntityAttributes | null;
+  vehicle?: string | IEntityVehicles | null;
   created_at: string;
   updated_at: string;
 };
