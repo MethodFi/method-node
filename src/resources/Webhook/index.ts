@@ -60,6 +60,8 @@ export const WebhookTypes = {
   attribute_credit_health_credit_age_decreased: 'attribute.credit_health_credit_age.decreased',
   attribute_credit_health_payment_history_increased: 'attribute.credit_health_payment_history.increased',
   attribute_credit_health_payment_history_decreased: 'attribute.credit_health_payment_history.decreased',
+  attribute_credit_health_open_accounts_increased: 'attribute.credit_health_open_accounts.increased',
+  attribute_credit_health_open_accounts_decreased: 'attribute.credit_health_open_accounts.decreased',
 } as const;
 
 export type TWebhookTypes = typeof WebhookTypes[keyof typeof WebhookTypes];
