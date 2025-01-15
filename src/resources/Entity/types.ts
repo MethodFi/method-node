@@ -166,6 +166,7 @@ export interface IEntityAttributesType {
   credit_health_total_accounts: ICreditHealthAttribute;
   credit_health_credit_age: ICreditHealthAttribute;
   credit_health_payment_history: ICreditHealthAttribute;
+  credit_health_open_accounts: ICreditHealthAttribute;
 }
 
 export interface IEntityAttributes {
