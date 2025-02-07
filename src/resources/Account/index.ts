@@ -3,11 +3,13 @@ import Configuration, { IResponse } from '../../configuration';
 import AccountCardBrand from './CardBrands';
 import AccountPayoffs from './Payoffs';
 import AccountUpdates from './Updates';
+import AccountAttributes from './Attributes';
 import AccountBalances from './Balances';
 import AccountSensitive from './Sensitive';
 import AccountTransactions from './Transactions';
 import AccountSubscriptions from './Subscriptions';
 import AccountVerificationSession from './VerificationSessions';
+import AccountProducts from './Products';
 import type {
   IAccount,
   IAccountListOpts,
@@ -23,8 +25,10 @@ export class AccountSubResources {
   payoffs: AccountPayoffs;
   sensitive: AccountSensitive;
   subscriptions: AccountSubscriptions;
+  products: AccountProducts;
   transactions: AccountTransactions;
   updates: AccountUpdates;
+  attributes: AccountAttributes;
   verificationSessions: AccountVerificationSession;
 
   constructor(acc_id: string, config: Configuration) {
@@ -33,8 +37,10 @@ export class AccountSubResources {
     this.payoffs = new AccountPayoffs(config.addPath(acc_id));
     this.sensitive = new AccountSensitive(config.addPath(acc_id));
     this.subscriptions = new AccountSubscriptions(config.addPath(acc_id));
+    this.products = new AccountProducts(config.addPath(acc_id));
     this.transactions = new AccountTransactions(config.addPath(acc_id));
     this.updates = new AccountUpdates(config.addPath(acc_id));
+    this.attributes = new AccountAttributes(config.addPath(acc_id));
     this.verificationSessions = new AccountVerificationSession(config.addPath(acc_id));
   }
 };
