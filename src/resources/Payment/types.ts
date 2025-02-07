@@ -78,6 +78,7 @@ export interface IPaymentCreateOpts {
   description: string;
   metadata?: {};
   fee?: IPaymentFee;
+  dry_run?: boolean;
 };
 
 export interface IPaymentListOpts extends IResourceListOpts {
