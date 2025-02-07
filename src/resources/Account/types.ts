@@ -34,9 +34,41 @@ export const AccountProducts = {
   card_brand: 'card_brand',
   payoff: 'payoff',
   update: 'update',
+  attribute: 'attribute',
+  transactions: 'transactions',
 } as const;
 
 export type TAccountProducts = keyof typeof AccountProducts;
+
+export const AccountProductStatuses = {
+  unavailable: 'unavailable',
+  available: 'available',
+  restricted: 'restricted',
+} as const;
+
+export type TAccountProductStatuses = keyof typeof AccountProductStatuses;
+
+export interface IAccountProduct {
+  id: string;
+  name: string;
+  status: TAccountProductStatuses;
+  status_error: IResourceError | null;
+  latest_request_id: string | null;
+  is_subscribable: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export interface IAccountProductListResponse {
+  payment?: IAccountProduct;
+  balance?: IAccountProduct;
+  sensitive?: IAccountProduct;
+  card_brand?: IAccountProduct;
+  payoff?: IAccountProduct;
+  update?: IAccountProduct;
+  attribute?: IAccountProduct;
+  transactions?: IAccountProduct;
+};
 
 export const AccountSubscriptionTypes = {
   transactions: 'transactions',
@@ -597,6 +629,33 @@ export interface IAccountWithdrawConsentOpts {
   reason: 'holder_withdrew_consent' | null;
 };
 
+export const AccountAttributeNames = {
+  usage_pattern: 'usage_pattern',
+  account_standing: 'account_standing',
+  delinquent_period: 'delinquent_period',
+  delinquent_outcome: 'delinquent_outcome',
+  delinquent_amount: 'delinquent_amount',
+  utilization: 'utilization',
+};
+
+export type TAccountAttributeNames = keyof typeof AccountAttributeNames;
+
+export type TAccountAttributes = {
+  [K in TAccountAttributeNames]: {
+    value: any | null;
+  }
+};
+
+export interface IAccountAttributes {
+  id: string;
+  account_id: string;
+  status: TResourceStatus;
+  attributes: TAccountAttributes | null;
+  error: IResourceError | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface IAccount {
   id: string;
   holder_id: string;
@@ -615,6 +674,7 @@ export interface IAccount {
   payoff?: string | IAccountPayoff | null;
   transactions?: string | IAccountTransaction[] | null;
   update?: string | IAccountUpdate | null;
+  attribute?: string | IAccountAttributes | null;
   latest_verification_session?: string | IAccountVerificationSession | null;
   error: IResourceError | null;
   created_at: string;

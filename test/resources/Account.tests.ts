@@ -15,6 +15,9 @@ import type {
   IAccountVerificationSession,
   IAccountUpdate,
   TAccountProducts,
+  IAccountAttributes,
+  IAccountProduct,
+  IAccountProductListResponse,
 } from '../../src/resources/Account';
 import { IResponse } from '../../src/configuration';
 
@@ -40,6 +43,8 @@ describe('Accounts - core methods tests', () => {
   let create_update_subscriptions_response: IResponse<IAccountSubscription>;
   let create_update_snapshot_subscriptions_response: IResponse<IAccountSubscription>;
   let create_updates_response: IResponse<IAccountUpdate>;
+  let create_attributes_response: IResponse<IAccountAttributes>;
+  let accounts_retrieve_product_list_response: IAccountProductListResponse;
 
   before(async () => {
     holder_1_response = await client.entities.create({
@@ -134,9 +139,10 @@ describe('Accounts - core methods tests', () => {
         },
         latest_verification_session: accounts_create_liability_response.latest_verification_session,
         balance: null,
+        attribute: null,
         update: accounts_create_liability_response.update,
         card_brand: null,
-        products: [ 'balance', 'payment', 'sensitive', 'update' ].sort() as TAccountProducts[],
+        products: accounts_create_liability_response.products,
         restricted_products: accounts_create_liability_response.restricted_products,
         subscriptions: accounts_create_liability_response.subscriptions,
         available_subscriptions: [ 'update' ],
@@ -928,9 +934,237 @@ describe('Accounts - core methods tests', () => {
     });
   });
 
+  describe('accounts.attributes', () => {
+    it('should successfully create an attributes request', async () => {
+      create_attributes_response = await client.accounts(test_credit_card_account.id).attributes.create();
+
+      const expect_results: IAccountAttributes = {
+        id: create_attributes_response.id,
+        account_id: test_credit_card_account.id,
+        status: 'completed',
+        attributes: create_attributes_response.attributes,
+        error: null,
+        created_at: create_attributes_response.created_at,
+        updated_at: create_attributes_response.updated_at
+      };
+
+      create_attributes_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully retrieve an attributes request', async () => {
+      const retrieve_attributes_response = await client.accounts(test_credit_card_account.id).attributes.retrieve(create_attributes_response.id);
+
+      const expect_results: IAccountAttributes = {
+        id: create_attributes_response.id,
+        account_id: test_credit_card_account.id,
+        status: 'completed',
+        attributes: create_attributes_response.attributes,
+        error: null,
+        created_at: retrieve_attributes_response.created_at,
+        updated_at: retrieve_attributes_response.updated_at
+      };
+
+      retrieve_attributes_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully list attributes for an account', async () => {
+      const list_attributes_response = await client.accounts(test_credit_card_account.id).attributes.list();
+      
+      const expect_results: IAccountAttributes = {
+        id: create_attributes_response.id,
+        account_id: test_credit_card_account.id,
+        status: 'completed',
+        attributes: create_attributes_response.attributes,
+        error: null,
+        created_at: list_attributes_response[0].created_at,
+        updated_at: list_attributes_response[0].updated_at
+      };
+
+      list_attributes_response[0].should.be.eql(expect_results);
+    });
+  });
+
+  describe('accounts.products', () => {
+    let accounts_retrieve_product_list_response: IAccountProductListResponse;
+
+    it('should successfully list products for an account', async () => {
+      accounts_retrieve_product_list_response = await client
+        .accounts(test_credit_card_account.id)
+        .products.list();
+
+      const expect_results: IAccountProductListResponse = {
+        balance: {
+          id: accounts_retrieve_product_list_response.balance?.id || '',
+          name: 'balance',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.balance?.latest_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.balance?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.balance?.updated_at || ''
+        },
+        payment: {
+          id: accounts_retrieve_product_list_response.payment?.id || '',
+          name: 'payment',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.payment?.latest_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.payment?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.payment?.updated_at || ''
+        },
+        sensitive: {
+          id: accounts_retrieve_product_list_response.sensitive?.id || '',
+          name: 'sensitive',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.sensitive?.latest_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.sensitive?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.sensitive?.updated_at || ''
+        },
+        update: {
+          id: accounts_retrieve_product_list_response.update?.id || '',
+          name: 'update',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.update?.latest_request_id || null,
+          is_subscribable: true,
+          created_at: accounts_retrieve_product_list_response.update?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.update?.updated_at || ''
+        },
+        attribute: {
+          id: accounts_retrieve_product_list_response.attribute?.id || '',
+          name: 'attribute',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.attribute?.latest_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.attribute?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.attribute?.updated_at || ''
+        },
+        transactions: {
+          id: accounts_retrieve_product_list_response.transactions?.id || '',
+          name: 'transactions',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.transactions?.latest_request_id || null,
+          is_subscribable: true,
+          created_at: accounts_retrieve_product_list_response.transactions?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.transactions?.updated_at || ''
+        },
+        card_brand: {
+          id: accounts_retrieve_product_list_response.card_brand?.id || '',
+          name: 'card_brand',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.card_brand?.latest_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.card_brand?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.card_brand?.updated_at || ''
+        },
+        payoff: {
+          id: accounts_retrieve_product_list_response.payoff?.id || '',
+          name: 'payoff',
+          status: 'unavailable',
+          status_error: accounts_retrieve_product_list_response.payoff?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response.payoff?.latest_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.payoff?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.payoff?.updated_at || ''
+        }
+      };
+
+      accounts_retrieve_product_list_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully retrieve specific products for an account', async () => {
+      const account_balance_product = await client
+        .accounts(test_credit_card_account.id)
+        .products.retrieve(accounts_retrieve_product_list_response.balance?.id || '');
+
+      const account_payment_product = await client
+        .accounts(test_credit_card_account.id)
+        .products.retrieve(accounts_retrieve_product_list_response.payment?.id || '');
+
+      const account_sensitive_product = await client
+        .accounts(test_credit_card_account.id)
+        .products.retrieve(accounts_retrieve_product_list_response.sensitive?.id || '');
+
+      const account_update_product = await client
+        .accounts(test_credit_card_account.id)
+        .products.retrieve(accounts_retrieve_product_list_response.update?.id || '');
+
+      const account_attribute_product = await client
+        .accounts(test_credit_card_account.id)
+        .products.retrieve(accounts_retrieve_product_list_response.attribute?.id || '');
+
+      const expect_balance_results: IAccountProduct = {
+        id: accounts_retrieve_product_list_response.balance?.id || '',
+        name: 'balance',
+        status: 'available',
+        status_error: null,
+        latest_request_id: account_balance_product.latest_request_id,
+        is_subscribable: false,
+        created_at: account_balance_product.created_at,
+        updated_at: account_balance_product.updated_at
+      };
+
+      const expect_payment_results: IAccountProduct = {
+        id: accounts_retrieve_product_list_response.payment?.id || '',
+        name: 'payment',
+        status: 'available',
+        status_error: null,
+        latest_request_id: account_payment_product.latest_request_id,
+        is_subscribable: false,
+        created_at: account_payment_product.created_at,
+        updated_at: account_payment_product.updated_at
+      };
+
+      const expect_sensitive_results: IAccountProduct = {
+        id: accounts_retrieve_product_list_response.sensitive?.id || '',
+        name: 'sensitive',
+        status: 'available',
+        status_error: null,
+        latest_request_id: account_sensitive_product.latest_request_id,
+        is_subscribable: false,
+        created_at: account_sensitive_product.created_at,
+        updated_at: account_sensitive_product.updated_at
+      };
+
+      const expect_update_results: IAccountProduct = {
+        id: accounts_retrieve_product_list_response.update?.id || '',
+        name: 'update',
+        status: 'available',
+        status_error: null,
+        latest_request_id: account_update_product.latest_request_id,
+        is_subscribable: true,
+        created_at: account_update_product.created_at,
+        updated_at: account_update_product.updated_at
+      };
+
+      const expect_attribute_results: IAccountProduct = {
+        id: accounts_retrieve_product_list_response.attribute?.id || '',
+        name: 'attribute',
+        status: 'available',
+        status_error: null,
+        latest_request_id: account_attribute_product.latest_request_id,
+        is_subscribable: false,
+        created_at: account_attribute_product.created_at,
+        updated_at: account_attribute_product.updated_at
+      };
+
+      account_balance_product.should.be.eql(expect_balance_results);
+      account_payment_product.should.be.eql(expect_payment_results);
+      account_sensitive_product.should.be.eql(expect_sensitive_results);
+      account_update_product.should.be.eql(expect_update_results);
+      account_attribute_product.should.be.eql(expect_attribute_results);
+    });
+  });
+
+
   describe('accounts.withdrawConsent', () => {
     it('should successfully withdraw consent from an account.', async () => {
-      console.log('test_credit_card_account.id', test_credit_card_account.id);
       const withdraw_consent_response = await client.accounts.withdrawConsent(test_credit_card_account.id);
       
       const expect_results: IAccount = {

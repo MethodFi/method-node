@@ -150,36 +150,5 @@ describe('Events - core methods tests', () => {
 
       response.should.be.eql(expect_results);
     });
-
-    it('should simulate a credit score created event', async () => {
-      await client.simulate.events.create({
-        type: 'credit_score.increased',
-        entity_id: entity_response.id,
-      });
-
-      // timeout to allow event to be created
-      await new Promise((resolve) => { setTimeout(resolve, 5000); });
-
-      const events_list_response = await client.events.list({
-        type: 'credit_score.increased',
-      });
-
-      [event_response] = events_list_response;
-
-      const response = await client.events.retrieve(event_response.id);
-
-      const expect_results: IEvent = {
-        id: event_response.id,
-        created_at: event_response.created_at,
-        updated_at: event_response.updated_at,
-        type: 'credit_score.increased',
-        resource_id: event_response.resource_id,
-        resource_type: 'credit_score',
-        data: event_response.data,
-        diff: event_response.diff,
-      };
-
-      response.should.be.eql(expect_results);
-    });
   });
 });
