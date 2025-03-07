@@ -410,6 +410,7 @@ export interface IAccountUpdate {
   insurance?: IAccountLiabilityInsurance;
   medical?: IAccountLiabilityMedical;
   utility?: IAccountLiabilityUtility;
+  data_as_of: string | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;

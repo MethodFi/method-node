@@ -76,12 +76,14 @@ describe('Accounts - core methods tests', () => {
       holder_id: holder_1_response.id,
       "liability.type": 'credit_card',
       "liability.mch_id": "mch_302086",
+      "status": "active",
     }))[0];
-    
+
     test_auto_loan_account = (await client.accounts.list({
       holder_id: holder_1_response.id,
       "liability.type": 'auto_loan',
       "liability.mch_id": "mch_2347",
+      "status": "active",
     }))[0];
   });
 
@@ -850,6 +852,7 @@ describe('Accounts - core methods tests', () => {
           credit_limit: null,
           usage_pattern: null
         },
+        data_as_of: null,
         error: null,
         created_at: create_updates_response.created_at,
         updated_at: create_updates_response.updated_at
@@ -890,6 +893,7 @@ describe('Accounts - core methods tests', () => {
           credit_limit: 2800000,
           usage_pattern: null
         },
+        data_as_of: null,
         error: null,
         created_at: retrieve_updates_response.created_at,
         updated_at: retrieve_updates_response.updated_at
@@ -925,6 +929,7 @@ describe('Accounts - core methods tests', () => {
             credit_limit: 2800000,
             usage_pattern: null
           },
+          data_as_of: null,
           error: null,
           created_at: update_to_check?.created_at || '',
           updated_at: update_to_check?.updated_at || ''
