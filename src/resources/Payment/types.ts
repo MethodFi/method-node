@@ -11,6 +11,7 @@ export const PaymentStatuses = {
   reversal_required: 'reversal_required',
   reversal_processing: 'reversal_processing',
   settled: 'settled',
+  cashed: 'cashed',
 } as const;
 
 export type TPaymentStatuses = keyof typeof PaymentStatuses;
@@ -42,6 +43,13 @@ export const PaymentFeeTypes = {
 
 export type TPaymentFeeTypes = keyof typeof PaymentFeeTypes;
 
+export const PaymentDestinationPaymentMethods = {
+  paper: 'paper',
+  electronic: 'electronic',
+} as const;
+
+export type TPaymentDestinationPaymentMethods = keyof typeof PaymentDestinationPaymentMethods;
+
 export interface IPaymentFee {
   type: TPaymentFeeTypes;
   amount: number;
@@ -65,6 +73,7 @@ export interface IPayment {
   destination_settlement_date: string | null;
   source_status: TPaymentStatuses;
   destination_status: TPaymentStatuses;
+  destination_payment_method?: TPaymentDestinationPaymentMethods | null;
   fee: IPaymentFee | null
   type: TPaymentTypes;
   created_at: string;
