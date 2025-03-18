@@ -9,10 +9,8 @@ import type {
   IEntityIdentity,
   IEntityProduct,
   IEntityProductListResponse,
-  TEntityProductType,
   IEntitySubscription,
   IEntitySubscriptionResponse,
-  TEntitySubscriptionNames,
   IEntityVerificationSession,
   IEntityAttributes,
   IEntityVehicles,
@@ -789,7 +787,7 @@ describe('Entities - core methods tests', () => {
           latest_request_id:
             entities_retrieve_product_list_response.attribute
               ?.latest_request_id || null,
-          is_subscribable: false,
+          is_subscribable: true,
           created_at:
             entities_retrieve_product_list_response.attribute?.created_at || '',
           updated_at:
@@ -890,7 +888,7 @@ describe('Entities - core methods tests', () => {
         status: 'available',
         status_error: null,
         latest_request_id: entity_attribute_product.latest_request_id,
-        is_subscribable: false,
+        is_subscribable: true,
         created_at: entity_attribute_product.created_at,
         updated_at: entity_attribute_product.updated_at,
       };
