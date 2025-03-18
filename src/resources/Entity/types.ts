@@ -251,6 +251,7 @@ export interface IEntityProductListResponse {
 export const EntitySubscriptionNames = {
   connect: 'connect',
   credit_score: 'credit_score',
+  attribute: 'attribute',
 } as const;
 
 export type TEntitySubscriptionNames = keyof typeof EntitySubscriptionNames;
