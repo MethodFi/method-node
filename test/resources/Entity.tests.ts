@@ -417,13 +417,36 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully retrieve the results of a credit score request for an entity', async () => {
-      const getCreditScores = async () => {
-        return await client
+      await client
+        .simulate
+        .entities(entities_create_response.id)
+        .creditScores.update(entities_create_credit_score_response.id, {
+          scores: [
+            {
+              score: 800,
+              source: 'equifax',
+              model: 'vantage_4',
+              factors: [
+                {
+                  code: '00034',
+                  description: 'Total of all balances on bankcard or revolving accounts is too high',
+                },
+                {
+                  code: '00012',
+                  description: 'The date that you opened your oldest account is too recent',
+                },
+                        {
+                  code: '00063',
+                  description: 'Lack of sufficient relevant real estate account information',
+                },
+              ],
+            },
+          ],
+        });
+
+      const credit_scores = await client
           .entities(entities_create_response.id)
           .creditScores.retrieve(entities_create_credit_score_response.id);
-      };
-
-      const credit_scores = await awaitResults(getCreditScores);
 
       const expect_results: IEntityCreditScores = {
         id: entities_create_credit_score_response.id,
@@ -431,11 +454,24 @@ describe('Entities - core methods tests', () => {
         status: 'completed',
         scores: [
           {
-            score: credit_scores.scores[0].score,
+            score: 800,
             source: 'equifax',
             model: 'vantage_4',
-            factors: credit_scores.scores[0].factors,
-            created_at: credit_scores.scores[0].created_at,
+            factors: [
+              {
+                code: '00034',
+                description: 'Total of all balances on bankcard or revolving accounts is too high',
+              },
+              {
+                code: '00012',
+                description: 'The date that you opened your oldest account is too recent',
+              },
+              {
+                code: '00063',
+                description: 'Lack of sufficient relevant real estate account information',
+              },
+            ],
+            created_at: entities_create_credit_score_response.created_at,
           },
         ],
         error: null,
@@ -447,13 +483,9 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully list credit scores for an entity', async () => {
-      const listCreditScores = async () => {
-        return await client
-          .entities(entities_create_response.id)
-          .creditScores.list();
-      };
-
-      const credit_scores = await awaitResults(listCreditScores);
+      const credit_scores = await client
+        .entities(entities_create_response.id)
+        .creditScores.list();
 
       const expect_results: IEntityCreditScores = {
         id: entities_create_credit_score_response.id,
@@ -461,11 +493,24 @@ describe('Entities - core methods tests', () => {
         status: 'completed',
         scores: [
           {
-            score: credit_scores[0].scores[0].score,
+            score: 800,
             source: 'equifax',
             model: 'vantage_4',
-            factors: credit_scores[0].scores[0].factors,
-            created_at: credit_scores[0].scores[0].created_at,
+            factors: [
+              {
+                code: '00034',
+                description: 'Total of all balances on bankcard or revolving accounts is too high',
+              },
+              {
+                code: '00012',
+                description: 'The date that you opened your oldest account is too recent',
+              },
+              {
+                code: '00063',
+                description: 'Lack of sufficient relevant real estate account information',
+              },
+            ],
+            created_at: entities_create_credit_score_response.created_at,
           },
         ],
         error: null,
