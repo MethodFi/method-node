@@ -475,7 +475,7 @@ describe('Entities - core methods tests', () => {
           },
         ],
         error: null,
-        created_at: entities_create_credit_score_response.created_at,
+        created_at: credit_scores.created_at,
         updated_at: credit_scores.updated_at,
       };
 
@@ -514,7 +514,7 @@ describe('Entities - core methods tests', () => {
           },
         ],
         error: null,
-        created_at: entities_create_credit_score_response.created_at,
+        created_at: credit_scores[0].created_at,
         updated_at: credit_scores[0].updated_at,
       };
 
