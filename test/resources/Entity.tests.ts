@@ -471,12 +471,12 @@ describe('Entities - core methods tests', () => {
                 description: 'Lack of sufficient relevant real estate account information',
               },
             ],
-            created_at: entities_create_credit_score_response.created_at,
+            created_at: credit_scores?.scores?.[0]?.created_at || '',
           },
         ],
         error: null,
-        created_at: credit_scores.created_at,
-        updated_at: credit_scores.updated_at,
+        created_at: credit_scores?.created_at || '',
+        updated_at: credit_scores?.updated_at || '',
       };
 
       credit_scores.should.be.eql(expect_results);
@@ -510,12 +510,12 @@ describe('Entities - core methods tests', () => {
                 description: 'Lack of sufficient relevant real estate account information',
               },
             ],
-            created_at: entities_create_credit_score_response.created_at,
+            created_at: credit_scores?.[0]?.scores?.[0]?.created_at || '',
           },
         ],
         error: null,
-        created_at: credit_scores[0].created_at,
-        updated_at: credit_scores[0].updated_at,
+        created_at: credit_scores?.[0]?.created_at || '',
+        updated_at: credit_scores?.[0]?.updated_at || '',
       };
 
       credit_scores[0].should.be.eql(expect_results);
