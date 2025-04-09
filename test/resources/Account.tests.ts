@@ -3,21 +3,22 @@ import { describe } from 'mocha';
 import { client } from '../config';
 import { awaitResults } from '../utils';
 import type { IEntity, IEntityConnect } from '../../src/resources/Entity';
-import type {
-  IAccount,
-  IAccountBalance,
-  IAccountCardBrand,
-  IAccountPayoff,
-  IAccountSensitive,
-  IAccountTransaction,
-  IAccountSubscription,
-  IAccountSubscriptionsResponse,
-  IAccountVerificationSession,
-  IAccountUpdate,
-  TAccountProducts,
-  IAccountAttributes,
-  IAccountProduct,
-  IAccountProductListResponse,
+import {
+  type IAccount,
+  type IAccountBalance,
+  type IAccountCardBrand,
+  type IAccountPayoff,
+  type IAccountSensitive,
+  type IAccountTransaction,
+  type IAccountSubscription,
+  type IAccountSubscriptionsResponse,
+  type IAccountVerificationSession,
+  type IAccountUpdate,
+  type TAccountProducts,
+  type IAccountAttributes,
+  type IAccountProduct,
+  type IAccountProductListResponse,
+  type IAccountPaymentInstrument,
 } from '../../src/resources/Account';
 import { IResponse } from '../../src/configuration';
 
@@ -32,6 +33,7 @@ describe('Accounts - core methods tests', () => {
   let accounts_list_response: IResponse<IAccount>[];
   let balances_create_response: IResponse<IAccountBalance>;
   let test_credit_card_account: IResponse<IAccount>;
+  let test_credit_card_account_2: IResponse<IAccount>;
   let test_auto_loan_account: IResponse<IAccount>;
   let card_create_response: IResponse<IAccountCardBrand>;
   let payoff_create_response: IResponse<IAccountPayoff>;
@@ -79,10 +81,17 @@ describe('Accounts - core methods tests', () => {
       "status": "active",
     }))[0];
 
+    test_credit_card_account_2 = (await client.accounts.list({
+      holder_id: holder_1_response.id,
+      "liability.type": 'credit_card',
+      "liability.mch_id": "mch_311289",
+      "status": "active",
+    }))[0];
+
     test_auto_loan_account = (await client.accounts.list({
       holder_id: holder_1_response.id,
       "liability.type": 'auto_loan',
-      "liability.mch_id": "mch_2347",
+      "liability.mch_id": "mch_311130",
       "status": "active",
     }))[0];
   });
@@ -144,6 +153,7 @@ describe('Accounts - core methods tests', () => {
         attribute: null,
         update: accounts_create_liability_response.update,
         card_brand: null,
+        payment_instrument: null,
         products: accounts_create_liability_response.products,
         restricted_products: accounts_create_liability_response.restricted_products,
         subscriptions: accounts_create_liability_response.subscriptions,
@@ -600,14 +610,33 @@ describe('Accounts - core methods tests', () => {
 
   describe('accounts.subscriptions', () => {
     it('should successfully create a transactions subscription.', async () => {
+      const network_verification_session = await client
+      .accounts(test_credit_card_account_2.id)
+      .verificationSessions
+      .create({
+        type: 'network'
+      });
+
+      await client
+        .accounts(test_credit_card_account_2.id)
+        .verificationSessions
+        .update(network_verification_session.id, {
+          network: {
+            exp_month: '09',
+            exp_year: '2028',
+            billing_zip_code: '78758',
+            cvv: '539'
+          }  
+      });
+
       create_txn_subscriptions_response = await client
-        .accounts(test_credit_card_account.id)
+        .accounts(test_credit_card_account_2.id)
         .subscriptions
-        .create('transactions');
+        .create('transaction');
 
       const expect_results: IAccountSubscription = {
         id: create_txn_subscriptions_response.id,
-        name: 'transactions',
+        name: 'transaction',
         status: 'active',
         latest_request_id: null,
         created_at: create_txn_subscriptions_response.created_at,
@@ -663,16 +692,13 @@ describe('Accounts - core methods tests', () => {
         .accounts(test_auto_loan_account.id)
         .subscriptions
         .list();
+      
+      const subscriptions_transactions_response = await client
+        .accounts(test_credit_card_account_2.id)
+        .subscriptions
+        .list();
 
       const expect_results_card: IAccountSubscriptionsResponse = {
-        transactions: {
-          id: create_txn_subscriptions_response.id,
-          name: 'transactions',
-          status: 'active',
-          latest_request_id: null,
-          created_at: subscriptions_response.transactions?.created_at || '',
-          updated_at: subscriptions_response.transactions?.updated_at || ''
-        },
         update: {
           id: create_update_subscriptions_response.id,
           name: 'update',
@@ -680,6 +706,17 @@ describe('Accounts - core methods tests', () => {
           latest_request_id: null,
           created_at: subscriptions_response.update?.created_at || '',
           updated_at: subscriptions_response.update?.updated_at || ''
+        }
+      };
+
+      const expect_results_transactions: IAccountSubscriptionsResponse = {
+        transaction: {
+          id: create_txn_subscriptions_response.id,
+          name: 'transaction',
+          status: 'active',
+          latest_request_id: null,
+          created_at: subscriptions_transactions_response.transaction?.created_at || '',
+          updated_at: subscriptions_transactions_response.transaction?.updated_at || ''
         }
       };
 
@@ -696,17 +733,18 @@ describe('Accounts - core methods tests', () => {
 
       subscriptions_response.should.be.eql(expect_results_card);
       subscriptions_update_snapshot_response.should.be.eql(expect_results_snapshot);
+      subscriptions_transactions_response.should.be.eql(expect_results_transactions);
     });
 
     it('should successfully retrieve a transactions subscription.', async () => {
       const retrieve_subscriptions_response = await client
-        .accounts(test_credit_card_account.id)
+        .accounts(test_credit_card_account_2.id)
         .subscriptions
         .retrieve(create_txn_subscriptions_response.id);
 
       const expect_results: IAccountSubscription = {
         id: create_txn_subscriptions_response.id,
-        name: 'transactions',
+        name: 'transaction',
         status: 'active',
         latest_request_id: null,
         created_at: retrieve_subscriptions_response.created_at,
@@ -773,9 +811,9 @@ describe('Accounts - core methods tests', () => {
 
   describe('accounts.transactions', () => {
     it('should successfully list transactions for an account.', async () => {      
-      const { amount, billing_amount, merchant } = await client.simulate.accounts(test_credit_card_account.id).transactions.create();
+      const { amount, descriptor, transacted_at, posted_at } = await client.simulate.accounts(test_credit_card_account_2.id).transactions.create();
       const res = await client
-        .accounts(test_credit_card_account.id)
+        .accounts(test_credit_card_account_2.id)
         .transactions
         .list();
 
@@ -783,16 +821,20 @@ describe('Accounts - core methods tests', () => {
 
       const expect_results: IAccountTransaction = {
         id: transactions_response.id,
-        account_id: test_credit_card_account.id,
-        merchant,
-        network: 'visa',
-        network_data: null,
+        account_id: test_credit_card_account_2.id,
+        status: 'posted',
+        descriptor,
         amount,
-        currency: 'USD',
-        billing_amount,
-        billing_currency: 'USD',
-        status: 'cleared',
-        error: null,
+        auth_amount: amount,
+        currency_code: 'USD',
+        transaction_amount: amount,
+        transaction_auth_amount: amount,
+        transaction_currency_code: 'USD',
+        merchant_category_code: '5182',
+        transacted_at,
+        posted_at,
+        voided_at: null,
+        original_txn_id: null,
         created_at: transactions_response.created_at,
         updated_at: transactions_response.updated_at
       };
@@ -802,24 +844,28 @@ describe('Accounts - core methods tests', () => {
 
     it('should successfully retrieve a transaction for an account.', async () => {
       const retrieve_transaction_response = await client
-        .accounts(test_credit_card_account.id)
+        .accounts(test_credit_card_account_2.id)
         .transactions
         .retrieve(transactions_response.id);
 
       const expect_results: IAccountTransaction = {
         id: transactions_response.id,
-        account_id: test_credit_card_account.id,
-        merchant: transactions_response.merchant,
-        network: 'visa',
-        network_data: null,
-        amount: transactions_response.amount,
-        currency: 'USD',
-        billing_amount: transactions_response.billing_amount,
-        billing_currency: 'USD',
-        status: 'cleared',
-        error: null,
-        created_at: transactions_response.created_at,
-        updated_at: transactions_response.updated_at
+        account_id: test_credit_card_account_2.id,
+        status: 'posted',
+        descriptor: retrieve_transaction_response.descriptor,
+        amount: retrieve_transaction_response.amount,
+        auth_amount: retrieve_transaction_response.auth_amount,
+        currency_code: 'USD',
+        transaction_amount: retrieve_transaction_response.transaction_amount,
+        transaction_auth_amount: retrieve_transaction_response.transaction_auth_amount,
+        transaction_currency_code: 'USD',
+        merchant_category_code: '5182',
+        transacted_at: retrieve_transaction_response.transacted_at,
+        posted_at: retrieve_transaction_response.posted_at,
+        voided_at: null,
+        original_txn_id: null,
+        created_at: retrieve_transaction_response.created_at,
+        updated_at: retrieve_transaction_response.updated_at
       };
 
       retrieve_transaction_response.should.be.eql(expect_results);
@@ -1048,15 +1094,15 @@ describe('Accounts - core methods tests', () => {
           created_at: accounts_retrieve_product_list_response.attribute?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.attribute?.updated_at || ''
         },
-        transactions: {
-          id: accounts_retrieve_product_list_response.transactions?.id || '',
-          name: 'transactions',
-          status: 'available',
-          status_error: null,
-          latest_request_id: accounts_retrieve_product_list_response.transactions?.latest_request_id || null,
+        transaction: {
+          id: accounts_retrieve_product_list_response.transaction?.id || '',
+          name: 'transaction',
+          status: 'unavailable',
+          status_error: accounts_retrieve_product_list_response.transaction?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response.transaction?.latest_request_id || null,
           is_subscribable: true,
-          created_at: accounts_retrieve_product_list_response.transactions?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.transactions?.updated_at || ''
+          created_at: accounts_retrieve_product_list_response.transaction?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.transaction?.updated_at || ''
         },
         card_brand: {
           id: accounts_retrieve_product_list_response.card_brand?.id || '',
@@ -1077,6 +1123,16 @@ describe('Accounts - core methods tests', () => {
           is_subscribable: false,
           created_at: accounts_retrieve_product_list_response.payoff?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.payoff?.updated_at || ''
+        },
+        payment_instrument: {
+          id: accounts_retrieve_product_list_response.payment_instrument?.id || '',
+          name: 'payment_instrument',
+          status: 'restricted',
+          status_error: accounts_retrieve_product_list_response.payment_instrument?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_request_id || null,
+          is_subscribable: true,
+          created_at: accounts_retrieve_product_list_response.payment_instrument?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.payment_instrument?.updated_at || ''
         }
       };
 

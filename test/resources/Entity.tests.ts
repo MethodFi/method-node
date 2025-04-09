@@ -31,6 +31,7 @@ describe('Entities - core methods tests', () => {
   let entities_account_list_response: IResponse<IAccount>[];
   let entities_account_ids: string[];
   let entities_create_credit_score_response: IResponse<IEntityCreditScores>;
+  let entities_simulate_credit_score_response: IResponse<IEntityCreditScores>;
   let entities_create_attribute_response: IResponse<IEntityAttributes>;
   let entities_create_idenitity_response: IResponse<IEntityIdentity>;
   let entities_create_vehicle_response: IResponse<IEntityVehicles>;
@@ -416,6 +417,49 @@ describe('Entities - core methods tests', () => {
       entities_create_credit_score_response.should.be.eql(expect_results);
     });
 
+    it('should successfully simulate a credit score request for an entity', async () => {
+      entities_simulate_credit_score_response = await client
+        .simulate
+        .entities(entities_create_response.id)
+        .creditScores(entities_create_credit_score_response.id)
+        .create({
+          scores: [
+            {
+              score: 800,
+              source: "equifax",
+              model: "vantage_4",
+              factors: [
+                {
+                  code: "00034",
+                  description: "Total of all balances on bankcard or revolving accounts is too high"
+                },
+                {
+                  code: "00012",
+                  description: "The date that you opened your oldest account is too recent"
+                },
+                {
+                  code: "00063",
+                  description: "Lack of sufficient relevant real estate account information"
+                }
+              ],
+              created_at: new Date().toISOString(),
+            }
+          ]
+        });
+
+      const expect_results: IEntityCreditScores = {
+        id: entities_simulate_credit_score_response.id,
+        entity_id: entities_create_response.id,
+        status: 'completed',
+        scores: entities_simulate_credit_score_response.scores,
+        error: null,
+        created_at: entities_simulate_credit_score_response.created_at,
+        updated_at: entities_simulate_credit_score_response.updated_at,
+      };
+
+      entities_simulate_credit_score_response.should.be.eql(expect_results);
+    });
+
     it('should successfully retrieve the results of a credit score request for an entity', async () => {
       const getCreditScores = async () => {
         return await client
@@ -431,12 +475,25 @@ describe('Entities - core methods tests', () => {
         status: 'completed',
         scores: [
           {
-            score: credit_scores.scores[0].score,
-            source: 'equifax',
-            model: 'vantage_4',
-            factors: credit_scores.scores[0].factors,
+            score: 800,
+            source: "equifax",
+            model: "vantage_4",
+            factors: [
+              {
+                code: "00034",
+                description: "Total of all balances on bankcard or revolving accounts is too high"
+              },
+              {
+                code: "00012",
+                description: "The date that you opened your oldest account is too recent"
+              },
+              {
+                code: "00063",
+                description: "Lack of sufficient relevant real estate account information"
+              }
+            ],
             created_at: credit_scores.scores[0].created_at,
-          },
+          }
         ],
         error: null,
         created_at: entities_create_credit_score_response.created_at,
@@ -461,12 +518,25 @@ describe('Entities - core methods tests', () => {
         status: 'completed',
         scores: [
           {
-            score: credit_scores[0].scores[0].score,
-            source: 'equifax',
-            model: 'vantage_4',
-            factors: credit_scores[0].scores[0].factors,
+            score: 800,
+            source: "equifax",
+            model: "vantage_4",
+            factors: [
+              {
+                code: "00034",
+                description: "Total of all balances on bankcard or revolving accounts is too high"
+              },
+              {
+                code: "00012",
+                description: "The date that you opened your oldest account is too recent"
+              },
+              {
+                code: "00063",
+                description: "Lack of sufficient relevant real estate account information"
+              }
+            ],
             created_at: credit_scores[0].scores[0].created_at,
-          },
+          }
         ],
         error: null,
         created_at: entities_create_credit_score_response.created_at,

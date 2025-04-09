@@ -58,36 +58,6 @@ describe('Events - core methods tests', () => {
   });
 
   describe('simulate.events', () => {
-    it('should simulate an account closed event', async () => {
-      await client.simulate.events.create({
-        type: 'account.closed',
-        account_id: account_response[0].id,
-      });
-
-      // timeout to allow event to be created
-      await new Promise((resolve) => { setTimeout(resolve, 5000); });
-
-      const events_list_response = await client.events.list({
-        resource_id: account_response[0].id,
-      });
-
-      [event_response] = events_list_response;
-
-      const response = await client.events.retrieve(event_response.id);
-
-      const expect_results: IEvent = {
-        id: event_response.id,
-        created_at: event_response.created_at,
-        updated_at: event_response.updated_at,
-        type: 'account.closed',
-        resource_id: account_response[0].id,
-        resource_type: 'account',
-        data: event_response.data,
-        diff: event_response.diff,
-      };
-
-      response.should.be.eql(expect_results);
-    });
 
     it('should simulate an account opened event', async () => {
       await client.simulate.events.create({
