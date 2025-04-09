@@ -8,6 +8,7 @@ import AccountBalances from './Balances';
 import AccountSensitive from './Sensitive';
 import AccountTransactions from './Transactions';
 import AccountSubscriptions from './Subscriptions';
+import AccountPaymentInstruments from './PaymentInstruments';
 import AccountVerificationSession from './VerificationSessions';
 import AccountProducts from './Products';
 import type {
@@ -29,6 +30,7 @@ export class AccountSubResources {
   transactions: AccountTransactions;
   updates: AccountUpdates;
   attributes: AccountAttributes;
+  paymentInstruments: AccountPaymentInstruments;
   verificationSessions: AccountVerificationSession;
 
   constructor(acc_id: string, config: Configuration) {
@@ -41,6 +43,7 @@ export class AccountSubResources {
     this.transactions = new AccountTransactions(config.addPath(acc_id));
     this.updates = new AccountUpdates(config.addPath(acc_id));
     this.attributes = new AccountAttributes(config.addPath(acc_id));
+    this.paymentInstruments = new AccountPaymentInstruments(config.addPath(acc_id));
     this.verificationSessions = new AccountVerificationSession(config.addPath(acc_id));
   }
 };

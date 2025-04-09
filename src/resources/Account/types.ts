@@ -36,6 +36,7 @@ export const AccountProducts = {
   update: 'update',
   attribute: 'attribute',
   transactions: 'transactions',
+  payment_instrument: 'payment_instrument',
 } as const;
 
 export type TAccountProducts = keyof typeof AccountProducts;
@@ -67,11 +68,12 @@ export interface IAccountProductListResponse {
   payoff?: IAccountProduct;
   update?: IAccountProduct;
   attribute?: IAccountProduct;
-  transactions?: IAccountProduct;
+  transaction?: IAccountProduct;
+  payment_instrument?: IAccountProduct;
 };
 
 export const AccountSubscriptionTypes = {
-  transactions: 'transactions',
+  transaction: 'transaction',
   update: 'update',
   update_snapshot: 'update.snapshot',
 } as const;
@@ -384,7 +386,7 @@ export interface IAccountSubscription {
 };
 
 export interface IAccountSubscriptionsResponse {
-  transactions?: IAccountSubscription;
+  transaction?: IAccountSubscription;
   update?: IAccountSubscription;
   'update.snapshot'?: IAccountSubscription;
 };
@@ -416,52 +418,32 @@ export interface IAccountUpdate {
   updated_at: string;
 };
 
-export const AccountCurrencyTypes = {
-  USD: 'USD',
-};
-
-export type TAccountCurrencyTypes = keyof typeof AccountCurrencyTypes;
-
 export const AccountTransactionStatuses = {
-  cleared: 'cleared',
-  auth: 'auth',
-  refund: 'refund',
-  unknown: 'unknown',
+  pending: 'pending',
+  posted: 'posted',
+  voided: 'voided',
 } as const;
 
 export type TAccountTransactionStatuses = keyof typeof AccountTransactionStatuses;
 
-export interface IAccountTransactionMerchant {
-  name: string;
-  category_code: string;
-  city: string;
-  state: string;
-  country: string;
-  acquirer_bin: string;
-  acquirer_card_acceptor_id: string;
-};
-
-export interface IAccountTransactionNetworkData {
-  visa_merchant_id: string | null;
-  visa_merchant_name: string | null;
-  visa_store_id: string | null;
-  visa_store_name: string | null;
-};
-
 export interface IAccountTransaction {
   id: string;
   account_id: string;
-  merchant: IAccountTransactionMerchant;
-  network: string;
-  network_data: IAccountTransactionNetworkData | null;
+  descriptor: string;
   amount: number;
-  currency: TAccountCurrencyTypes;
-  billing_amount: number;
-  billing_currency: TAccountCurrencyTypes;
+  auth_amount: number;
+  currency_code: string;
+  transaction_amount: number;
+  transaction_auth_amount: number;
+  transaction_currency_code: string;
+  merchant_category_code: string;
   status: TAccountTransactionStatuses;
-  error: IResourceError | null;
-  created_at: string;
-  updated_at: string;
+  transacted_at: Date;
+  posted_at: Date | null;
+  voided_at: Date | null;
+  original_txn_id: string | null;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export const AccountVerificationSessionStatuses = {
@@ -481,6 +463,7 @@ export const AccountVerificationSessionTypes = {
   standard: 'standard',
   instant: 'instant',
   pre_auth: 'pre_auth',
+  network: 'network',
 } as const;
 
 export type TAccountVerificaionSessionTypes = keyof typeof AccountVerificationSessionTypes;
@@ -536,6 +519,14 @@ export interface IAccountVerificationSessionPreAuth extends IAccountVerification
   pre_auth_check?: TAccountVerificationPassFail | null;
 };
 
+export interface IAccountVerificationSessionNetwork  extends IAccountVerificationSessionInstant {
+  cvv?: string | null;
+  cvv_check?: TAccountVerificationPassFail | null;
+  billing_zip_code?: string | null;
+  billing_zip_code_check?: TAccountVerificationPassFail | null;
+  network_check?: TAccountVerificationPassFail | null;
+};
+
 export interface IAccountVerificationSessionCreateOpts {
   type: TAccountVerificaionSessionTypes;
 };
@@ -568,6 +559,10 @@ export interface IAccountVerificationSessionPreAuthUpdateOpts {
   pre_auth: IAccountVerificationSessionPreAuth
 };
 
+export interface IAccountVerificationSessionNetworkUpdateOpts {
+  network: IAccountVerificationSessionNetwork;
+};
+
 export type IAccountVerificationSessionUpdateOpts =
   | IAccountVerificationSessionMicroDepositsUpdateOpts
   | IAccountVerificationSessionPlaidUpdateOpts
@@ -575,7 +570,8 @@ export type IAccountVerificationSessionUpdateOpts =
   | IAccountVerificationSessionTellerUpdateOpts
   | IAccountVerificationSessionStandardUpdateOpts
   | IAccountVerificationSessionInstantUpdateOpts
-  | IAccountVerificationSessionPreAuthUpdateOpts;
+  | IAccountVerificationSessionPreAuthUpdateOpts
+  | IAccountVerificationSessionNetworkUpdateOpts;
 
 export interface IAccountVerificationSession {
   id: string;
@@ -592,6 +588,7 @@ export interface IAccountVerificationSession {
   standard?: IAccountVerificationSessionStandard | null;
   instant?: IAccountVerificationSessionInstant | null;
   pre_auth?: IAccountVerificationSessionPreAuth | null;
+  network?: IAccountVerificationSessionNetwork | null;
   three_ds?: IAccountVerificationSessionThreeDS | null;
   issuer?: IAccountVerificationSessionIssuer | null;
   created_at: string;
@@ -657,6 +654,40 @@ export interface IAccountAttributes {
   updated_at: string;
 }
 
+export const PaymentInstrumentTypes = {
+  card: 'card',
+  network_token: 'network_token'
+} as const;
+
+export type TPaymentInstrumentTypes = keyof typeof PaymentInstrumentTypes;
+
+export interface IPaymentInstrumentCreateOpts {
+  type: TPaymentInstrumentTypes;
+}
+
+export interface IPaymentInstrumentCard {
+  number: string;
+  exp_month: number;
+  exp_year: number;
+}
+
+export interface IPaymentInstrumentNetworkToken {
+  token: string;
+}
+
+export interface IAccountPaymentInstrument {
+  id: string;
+  account_id: string;
+  type: TPaymentInstrumentTypes;
+  network_token?: IPaymentInstrumentNetworkToken | null;
+  card?: IPaymentInstrumentCard | null;
+  chargeable: boolean;
+  status: TResourceStatus;
+  error: IResourceError | null;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export interface IAccount {
   id: string;
   holder_id: string;
@@ -676,6 +707,7 @@ export interface IAccount {
   transactions?: string | IAccountTransaction[] | null;
   update?: string | IAccountUpdate | null;
   attribute?: string | IAccountAttributes | null;
+  payment_instrument?: string | IAccountPaymentInstrument | null;
   latest_verification_session?: string | IAccountVerificationSession | null;
   error: IResourceError | null;
   created_at: string;
