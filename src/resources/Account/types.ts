@@ -73,6 +73,8 @@ export interface IAccountProductListResponse {
 };
 
 export const AccountSubscriptionTypes = {
+  card_brand: 'card_brand',
+  payment_instrument: 'payment_instrument',
   transaction: 'transaction',
   update: 'update',
   update_snapshot: 'update.snapshot',
@@ -98,15 +100,17 @@ export type TAccountUpdateSources = keyof typeof AccountUpdateSources;
 
 export const AccountLiabilityTypes = {
   auto_loan: 'auto_loan',
+  bnpl: 'bnpl',
+  credit_builder: 'credit_builder',
   credit_card: 'credit_card',
   collection: 'collection',
+  fintech: 'fintech',
+  insurance: 'insurance',
+  loan: 'loan',
+  medical: 'medical',
   mortgage: 'mortgage',
   personal_loan: 'personal_loan',
   student_loans: 'student_loans',
-  loan: 'loan',
-  credit_builder: 'credit_builder',
-  insurance: 'insurance',
-  medical: 'medical',
   utility: 'utility',
 } as const;
 
