@@ -8,6 +8,7 @@ import type {
   IEntityAttributes,
   IEntityCreditScores,
 } from '../../src/resources/Entity/types';
+import { EntityAttributeNames } from '../../src/resources/Entity/types';
 import type { IAccount } from '../../src/resources/Account';
 import { IResponse } from '../../src/configuration';
 
@@ -52,7 +53,9 @@ describe('Events - core methods tests', () => {
       holder_id: entity_response.id,
     });
 
-    attribute_response = await client.entities(entity_response.id).attributes.create();
+    attribute_response = await client.entities(entity_response.id).attributes.create({
+      attributes: [EntityAttributeNames.credit_health_credit_card_usage],
+    });
 
     credit_score_response = await client.entities(entity_response.id).creditScores.create();
   });

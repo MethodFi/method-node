@@ -43,8 +43,8 @@ export default class EntitySubscriptions extends Resource {
    * @returns Returns a map of Subscription name to either Subscription object or Error.
    */
 
-  async create(sub_name: TEntitySubscriptionNames, requestConfig?: IRequestConfig) {
-    return super._create<IResponse<IEntitySubscription>, IEntitySubscriptionCreateOpts>({ enroll: sub_name }, requestConfig);
+  async create(opts: IEntitySubscriptionCreateOpts, requestConfig?: IRequestConfig) {
+    return super._create<IResponse<IEntitySubscription>, IEntitySubscriptionCreateOpts>(opts, requestConfig);
   }
 
   /**

@@ -15,6 +15,7 @@ import type {
   IEntityAttributes,
   IEntityVehicles,
 } from '../../src/resources/Entity';
+import { EntityAttributeNames } from '../../src/resources/Entity/types';
 import type { IAccount } from '../../src/resources/Account';
 import { IResponse } from '../../src/configuration';
 
@@ -38,6 +39,7 @@ describe('Entities - core methods tests', () => {
   let entities_retrieve_product_list_response: IResponse<IEntityProductListResponse>;
   let entities_create_connect_subscription_response: IResponse<IEntitySubscription>;
   let entities_create_credit_score_subscription_response: IResponse<IEntitySubscription>;
+  let entities_create_attributes_subscription_response: IResponse<IEntitySubscription>;
   let entities_create_verification_session_response: IResponse<IEntityVerificationSession>;
   let entities_create_phone_verification_session_response: IResponse<IEntityVerificationSession>;
 
@@ -461,13 +463,9 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully retrieve the results of a credit score request for an entity', async () => {
-      const getCreditScores = async () => {
-        return await client
-          .entities(entities_create_response.id)
-          .creditScores.retrieve(entities_create_credit_score_response.id);
-      };
-
-      const credit_scores = await awaitResults(getCreditScores);
+      const credit_scores = await client
+        .entities(entities_create_response.id)
+        .creditScores.retrieve(entities_create_credit_score_response.id);
 
       const expect_results: IEntityCreditScores = {
         id: entities_create_credit_score_response.id,
@@ -492,7 +490,7 @@ describe('Entities - core methods tests', () => {
                 description: "Lack of sufficient relevant real estate account information"
               }
             ],
-            created_at: credit_scores.scores[0].created_at,
+            created_at: credit_scores.scores?.[0]?.created_at || '',
           }
         ],
         error: null,
@@ -504,13 +502,9 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully list credit scores for an entity', async () => {
-      const listCreditScores = async () => {
-        return await client
-          .entities(entities_create_response.id)
-          .creditScores.list();
-      };
-
-      const credit_scores = await awaitResults(listCreditScores);
+      const credit_scores = await client
+        .entities(entities_create_response.id)
+        .creditScores.list();
 
       const expect_results: IEntityCreditScores = {
         id: entities_create_credit_score_response.id,
@@ -535,7 +529,7 @@ describe('Entities - core methods tests', () => {
                 description: "Lack of sufficient relevant real estate account information"
               }
             ],
-            created_at: credit_scores[0].scores[0].created_at,
+            created_at: credit_scores[0].scores?.[0]?.created_at || '',
           }
         ],
         error: null,
@@ -551,7 +545,9 @@ describe('Entities - core methods tests', () => {
     it('should successfully create an attributes request for an entity', async () => {
       entities_create_attribute_response = await client
         .entities(entities_create_response.id)
-        .attributes.create();
+        .attributes.create({
+          attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+        });
 
       const expect_results: IEntityAttributes = {
         id: entities_create_attribute_response.id,
@@ -567,13 +563,9 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully retrieve the results of an attributes request for an entity', async () => {
-      const getAttributes = async () => {
-        return await client
-          .entities(entities_create_response.id)
-          .attributes.retrieve(entities_create_attribute_response.id);
-      };
-
-      const attributes = await awaitResults(getAttributes);
+      const attributes = await client
+        .entities(entities_create_response.id)
+        .attributes.retrieve(entities_create_attribute_response.id);
 
       const expect_results: IEntityAttributes = {
         id: attributes.id,
@@ -589,13 +581,9 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully list attributes for an entity', async () => {
-      const listAttributes = async () => {
-        return await client
-          .entities(entities_create_response.id)
-          .attributes.list();
-      };
-
-      const attributes = await awaitResults(listAttributes);
+      const attributes = await client
+        .entities(entities_create_response.id)
+        .attributes.list();
 
       attributes[0].should.be.eql(entities_create_attribute_response);
     });
@@ -657,13 +645,9 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully retrieve the results of a request for an identity', async () => {
-      const getIdentities = async () => {
-        return await client
-          .entities(entity_with_identity_cap.id)
-          .identities.retrieve(entities_create_idenitity_response.id);
-      };
-
-      const identities = await awaitResults(getIdentities);
+      const identities = await client
+        .entities(entity_with_identity_cap.id)
+        .identities.retrieve(entities_create_idenitity_response.id);
 
       const expect_results: IEntityIdentity = {
         id: entities_create_idenitity_response.id,
@@ -706,13 +690,9 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully list identities for an entity', async () => {
-      const listIdentities = async () => {
-        return await client
-          .entities(entity_with_identity_cap.id)
-          .identities.list();
-      };
-
-      const identities = await awaitResults(listIdentities);
+      const identities = await client
+        .entities(entity_with_identity_cap.id)
+        .identities.list();
 
       identities[0].should.be.eql(entities_create_idenitity_response);
     });
@@ -986,12 +966,15 @@ describe('Entities - core methods tests', () => {
     it('should create a connect subscription for an entity', async () => {
       entities_create_connect_subscription_response = await client
         .entities(entities_create_response.id)
-        .subscriptions.create('connect');
+        .subscriptions.create({
+          enroll: 'connect'
+        });
 
       const expect_connect_results: IEntitySubscription = {
         id: entities_create_connect_subscription_response.id,
         name: 'connect',
         status: 'active',
+        payload: null,
         latest_request_id: null,
         created_at: entities_create_connect_subscription_response.created_at,
         updated_at: entities_create_connect_subscription_response.updated_at,
@@ -1006,13 +989,16 @@ describe('Entities - core methods tests', () => {
     it('should create a credit_score subscription for an entity', async () => {
       entities_create_credit_score_subscription_response = await client
         .entities(entities_create_response.id)
-        .subscriptions.create('credit_score');
+        .subscriptions.create({
+          enroll: 'credit_score'
+        });
 
       const expect_credit_score_results: IEntitySubscription = {
         id: entities_create_credit_score_subscription_response.id,
         name: 'credit_score',
         status: 'active',
         latest_request_id: null,
+        payload: null,
         created_at:
           entities_create_credit_score_subscription_response.created_at,
         updated_at:
@@ -1023,6 +1009,35 @@ describe('Entities - core methods tests', () => {
         expect_credit_score_results,
         'credit_score'
       );
+    });
+
+    it('should create an attributes subscription for an entity', async () => {
+      entities_create_attributes_subscription_response = await client
+        .entities(entities_create_response.id)
+        .subscriptions.create({
+          enroll: 'attribute',
+          payload: {
+            attributes: {
+              requested_attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+            }
+          }
+        });
+
+      const expect_results: IEntitySubscription = {
+        id: entities_create_attributes_subscription_response.id,
+        name: 'attribute',
+        status: 'active',
+        payload: {
+          attributes: {
+            requested_attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+          }
+        },
+        latest_request_id: entities_create_attributes_subscription_response.latest_request_id,
+        created_at: entities_create_attributes_subscription_response.created_at,
+        updated_at: entities_create_attributes_subscription_response.updated_at,
+      };
+
+      entities_create_attributes_subscription_response.should.be.eql(expect_results);
     });
 
     it('should retrieve a subscription for an entity', async () => {
@@ -1042,6 +1057,7 @@ describe('Entities - core methods tests', () => {
         id: entities_create_connect_subscription_response.id,
         name: 'connect',
         status: 'active',
+        payload: null,
         latest_request_id:
           entities_connect_subscription_response.latest_request_id,
         created_at: entities_connect_subscription_response.created_at,
@@ -1052,6 +1068,7 @@ describe('Entities - core methods tests', () => {
         id: entities_create_credit_score_subscription_response.id,
         name: 'credit_score',
         status: 'active',
+        payload: null,
         latest_request_id:
           entities_credit_score_subscription_response.latest_request_id,
         created_at: entities_credit_score_subscription_response.created_at,
@@ -1072,10 +1089,28 @@ describe('Entities - core methods tests', () => {
         .subscriptions.list();
 
       const expect_results: IEntitySubscriptionResponse = {
+        attribute: {
+          id: entities_create_attributes_subscription_response.id,
+          name: 'attribute',
+          status: 'active',
+          payload: {
+            attributes: {
+              requested_attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+            }
+          },
+          latest_request_id:
+            entities_subscription_list_response.attribute?.latest_request_id ||
+            null,
+          created_at:
+            entities_subscription_list_response.attribute?.created_at || '',
+          updated_at:
+            entities_subscription_list_response.attribute?.updated_at || '',
+        },
         connect: {
           id: entities_create_connect_subscription_response.id,
           name: 'connect',
           status: 'active',
+          payload: null,
           latest_request_id:
             entities_subscription_list_response.connect?.latest_request_id ||
             null,
@@ -1088,6 +1123,7 @@ describe('Entities - core methods tests', () => {
           id: entities_create_credit_score_subscription_response.id,
           name: 'credit_score',
           status: 'active',
+          payload: null,
           latest_request_id:
             entities_subscription_list_response.credit_score
               ?.latest_request_id || null,
@@ -1110,6 +1146,7 @@ describe('Entities - core methods tests', () => {
         id: entities_create_connect_subscription_response.id,
         name: 'connect',
         status: 'inactive',
+        payload: null,
         latest_request_id: null,
         created_at: entities_subscription_delete_response.created_at,
         updated_at: entities_subscription_delete_response.updated_at,
