@@ -384,6 +384,7 @@ export interface IAccountSubscription {
   id: string;
   name: TAccountSubscriptionTypes;
   status: TAccountSubscriptionStatuses;
+  payload: any | null;
   latest_request_id: string | null;
   created_at: string;
   updated_at: string;
