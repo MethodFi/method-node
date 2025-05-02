@@ -152,21 +152,49 @@ export interface IEntityCreditScores {
   updated_at: string,
 };
 
-export type TCreditHealthAttributeRating = 'excellent' | 'good' | 'fair' | 'needs_work';
+export const CreditHealthAttributeRatings = {
+  excellent: 'excellent',
+  good: 'good',
+  fair: 'fair',
+  needs_work: 'needs_work',
+} as const;
+
+export type TCreditHealthAttributeRating = keyof typeof CreditHealthAttributeRatings;
 
 export interface ICreditHealthAttribute {
   value: number;
   rating: TCreditHealthAttributeRating;
+  metadata?: {} | null;
 }
 
 export interface IEntityAttributesType {
   credit_health_credit_card_usage: ICreditHealthAttribute;
   credit_health_derogatory_marks: ICreditHealthAttribute;
   credit_health_hard_inquiries: ICreditHealthAttribute;
+  credit_health_soft_inquiries: ICreditHealthAttribute;
   credit_health_total_accounts: ICreditHealthAttribute;
   credit_health_credit_age: ICreditHealthAttribute;
   credit_health_payment_history: ICreditHealthAttribute;
   credit_health_open_accounts: ICreditHealthAttribute;
+  credit_health_entity_delinquent: ICreditHealthAttribute;
+}
+
+export const EntityAttributeNames = {
+  credit_health_credit_card_usage: 'credit_health_credit_card_usage',
+  credit_health_derogatory_marks: 'credit_health_derogatory_marks',
+  credit_health_hard_inquiries: 'credit_health_hard_inquiries',
+  credit_health_soft_inquiries: 'credit_health_soft_inquiries',
+  credit_health_total_accounts: 'credit_health_total_accounts',
+  credit_health_credit_age: 'credit_health_credit_age',
+  credit_health_payment_history: 'credit_health_payment_history',
+  credit_health_open_accounts: 'credit_health_open_accounts',
+  credit_health_entity_delinquent: 'credit_health_entity_delinquent',
+} as const;
+
+export type TEntityAttributeNames = keyof typeof EntityAttributeNames;
+
+export interface IEntityAttributesCreateOpts {
+  attributes: TEntityAttributeNames[];
 }
 
 export interface IEntityAttributes {
@@ -263,10 +291,17 @@ export const EntitySubscriptionStatuses = {
 
 export type TEntitySubscriptionStatuses = keyof typeof EntitySubscriptionStatuses;
 
+export interface IEntitySubscriptionPayload {
+  attributes?: {
+    requested_attributes: TEntityAttributeNames[];
+  } | null;
+};
+
 export interface IEntitySubscription {
   id: string;
   name: TEntitySubscriptionNames;
   status: TEntitySubscriptionStatuses;
+  payload: IEntitySubscriptionPayload | null;
   latest_request_id: string | null;
   created_at: string;
   updated_at: string;
@@ -275,10 +310,12 @@ export interface IEntitySubscription {
 export interface IEntitySubscriptionResponse {
   connect?: IEntitySubscription;
   credit_score?: IEntitySubscription;
+  attribute?: IEntitySubscription;
 };
 
 export interface IEntitySubscriptionCreateOpts {
   enroll: TEntitySubscriptionNames;
+  payload?: IEntitySubscriptionPayload;
 };
 
 export const EntityVerificationSessionStatuses = {

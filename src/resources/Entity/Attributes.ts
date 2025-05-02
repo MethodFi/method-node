@@ -1,6 +1,6 @@
 import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
-import type { IEntityAttributes } from './types';
+import type { IEntityAttributes, IEntityAttributesCreateOpts } from './types';
 
 export default class EntityAttributes extends Resource {
   constructor(config: Configuration) {
@@ -34,7 +34,7 @@ export default class EntityAttributes extends Resource {
    * @returns Returns an Entity’s Attributes object.
    */
 
-  async create() {
-    return super._create<IResponse<IEntityAttributes>, {}>({});
+  async create(opts: IEntityAttributesCreateOpts) {
+    return super._create<IResponse<IEntityAttributes>, IEntityAttributesCreateOpts>(opts);
   }
 };

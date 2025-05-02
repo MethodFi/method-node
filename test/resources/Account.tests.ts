@@ -146,7 +146,7 @@ describe('Accounts - core methods tests', () => {
           mask: '8721',
           ownership: 'unknown',
           type: 'credit_card',
-          name: 'Chase Sapphire Reserve'
+          name: 'Chase Credit Card'
         },
         latest_verification_session: accounts_create_liability_response.latest_verification_session,
         balance: null,
@@ -638,6 +638,7 @@ describe('Accounts - core methods tests', () => {
         id: create_txn_subscriptions_response.id,
         name: 'transaction',
         status: 'active',
+        payload: null,
         latest_request_id: null,
         created_at: create_txn_subscriptions_response.created_at,
         updated_at: create_txn_subscriptions_response.updated_at
@@ -656,6 +657,7 @@ describe('Accounts - core methods tests', () => {
         id: create_update_subscriptions_response.id,
         name: 'update',
         status: 'active',
+        payload: null,
         latest_request_id: null,
         created_at: create_update_subscriptions_response.created_at,
         updated_at: create_update_subscriptions_response.updated_at
@@ -674,6 +676,7 @@ describe('Accounts - core methods tests', () => {
         id: create_update_snapshot_subscriptions_response.id,
         name: 'update.snapshot',
         status: 'active',
+        payload: null,
         latest_request_id: null,
         created_at: create_update_snapshot_subscriptions_response.created_at,
         updated_at: create_update_snapshot_subscriptions_response.updated_at
@@ -703,6 +706,7 @@ describe('Accounts - core methods tests', () => {
           id: create_update_subscriptions_response.id,
           name: 'update',
           status: 'active',
+          payload: null,
           latest_request_id: null,
           created_at: subscriptions_response.update?.created_at || '',
           updated_at: subscriptions_response.update?.updated_at || ''
@@ -714,6 +718,7 @@ describe('Accounts - core methods tests', () => {
           id: create_txn_subscriptions_response.id,
           name: 'transaction',
           status: 'active',
+          payload: null,
           latest_request_id: null,
           created_at: subscriptions_transactions_response.transaction?.created_at || '',
           updated_at: subscriptions_transactions_response.transaction?.updated_at || ''
@@ -725,6 +730,7 @@ describe('Accounts - core methods tests', () => {
           id: create_update_snapshot_subscriptions_response.id,
           name: 'update.snapshot',
           status: 'active',
+          payload: null,
           latest_request_id: null,
           created_at: subscriptions_update_snapshot_response['update.snapshot']?.created_at || '',
           updated_at: subscriptions_update_snapshot_response['update.snapshot']?.updated_at || ''
@@ -746,6 +752,7 @@ describe('Accounts - core methods tests', () => {
         id: create_txn_subscriptions_response.id,
         name: 'transaction',
         status: 'active',
+        payload: null,
         latest_request_id: null,
         created_at: retrieve_subscriptions_response.created_at,
         updated_at: retrieve_subscriptions_response.updated_at
@@ -764,6 +771,7 @@ describe('Accounts - core methods tests', () => {
         id: create_update_subscriptions_response.id,
         name: 'update',
         status: 'active',
+        payload: null,
         latest_request_id: null,
         created_at: retrieve_subscriptions_response.created_at,
         updated_at: retrieve_subscriptions_response.updated_at
@@ -782,6 +790,7 @@ describe('Accounts - core methods tests', () => {
         id: create_update_snapshot_subscriptions_response.id,
         name: 'update.snapshot',
         status: 'active',
+        payload: null,
         latest_request_id: null,
         created_at: retrieve_subscriptions_response.created_at,
         updated_at: retrieve_subscriptions_response.updated_at
@@ -800,6 +809,7 @@ describe('Accounts - core methods tests', () => {
         id: create_update_snapshot_subscriptions_response.id,
         name: 'update.snapshot',
         status: 'inactive',
+        payload: null,
         latest_request_id: null,
         created_at: delete_subscriptions_response.created_at,
         updated_at: delete_subscriptions_response.updated_at
@@ -939,7 +949,7 @@ describe('Accounts - core methods tests', () => {
           credit_limit: 2800000,
           usage_pattern: null
         },
-        data_as_of: null,
+        data_as_of: retrieve_updates_response.data_as_of,
         error: null,
         created_at: retrieve_updates_response.created_at,
         updated_at: retrieve_updates_response.updated_at
@@ -975,7 +985,7 @@ describe('Accounts - core methods tests', () => {
             credit_limit: 2800000,
             usage_pattern: null
           },
-          data_as_of: null,
+          data_as_of: update_to_check?.data_as_of || null,
           error: null,
           created_at: update_to_check?.created_at || '',
           updated_at: update_to_check?.updated_at || ''
@@ -1110,7 +1120,7 @@ describe('Accounts - core methods tests', () => {
           status: 'available',
           status_error: null,
           latest_request_id: accounts_retrieve_product_list_response.card_brand?.latest_request_id || null,
-          is_subscribable: false,
+          is_subscribable: true,
           created_at: accounts_retrieve_product_list_response.card_brand?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.card_brand?.updated_at || ''
         },
