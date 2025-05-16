@@ -966,9 +966,7 @@ describe('Entities - core methods tests', () => {
     it('should create a connect subscription for an entity', async () => {
       entities_create_connect_subscription_response = await client
         .entities(entities_create_response.id)
-        .subscriptions.create({
-          enroll: 'connect'
-        });
+        .subscriptions.create('connect');
 
       const expect_connect_results: IEntitySubscription = {
         id: entities_create_connect_subscription_response.id,
@@ -989,9 +987,7 @@ describe('Entities - core methods tests', () => {
     it('should create a credit_score subscription for an entity', async () => {
       entities_create_credit_score_subscription_response = await client
         .entities(entities_create_response.id)
-        .subscriptions.create({
-          enroll: 'credit_score'
-        });
+        .subscriptions.create('credit_score');
 
       const expect_credit_score_results: IEntitySubscription = {
         id: entities_create_credit_score_subscription_response.id,
