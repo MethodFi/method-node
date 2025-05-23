@@ -441,6 +441,7 @@ export interface IAccountTransaction {
   transaction_amount: number;
   transaction_auth_amount: number;
   transaction_currency_code: string;
+  merchant: ITransactionMerchant | null;
   merchant_category_code: string;
   status: TAccountTransactionStatuses;
   transacted_at: Date;
@@ -449,6 +450,11 @@ export interface IAccountTransaction {
   original_txn_id: string | null;
   created_at: Date;
   updated_at: Date;
+};
+
+export interface ITransactionMerchant {
+  id: string;
+  logo: string | null;
 };
 
 export const AccountVerificationSessionStatuses = {
