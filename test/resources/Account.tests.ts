@@ -304,6 +304,7 @@ describe('Accounts - core methods tests', () => {
           last4: '1580',
           brands: card_create_response.brands,
           shared: false,
+          source: card_create_response.source,
           error: null,
           created_at: card_create_response.created_at,
           updated_at: card_create_response.updated_at
@@ -327,6 +328,7 @@ describe('Accounts - core methods tests', () => {
         last4: '1580',
         brands: card_create_response.brands,
         shared: false,
+        source: card_retrieve_response.source,
         error: null,
         created_at: card_retrieve_response.created_at,
         updated_at: card_retrieve_response.updated_at
