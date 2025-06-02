@@ -78,12 +78,12 @@ describe('Entities - core methods tests', () => {
             verified: false,
             matched: false,
             latest_verification_session: null,
-            methods: ['element', 'kba'],
+            methods: ['element', 'kba', 'opal'],
           },
           phone: {
             verified: false,
             latest_verification_session: null,
-            methods: ['element', 'sna', 'sms', 'byo_sms'],
+            methods: ['element', 'sna', 'sms', 'byo_sms', 'opal'],
           },
         },
         connect: null,
@@ -137,12 +137,12 @@ describe('Entities - core methods tests', () => {
             verified: false,
             matched: false,
             latest_verification_session: null,
-            methods: ['element', 'kba'],
+            methods: ['element', 'kba', 'opal'],
           },
           phone: {
             verified: false,
             latest_verification_session: null,
-            methods: ['element', 'sna', 'sms', 'byo_sms'],
+            methods: ['element', 'sna', 'sms', 'byo_sms', 'opal'],
           },
         },
         connect: null,
@@ -207,14 +207,14 @@ describe('Entities - core methods tests', () => {
             latest_verification_session:
               entities_update_response.verification?.identity
                 ?.latest_verification_session || null,
-            methods: ['element', 'kba'],
+            methods: ['element', 'kba', 'opal'],
           },
           phone: {
             verified: false,
             latest_verification_session:
               entities_update_response.verification?.phone
                 ?.latest_verification_session || null,
-            methods: ['element', 'sna', 'sms', 'byo_sms'],
+            methods: ['element', 'sna', 'sms', 'byo_sms', 'opal'],
           },
         },
         connect: null,
