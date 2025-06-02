@@ -31,6 +31,7 @@ export const EntityVerificationIdentityMethods = {
   kba: 'kba',
   byo_kyc: 'byo_kyc',
   element: 'element',
+  opal: 'opal',
 } as const;
 
 export type TEntityVerificationIdentityMethods = keyof typeof EntityVerificationIdentityMethods;
@@ -40,6 +41,7 @@ export const EntityVerificationPhoneMethods = {
   sna: 'sna',
   byo_sms: 'byo_sms',
   element: 'element',
+  opal: 'opal',
 } as const;
 
 export type TEntityVerificationPhoneMethods = keyof typeof EntityVerificationPhoneMethods;
