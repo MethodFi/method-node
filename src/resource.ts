@@ -206,17 +206,19 @@ export default class Resource extends ExtensibleFunction {
     return (await this.client.get('', { params })).data.data;
   }
 
-  protected async _create<Response, Data>(
+  protected async _create<Response, Data, Params = {}>(
     data: Data,
+    params?: Params,
     requestConfig: IRequestConfig = {},
   ): Promise<Response> {
-    const _requestConfig = { headers: {} };
-    if (requestConfig.idempotency_key) {
-      _requestConfig.headers = {
-        'Idempotency-Key': requestConfig.idempotency_key,
-      };
-    }
-    return (await this.client.post('', data, _requestConfig)).data.data;
+    const config = {
+      headers: requestConfig.idempotency_key
+        ? { 'Idempotency-Key': requestConfig.idempotency_key }
+        : {},
+      params,
+    };
+
+    return (await this.client.post('', data, config)).data.data;
   }
 
   protected async _createWithSubPath<Response, Data>(
