@@ -239,6 +239,7 @@ describe('Accounts - core methods tests', () => {
       };
 
       balances_create_response.should.be.eql(expect_results);
+      await new Promise(r => setTimeout(r, 5000))
     });
 
     it('should successfully retrieve the balance of an account.', async () => {
@@ -311,7 +312,7 @@ describe('Accounts - core methods tests', () => {
         };
 
       card_create_response.should.be.eql(expect_results);
-      await new Promise(r => setTimeout(r, 2000))
+      await new Promise(r => setTimeout(r, 5000))
     });
 
     it('should successfully retrieve a card for an account.', async () => {
