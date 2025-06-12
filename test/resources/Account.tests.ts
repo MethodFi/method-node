@@ -311,6 +311,7 @@ describe('Accounts - core methods tests', () => {
         };
 
       card_create_response.should.be.eql(expect_results);
+      await new Promise(r => setTimeout(r, 2000))
     });
 
     it('should successfully retrieve a card for an account.', async () => {
@@ -337,7 +338,6 @@ describe('Accounts - core methods tests', () => {
       expect(brand.name).to.equal('Chase Sapphire Reserve');
       expect(brand.url).to.equal('https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png');
       expect(brand.art_id).to.be.a('string').and.match(/^art_/);
-      };
 
       card_retrieve_response.should.be.eql(expect_results);
     });
