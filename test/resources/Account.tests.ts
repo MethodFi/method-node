@@ -1,4 +1,4 @@
-import { should } from 'chai';
+import { should, expect } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
 import { awaitResults } from '../utils';
@@ -299,7 +299,7 @@ describe('Accounts - core methods tests', () => {
           id: card_create_response.id,
           account_id: test_credit_card_account.id,
           network: 'visa',
-          status: 'completed',
+          status: 'in_progress',
           issuer: card_create_response.issuer,
           last4: '1580',
           brands: card_create_response.brands,
@@ -311,6 +311,7 @@ describe('Accounts - core methods tests', () => {
         };
 
       card_create_response.should.be.eql(expect_results);
+      await new Promise(r => setTimeout(r, 2000))
     });
 
     it('should successfully retrieve a card for an account.', async () => {
@@ -319,22 +320,24 @@ describe('Accounts - core methods tests', () => {
         .cardBrands
         .retrieve(card_create_response.id);
 
-      const expect_results: IAccountCardBrand = {
-        id: card_create_response.id,
-        account_id: test_credit_card_account.id,
-        network: 'visa',
-        status: 'completed',
-        issuer: card_retrieve_response.issuer,
-        last4: '1580',
-        brands: card_create_response.brands,
-        shared: false,
-        source: card_retrieve_response.source,
-        error: null,
-        created_at: card_retrieve_response.created_at,
-        updated_at: card_retrieve_response.updated_at
-      };
+      expect(card_retrieve_response.id).to.equal(card_create_response.id);
+      expect(card_retrieve_response.account_id).to.equal(test_credit_card_account.id);
+      expect(card_retrieve_response.network).to.equal('visa');
+      expect(card_retrieve_response.status).to.equal('completed');
+      expect(card_retrieve_response.issuer).to.equal(card_create_response.issuer);
+      expect(card_retrieve_response.last4).to.equal('1580');
+      expect(card_retrieve_response.shared).to.equal(false);
+      expect(card_retrieve_response.source).to.equal('network');
+      expect(card_retrieve_response.error).to.be.null;
+      expect(card_retrieve_response.created_at).to.be.a('string');
+      expect(card_retrieve_response.updated_at).to.be.a('string');
 
-      card_retrieve_response.should.be.eql(expect_results);
+      const brand = card_retrieve_response.brands?.[0];
+      expect(brand).to.exist;
+      expect(brand.id).to.equal('brand_UBwVzXjpP4PJ6');
+      expect(brand.name).to.equal('Chase Sapphire Reserve');
+      expect(brand.url).to.equal('https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png');
+      expect(brand.art_id).to.be.a('string').and.match(/^art_/);
     });
 
     it('should successfully list card brands for an account.', async () => {
@@ -346,8 +349,26 @@ describe('Accounts - core methods tests', () => {
       };
 
       const card_brands = await awaitResults(listCardBrands);
+      const result = card_brands[0];
 
-      card_brands[0].should.be.eql(card_create_response);
+      expect(result.id).to.equal(card_create_response.id);
+      expect(result.account_id).to.equal(test_credit_card_account.id);
+      expect(result.network).to.equal('visa');
+      expect(result.status).to.equal('completed');
+      expect(result.issuer).to.equal(card_create_response.issuer);
+      expect(result.last4).to.equal('1580');
+      expect(result.shared).to.equal(false);
+      expect(result.source).to.equal('network');
+      expect(result.error).to.be.null;
+      expect(result.created_at).to.be.a('string');
+      expect(result.updated_at).to.be.a('string');
+
+      const brand = result.brands?.[0];
+      expect(brand).to.exist;
+      expect(brand.id).to.equal('brand_UBwVzXjpP4PJ6');
+      expect(brand.name).to.equal('Chase Sapphire Reserve');
+      expect(brand.url).to.equal('https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png');
+      expect(brand.art_id).to.be.a('string').and.match(/^art_/);
     });
   });
 
