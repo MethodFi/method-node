@@ -299,10 +299,12 @@ export interface IAccountBalance {
 };
 
 export interface IAccountCardBrandInfo {
-  art_id: string;
+  id: string;
+  art_id?: string;
   url: string;
   name: string;
 };
+
 
 export interface IAccountCardBrand {
   id: string;
@@ -311,7 +313,7 @@ export interface IAccountCardBrand {
   issuer: string | null;
   last4: string | null;
   brands: IAccountCardBrandInfo[];
-  status: 'completed' | 'failed' | 'in_progress';
+  status: 'in_progress' | 'completed' | 'failed';
   shared: boolean;
   source: 'method' | 'network' | null;
   error: IResourceError | null;
