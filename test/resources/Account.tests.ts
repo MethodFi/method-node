@@ -311,6 +311,7 @@ describe('Accounts - core methods tests', () => {
         };
 
       card_create_response.should.be.eql(expect_results);
+      await new Promise(r => setTimeout(r, 5000));
     });
 
     it('should successfully retrieve a card for an account.', async () => {
