@@ -311,7 +311,7 @@ export interface IAccountCardBrand {
   issuer: string | null;
   last4: string | null;
   brands: IAccountCardBrandInfo[];
-  status: 'completed' | 'failed';
+  status: 'completed' | 'failed' | 'in_progress';
   shared: boolean;
   source: 'method' | 'network' | null;
   error: IResourceError | null;
