@@ -23,7 +23,7 @@ describe('Reports - core methods tests', () => {
         type: 'payments.created.current',
         url: `https://dev.methodfi.com/reports/${reports_create_response.id}/download`,
         status: 'completed',
-        metadata: null,
+        metadata: reports_create_response.metadata,
         created_at: reports_create_response.created_at,
         updated_at: reports_create_response.updated_at,
       };
@@ -41,7 +41,7 @@ describe('Reports - core methods tests', () => {
         type: 'payments.created.current',
         url: `https://dev.methodfi.com/reports/${reports_create_response.id}/download`,
         status: 'completed',
-        metadata: null,
+        metadata: reports_create_response.metadata,
         created_at: reports_retrieve_response.created_at,
         updated_at: reports_retrieve_response.updated_at,
       };
