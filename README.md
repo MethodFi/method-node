@@ -933,6 +933,7 @@ const webhook = await method.webhooks.create({
   type: 'payment.update',
   url: 'https://api.example.app/webhook',
   auth_token: 'md7UqcTSmvXCBzPORDwOkE',
+  hmac_secret: "bd7UscLSmvEXazTOQDwOKW",
 });
 ```
 
