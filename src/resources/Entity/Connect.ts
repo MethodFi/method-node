@@ -25,7 +25,7 @@ export interface IExpandableOpts {
 export interface IConnectListOpts extends IResourceListOpts, IExpandableOpts {}
 
 export const AccountProductsEligibleForAutomaticExecution = [
-  'account_attribute',
+  'attribute',
   'balance',
   'card_brand',
   'update',
