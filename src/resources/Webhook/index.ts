@@ -82,6 +82,7 @@ export interface IWebhookCreateOpts {
   type: TWebhookTypes;
   url: string;
   auth_token?: string;
+  hmac_secret?: string;
   metadata?: {};
   expand_event?: boolean;
 };

@@ -14,10 +14,12 @@ export const AccountExpandableFields = {
   latest_verification_session: 'latest_verification_session',
 } as const;
 
-type AccountExpandableField = typeof AccountExpandableFields[keyof typeof AccountExpandableFields];
+type AccountFieldKey = typeof AccountExpandableFields[keyof typeof AccountExpandableFields];
+
+export type ExpandField = 'accounts' | `accounts.${AccountFieldKey}`;
 
 export interface IExpandableOpts {
-  expand?: AccountExpandableField[];
+  expand?: ExpandField[];
 }
 
 export interface IConnectListOpts extends IResourceListOpts, IExpandableOpts {}
