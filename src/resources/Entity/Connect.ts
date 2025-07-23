@@ -2,7 +2,6 @@ import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type { IEntityConnect } from './types';
 
-
 export const AccountExpandableFields = {
   sensitive: 'sensitive',
   balance: 'balance',
