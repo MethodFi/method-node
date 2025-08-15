@@ -1,6 +1,6 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
-import { client } from '../config';
+import { client, clientWithPreferAsync } from '../config';
 import { awaitResults } from '../utils';
 import type {
   IEntity,
@@ -23,12 +23,15 @@ should();
 
 describe('Entities - core methods tests', () => {
   let entities_create_response: IResponse<IEntity>;
+  let entities_create_response_async: IResponse<IEntity>;
   let entity_with_identity_cap: IResponse<IEntity>;
   let entity_with_vehicle: IResponse<IEntity>;
   let entities_retrieve_response: IResponse<IEntity>;
   let entities_update_response: IResponse<IEntity>;
+  let entities_update_response_async: IResponse<IEntity>;
   let entities_list_response: IResponse<IEntity>[];
   let entities_connect_create_response: IResponse<IEntityConnect>;
+  let entities_connect_create_response_async: IResponse<IEntityConnect>;
   let entities_account_list_response: IResponse<IAccount>[];
   let entities_account_ids: string[];
   let entities_create_credit_score_response: IResponse<IEntityCreditScores>;
@@ -51,7 +54,14 @@ describe('Entities - core methods tests', () => {
         metadata: {},
       });
 
+      entities_create_response_async = await clientWithPreferAsync.entities.create({
+        type: 'individual',
+        individual: {},
+        metadata: {},
+      });
+
       entities_create_response.restricted_subscriptions?.sort();
+      entities_create_response_async.restricted_subscriptions?.sort();
 
       const expect_results: IEntity = {
         id: entities_create_response.id,
@@ -101,7 +111,56 @@ describe('Entities - core methods tests', () => {
         updated_at: entities_create_response.updated_at,
       };
 
+      const expect_results_async: IEntity = {
+        id: entities_create_response_async.id,
+        type: 'individual',
+        individual: {
+          first_name: null,
+          last_name: null,
+          phone: null,
+          dob: null,
+          email: null,
+          ssn: null,
+          ssn_4: null,
+        },
+        address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          zip: null,
+        },
+        vehicle: null,
+        verification: {
+          identity: {
+            verified: false,
+            matched: false,
+            latest_verification_session: null,
+            methods: ['element', 'opal', 'kba'],
+          },
+          phone: {
+            verified: false,
+            latest_verification_session: null,
+            methods: ['element', 'opal', 'sna', 'sms', 'byo_sms'],
+          },
+        },
+        connect: null,
+        credit_score: null,
+        attribute: null,
+        products: [],
+        restricted_products: entities_create_response_async.restricted_products,
+        subscriptions: [],
+        available_subscriptions: [],
+        restricted_subscriptions: entities_create_response_async.restricted_subscriptions,
+        status: 'incomplete',
+        error: null,
+        metadata: {},
+        created_at: entities_create_response_async.created_at,
+        updated_at: entities_create_response_async.updated_at,
+      };
+
       entities_create_response.should.be.eql(expect_results);
+      entities_create_response_async.should.be.eql(expect_results_async);
     });
   });
 
@@ -234,6 +293,70 @@ describe('Entities - core methods tests', () => {
       };
 
       entities_update_response.should.be.eql(expect_results);
+
+      entities_update_response_async = await clientWithPreferAsync.entities.update(
+        entities_create_response_async.id,
+        {
+          individual: {
+            first_name: 'Kevin',
+            last_name: 'Doyle',
+            phone: '+15121231111',
+          },
+        }
+      );
+
+      entities_update_response_async.restricted_subscriptions?.sort();
+      entities_update_response_async.restricted_products?.sort();
+
+      const expect_results_async: IEntity = {
+        id: entities_create_response_async.id,
+        type: 'individual',
+        individual: {
+          first_name: 'Kevin',
+          last_name: 'Doyle',
+          phone: '+15121231111',
+          dob: null,
+          email: null,
+          ssn: null,
+          ssn_4: null,
+        },
+        address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          zip: null,
+        },
+        verification: {
+          identity: {
+            verified: false,
+            matched: true,
+            latest_verification_session: null,
+            methods: ['element', 'opal', 'kba'],
+          },
+          phone: {
+            verified: false,
+            latest_verification_session: null,
+            methods: ['element', 'opal', 'sna', 'sms', 'byo_sms'],
+          },
+        },
+        connect: null,
+        vehicle: null,
+        credit_score: null,
+        attribute: null,
+        products: entities_update_response_async.products,
+        restricted_products: entities_update_response_async.restricted_products,
+        subscriptions: entities_update_response_async.subscriptions,
+        available_subscriptions: entities_update_response_async.available_subscriptions,
+        restricted_subscriptions: entities_update_response_async.restricted_subscriptions,
+        status: 'incomplete',
+        error: null,
+        metadata: {},
+        created_at: entities_update_response_async.created_at,
+        updated_at: entities_update_response_async.updated_at,
+      };
+
+      entities_update_response_async.should.be.eql(expect_results_async);
     });
   });
 
@@ -250,6 +373,16 @@ describe('Entities - core methods tests', () => {
     it('should create a phone verification session for an entity', async () => {
       entities_create_phone_verification_session_response = await client
         .entities(entities_create_response.id)
+        .verificationSessions.create({
+          type: 'phone',
+          method: 'byo_sms',
+          byo_sms: {
+            timestamp: '2021-09-01T00:00:00.000Z',
+          },
+        });
+
+      await clientWithPreferAsync
+        .entities(entities_create_response_async.id)
         .verificationSessions.create({
           type: 'phone',
           method: 'byo_sms',
@@ -282,6 +415,14 @@ describe('Entities - core methods tests', () => {
     it('should successfully create an identity verification session for an entity', async () => {
       entities_create_verification_session_response = await client
         .entities(entities_create_response.id)
+        .verificationSessions.create({
+          type: 'identity',
+          method: 'kba',
+          kba: {},
+        });
+
+      await clientWithPreferAsync
+        .entities(entities_create_response_async.id)
         .verificationSessions.create({
           type: 'identity',
           method: 'kba',
@@ -348,6 +489,8 @@ describe('Entities - core methods tests', () => {
         entity_id: entities_create_response.id,
         status: 'completed',
         accounts: entities_account_ids,
+        requested_products: [],
+        requested_subscriptions: [],
         error: null,
         created_at: entities_connect_create_response.created_at,
         updated_at: entities_connect_create_response.updated_at,
@@ -368,6 +511,8 @@ describe('Entities - core methods tests', () => {
         entity_id: entities_create_response.id,
         status: 'completed',
         accounts: entities_account_ids,
+        requested_products: [],
+        requested_subscriptions: [],
         error: null,
         created_at: entities_connect_create_response.created_at,
         updated_at: entities_connect_create_response.updated_at,
@@ -377,13 +522,10 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully list connections for an entity', async () => {
-      const listConnections = async () => {
-        return await client
-          .entities(entities_create_response.id)
-          .connect.list();
-      };
+      const connections = await client
+        .entities(entities_create_response.id)
+        .connect.list();
 
-      const connections = await awaitResults(listConnections);
       connections[0].accounts = connections[0].accounts?.sort() || null;
 
       const expect_results: IEntityConnect = {
@@ -391,12 +533,64 @@ describe('Entities - core methods tests', () => {
         entity_id: entities_create_response.id,
         status: 'completed',
         accounts: entities_account_ids,
+        requested_products: [],
+        requested_subscriptions: [],
         error: null,
         created_at: entities_connect_create_response.created_at,
         updated_at: entities_connect_create_response.updated_at,
       };
 
       connections[0].should.be.eql(expect_results);
+    });
+
+    it('should successfully create a connection for an entity (async).', async () => {
+      entities_connect_create_response_async = await clientWithPreferAsync
+        .entities(entities_create_response_async.id)
+        .connect.create({
+          products: ['card_brand'],
+          subscriptions: ['update'],
+        });
+
+      const expect_results: IEntityConnect = {
+        id: entities_connect_create_response_async.id,
+        entity_id: entities_create_response_async.id,
+        status: 'pending',
+        accounts: null,
+        requested_products: ['card_brand'],
+        requested_subscriptions: ['update'],
+        error: null,
+        created_at: entities_connect_create_response_async.created_at,
+        updated_at: entities_connect_create_response_async.updated_at,
+      };
+
+      entities_connect_create_response_async.should.be.eql(expect_results);
+    });
+
+    it('should successfully retrieve results of a connection for an entity (async).', async () => {
+      let entitiesConnectRetrieveResponse = async () => {
+        return await clientWithPreferAsync
+          .entities(entities_create_response_async.id)
+          .connect.retrieve(entities_connect_create_response_async.id);
+      };
+
+      const entities_connect_results_response_async = await awaitResults(entitiesConnectRetrieveResponse);
+
+      entities_connect_results_response_async.accounts =
+        entities_connect_results_response_async.accounts?.sort() || null;
+
+      const expect_results: IEntityConnect = {
+        id: entities_connect_create_response_async.id,
+        entity_id: entities_create_response_async.id,
+        status: 'completed',
+        accounts: entities_connect_results_response_async.accounts,
+        requested_products: ['card_brand'],
+        requested_subscriptions: ['update'],
+        error: null,
+        created_at: entities_connect_results_response_async.created_at,
+        updated_at: entities_connect_results_response_async.updated_at,
+      };
+
+      entities_connect_results_response_async.should.be.eql(expect_results);
     });
   });
 
@@ -744,13 +938,9 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully retrieve the results of a request for a vehicle', async () => {
-      const getVehicles = async () => {
-        return await client
+      const vehicles = await client
           .entities(entity_with_vehicle.id)
           .vehicles.retrieve(entities_create_vehicle_response.id);
-      };
-
-      const vehicles = await awaitResults(getVehicles);
 
       const expect_results: IEntityVehicles = {
         id: entities_create_vehicle_response.id,
@@ -766,13 +956,9 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully list vehicles for an entity', async () => {
-      const listVehicles = async () => {
-        return await client
-          .entities(entity_with_vehicle.id)
-          .vehicles.list();
-      };
-
-      const vehicles = await awaitResults(listVehicles);
+      const vehicles = await client
+        .entities(entity_with_vehicle.id)
+        .vehicles.list();
 
       vehicles[0].should.be.eql(entities_create_vehicle_response);
     });
@@ -786,13 +972,13 @@ describe('Entities - core methods tests', () => {
 
       const expect_results: IEntityProductListResponse = {
         connect: {
-          id: entities_retrieve_product_list_response.connect?.id || '',
           name: 'connect',
           status: 'available',
           status_error: null,
           latest_request_id:
             entities_retrieve_product_list_response.connect
               ?.latest_request_id || null,
+          latest_successful_request_id: entities_retrieve_product_list_response.connect?.latest_successful_request_id || null,
           is_subscribable: true,
           created_at:
             entities_retrieve_product_list_response.connect?.created_at || '',
@@ -800,13 +986,13 @@ describe('Entities - core methods tests', () => {
             entities_retrieve_product_list_response.connect?.updated_at || '',
         },
         credit_score: {
-          id: entities_retrieve_product_list_response.credit_score?.id || '',
           name: 'credit_score',
           status: 'available',
           status_error: null,
           latest_request_id:
             entities_retrieve_product_list_response.credit_score
               ?.latest_request_id || null,
+          latest_successful_request_id: entities_retrieve_product_list_response.credit_score?.latest_successful_request_id || null,
           is_subscribable: true,
           created_at:
             entities_retrieve_product_list_response.credit_score?.created_at ||
@@ -816,13 +1002,13 @@ describe('Entities - core methods tests', () => {
             '',
         },
         identity: {
-          id: entities_retrieve_product_list_response.identity?.id || '',
           name: 'identity',
           status: 'available',
           status_error: null,
           latest_request_id:
             entities_retrieve_product_list_response.identity
               ?.latest_request_id || null,
+          latest_successful_request_id: entities_retrieve_product_list_response.identity?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at:
             entities_retrieve_product_list_response.identity?.created_at || '',
@@ -830,13 +1016,13 @@ describe('Entities - core methods tests', () => {
             entities_retrieve_product_list_response.identity?.updated_at || '',
         },
         attribute: {
-          id: entities_retrieve_product_list_response.attribute?.id || '',
           name: 'attribute',
           status: 'available',
           status_error: null,
           latest_request_id:
             entities_retrieve_product_list_response.attribute
               ?.latest_request_id || null,
+          latest_successful_request_id: entities_retrieve_product_list_response.attribute?.latest_successful_request_id || null,
           is_subscribable: true,
           created_at:
             entities_retrieve_product_list_response.attribute?.created_at || '',
@@ -844,25 +1030,25 @@ describe('Entities - core methods tests', () => {
             entities_retrieve_product_list_response.attribute?.updated_at || '',
         },
         vehicle: {
-          id: entities_retrieve_product_list_response.vehicle?.id || '',
           name: 'vehicle',
           status: 'available',
           status_error: null,
           latest_request_id:
             entities_retrieve_product_list_response.vehicle
               ?.latest_request_id || null,
+          latest_successful_request_id: entities_retrieve_product_list_response.vehicle?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at: entities_retrieve_product_list_response.vehicle?.created_at || '',
           updated_at: entities_retrieve_product_list_response.vehicle?.updated_at || '',
         },
         manual_connect: {
-          id: entities_retrieve_product_list_response.manual_connect?.id || '',
           name: 'manual_connect',
           status: 'restricted',
           status_error: entities_retrieve_product_list_response.manual_connect?.status_error || null,
           latest_request_id:
             entities_retrieve_product_list_response.manual_connect
               ?.latest_request_id || null,
+          latest_successful_request_id: entities_retrieve_product_list_response.manual_connect?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at: entities_retrieve_product_list_response.manual_connect?.created_at || '',
           updated_at: entities_retrieve_product_list_response.manual_connect?.updated_at || '',
@@ -870,95 +1056,6 @@ describe('Entities - core methods tests', () => {
       };
 
       entities_retrieve_product_list_response.should.be.eql(expect_results);
-    });
-
-    it('should retrieve a specific product for an entity', async () => {
-      const entity_connect_product = await client
-        .entities(entities_create_response.id)
-        .products.retrieve(
-          entities_retrieve_product_list_response.connect?.id || ''
-        );
-      const entity_credit_score_product = await client
-        .entities(entities_create_response.id)
-        .products.retrieve(
-          entities_retrieve_product_list_response.credit_score?.id || ''
-        );
-      const entity_identity_product = await client
-        .entities(entities_create_response.id)
-        .products.retrieve(
-          entities_retrieve_product_list_response.identity?.id || ''
-        );
-      const entity_attribute_product = await client
-        .entities(entities_create_response.id)
-        .products.retrieve(
-          entities_retrieve_product_list_response.attribute?.id || ''
-        );
-      const entity_vehicle_product = await client
-        .entities(entities_create_response.id)
-        .products.retrieve(
-          entities_retrieve_product_list_response.vehicle?.id || ''
-        );
-
-      const expect_connect_results: IEntityProduct = {
-        id: entities_retrieve_product_list_response.connect?.id || '',
-        name: 'connect',
-        status: 'available',
-        status_error: null,
-        latest_request_id: entity_connect_product.latest_request_id,
-        is_subscribable: true,
-        created_at: entity_connect_product.created_at,
-        updated_at: entity_connect_product.updated_at,
-      };
-
-      const expect_credit_score_results: IEntityProduct = {
-        id: entities_retrieve_product_list_response.credit_score?.id || '',
-        name: 'credit_score',
-        status: 'available',
-        status_error: null,
-        latest_request_id: entity_credit_score_product.latest_request_id,
-        is_subscribable: true,
-        created_at: entity_credit_score_product.created_at,
-        updated_at: entity_credit_score_product.updated_at,
-      };
-
-      const expect_identity_results: IEntityProduct = {
-        id: entities_retrieve_product_list_response.identity?.id || '',
-        name: 'identity',
-        status: 'available',
-        status_error: null,
-        latest_request_id: entity_identity_product.latest_request_id,
-        is_subscribable: false,
-        created_at: entity_identity_product.created_at,
-        updated_at: entity_identity_product.updated_at,
-      };
-
-      const expect_attribute_results: IEntityProduct = {
-        id: entities_retrieve_product_list_response.attribute?.id || '',
-        name: 'attribute',
-        status: 'available',
-        status_error: null,
-        latest_request_id: entity_attribute_product.latest_request_id,
-        is_subscribable: true,
-        created_at: entity_attribute_product.created_at,
-        updated_at: entity_attribute_product.updated_at,
-      };
-
-      const expect_vehicle_results: IEntityProduct = {
-        id: entities_retrieve_product_list_response.vehicle?.id || '',
-        name: 'vehicle',
-        status: 'available',
-        status_error: null,
-        latest_request_id: entity_vehicle_product.latest_request_id,
-        is_subscribable: false,
-        created_at: entity_vehicle_product.created_at,
-        updated_at: entity_vehicle_product.updated_at,
-      };
-
-      entity_vehicle_product.should.be.eql(expect_vehicle_results);
-      entity_connect_product.should.be.eql(expect_connect_results);
-      entity_credit_score_product.should.be.eql(expect_credit_score_results);
-      entity_identity_product.should.be.eql(expect_identity_results);
-      entity_attribute_product.should.be.eql(expect_attribute_results);
     });
   });
 

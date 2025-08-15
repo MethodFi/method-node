@@ -1,5 +1,6 @@
 import Configuration, { IConfigurationOpts, IResponse } from './configuration';
 import Account from './resources/Account';
+import CardProduct from './resources/CardProduct';
 import Element from './resources/Element';
 import Entity from './resources/Entity';
 import Event from './resources/Event';
@@ -12,6 +13,7 @@ import Simulate from './resources/Simulate';
 
 export class Method {
   accounts: Account;
+  cardProducts: CardProduct;
   elements: Element;
   events: Event;
   entities: Entity;
@@ -27,6 +29,7 @@ export class Method {
 
     // Resources
     this.accounts = new Account(config);
+    this.cardProducts = new CardProduct(config);
     this.elements = new Element(config);
     this.events = new Event(config);
     this.entities = new Entity(config);

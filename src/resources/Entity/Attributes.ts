@@ -9,6 +9,7 @@ export default class EntityAttributes extends Resource {
 
   /**
    * Retrieves an Attributes record for an Entity.
+   * https://docs.methodfi.com/reference/entities/attributes/retrieve
    *
    * @param attr_id ID of the Attribute
    * @returns Returns an Entity’s Attribute object.
@@ -20,6 +21,7 @@ export default class EntityAttributes extends Resource {
 
   /**
    * Retrieves a list of Attributes objects for an entity.
+   * https://docs.methodfi.com/reference/entities/attributes/list
    *
    * @returns Returns a list of Attributes objects.
    */
@@ -30,6 +32,7 @@ export default class EntityAttributes extends Resource {
 
   /**
    * Creates a new Attributes request to retrieve the Entity’s attributes.
+   * https://docs.methodfi.com/reference/entities/attributes/create
    *
    * @returns Returns an Entity’s Attributes object.
    */

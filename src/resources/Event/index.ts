@@ -32,7 +32,7 @@ export default class Event extends Resource {
   /**
    * Lists all events, optionally filtered by resource_id
    *
-   * @param opts IEventListOpts: https://docs.methodfi.com/api/core/events/list
+   * @param opts IEventListOpts: https://docs.methodfi.com/reference/events/list
    * @returns Returns a list of Event objects
    */
   async list(opts?: IEventListOpts) {

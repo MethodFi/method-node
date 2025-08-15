@@ -30,6 +30,7 @@ export class Payment extends Resource {
 
   /**
    * Retrieves payment by id
+   * https://docs.methodfi.com/reference/payments/retrieve
    *
    * @param pmt_id id of the payment
    * @returns IPayment
@@ -41,8 +42,9 @@ export class Payment extends Resource {
 
   /**
    * Lists all payments
+   * https://docs.methodfi.com/reference/payments/list
    *
-   * @param opts IPaymentListOpts: https://docs.methodfi.com/api/core/payments/list
+   * @param opts IPaymentListOpts
    * @returns IPayment[]
    */
 
@@ -52,6 +54,7 @@ export class Payment extends Resource {
 
   /**
    * Creates a payment
+   * https://docs.methodfi.com/reference/payments/create
    *
    * @param opts IPaymentCreateOpts
    * @param requestConfig Idempotency key: { idempotency_key: string}
@@ -64,6 +67,7 @@ export class Payment extends Resource {
 
   /**
    * Cancels a payment
+   * https://docs.methodfi.com/reference/payments/delete
    *
    * @param pmt_id id of the payment
    * @returns IPayment

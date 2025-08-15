@@ -9,6 +9,7 @@ export default class AccountPayoffs extends Resource {
 
   /**
    * Retrieve a Payoff record for an Account.
+   * https://docs.methodfi.com/reference/accounts/payoffs/retrieve
    *
    * @param pyf_id ID of the payoff
    * @returns Returns a Payoff object.
@@ -20,6 +21,7 @@ export default class AccountPayoffs extends Resource {
 
   /**
    * Retrieves a list of Payoff requests for a specific account.
+   * https://docs.methodfi.com/reference/accounts/payoffs/list
    *
    * @returns Returns a list of Payoffs.
    */
@@ -30,6 +32,7 @@ export default class AccountPayoffs extends Resource {
 
   /**
    * Creates a new Payoff request to retrieve a payoff quote from the Account’s financial institution / lender.
+   * https://docs.methodfi.com/reference/accounts/payoffs/create
    *
    * @returns Returns a Payoff object.
    */

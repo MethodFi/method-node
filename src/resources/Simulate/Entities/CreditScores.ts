@@ -12,6 +12,7 @@ export class SimulateCreditScoresInstance extends Resource {
 
   /**
    * For Entities that have been successfully verified, you may simulate Credit Scores in the dev environment.
+   * https://docs.methodfi.com/reference/simulations/credit-scores/create
    *
    * @returns Returns the created Credit Score.
    */

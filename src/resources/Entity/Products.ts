@@ -1,6 +1,6 @@
 import Resource from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
-import type { IEntityProduct, IEntityProductListResponse } from './types';
+import type { IEntityProductListResponse } from './types';
 
 export default class EntityProducts extends Resource {
   constructor(config: Configuration) {
@@ -8,18 +8,8 @@ export default class EntityProducts extends Resource {
   }
 
   /**
-   * Retrieve an entity's product.
-   *
-   * @param prd_id ID of the product.
-   * @returns Returns a Product object.
-   */
-
-  async retrieve(prd_id: string) {
-    return super._getWithId<IResponse<IEntityProduct>>(prd_id);
-  }
-
-  /**
    * Retrieve an entity's product list.
+   * https://docs.methodfi.com/reference/entities/products/list
    *
    * @returns Returns a map of Product names to Product objects for an Entity.
    */

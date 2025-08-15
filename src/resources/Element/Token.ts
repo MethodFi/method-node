@@ -13,6 +13,7 @@ export default class ElementToken extends Resource {
 
   /**
    * Creates token to be used with Element
+   * https://docs.methodfi.com/reference/elements/tokens
    *
    * @param opts IElementTokenCreateOpts
    * @returns IElement { element_token: string };
@@ -24,6 +25,7 @@ export default class ElementToken extends Resource {
 
   /**
    * Retrieve the results of an Element session.
+   * https://docs.methodfi.com/reference/elements/results
    *
    * @param pk_elem_id ID of the Element token
    * @returns Returns an ElementResults object.

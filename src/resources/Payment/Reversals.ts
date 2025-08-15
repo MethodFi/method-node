@@ -32,7 +32,7 @@ export default class Reversal extends Resource {
    * Update a reversal
    *
    * @param rvs_id id of the reversal
-   * @param data IReversalUpdateOpts: https://docs.methodfi.com/api/core/payments/reversals/update
+   * @param data IReversalUpdateOpts
    * @returns IReversal
    */
 

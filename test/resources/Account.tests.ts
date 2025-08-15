@@ -146,7 +146,7 @@ describe('Accounts - core methods tests', () => {
           mask: '8721',
           ownership: 'unknown',
           type: 'credit_card',
-          name: 'Chase Credit Card'
+          name: 'Chase Sapphire Reserve'
         },
         latest_verification_session: accounts_create_liability_response.latest_verification_session,
         balance: null,
@@ -154,6 +154,7 @@ describe('Accounts - core methods tests', () => {
         update: accounts_create_liability_response.update,
         card_brand: null,
         payment_instrument: null,
+        payoff: null,
         products: accounts_create_liability_response.products,
         restricted_products: accounts_create_liability_response.restricted_products,
         subscriptions: accounts_create_liability_response.subscriptions,
@@ -242,14 +243,14 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully retrieve the balance of an account.', async () => {
-      const getAccountBalances = async () => {
-        return client
+      const account_balances_response = async () => {
+        return await client
           .accounts(test_credit_card_account.id)
           .balances
           .retrieve(balances_create_response.id);
-      }
+      };
 
-      const account_balances = await awaitResults(getAccountBalances);
+      const account_balances = await awaitResults(account_balances_response);
 
       const expect_results: IAccountBalance = {
         id: balances_create_response.id,
@@ -265,14 +266,10 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully list balances for an account.', async () => {
-      const listAccountBalances = async () => {
-        return client
-          .accounts(test_credit_card_account.id)
-          .balances
-          .list();
-      };
-
-      const account_balances = await awaitResults(listAccountBalances);
+      const account_balances = await client
+        .accounts(test_credit_card_account.id)
+        .balances
+        .list();
 
       const expect_results = {
         id: balances_create_response.id,
@@ -290,43 +287,41 @@ describe('Accounts - core methods tests', () => {
 
   describe('accounts.cardBrands', () => {
     it('should successfully create a card for an account.', async () => {
+      // @ts-ignore
       card_create_response = await client
         .accounts(test_credit_card_account.id)
         .cardBrands
         .create();
 
-        const expect_results: IAccountCardBrand = {
-          id: card_create_response.id,
-          account_id: test_credit_card_account.id,
-          network: 'visa',
-          status: 'in_progress',
-          issuer: card_create_response.issuer,
-          last4: '1580',
-          brands: card_create_response.brands,
-          shared: false,
-          source: card_create_response.source,
-          error: null,
-          created_at: card_create_response.created_at,
-          updated_at: card_create_response.updated_at
-        };
+      const expect_results: IAccountCardBrand = {
+        id: card_create_response.id,
+        account_id: test_credit_card_account.id,
+        brands: [],
+        status: 'in_progress',
+        source: null,
+        error: null,
+        created_at: card_create_response.created_at,
+        updated_at: card_create_response.updated_at
+      }
 
       card_create_response.should.be.eql(expect_results);
       await new Promise(r => setTimeout(r, 2000))
     });
 
     it('should successfully retrieve a card for an account.', async () => {
-      const card_retrieve_response = await client
+      // @ts-ignore
+      const cardRetrieveResponse = async () => {
+        return await client
         .accounts(test_credit_card_account.id)
         .cardBrands
         .retrieve(card_create_response.id);
+      };
+
+      const card_retrieve_response = await awaitResults(cardRetrieveResponse);
 
       expect(card_retrieve_response.id).to.equal(card_create_response.id);
       expect(card_retrieve_response.account_id).to.equal(test_credit_card_account.id);
-      expect(card_retrieve_response.network).to.equal('visa');
       expect(card_retrieve_response.status).to.equal('completed');
-      expect(card_retrieve_response.issuer).to.equal(card_create_response.issuer);
-      expect(card_retrieve_response.last4).to.equal('1580');
-      expect(card_retrieve_response.shared).to.equal(false);
       expect(card_retrieve_response.source).to.equal('network');
       expect(card_retrieve_response.error).to.be.null;
       expect(card_retrieve_response.created_at).to.be.a('string');
@@ -334,41 +329,42 @@ describe('Accounts - core methods tests', () => {
 
       const brand = card_retrieve_response.brands?.[0];
       expect(brand).to.exist;
-      expect(brand.id).to.equal('brand_UBwVzXjpP4PJ6');
+      expect(brand.id).to.equal('pdt_15_brd_1');
+      expect(brand.card_product_id).to.equal('pdt_15');
+      expect(brand.description).to.equal('Chase Sapphire Reserve');
       expect(brand.name).to.equal('Chase Sapphire Reserve');
+      expect(brand.issuer).to.equal('Chase');
+      expect(brand.network).to.equal('visa');
+      expect(brand.type).to.equal('specific');
       expect(brand.url).to.equal('https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png');
-      expect(brand.art_id).to.be.a('string').and.match(/^art_/);
     });
 
     it('should successfully list card brands for an account.', async () => {
-      const listCardBrands = async () => {
-        return client
-          .accounts(test_credit_card_account.id)
-          .cardBrands
-          .list();
-      };
+      const card_brands = await client
+        .accounts(test_credit_card_account.id)
+        .cardBrands
+        .list();
 
-      const card_brands = await awaitResults(listCardBrands);
       const result = card_brands[0];
 
       expect(result.id).to.equal(card_create_response.id);
       expect(result.account_id).to.equal(test_credit_card_account.id);
-      expect(result.network).to.equal('visa');
       expect(result.status).to.equal('completed');
-      expect(result.issuer).to.equal(card_create_response.issuer);
-      expect(result.last4).to.equal('1580');
-      expect(result.shared).to.equal(false);
       expect(result.source).to.equal('network');
       expect(result.error).to.be.null;
       expect(result.created_at).to.be.a('string');
       expect(result.updated_at).to.be.a('string');
-
+      
       const brand = result.brands?.[0];
       expect(brand).to.exist;
-      expect(brand.id).to.equal('brand_UBwVzXjpP4PJ6');
+      expect(brand.id).to.equal('pdt_15_brd_1');
+      expect(brand.card_product_id).to.equal('pdt_15');
+      expect(brand.description).to.equal('Chase Sapphire Reserve');
       expect(brand.name).to.equal('Chase Sapphire Reserve');
+      expect(brand.issuer).to.equal('Chase');
+      expect(brand.network).to.equal('visa');
+      expect(brand.type).to.equal('specific');
       expect(brand.url).to.equal('https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png');
-      expect(brand.art_id).to.be.a('string').and.match(/^art_/);
     });
   });
 
@@ -395,14 +391,14 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully retrieve a payoff for an account.', async () => {
-      const getPayoffQuotes = async () =>{
+      const payoff_quote_response = async () => {
         return await client
-          .accounts(test_auto_loan_account.id)
-          .payoffs
-          .retrieve(payoff_create_response.id);
+        .accounts(test_auto_loan_account.id)
+        .payoffs
+        .retrieve(payoff_create_response.id);
       };
 
-      const payoff_quote = await awaitResults(getPayoffQuotes);
+      const payoff_quote = await awaitResults(payoff_quote_response);
 
       const expect_results: IAccountPayoff = {
         id: payoff_create_response.id,
@@ -420,14 +416,10 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully list payoffs for an account.', async () => {
-      const listPayoffQuotes = async () => {
-        return await client
-          .accounts(test_auto_loan_account.id)
-          .payoffs
-          .list();
-      };
-
-      const payoffs = await awaitResults(listPayoffQuotes);
+      const payoffs = await client
+        .accounts(test_auto_loan_account.id)
+        .payoffs
+        .list();
 
       const expect_results = {
         id: payoff_create_response.id,
@@ -517,14 +509,10 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully retrieve a verification session for an account.', async () => {
-      const getVerificationSession = async () => {
-        return await client
-          .accounts(test_credit_card_account.id)
-          .verificationSessions
-          .retrieve(verification_session_update.id);
-      };
-
-      const verification_session = await awaitResults(getVerificationSession);
+      const verification_session = await client
+        .accounts(test_credit_card_account.id)
+        .verificationSessions
+        .retrieve(verification_session_update.id);
 
       const expect_results: IAccountVerificationSession = {
         id: verification_session_update.id,
@@ -551,14 +539,10 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully list verification sessions for an account.', async () => {
-      const listVerificationSessions = async () => {
-        return await client
-          .accounts(test_credit_card_account.id)
-          .verificationSessions
-          .list();
-      };
-
-      const verification_sessions = await awaitResults(listVerificationSessions);
+      const verification_sessions = await client
+        .accounts(test_credit_card_account.id)
+        .verificationSessions
+        .list();
 
       const expect_results: IAccountVerificationSession = {
         id: verification_session_update.id,
@@ -618,14 +602,10 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully list sensitive data for an account.', async () => {
-      const listSensitiveData = async () => {
-        return await client
-          .accounts(test_credit_card_account.id)
-          .sensitive
-          .list();
-      };
-
-      const sensitive_data = await awaitResults(listSensitiveData);
+      const sensitive_data = await client
+        .accounts(test_credit_card_account.id)
+        .sensitive
+        .list();
 
       sensitive_data[0].should.be.eql(sensitive_data_response);
     });
@@ -945,13 +925,13 @@ describe('Accounts - core methods tests', () => {
     it('should successfully retrieve results of an updates request', async () => {
       const getAccountUpdates = async () => {
         return await client
-          .accounts(test_credit_card_account.id)
-          .updates
-          .retrieve(create_updates_response.id);
+        .accounts(test_credit_card_account.id)
+        .updates
+        .retrieve(create_updates_response.id);
       };
 
       const retrieve_updates_response = await awaitResults(getAccountUpdates);
-      
+
       const expect_results: IAccountUpdate = {
         id: create_updates_response.id,
         account_id: test_credit_card_account.id,
@@ -1080,91 +1060,91 @@ describe('Accounts - core methods tests', () => {
 
       const expect_results: IAccountProductListResponse = {
         balance: {
-          id: accounts_retrieve_product_list_response.balance?.id || '',
           name: 'balance',
           status: 'available',
           status_error: null,
           latest_request_id: accounts_retrieve_product_list_response.balance?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.balance?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at: accounts_retrieve_product_list_response.balance?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.balance?.updated_at || ''
         },
         payment: {
-          id: accounts_retrieve_product_list_response.payment?.id || '',
           name: 'payment',
           status: 'available',
           status_error: null,
           latest_request_id: accounts_retrieve_product_list_response.payment?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.payment?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at: accounts_retrieve_product_list_response.payment?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.payment?.updated_at || ''
         },
         sensitive: {
-          id: accounts_retrieve_product_list_response.sensitive?.id || '',
           name: 'sensitive',
           status: 'available',
           status_error: null,
           latest_request_id: accounts_retrieve_product_list_response.sensitive?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.sensitive?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at: accounts_retrieve_product_list_response.sensitive?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.sensitive?.updated_at || ''
         },
         update: {
-          id: accounts_retrieve_product_list_response.update?.id || '',
           name: 'update',
           status: 'available',
           status_error: null,
           latest_request_id: accounts_retrieve_product_list_response.update?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.update?.latest_successful_request_id || null,
           is_subscribable: true,
           created_at: accounts_retrieve_product_list_response.update?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.update?.updated_at || ''
         },
         attribute: {
-          id: accounts_retrieve_product_list_response.attribute?.id || '',
           name: 'attribute',
           status: 'available',
           status_error: null,
           latest_request_id: accounts_retrieve_product_list_response.attribute?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.attribute?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at: accounts_retrieve_product_list_response.attribute?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.attribute?.updated_at || ''
         },
         transaction: {
-          id: accounts_retrieve_product_list_response.transaction?.id || '',
           name: 'transaction',
           status: 'unavailable',
           status_error: accounts_retrieve_product_list_response.transaction?.status_error || null,
           latest_request_id: accounts_retrieve_product_list_response.transaction?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.transaction?.latest_successful_request_id || null,
           is_subscribable: true,
           created_at: accounts_retrieve_product_list_response.transaction?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.transaction?.updated_at || ''
         },
         card_brand: {
-          id: accounts_retrieve_product_list_response.card_brand?.id || '',
           name: 'card_brand',
           status: 'available',
           status_error: null,
           latest_request_id: accounts_retrieve_product_list_response.card_brand?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.card_brand?.latest_successful_request_id || null,
           is_subscribable: true,
           created_at: accounts_retrieve_product_list_response.card_brand?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.card_brand?.updated_at || ''
         },
         payoff: {
-          id: accounts_retrieve_product_list_response.payoff?.id || '',
           name: 'payoff',
           status: 'unavailable',
           status_error: accounts_retrieve_product_list_response.payoff?.status_error || null,
           latest_request_id: accounts_retrieve_product_list_response.payoff?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.payoff?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at: accounts_retrieve_product_list_response.payoff?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.payoff?.updated_at || ''
         },
         payment_instrument: {
-          id: accounts_retrieve_product_list_response.payment_instrument?.id || '',
           name: 'payment_instrument',
           status: 'restricted',
           status_error: accounts_retrieve_product_list_response.payment_instrument?.status_error || null,
           latest_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_successful_request_id || null,
           is_subscribable: true,
           created_at: accounts_retrieve_product_list_response.payment_instrument?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.payment_instrument?.updated_at || ''
@@ -1172,89 +1152,6 @@ describe('Accounts - core methods tests', () => {
       };
 
       accounts_retrieve_product_list_response.should.be.eql(expect_results);
-    });
-
-    it('should successfully retrieve specific products for an account', async () => {
-      const account_balance_product = await client
-        .accounts(test_credit_card_account.id)
-        .products.retrieve(accounts_retrieve_product_list_response.balance?.id || '');
-
-      const account_payment_product = await client
-        .accounts(test_credit_card_account.id)
-        .products.retrieve(accounts_retrieve_product_list_response.payment?.id || '');
-
-      const account_sensitive_product = await client
-        .accounts(test_credit_card_account.id)
-        .products.retrieve(accounts_retrieve_product_list_response.sensitive?.id || '');
-
-      const account_update_product = await client
-        .accounts(test_credit_card_account.id)
-        .products.retrieve(accounts_retrieve_product_list_response.update?.id || '');
-
-      const account_attribute_product = await client
-        .accounts(test_credit_card_account.id)
-        .products.retrieve(accounts_retrieve_product_list_response.attribute?.id || '');
-
-      const expect_balance_results: IAccountProduct = {
-        id: accounts_retrieve_product_list_response.balance?.id || '',
-        name: 'balance',
-        status: 'available',
-        status_error: null,
-        latest_request_id: account_balance_product.latest_request_id,
-        is_subscribable: false,
-        created_at: account_balance_product.created_at,
-        updated_at: account_balance_product.updated_at
-      };
-
-      const expect_payment_results: IAccountProduct = {
-        id: accounts_retrieve_product_list_response.payment?.id || '',
-        name: 'payment',
-        status: 'available',
-        status_error: null,
-        latest_request_id: account_payment_product.latest_request_id,
-        is_subscribable: false,
-        created_at: account_payment_product.created_at,
-        updated_at: account_payment_product.updated_at
-      };
-
-      const expect_sensitive_results: IAccountProduct = {
-        id: accounts_retrieve_product_list_response.sensitive?.id || '',
-        name: 'sensitive',
-        status: 'available',
-        status_error: null,
-        latest_request_id: account_sensitive_product.latest_request_id,
-        is_subscribable: false,
-        created_at: account_sensitive_product.created_at,
-        updated_at: account_sensitive_product.updated_at
-      };
-
-      const expect_update_results: IAccountProduct = {
-        id: accounts_retrieve_product_list_response.update?.id || '',
-        name: 'update',
-        status: 'available',
-        status_error: null,
-        latest_request_id: account_update_product.latest_request_id,
-        is_subscribable: true,
-        created_at: account_update_product.created_at,
-        updated_at: account_update_product.updated_at
-      };
-
-      const expect_attribute_results: IAccountProduct = {
-        id: accounts_retrieve_product_list_response.attribute?.id || '',
-        name: 'attribute',
-        status: 'available',
-        status_error: null,
-        latest_request_id: account_attribute_product.latest_request_id,
-        is_subscribable: false,
-        created_at: account_attribute_product.created_at,
-        updated_at: account_attribute_product.updated_at
-      };
-
-      account_balance_product.should.be.eql(expect_balance_results);
-      account_payment_product.should.be.eql(expect_payment_results);
-      account_sensitive_product.should.be.eql(expect_sensitive_results);
-      account_update_product.should.be.eql(expect_update_results);
-      account_attribute_product.should.be.eql(expect_attribute_results);
     });
   });
 

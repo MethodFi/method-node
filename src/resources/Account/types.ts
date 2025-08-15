@@ -50,11 +50,11 @@ export const AccountProductStatuses = {
 export type TAccountProductStatuses = keyof typeof AccountProductStatuses;
 
 export interface IAccountProduct {
-  id: string;
   name: string;
   status: TAccountProductStatuses;
   status_error: IResourceError | null;
   latest_request_id: string | null;
+  latest_successful_request_id: string | null;
   is_subscribable: boolean;
   created_at: string;
   updated_at: string;
@@ -298,27 +298,27 @@ export interface IAccountBalance {
   updated_at: string;
 };
 
-export interface IAccountCardBrandInfo {
-  id: string;
-  art_id?: string;
-  url: string;
-  name: string;
-};
-
 export interface IAccountCardBrand {
   id: string;
   account_id: string;
-  network: string | null;
-  issuer: string | null;
-  last4: string | null;
   brands: IAccountCardBrandInfo[];
-  status: 'in_progress' | 'completed' | 'failed';
-  shared: boolean;
   source: 'method' | 'network' | null;
+  status: 'completed' | 'in_progress' | 'failed';
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
-};
+}
+
+export interface IAccountCardBrandInfo {
+  id: string;
+  card_product_id: string;
+  description: string;
+  name: string;
+  issuer: string;
+  network: string;
+  type: 'specific' | 'generic' | 'in_review';
+  url: string;
+}
 
 export interface IAccountPayoff {
   id: string,
