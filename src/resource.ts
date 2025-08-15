@@ -22,6 +22,7 @@ type TSubResources =
 
 export interface IRequestConfig {
   idempotency_key?: string;
+  headers?: Record<string, string>;
 }
 
 class ExtensibleFunction extends Function {
@@ -212,9 +213,10 @@ export default class Resource extends ExtensibleFunction {
     requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = {
-      headers: requestConfig.idempotency_key
-        ? { 'Idempotency-Key': requestConfig.idempotency_key }
-        : {},
+      headers: {
+        ...(requestConfig.idempotency_key ? { 'Idempotency-Key': requestConfig.idempotency_key } : {}),
+        ...(requestConfig.headers || {}),
+      },
       params,
     };
 

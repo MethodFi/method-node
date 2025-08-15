@@ -1,6 +1,6 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
-import { client, clientWithPreferAsync } from '../config';
+import { client } from '../config';
 import { awaitResults } from '../utils';
 import type {
   IEntity,
@@ -54,7 +54,7 @@ describe('Entities - core methods tests', () => {
         metadata: {},
       });
 
-      entities_create_response_async = await clientWithPreferAsync.entities.create({
+      entities_create_response_async = await client.entities.create({
         type: 'individual',
         individual: {},
         metadata: {},
@@ -294,7 +294,7 @@ describe('Entities - core methods tests', () => {
 
       entities_update_response.should.be.eql(expect_results);
 
-      entities_update_response_async = await clientWithPreferAsync.entities.update(
+      entities_update_response_async = await client.entities.update(
         entities_create_response_async.id,
         {
           individual: {
@@ -381,7 +381,7 @@ describe('Entities - core methods tests', () => {
           },
         });
 
-      await clientWithPreferAsync
+      await client
         .entities(entities_create_response_async.id)
         .verificationSessions.create({
           type: 'phone',
@@ -421,7 +421,7 @@ describe('Entities - core methods tests', () => {
           kba: {},
         });
 
-      await clientWithPreferAsync
+      await client
         .entities(entities_create_response_async.id)
         .verificationSessions.create({
           type: 'identity',
@@ -544,11 +544,17 @@ describe('Entities - core methods tests', () => {
     });
 
     it('should successfully create a connection for an entity (async).', async () => {
-      entities_connect_create_response_async = await clientWithPreferAsync
+      entities_connect_create_response_async = await client
         .entities(entities_create_response_async.id)
         .connect.create({
           products: ['card_brand'],
           subscriptions: ['update'],
+        }, 
+        {}, 
+        {
+          headers: {
+            'Prefer': 'respond-async',
+          }
         });
 
       const expect_results: IEntityConnect = {
@@ -568,7 +574,7 @@ describe('Entities - core methods tests', () => {
 
     it('should successfully retrieve results of a connection for an entity (async).', async () => {
       let entitiesConnectRetrieveResponse = async () => {
-        return await clientWithPreferAsync
+        return await client
           .entities(entities_create_response_async.id)
           .connect.retrieve(entities_connect_create_response_async.id);
       };

@@ -1,4 +1,4 @@
-import Resource, { IResourceListOpts } from '../../resource';
+import Resource, { IResourceListOpts, IRequestConfig } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type { IEntityConnect } from './types';
 
@@ -83,7 +83,7 @@ export default class EntityConnect extends Resource {
    * @returns Returns a Connect object.
    */
 
-  async create(opts: IConnectCreateOpts = {}, params: IExpandableOpts = {}) {
-    return super._create<IResponse<IEntityConnect>, IConnectCreateOpts, IExpandableOpts>(opts, params);
+  async create(opts: IConnectCreateOpts = {}, params: IExpandableOpts = {}, requestConfig: IRequestConfig = {}) {
+    return super._create<IResponse<IEntityConnect>, IConnectCreateOpts, IExpandableOpts>(opts, params, requestConfig);
   }
 };

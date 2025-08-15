@@ -14,7 +14,7 @@ import { IResponse } from '../../src/configuration';
 
 should();
 
-describe.only('Events - core methods tests', () => {
+describe('Events - core methods tests', () => {
   let entity_response: IResponse<IEntity>;
   let connect_response: IResponse<IEntityConnect>;
   let attribute_response: IResponse<IEntityAttributes>;
@@ -63,18 +63,24 @@ describe.only('Events - core methods tests', () => {
   describe('simulate.events', () => {
 
     it('should simulate an account opened event', async () => {
-
+      console.log('simulating account opened event');
       await client.simulate.events.create({
         type: 'account.opened',
         entity_id: entity_response.id,
       });
 
+      console.log('waiting for event to be created');
+
       // timeout to allow event to be created
-      await new Promise((resolve) => { setTimeout(resolve, 20000); });
+      await new Promise((resolve) => { setTimeout(resolve, 2000); });
+
+      console.log('listing events');
 
       const events_list_response = await client.events.list({
         type: 'account.opened',
       });
+
+      console.log('events_list_response', events_list_response);
 
       [event_response] = events_list_response;
 
@@ -101,7 +107,7 @@ describe.only('Events - core methods tests', () => {
       });
 
       // timeout to allow event to be created
-      await new Promise((resolve) => { setTimeout(resolve, 20000); });
+      await new Promise((resolve) => { setTimeout(resolve, 2000); });
 
       const events_list_response = await client.events.list({
         type: 'attribute.credit_health_credit_card_usage.increased',
