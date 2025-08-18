@@ -298,6 +298,7 @@ describe('Accounts - core methods tests', () => {
         account_id: test_credit_card_account.id,
         brands: [],
         status: 'in_progress',
+        shared: false,
         source: null,
         error: null,
         created_at: card_create_response.created_at,
