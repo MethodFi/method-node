@@ -304,6 +304,7 @@ export interface IAccountCardBrand {
   brands: IAccountCardBrandInfo[];
   source: 'method' | 'network' | null;
   status: 'completed' | 'in_progress' | 'failed';
+  shared: boolean;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
