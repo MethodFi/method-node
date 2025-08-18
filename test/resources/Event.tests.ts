@@ -63,24 +63,17 @@ describe('Events - core methods tests', () => {
   describe('simulate.events', () => {
 
     it('should simulate an account opened event', async () => {
-      console.log('simulating account opened event');
       await client.simulate.events.create({
         type: 'account.opened',
         entity_id: entity_response.id,
       });
 
-      console.log('waiting for event to be created');
-
       // timeout to allow event to be created
       await new Promise((resolve) => { setTimeout(resolve, 2000); });
-
-      console.log('listing events');
 
       const events_list_response = await client.events.list({
         type: 'account.opened',
       });
-
-      console.log('events_list_response', events_list_response);
 
       [event_response] = events_list_response;
 
