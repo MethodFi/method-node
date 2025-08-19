@@ -11,7 +11,7 @@ describe('Card Products - core methods tests', () => {
 
   describe('cardProducts.retrieve', () => {
     it('should successfully retrieve a card product by id.', async () => {
-      card_products_retrieve_response = await client.cardProducts.retrieve('pdt_15');
+      card_products_retrieve_response = await client.cardProducts.retrieve('pdt_17');
       
       const expect_results: ICardProduct = {
         id: "pdt_17",

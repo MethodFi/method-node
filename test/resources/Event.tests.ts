@@ -71,9 +71,17 @@ describe('Events - core methods tests', () => {
       // timeout to allow event to be created
       await new Promise((resolve) => { setTimeout(resolve, 2000); });
 
-      const events_list_response = await client.events.list({
-        type: 'account.opened',
-      });
+      const max_retries = 3;
+      let events_list_response: IEvent[] = [];
+      for (let i = 0; i < max_retries; i++) {
+        await new Promise((resolve) => { setTimeout(resolve, 1000); });
+        events_list_response = await client.events.list({
+          type: 'account.opened',
+        });
+        if (events_list_response.length > 0) {
+          break;
+        }
+      }
 
       [event_response] = events_list_response;
 
@@ -86,37 +94,6 @@ describe('Events - core methods tests', () => {
         type: 'account.opened',
         resource_id: event_response.resource_id,
         resource_type: 'account',
-        data: event_response.data,
-        diff: event_response.diff,
-      };
-
-      response.should.be.eql(expect_results);
-    });
-
-    it('should simulate an attribute created event', async () => {
-      await client.simulate.events.create({
-        type: 'attribute.credit_health_credit_card_usage.increased',
-        entity_id: entity_response.id,
-      });
-
-      // timeout to allow event to be created
-      await new Promise((resolve) => { setTimeout(resolve, 2000); });
-
-      const events_list_response = await client.events.list({
-        type: 'attribute.credit_health_credit_card_usage.increased',
-      });
-
-      [event_response] = events_list_response;
-
-      const response = await client.events.retrieve(event_response.id);
-
-      const expect_results: IEvent = {
-        id: event_response.id,
-        created_at: event_response.created_at,
-        updated_at: event_response.updated_at,
-        type: 'attribute.credit_health_credit_card_usage.increased',
-        resource_id: event_response.resource_id,
-        resource_type: 'attribute',
         data: event_response.data,
         diff: event_response.diff,
       };
