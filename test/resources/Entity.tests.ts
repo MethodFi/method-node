@@ -552,7 +552,7 @@ describe('Entities - core methods tests', () => {
         }, 
         {}, 
         {
-          'Prefer': 'respond-async',
+          'prefer': 'respond-async',
         });
 
       const expect_results: IEntityConnect = {

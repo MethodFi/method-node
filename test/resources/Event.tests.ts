@@ -72,7 +72,7 @@ describe('Events - core methods tests', () => {
       await new Promise((resolve) => { setTimeout(resolve, 2000); });
 
       const max_retries = 3;
-      let events_list_response: IEvent[] = [];
+      let events_list_response: IResponse<IEvent>[] = [];
       for (let i = 0; i < max_retries; i++) {
         await new Promise((resolve) => { setTimeout(resolve, 1000); });
         events_list_response = await client.events.list({
