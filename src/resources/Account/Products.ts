@@ -1,6 +1,6 @@
 import Resource from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
-import type { IAccountProduct, IAccountProductListResponse } from './types';
+import type { IAccountProductListResponse } from './types';
 
 export default class AccountProducts extends Resource {
   constructor(config: Configuration) {
@@ -8,18 +8,8 @@ export default class AccountProducts extends Resource {
   }
 
   /**
-   * Retrieve an account's product.
-   *
-   * @param prd_id ID of the product.
-   * @returns Returns a Product object.
-   */
-
-  async retrieve(prd_id: string) {
-    return super._getWithId<IResponse<IAccountProduct>>(prd_id);
-  }
-
-  /**
    * Retrieve an account's product list.
+   * https://docs.methodfi.com/reference/accounts/products/list
    *
    * @returns Returns a map of Product names to Product objects for an Account.
    */

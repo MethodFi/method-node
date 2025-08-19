@@ -46,6 +46,7 @@ export default class Report extends Resource {
 
   /**
    * Retrieves the Report associated with the ID.
+   * https://docs.methodfi.com/reference/reports/retrieve
    *
    * @param rpt_id id of the report
    * @returns Returns the Report associated with the ID.
@@ -57,8 +58,9 @@ export default class Report extends Resource {
 
   /**
    * Creates a new Report for a specific type. Once created, you can retrieve the Report results from the URL returned.
+   * https://docs.methodfi.com/reference/reports/create
    *
-   * @param opts IReportCreateOpts: https://docs.methodfi.com/api/core/reports/create
+   * @param opts IReportCreateOpts
    * @param requestConfig Idempotency key: { idempotency_key: string}
    * @returns Returns a Report object.
    */
@@ -69,6 +71,7 @@ export default class Report extends Resource {
 
   /**
    * Download a report
+   * https://docs.methodfi.com/reference/reports/download
    *
    * @param rpt_id id of the report
    * @returns Returns the Report’s results in CSV format.

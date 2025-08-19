@@ -13,6 +13,7 @@ export default class AccountVerificationSession extends Resource {
 
   /**
    * Retrieve an AccountVerificationSession object by its ID.
+   * https://docs.methodfi.com/reference/accounts/verification-sessions/retrieve
    *
    * @param avf_id ID of the AccountVerificationSession object.
    * @returns AccountVerificationSession object.
@@ -24,6 +25,7 @@ export default class AccountVerificationSession extends Resource {
 
   /**
    * Retrieves a list of AccountVerificationSession objects for an account.
+   * https://docs.methodfi.com/reference/accounts/verification-sessions/list
    *
    * @returns Returns a list of AccountVerificationSession objects.
    */
@@ -34,6 +36,7 @@ export default class AccountVerificationSession extends Resource {
 
   /**
    * Creates an AccountVerificationSession of the provided type.
+   * https://docs.methodfi.com/reference/accounts/verification-sessions/create
    *
    * @param data IAccountVerificationSessionCreateOpts: { type: TAccountVerificaionSessionTypes }
    * @returns AccountVerificationSession object.
@@ -42,9 +45,10 @@ export default class AccountVerificationSession extends Resource {
   async create(data: IAccountVerificationSessionCreateOpts) {
     return super._create<IResponse<IAccountVerificationSession>, IAccountVerificationSessionCreateOpts>(data);
   }
-  // TODO: Add URL of docs page for this method.
+
   /**
    * Updates an existing AccountVerificationSession object
+   * https://docs.methodfi.com/reference/accounts/verification-sessions/overview
    *
    * @param avf_id ID of the AccountVerificationSession object.
    * @param data Update data for the AccountVerificationSession object based on it's type.

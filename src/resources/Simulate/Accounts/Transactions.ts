@@ -9,6 +9,7 @@ export default class SimulateTransactions extends Resource {
 
   /**
    * For Accounts that have been successfully verified, you may simulate Transactions in the dev environment.
+   * https://docs.methodfi.com/reference/simulations/transactions/create
    *
    * @returns Returns the created Transaction.
    */

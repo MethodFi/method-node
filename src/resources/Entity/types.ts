@@ -3,6 +3,7 @@ import type {
   TResourceStatus,
   IResourceListOpts,
 } from '../../resource';
+import { TAccountProducts, TAccountSubscriptionTypes } from '../Account';
 
 export const CreditReportBureaus = {
   experian: 'experian',
@@ -119,6 +120,8 @@ export interface IEntityConnect {
   entity_id: string;
   status: TResourceStatus;
   accounts: string[] | null;
+  requested_products: TAccountProducts[];
+  requested_subscriptions: TAccountSubscriptionTypes[];
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
@@ -259,11 +262,11 @@ export const EntityProductType = {
 export type TEntityProductType = keyof typeof EntityProductType;
 
 export interface IEntityProduct {
-  id: string;
   name: string;
   status: TEntityProductTypeStatuses;
   status_error: IResourceError | null;
   latest_request_id: string | null;
+  latest_successful_request_id: string | null;
   is_subscribable: boolean;
   created_at: string;
   updated_at: string;

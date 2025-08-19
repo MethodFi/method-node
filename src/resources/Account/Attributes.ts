@@ -9,6 +9,7 @@ export default class AccountAttributes extends Resource {
 
   /**
    * Retrieves an Attributes record for an Account.
+   * https://docs.methodfi.com/reference/accounts/attributes/retrieve
    *
    * @param acc_attr_id ID of the Attribute
    * @returns Returns an Account’s Attribute object.
@@ -20,6 +21,7 @@ export default class AccountAttributes extends Resource {
 
   /**
    * Retrieves a list of Attributes objects for an account.
+   * https://docs.methodfi.com/reference/accounts/attributes/list
    *
    * @returns Returns a list of Attributes objects.
    */
@@ -30,6 +32,7 @@ export default class AccountAttributes extends Resource {
 
   /**
    * Creates a new Attributes request to retrieve the Account’s attributes.
+   * https://docs.methodfi.com/reference/accounts/attributes/create
    *
    * @returns Returns an Account’s Attributes object.
    */

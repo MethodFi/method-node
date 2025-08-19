@@ -79,7 +79,7 @@ export class Account extends Resource {
   /**
    * Returns a list of Accounts.
    *
-   * @param opts IAccountListOpts: https://docs.methodfi.com/api/core/accounts/list
+   * @param opts IAccountListOpts: https://docs.methodfi.com/reference/accounts/list
    * @returns Returns a list of Accounts.
    */
 
@@ -94,7 +94,7 @@ export class Account extends Resource {
   /**
    * Creates a new Account for an Entity, either ach or liability, based on the parameters provided. An account is a unique representation of an ACH or Liability account.
    *
-   * @param data Create options: https://docs.methodfi.com/api/core/accounts/create
+   * @param data Create options: https://docs.methodfi.com/reference/accounts/create
    * @param requestConfig Allows for idempotency: { idempotency_key?: string }
    * @returns Returns an Account object.
    */

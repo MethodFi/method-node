@@ -14,6 +14,7 @@ export default class EntitySubscriptions extends Resource {
 
   /**
    * Retrieves a Subscription record for an Entity.
+   * https://docs.methodfi.com/reference/entities/subscriptions/retrieve
    *
    * @param sub_id ID of the subscription
    *
@@ -26,6 +27,7 @@ export default class EntitySubscriptions extends Resource {
 
   /**
    * Returns a map of Subscriptions names to Subscription objects associated with an Entity, or an empty array if none have been created.
+   * https://docs.methodfi.com/reference/entities/subscriptions/list
    *
    * @returns Returns a map of Subscription names to Subscription objects.
    */
@@ -37,6 +39,7 @@ export default class EntitySubscriptions extends Resource {
   /**
    * Enrolls an Entity to a Subscription. Once enrolled, the Subscription name and details will be present on the response object.
    * Being enrolled in a Subscription is independent of other Subscriptions. An error won’t prevent the Entity from being enrolled in other Subscriptions.
+   * https://docs.methodfi.com/reference/entities/subscriptions/create
    *
    * @param sub_name A Subscription name to enroll the Entity in. enroll: ['connect', 'credit_score']
    *
@@ -54,6 +57,7 @@ export default class EntitySubscriptions extends Resource {
 
   /**
    * Deleting a Subscription means to unenroll an Entity from automatically receiving new Product resources.
+   * https://docs.methodfi.com/reference/entities/subscriptions/delete
    *
    * @param sub_id ID of the subscription
    * @returns Returns a Subscription object.

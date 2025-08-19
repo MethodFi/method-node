@@ -30,6 +30,7 @@ export const WebhookTypes = {
   entity_verification_session_update: 'entity_verification_session.update',
   connect_create: 'connect.create',
   connect_update: 'connect.update',
+  connect_available: 'connect.available',
   balance_create: 'balance.create',
   balance_update: 'balance.update',
   identity_create: 'identity.create',
@@ -38,6 +39,7 @@ export const WebhookTypes = {
   account_verification_session_update: 'account_verification_session.update',
   card_brand_create: 'card_brand.create',
   card_brand_update: 'card_brand.update',
+  card_brand_available: 'card_brand.available',
   sensitive_create: 'sensitive.create',
   sensitive_update: 'sensitive.update',
   update_create: 'update.create',
@@ -62,6 +64,8 @@ export const WebhookTypes = {
   attribute_credit_health_payment_history_decreased: 'attribute.credit_health_payment_history.decreased',
   attribute_credit_health_open_accounts_increased: 'attribute.credit_health_open_accounts.increased',
   attribute_credit_health_open_accounts_decreased: 'attribute.credit_health_open_accounts.decreased',
+  method_jwk_create: 'method_jwk.create',
+  method_jwk_update: 'method_jwk.update',
 } as const;
 
 export type TWebhookTypes = typeof WebhookTypes[keyof typeof WebhookTypes];
@@ -117,7 +121,7 @@ export default class Webhook extends Resource {
    * Creating a new Webhook means registering a URL to receive updates for a specific event type.
    * Once a resource is created or updated, your application will be notified via an HTTP POST request with the event information.
    *
-   * @param opts IWebhookCreateOpts: https://docs.methodfi.com/api/core/webhooks/create
+   * @param opts IWebhookCreateOpts: https://docs.methodfi.com/reference/webhooks/create
    * @param requestConfig Idempotency key: { idempotency_key: string}
    * @returns Returns the newly created Webhook object.
    */

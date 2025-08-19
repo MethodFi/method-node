@@ -13,6 +13,7 @@ export default class EntityVerificationSession extends Resource {
 
   /**
    * Retrieves a EntityVerificationSession for an entity.
+   * https://docs.methodfi.com/reference/entities/verification-sessions/retrieve
    *
    * @param evf_id ID of the verification session.
    * @returns Returns an EntityVerificationSession object.
@@ -24,6 +25,7 @@ export default class EntityVerificationSession extends Resource {
 
   /**
    * Retrieves a list of VerificationSession objects for an entity.
+   * https://docs.methodfi.com/reference/entities/verification-sessions/list
    *
    * @returns Returns a list of VerificationSession objects.
    */
@@ -34,6 +36,7 @@ export default class EntityVerificationSession extends Resource {
 
   /**
    * Create a verification session.
+   * https://docs.methodfi.com/reference/entities/verification-sessions/overview
    *
    * @param data IEntityVerificationSessionCreateOpts
    * @returns Returns an EntityVerificationSession object.
@@ -45,6 +48,7 @@ export default class EntityVerificationSession extends Resource {
 
   /**
    * Update a verification session
+   * https://docs.methodfi.com/reference/entities/verification-sessions/overview
    *
    * @param evf_id ID of the verification session.
    * @param data IEntityVerificationSessionUpdateOpts

@@ -9,6 +9,7 @@ export default class EntityIdentities extends Resource {
 
   /**
    * Retrieves an Identity request with the matched identity for an Entity.
+   * https://docs.methodfi.com/reference/entities/identities/retrieve
    *
    * @param idn_id ID of the identity
    * @returns Returns an Identity object.
@@ -20,6 +21,7 @@ export default class EntityIdentities extends Resource {
 
   /**
    * Retrieves a list of Identity objects for an entity.
+   * https://docs.methodfi.com/reference/entities/identities/list
    *
    * @returns Returns a list of Identity objects.
    */
@@ -30,6 +32,7 @@ export default class EntityIdentities extends Resource {
 
   /**
    * Creates a new Identity request to retrieve the identity of an Entity, based off the PII that has been passed in to Method so far.
+   * https://docs.methodfi.com/reference/entities/identities/create
    *
    * @returns Returns an Identity object.
    */

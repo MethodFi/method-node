@@ -9,6 +9,7 @@ export default class AccountUpdates extends Resource {
 
   /**
    * Retrieve an Update object by its ID.
+   * https://docs.methodfi.com/reference/accounts/updates/retrieve
    *
    * @param upt_id ID of the Update
    * @returns Returns an Update object.
@@ -20,6 +21,7 @@ export default class AccountUpdates extends Resource {
 
   /**
    * Retrieve a list of Updates for a specific Account.
+   * https://docs.methodfi.com/reference/accounts/updates/list
    *
    * @returns Returns a list of Updates.
    */
@@ -30,6 +32,7 @@ export default class AccountUpdates extends Resource {
 
   /**
    * Creates a new Update for a liability Account.
+   * https://docs.methodfi.com/reference/accounts/updates/create
    *
    * @returns Returns an Update object.
    */

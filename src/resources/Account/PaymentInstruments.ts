@@ -9,6 +9,7 @@ export default class AccountPaymentInstruments extends Resource {
 
   /**
    * Retrieves a Payment Instrument record for an Account.
+   * https://docs.methodfi.com/reference/accounts/payment-instruments/retrieve
    *
    * @param pmt_inst_id ID of the Payment Instrument
    * @returns Returns an Account’s Payment Instrument object.
@@ -20,6 +21,7 @@ export default class AccountPaymentInstruments extends Resource {
 
   /**
    * Retrieves a list of Payment Instrument objects for an account.
+   * https://docs.methodfi.com/reference/accounts/payment-instruments/list
    *
    * @returns Returns a list of Payment Instrument objects.
    */
@@ -30,6 +32,7 @@ export default class AccountPaymentInstruments extends Resource {
 
   /**
    * Creates a new Payment Instrument request to retrieve the Account’s payment instruments.
+   * https://docs.methodfi.com/reference/accounts/payment-instruments/create
    *
    * @returns Returns an Account’s Payment Instrument object.
    */

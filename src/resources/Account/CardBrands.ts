@@ -9,6 +9,7 @@ export default class AccountCardBrand extends Resource {
 
   /**
    * Retrieves a Card Brand object.
+   * https://docs.methodfi.com/reference/accounts/card-brands/retrieve
    *
    * @param cbrd_id ID of the Card
    * @returns Returns a Card object.
@@ -20,6 +21,7 @@ export default class AccountCardBrand extends Resource {
 
   /**
    * Retrieves a list of CardBrand objects for an account.
+   * https://docs.methodfi.com/reference/accounts/card-brands/list
    *
    * @returns Returns a list of CardBrand objects.
    */
@@ -30,6 +32,7 @@ export default class AccountCardBrand extends Resource {
 
   /**
    * Creates a new CardBrand request to retrieve the Account’s card brand.
+   * https://docs.methodfi.com/reference/accounts/card-brands/create
    *
    * @returns Returns a Card object.
    */

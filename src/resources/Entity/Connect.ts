@@ -1,4 +1,4 @@
-import Resource, { IResourceListOpts } from '../../resource';
+import Resource, { IResourceListOpts, IRequestConfig } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type { IEntityConnect } from './types';
 
@@ -55,6 +55,7 @@ export default class EntityConnect extends Resource {
 
   /**
    * Retrieves a Connect record for an Entity.
+   * https://docs.methodfi.com/reference/entities/connect/retrieve
    *
    * @param cxn_id ID of the entity connection
    * @returns Returns a Connect object.
@@ -66,6 +67,7 @@ export default class EntityConnect extends Resource {
 
   /**
    * Retrieves a list of Connect objects for an entity.
+   * https://docs.methodfi.com/reference/entities/connect/list
    *
    * @returns Returns a list of Connect objects.
    */
@@ -76,11 +78,12 @@ export default class EntityConnect extends Resource {
 
   /**
    * Creates a new Connect request to connect all liability accounts for the Entity.
+   * https://docs.methodfi.com/reference/entities/connect/create
    *
    * @returns Returns a Connect object.
    */
 
-  async create(opts: IConnectCreateOpts = {}, params: IExpandableOpts = {}) {
-    return super._create<IResponse<IEntityConnect>, IConnectCreateOpts, IExpandableOpts>(opts, params);
+  async create(opts: IConnectCreateOpts = {}, params: IExpandableOpts = {}, requestConfig: IRequestConfig = {}) {
+    return super._create<IResponse<IEntityConnect>, IConnectCreateOpts, IExpandableOpts>(opts, params, requestConfig);
   }
 };
