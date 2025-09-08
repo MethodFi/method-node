@@ -1,7 +1,7 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import type { IWebhook } from '../../src/resources/Webhook';
+import type { IWebhook } from '../../src/resources/Webhook/types';
 import { IResponse } from '../../src/configuration';
 
 should();
@@ -12,6 +12,7 @@ describe('Webhooks - core methods tests', () => {
   let webhooks_retrieve_response: IResponse<IWebhook>;
   let webhooks_list_response: IResponse<IWebhook>[];
   let webhooks_delete_response: IResponse<{}>;
+  let webhooks_update_response: IResponse<IWebhook>;
 
   describe('webhooks.create', () => {
     it('should successfully create a webhook.', async () => {
@@ -64,6 +65,16 @@ describe('Webhooks - core methods tests', () => {
       
       Array.isArray(webhooks_list_response).should.be.true;
       webhook_ids.should.contain(webhooks_create_response.id);
+    });
+  });
+
+  describe('webhooks.update', () => {
+    it('should successfully update a webhook.', async () => {
+      webhooks_update_response = await client.webhooks.update(webhooks_create_response.id, {
+        status: 'disabled',
+      });
+
+      webhooks_update_response.status?.should.be.eql('disabled');
     });
   });
 

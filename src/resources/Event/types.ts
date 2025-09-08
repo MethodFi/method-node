@@ -1,5 +1,5 @@
 import { IResourceListOpts } from '../../resource';
-import { TWebhookTypes } from '../Webhook';
+import type { TWebhookTypes } from '../Webhook/types';
 
 export const EventResourceTypes = {
   account: 'account',
