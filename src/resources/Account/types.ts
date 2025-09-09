@@ -50,11 +50,11 @@ export const AccountProductStatuses = {
 export type TAccountProductStatuses = keyof typeof AccountProductStatuses;
 
 export interface IAccountProduct {
-  id: string;
   name: string;
   status: TAccountProductStatuses;
   status_error: IResourceError | null;
   latest_request_id: string | null;
+  latest_successful_request_id: string | null;
   is_subscribable: boolean;
   created_at: string;
   updated_at: string;

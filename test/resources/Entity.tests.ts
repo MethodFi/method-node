@@ -348,6 +348,8 @@ describe('Entities - core methods tests', () => {
         entity_id: entities_create_response.id,
         status: 'completed',
         accounts: entities_account_ids,
+        requested_products: [],
+        requested_subscriptions: [],
         error: null,
         created_at: entities_connect_create_response.created_at,
         updated_at: entities_connect_create_response.updated_at,
@@ -368,6 +370,8 @@ describe('Entities - core methods tests', () => {
         entity_id: entities_create_response.id,
         status: 'completed',
         accounts: entities_account_ids,
+        requested_products: [],
+        requested_subscriptions: [],
         error: null,
         created_at: entities_connect_create_response.created_at,
         updated_at: entities_connect_create_response.updated_at,
@@ -391,6 +395,8 @@ describe('Entities - core methods tests', () => {
         entity_id: entities_create_response.id,
         status: 'completed',
         accounts: entities_account_ids,
+        requested_products: [],
+        requested_subscriptions: [],
         error: null,
         created_at: entities_connect_create_response.created_at,
         updated_at: entities_connect_create_response.updated_at,
@@ -786,13 +792,15 @@ describe('Entities - core methods tests', () => {
 
       const expect_results: IEntityProductListResponse = {
         connect: {
-          id: entities_retrieve_product_list_response.connect?.id || '',
           name: 'connect',
           status: 'available',
           status_error: null,
           latest_request_id:
             entities_retrieve_product_list_response.connect
               ?.latest_request_id || null,
+          latest_successful_request_id:
+            entities_retrieve_product_list_response.connect
+              ?.latest_successful_request_id || null,
           is_subscribable: true,
           created_at:
             entities_retrieve_product_list_response.connect?.created_at || '',
@@ -800,13 +808,15 @@ describe('Entities - core methods tests', () => {
             entities_retrieve_product_list_response.connect?.updated_at || '',
         },
         credit_score: {
-          id: entities_retrieve_product_list_response.credit_score?.id || '',
           name: 'credit_score',
           status: 'available',
           status_error: null,
           latest_request_id:
             entities_retrieve_product_list_response.credit_score
               ?.latest_request_id || null,
+          latest_successful_request_id:
+            entities_retrieve_product_list_response.credit_score
+              ?.latest_successful_request_id || null,
           is_subscribable: true,
           created_at:
             entities_retrieve_product_list_response.credit_score?.created_at ||
@@ -816,13 +826,15 @@ describe('Entities - core methods tests', () => {
             '',
         },
         identity: {
-          id: entities_retrieve_product_list_response.identity?.id || '',
           name: 'identity',
           status: 'available',
           status_error: null,
           latest_request_id:
             entities_retrieve_product_list_response.identity
               ?.latest_request_id || null,
+          latest_successful_request_id:
+            entities_retrieve_product_list_response.identity
+              ?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at:
             entities_retrieve_product_list_response.identity?.created_at || '',
@@ -830,13 +842,15 @@ describe('Entities - core methods tests', () => {
             entities_retrieve_product_list_response.identity?.updated_at || '',
         },
         attribute: {
-          id: entities_retrieve_product_list_response.attribute?.id || '',
           name: 'attribute',
           status: 'available',
           status_error: null,
           latest_request_id:
             entities_retrieve_product_list_response.attribute
               ?.latest_request_id || null,
+          latest_successful_request_id:
+            entities_retrieve_product_list_response.attribute
+              ?.latest_successful_request_id || null,
           is_subscribable: true,
           created_at:
             entities_retrieve_product_list_response.attribute?.created_at || '',
@@ -844,25 +858,29 @@ describe('Entities - core methods tests', () => {
             entities_retrieve_product_list_response.attribute?.updated_at || '',
         },
         vehicle: {
-          id: entities_retrieve_product_list_response.vehicle?.id || '',
           name: 'vehicle',
           status: 'available',
           status_error: null,
           latest_request_id:
             entities_retrieve_product_list_response.vehicle
               ?.latest_request_id || null,
+          latest_successful_request_id:
+            entities_retrieve_product_list_response.vehicle
+              ?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at: entities_retrieve_product_list_response.vehicle?.created_at || '',
           updated_at: entities_retrieve_product_list_response.vehicle?.updated_at || '',
         },
         manual_connect: {
-          id: entities_retrieve_product_list_response.manual_connect?.id || '',
           name: 'manual_connect',
           status: 'restricted',
           status_error: entities_retrieve_product_list_response.manual_connect?.status_error || null,
           latest_request_id:
             entities_retrieve_product_list_response.manual_connect
               ?.latest_request_id || null,
+          latest_successful_request_id:
+            entities_retrieve_product_list_response.manual_connect
+              ?.latest_successful_request_id || null,
           is_subscribable: false,
           created_at: entities_retrieve_product_list_response.manual_connect?.created_at || '',
           updated_at: entities_retrieve_product_list_response.manual_connect?.updated_at || '',
@@ -870,95 +888,6 @@ describe('Entities - core methods tests', () => {
       };
 
       entities_retrieve_product_list_response.should.be.eql(expect_results);
-    });
-
-    it('should retrieve a specific product for an entity', async () => {
-      const entity_connect_product = await client
-        .entities(entities_create_response.id)
-        .products.retrieve(
-          entities_retrieve_product_list_response.connect?.id || ''
-        );
-      const entity_credit_score_product = await client
-        .entities(entities_create_response.id)
-        .products.retrieve(
-          entities_retrieve_product_list_response.credit_score?.id || ''
-        );
-      const entity_identity_product = await client
-        .entities(entities_create_response.id)
-        .products.retrieve(
-          entities_retrieve_product_list_response.identity?.id || ''
-        );
-      const entity_attribute_product = await client
-        .entities(entities_create_response.id)
-        .products.retrieve(
-          entities_retrieve_product_list_response.attribute?.id || ''
-        );
-      const entity_vehicle_product = await client
-        .entities(entities_create_response.id)
-        .products.retrieve(
-          entities_retrieve_product_list_response.vehicle?.id || ''
-        );
-
-      const expect_connect_results: IEntityProduct = {
-        id: entities_retrieve_product_list_response.connect?.id || '',
-        name: 'connect',
-        status: 'available',
-        status_error: null,
-        latest_request_id: entity_connect_product.latest_request_id,
-        is_subscribable: true,
-        created_at: entity_connect_product.created_at,
-        updated_at: entity_connect_product.updated_at,
-      };
-
-      const expect_credit_score_results: IEntityProduct = {
-        id: entities_retrieve_product_list_response.credit_score?.id || '',
-        name: 'credit_score',
-        status: 'available',
-        status_error: null,
-        latest_request_id: entity_credit_score_product.latest_request_id,
-        is_subscribable: true,
-        created_at: entity_credit_score_product.created_at,
-        updated_at: entity_credit_score_product.updated_at,
-      };
-
-      const expect_identity_results: IEntityProduct = {
-        id: entities_retrieve_product_list_response.identity?.id || '',
-        name: 'identity',
-        status: 'available',
-        status_error: null,
-        latest_request_id: entity_identity_product.latest_request_id,
-        is_subscribable: false,
-        created_at: entity_identity_product.created_at,
-        updated_at: entity_identity_product.updated_at,
-      };
-
-      const expect_attribute_results: IEntityProduct = {
-        id: entities_retrieve_product_list_response.attribute?.id || '',
-        name: 'attribute',
-        status: 'available',
-        status_error: null,
-        latest_request_id: entity_attribute_product.latest_request_id,
-        is_subscribable: true,
-        created_at: entity_attribute_product.created_at,
-        updated_at: entity_attribute_product.updated_at,
-      };
-
-      const expect_vehicle_results: IEntityProduct = {
-        id: entities_retrieve_product_list_response.vehicle?.id || '',
-        name: 'vehicle',
-        status: 'available',
-        status_error: null,
-        latest_request_id: entity_vehicle_product.latest_request_id,
-        is_subscribable: false,
-        created_at: entity_vehicle_product.created_at,
-        updated_at: entity_vehicle_product.updated_at,
-      };
-
-      entity_vehicle_product.should.be.eql(expect_vehicle_results);
-      entity_connect_product.should.be.eql(expect_connect_results);
-      entity_credit_score_product.should.be.eql(expect_credit_score_results);
-      entity_identity_product.should.be.eql(expect_identity_results);
-      entity_attribute_product.should.be.eql(expect_attribute_results);
     });
   });
 
