@@ -10,4 +10,4 @@ require('./resources/Webhook.tests');
 require('./resources/HealthCheck.tests');
 require('./resources/Metadata.tests');
 require('./resources/Event.tests');
-require('./resources/CardProduct.tests');
+require('./resources/Opal.tests');

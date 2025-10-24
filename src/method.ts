@@ -10,6 +10,7 @@ import Report from './resources/Report';
 import Webhook from './resources/Webhook';
 import HealthCheck, { IPingResponse } from './resources/HealthCheck';
 import Simulate from './resources/Simulate';
+import Opal from './resources/Opal';
 
 export class Method {
   accounts: Account;
@@ -23,6 +24,7 @@ export class Method {
   webhooks: Webhook;
   healthcheck: HealthCheck;
   simulate: Simulate;
+  opal: Opal;
 
   constructor(opts: IConfigurationOpts) {
     const config = new Configuration(opts);
@@ -39,6 +41,7 @@ export class Method {
     this.webhooks = new Webhook(config);
     this.healthcheck = new HealthCheck(config);
     this.simulate = new Simulate(config);
+    this.opal = new Opal(config);
   }
 
   public async ping(): Promise<IResponse<IPingResponse>> {

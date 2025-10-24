@@ -18,3 +18,4 @@ export * from './resources/Payment';
 export * from './resources/Report';
 export * from './resources/Simulate';
 export * from './resources/Webhook';
+export * from './resources/Opal';
