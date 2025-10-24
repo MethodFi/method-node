@@ -14,7 +14,7 @@ export class SimulateConnectInstance extends Resource {
    * @param opts SimulateEntityConnectOpts
    */
   async create(opts: SimulateEntityConnectOpts) {
-    return super._create<IResponse<null>, SimulateEntityConnectOpts>(opts); 
+    return super._create<IResponse<null>, SimulateEntityConnectOpts>(opts);
   }
 }
 
@@ -22,7 +22,7 @@ export interface SimulateConnect {
   (entity_id: string): SimulateConnectInstance;
 }
 
-export default class SimulateConnect extends Resource {
+export class SimulateConnect extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('connect'));
   }
@@ -31,3 +31,5 @@ export default class SimulateConnect extends Resource {
     return new SimulateConnectInstance(entity_id, this.config);
   }
 }
+
+export default SimulateConnect;

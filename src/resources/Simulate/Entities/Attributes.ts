@@ -14,7 +14,7 @@ export class SimulateAttributesInstance extends Resource {
    * @param opts SimulateEntityAttributesOpts
    */
   async create(opts: SimulateEntityAttributesOpts) {
-    return super._create<IResponse<null>, SimulateEntityAttributesOpts>(opts); 
+    return super._create<IResponse<null>, SimulateEntityAttributesOpts>(opts);
   }
 }
 
@@ -22,7 +22,7 @@ export interface SimulateAttributes {
   (entity_id: string): SimulateAttributesInstance;
 }
 
-export default class SimulateAttributes extends Resource {
+export class SimulateAttributes extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('attributes'));
   }
@@ -31,3 +31,5 @@ export default class SimulateAttributes extends Resource {
     return new SimulateAttributesInstance(entity_id, this.config);
   }
 }
+
+export default SimulateAttributes;

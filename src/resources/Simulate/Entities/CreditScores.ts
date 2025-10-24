@@ -17,7 +17,10 @@ export class SimulateCreditScoresInstance extends Resource {
    * @returns Returns the created Credit Score.
    */
   async create(opts: { scores: IEntityCreditScoresType[] }) {
-    return super._create<IResponse<IEntityCreditScores>, { scores: IEntityCreditScoresType[] }>(opts);
+    return super._create<
+      IResponse<IEntityCreditScores>,
+      { scores: IEntityCreditScoresType[] }
+    >(opts);
   }
 }
 
@@ -25,7 +28,7 @@ export interface SimulateCreditScores {
   (crs_id: string): SimulateCreditScoresInstance;
 }
 
-export default class SimulateCreditScores extends Resource {
+export class SimulateCreditScores extends Resource {
   constructor(config: Configuration) {
     super(config.addPath('credit_scores'));
   }
@@ -34,3 +37,5 @@ export default class SimulateCreditScores extends Resource {
     return new SimulateCreditScoresInstance(crs_id, this.config);
   }
 }
+
+export default SimulateCreditScores;
