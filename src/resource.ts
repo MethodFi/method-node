@@ -20,9 +20,9 @@ type TSubResources =
   | EntitySubResources
   | SimulateAccountsSubResources
   | SimulateEntitiesSubResources
-  | SimulateCreditScoresInstance;
+  | SimulateCreditScoresInstance
   | SimulateConnectInstance
-  | SimulateAttributesInstance
+  | SimulateAttributesInstance;
 
 export interface IRequestConfig {
   idempotency_key?: string;
