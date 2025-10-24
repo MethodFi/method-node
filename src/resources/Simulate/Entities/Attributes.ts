@@ -18,7 +18,7 @@ export class SimulateAttributesInstance extends Resource {
   }
 }
 
-export default interface SimulateAttributes {
+export interface SimulateAttributes {
   (entity_id: string): SimulateAttributesInstance;
 }
 

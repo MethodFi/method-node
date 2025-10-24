@@ -279,7 +279,6 @@ export interface IAccountLiability {
   ownership: TAccountOwnership | null;
   fingerprint: string| null;
   type: TAccountLiabilityTypes | null;
-  sub_type: TAccountLiabilitySubTypes | null;
   name: string | null;
 };
 
@@ -702,24 +701,6 @@ export interface IAccountPaymentInstrument {
   created_at: Date;
   updated_at: Date;
 }
-
-export const AccountLiabilitySubTypes = {
-  business: 'business',
-  unsecured: 'unsecured',
-  lease: 'lease',
-  loan: 'loan',
-  heloc: 'heloc',
-  charge: 'charge',
-  flexible_spending: 'flexible_spending',
-  secured: 'secured',
-  purchase: 'purchase',
-  note: 'note',
-  private: 'private',
-  federal: 'federal',
-  rent: 'rent',
-} as const;
-
-export type TAccountLiabilitySubTypes = keyof typeof AccountLiabilitySubTypes;
 
 export interface IAccount {
   id: string;

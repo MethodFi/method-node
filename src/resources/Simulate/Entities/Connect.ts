@@ -18,7 +18,7 @@ export class SimulateConnectInstance extends Resource {
   }
 }
 
-export default interface SimulateConnect {
+export interface SimulateConnect {
   (entity_id: string): SimulateConnectInstance;
 }
 

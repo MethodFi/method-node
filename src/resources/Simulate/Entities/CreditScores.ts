@@ -21,7 +21,7 @@ export class SimulateCreditScoresInstance extends Resource {
   }
 }
 
-export default interface SimulateCreditScores {
+export interface SimulateCreditScores {
   (crs_id: string): SimulateCreditScoresInstance;
 }
 

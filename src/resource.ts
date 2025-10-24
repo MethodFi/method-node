@@ -11,6 +11,8 @@ import { EntitySubResources } from './resources/Entity';
 import { SimulateAccountsSubResources } from './resources/Simulate/Accounts';
 import { SimulateEntitiesSubResources } from './resources/Simulate/Entities';
 import { SimulateCreditScoresInstance } from './resources/Simulate/Entities/CreditScores';
+import { SimulateConnectInstance } from './resources/Simulate/Entities/Connect';
+import { SimulateAttributesInstance } from './resources/Simulate/Entities/Attributes';
 
 type TSubResources =
   | AccountSubResources
@@ -19,6 +21,8 @@ type TSubResources =
   | SimulateAccountsSubResources
   | SimulateEntitiesSubResources
   | SimulateCreditScoresInstance;
+  | SimulateConnectInstance
+  | SimulateAttributesInstance
 
 export interface IRequestConfig {
   idempotency_key?: string;
