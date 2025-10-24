@@ -1156,7 +1156,6 @@ describe('Accounts - core methods tests', () => {
     });
   });
 
-
   describe('accounts.withdrawConsent', () => {
     it('should successfully withdraw consent from an account.', async () => {
       const withdraw_consent_response = await client.accounts.withdrawConsent(test_credit_card_account.id);

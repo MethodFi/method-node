@@ -279,6 +279,20 @@ export default class Resource extends ExtensibleFunction {
     return (await this.client.put(path, data)).data.data;
   }
 
+  protected async _patchWithId<Response, Data>(
+    id: string,
+    data: Data,
+    requestConfig: IRequestConfig = {},
+  ): Promise<Response> {
+    const _requestConfig = { headers: {} };
+    if (requestConfig.idempotency_key) {
+      _requestConfig.headers = {
+        'Idempotency-Key': requestConfig.idempotency_key,
+      };
+    }
+    return (await this.client.patch(`/${id}`, data, _requestConfig)).data.data;
+  }
+
   protected async _delete<Response>(id: string): Promise<Response> {
     return (await this.client.delete(`/${id}`)).data.data;
   }

@@ -1,7 +1,7 @@
 import Resource from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type { IEventListOpts, EventResourceTypes, IEventDiff } from './types';
-import { TWebhookTypes } from '../Webhook';
+import type { TWebhookTypes } from '../Webhook/types';
 
 export interface IEvent {
   id: string;

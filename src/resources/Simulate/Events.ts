@@ -1,6 +1,6 @@
 import Resource from '../../resource';
-import Configuration, { IResponse } from '../../configuration';
-import { TWebhookTypes } from '../Webhook';
+import Configuration from '../../configuration';
+import type { TWebhookTypes } from '../Webhook/types';
 
 export interface ISimulateEventsOpts {
   type: TWebhookTypes;
