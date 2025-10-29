@@ -146,6 +146,7 @@ describe('Accounts - core methods tests', () => {
           mask: '8721',
           ownership: 'unknown',
           type: 'credit_card',
+          sub_type: 'flexible_spending',
           name: 'Chase Sapphire Reserve'
         },
         latest_verification_session: accounts_create_liability_response.latest_verification_session,
