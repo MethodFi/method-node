@@ -5,7 +5,6 @@ const OpalModes = {
   account_verification: 'account_verification',
   transactions: 'transactions',
 } as const;
-
 export type TOpalModes = keyof typeof OpalModes;
 
 const SkipPII = {
@@ -14,8 +13,37 @@ const SkipPII = {
   address: 'address',
   ssn_4: 'ssn_4',
 } as const;
-
 export type TSkipPII = keyof typeof SkipPII;
+
+const AccountFiltersAccountTypes = {
+  credit_card: 'credit_card',
+  auto_loan: 'auto_loan',
+  mortgage: 'mortgage',
+  personal_loan: 'personal_loan',
+  student_loan: 'student_loan',
+} as const;
+export type TAccountFiltersAccountTypes = keyof typeof AccountFiltersAccountTypes;
+
+export type TSelectionType = 'single' | 'multiple' | 'all';
+
+export interface IOpalAccountFiltersInclude {
+  account_types: TAccountFiltersAccountTypes[];
+}
+
+export interface IOpalAccountFiltersExclude {
+  account_types: TAccountFiltersAccountTypes[];
+  mch_ids: string[];
+  unverified_account_numbers: boolean;
+}
+
+export interface IConnectAccountFilters {
+  include: IOpalAccountFiltersInclude;
+  exclude: IOpalAccountFiltersExclude;
+}
+
+export interface ICardConnectAccountFilters {
+  exclude: Omit<IOpalAccountFiltersExclude, 'account_types'>; 
+}
 
 export interface IOpalIdentityVerificationCreateOpts {
   skip_pii: TSkipPII[];
@@ -23,13 +51,14 @@ export interface IOpalIdentityVerificationCreateOpts {
 
 export interface IOpalConnectCreateOpts {
   skip_pii: TSkipPII[];
-  selection_type: 'single' | 'multiple' | 'all';
-  allowed_account_types: 'credit_card' | 'auto_loan' | 'mortgage' | 'personal_loan' | 'student_loan';
+  selection_type: TSelectionType;
+  account_filters: IConnectAccountFilters;
 }
 
 export interface IOpalCardConnectCreateOpts {
   skip_pii: TSkipPII[];
-  selection_type: 'single' | 'multiple' | 'all';
+  selection_type: TSelectionType;
+  account_filters: ICardConnectAccountFilters;
 }
 
 export interface IOpalAccountVerificationCreateOpts {
