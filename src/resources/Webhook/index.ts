@@ -32,7 +32,7 @@ export default class Webhook extends Resource {
    * Creating a new Webhook means registering a URL to receive updates for a specific event type.
    * Once a resource is created or updated, your application will be notified via an HTTP POST request with the event information.
    *
-   * @param opts IWebhookCreateOpts: https://docs.methodfi.com/api/core/webhooks/create
+   * @param opts IWebhookCreateOpts: https://docs.methodfi.com/reference/webhooks/create
    * @param requestConfig Idempotency key: { idempotency_key: string}
    * @returns Returns the newly created Webhook object.
    */

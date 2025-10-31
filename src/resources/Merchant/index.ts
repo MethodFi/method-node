@@ -39,6 +39,7 @@ export default class Merchant extends Resource {
 
   /**
    * Retrieves a merchant by id
+   * https://docs.methodfi.com/reference/merchants/retrieve
    *
    * @param mch_id Method merchant id
    * @returns IMerchant
@@ -50,8 +51,9 @@ export default class Merchant extends Resource {
 
   /**
    * Lists all merchants
+   * https://docs.methodfi.com/reference/merchants/list
    *
-   * @param opts IMerchantListOpts: https://docs.methodfi.com/api/core/merchants/list
+   * @param opts IMerchantListOpts
    * @returns IMerchant[]
    */
 

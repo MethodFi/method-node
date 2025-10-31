@@ -71,7 +71,7 @@ export class Entity extends Resource {
   /**
    * Returns all the Entities associated with your team, or an empty array if none have been created.
    *
-   * @param opts IEntityListOpts: https://docs.methodfi.com/api/core/entities/list
+   * @param opts IEntityListOpts: https://docs.methodfi.com/reference/entities/list
    * @returns Returns a list of Entities.
    */
 

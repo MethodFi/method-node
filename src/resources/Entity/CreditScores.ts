@@ -9,6 +9,7 @@ export default class EntityCreditScores extends Resource {
 
   /**
    * Retrieves a Credit Score record for an Entity.
+   * https://docs.methodfi.com/reference/entities/credit-scores/retrieve
    *
    * @param crs_id ID of the CreditScore
    * @returns Returns an Entity’s CreditScore object.
@@ -20,6 +21,7 @@ export default class EntityCreditScores extends Resource {
 
   /**
    * Retrieves a list of CreditScore objects for an entity.
+   * https://docs.methodfi.com/reference/entities/credit-scores/list
    *
    * @returns Returns a list of CreditScore objects.
    */
@@ -30,6 +32,7 @@ export default class EntityCreditScores extends Resource {
 
   /**
    * Creates a new Credit Score request to retrieve the Entity’s credit score.
+   * https://docs.methodfi.com/reference/entities/credit-scores/create
    *
    * @returns Returns an Entity’s CreditScore object.
    */

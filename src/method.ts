@@ -1,5 +1,6 @@
 import Configuration, { IConfigurationOpts, IResponse } from './configuration';
 import Account from './resources/Account';
+import CardProduct from './resources/CardProduct';
 import Element from './resources/Element';
 import Entity from './resources/Entity';
 import Event from './resources/Event';
@@ -9,9 +10,11 @@ import Report from './resources/Report';
 import Webhook from './resources/Webhook';
 import HealthCheck, { IPingResponse } from './resources/HealthCheck';
 import Simulate from './resources/Simulate';
+import Opal from './resources/Opal';
 
 export class Method {
   accounts: Account;
+  cardProducts: CardProduct;
   elements: Element;
   events: Event;
   entities: Entity;
@@ -21,12 +24,14 @@ export class Method {
   webhooks: Webhook;
   healthcheck: HealthCheck;
   simulate: Simulate;
+  opal: Opal;
 
   constructor(opts: IConfigurationOpts) {
     const config = new Configuration(opts);
 
     // Resources
     this.accounts = new Account(config);
+    this.cardProducts = new CardProduct(config);
     this.elements = new Element(config);
     this.events = new Event(config);
     this.entities = new Entity(config);
@@ -36,6 +41,7 @@ export class Method {
     this.webhooks = new Webhook(config);
     this.healthcheck = new HealthCheck(config);
     this.simulate = new Simulate(config);
+    this.opal = new Opal(config);
   }
 
   public async ping(): Promise<IResponse<IPingResponse>> {

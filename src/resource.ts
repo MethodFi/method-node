@@ -11,6 +11,8 @@ import { EntitySubResources } from './resources/Entity';
 import { SimulateAccountsSubResources } from './resources/Simulate/Accounts';
 import { SimulateEntitiesSubResources } from './resources/Simulate/Entities';
 import { SimulateCreditScoresInstance } from './resources/Simulate/Entities/CreditScores';
+import { SimulateConnectInstance } from './resources/Simulate/Entities/Connect';
+import { SimulateAttributesInstance } from './resources/Simulate/Entities/Attributes';
 
 type TSubResources =
   | AccountSubResources
@@ -18,10 +20,13 @@ type TSubResources =
   | EntitySubResources
   | SimulateAccountsSubResources
   | SimulateEntitiesSubResources
-  | SimulateCreditScoresInstance;
+  | SimulateCreditScoresInstance
+  | SimulateConnectInstance
+  | SimulateAttributesInstance;
 
 export interface IRequestConfig {
   idempotency_key?: string;
+  prefer?: string;
 }
 
 class ExtensibleFunction extends Function {
@@ -43,7 +48,7 @@ export default class Resource extends ExtensibleFunction {
       headers: {
         Authorization: `Bearer ${config.apiKey}`,
         'User-Agent': this.getDefaultUserAgent(),
-        'method-version': '2024-04-04',
+        'method-version': '2025-07-04',
       },
       httpsAgent: config.httpsAgent,
     });
@@ -212,9 +217,10 @@ export default class Resource extends ExtensibleFunction {
     requestConfig: IRequestConfig = {},
   ): Promise<Response> {
     const _requestConfig = {
-      headers: requestConfig.idempotency_key
-        ? { 'Idempotency-Key': requestConfig.idempotency_key }
-        : {},
+      headers: {
+        ...(requestConfig.idempotency_key ? { 'Idempotency-Key': requestConfig.idempotency_key } : {}),
+        ...(requestConfig.prefer ? { 'Prefer': requestConfig.prefer } : {}),
+      },
       params,
     };
 

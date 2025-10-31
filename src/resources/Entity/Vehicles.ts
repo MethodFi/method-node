@@ -9,6 +9,7 @@ export default class EntityVehicles extends Resource {
 
   /**
    * Retrieves a Vehicle record for an Entity.
+   * https://docs.methodfi.com/reference/entities/vehicles/retrieve
    *
    * @param evhl_id ID of the Vehicle
    * @returns Returns an Entity’s Vehicle object.
@@ -20,7 +21,8 @@ export default class EntityVehicles extends Resource {
 
   /**
    * Retrieves a list of Vehicle objects for an entity.
-   *
+   * https://docs.methodfi.com/reference/entities/vehicles/list
+  *
    * @returns Returns a list of Vehicle objects.
    */
 
@@ -30,6 +32,7 @@ export default class EntityVehicles extends Resource {
 
   /**
    * Creates a new Vehicle request to retrieve the Entity’s vehicle.
+   * https://docs.methodfi.com/reference/entities/vehicles/create
    *
    * @returns Returns an Entity’s Vehicle object.
    */

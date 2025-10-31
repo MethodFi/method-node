@@ -9,6 +9,7 @@ export default class AccountSensitive extends Resource {
 
   /**
    * Retrieve a Sensitive record for an Account.
+   * https://docs.methodfi.com/reference/accounts/sensitive/retrieve
    *
    * @param astv_id ID of the Sensitive object
    * @returns A Sensitive object
@@ -20,6 +21,7 @@ export default class AccountSensitive extends Resource {
 
   /**
    * Retrieves a list of Sensitive objects for an account.
+   * https://docs.methodfi.com/reference/accounts/sensitive/list
    *
    * @returns Returns a list of Sensitive objects.
    */
@@ -30,6 +32,7 @@ export default class AccountSensitive extends Resource {
 
   /**
    * Creates a new Sensitive request to retrieve sensitive Account information.
+   * https://docs.methodfi.com/reference/accounts/sensitive/create
    *
    * @param data Sensitive fields to expand in the response.
    * @returns A Sensitive object

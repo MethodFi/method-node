@@ -97,39 +97,5 @@ describe('Events - core methods tests', () => {
 
       // response.should.be.eql(expect_results);
     });
-
-    it('should simulate an attribute created event', async () => {
-      const event_response = await client.simulate.events.create({
-        type: 'attribute.credit_health_credit_card_usage.increased',
-        entity_id: entity_response.id,
-      });
-
-      expect(event_response).to.eql(null);
-
-      // TODO: Add these tests back once list events are working in dev again.
-      // timeout to allow event to be created
-      // await new Promise((resolve) => { setTimeout(resolve, 5000); });
-
-      // const events_list_response = await client.events.list({
-      //   type: 'attribute.credit_health_credit_card_usage.increased',
-      // });
-
-      // [event_response] = events_list_response;
-
-      // const response = await client.events.retrieve(event_response.id);
-
-      // const expect_results: IEvent = {
-      //   id: event_response.id,
-      //   created_at: event_response.created_at,
-      //   updated_at: event_response.updated_at,
-      //   type: 'attribute.credit_health_credit_card_usage.increased',
-      //   resource_id: event_response.resource_id,
-      //   resource_type: 'attribute',
-      //   data: event_response.data,
-      //   diff: event_response.diff,
-      // };
-
-      // response.should.be.eql(expect_results);
-    });
   });
 });

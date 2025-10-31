@@ -15,6 +15,7 @@ export default class SimulateEvents extends Resource {
 
   /**
    * Simulates an event.
+   * https://docs.methodfi.com/reference/simulations/events/create
    *
    * @param data The event type and optional entity or account ID.
    * @returns null

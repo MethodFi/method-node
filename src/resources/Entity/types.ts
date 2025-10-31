@@ -3,6 +3,7 @@ import type {
   TResourceStatus,
   IResourceListOpts,
 } from '../../resource';
+import { TAccountProducts, TAccountSubscriptionTypes } from '../Account';
 
 export const CreditReportBureaus = {
   experian: 'experian',
@@ -119,8 +120,8 @@ export interface IEntityConnect {
   entity_id: string;
   status: TResourceStatus;
   accounts: string[] | null;
-  requested_products: TEntityProductType[];
-  requested_subscriptions: TEntitySubscriptionNames[];
+  requested_products: TAccountProducts[];
+  requested_subscriptions: TAccountSubscriptionTypes[];
   error: IResourceError | null;
   created_at: string;
   updated_at: string;

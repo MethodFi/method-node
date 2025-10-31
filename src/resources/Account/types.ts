@@ -279,6 +279,7 @@ export interface IAccountLiability {
   ownership: TAccountOwnership | null;
   fingerprint: string| null;
   type: TAccountLiabilityTypes | null;
+  sub_type: TAccountLiabilitySubTypes | null;
   name: string | null;
 };
 
@@ -298,27 +299,28 @@ export interface IAccountBalance {
   updated_at: string;
 };
 
-export interface IAccountCardBrandInfo {
-  id: string;
-  art_id?: string;
-  url: string;
-  name: string;
-};
-
 export interface IAccountCardBrand {
   id: string;
   account_id: string;
-  network: string | null;
-  issuer: string | null;
-  last4: string | null;
   brands: IAccountCardBrandInfo[];
-  status: 'in_progress' | 'completed' | 'failed';
-  shared: boolean;
   source: 'method' | 'network' | null;
+  status: 'completed' | 'in_progress' | 'failed';
+  shared: boolean;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
-};
+}
+
+export interface IAccountCardBrandInfo {
+  id: string;
+  card_product_id: string;
+  description: string;
+  name: string;
+  issuer: string;
+  network: string;
+  type: 'specific' | 'generic' | 'in_review';
+  url: string;
+}
 
 export interface IAccountPayoff {
   id: string,
@@ -700,6 +702,25 @@ export interface IAccountPaymentInstrument {
   created_at: Date;
   updated_at: Date;
 }
+
+export const AccountLiabilitySubTypes = {
+  business: 'business',
+  unsecured: 'unsecured',
+  lease: 'lease',
+  loan: 'loan',
+  heloc: 'heloc',
+  charge: 'charge',
+  flexible_spending: 'flexible_spending',
+  secured: 'secured',
+  purchase: 'purchase',
+  note: 'note',
+  private: 'private',
+  federal: 'federal',
+  rent: 'rent',
+} as const;
+
+export type TAccountLiabilitySubTypes = keyof typeof AccountLiabilitySubTypes;
+
 
 export interface IAccount {
   id: string;

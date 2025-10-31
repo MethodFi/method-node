@@ -14,6 +14,7 @@ export default class AccountSubscriptions extends Resource {
 
   /**
    * Retrieves a Subscription record for an Account.
+   * https://docs.methodfi.com/reference/accounts/subscriptions/retrieve
    *
    * @param sub_id ID of the Subscription
    * @returns IAccountSubscription
@@ -25,6 +26,7 @@ export default class AccountSubscriptions extends Resource {
 
   /**
    * Returns a map of Subscriptions names to Subscription objects associated with an Account, or an empty array if none have been created.
+   * https://docs.methodfi.com/reference/accounts/subscriptions/list
    *
    * @returns Returns a map of Subscription names to Subscription objects.
    */
@@ -35,10 +37,11 @@ export default class AccountSubscriptions extends Resource {
 
   /**
    * Enrolls an Account to a Subscription. Once enrolled, the Subscription name and details will be present on the response object.
+   * https://docs.methodfi.com/reference/accounts/subscriptions/create
    *
    * Note: Subscription requests are processed individually, meaning the success or failure of one subscription does not affect others. The response object will detail any errors encountered.
    *
-   * @param data IAccountSubscriptionCreateOpts: https://docs-v2.methodfi.com/reference/accounts/subscriptions/create
+   * @param data IAccountSubscriptionCreateOpts
    * @returns Returns a map of Subscription name to Subscription object.
    */
 
@@ -50,6 +53,7 @@ export default class AccountSubscriptions extends Resource {
 
   /**
    * Deleting a Subscription means to unsubscribe or unenroll an Account from automatically receiving new Product resources.
+   * https://docs.methodfi.com/reference/accounts/subscriptions/delete
    *
    * @param sub_id ID of the Subscription
    * @returns Returns a Subscription object.

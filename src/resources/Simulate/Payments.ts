@@ -14,6 +14,7 @@ export default class SimulatePayments extends Resource {
 
   /**
    * Updates a Payment’s status.
+   * https://docs.methodfi.com/reference/simulations/payments/update
    *
    * @param id ID of the Payment
    * @param data The desired payment status or error code.
