@@ -157,7 +157,6 @@ describe('Accounts - core methods tests', () => {
         attribute: null,
         update: accounts_create_liability_response.update,
         card_brand: null,
-        payoff: null,
         products: accounts_create_liability_response.products,
         restricted_products: accounts_create_liability_response.restricted_products,
         subscriptions: accounts_create_liability_response.subscriptions,
@@ -167,6 +166,7 @@ describe('Accounts - core methods tests', () => {
         error: null,
         metadata: null,
         payment_instrument: null,
+        payoff: null,
         created_at: accounts_create_liability_response.created_at,
         updated_at: accounts_create_liability_response.updated_at
       };
