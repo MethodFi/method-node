@@ -165,7 +165,6 @@ describe('Accounts - core methods tests', () => {
         status: 'active',
         error: null,
         metadata: null,
-        payment_instrument: null,
         payoff: null,
         created_at: accounts_create_liability_response.created_at,
         updated_at: accounts_create_liability_response.updated_at
