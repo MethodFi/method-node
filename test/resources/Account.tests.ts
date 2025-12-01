@@ -377,6 +377,12 @@ describe('Accounts - core methods tests', () => {
 
   describe('simulate.accounts.cardBrands', () => {
     it('should successfully simulate a card brand for an account.', async () => {
+      // Create a card_brand subscription first
+      await client
+        .accounts(test_credit_card_account.id)
+        .subscriptions
+        .create('card_brand');
+
       const simulate_card_brand_response = await client
         .simulate
         .accounts(test_credit_card_account.id)
