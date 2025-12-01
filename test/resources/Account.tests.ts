@@ -115,6 +115,9 @@ describe('Accounts - core methods tests', () => {
         latest_verification_session: accounts_create_ach_response.latest_verification_session,
         products: [ 'payment' ],
         restricted_products: [],
+        subscriptions: [],
+        available_subscriptions: [],
+        restricted_subscriptions: [],
         status: 'active',
         error: null,
         metadata: null,
@@ -154,7 +157,6 @@ describe('Accounts - core methods tests', () => {
         attribute: null,
         update: accounts_create_liability_response.update,
         card_brand: null,
-        payment_instrument: null,
         payoff: null,
         products: accounts_create_liability_response.products,
         restricted_products: accounts_create_liability_response.restricted_products,
@@ -164,6 +166,7 @@ describe('Accounts - core methods tests', () => {
         status: 'active',
         error: null,
         metadata: null,
+        payment_instrument: null,
         created_at: accounts_create_liability_response.created_at,
         updated_at: accounts_create_liability_response.updated_at
       };
@@ -188,6 +191,9 @@ describe('Accounts - core methods tests', () => {
         latest_verification_session: accounts_create_ach_response.latest_verification_session,
         products: [ 'payment' ],
         restricted_products: [],
+        subscriptions: [],
+        available_subscriptions: [],
+        restricted_subscriptions: [],
         status: 'active',
         error: null,
         metadata: null,
@@ -1141,15 +1147,35 @@ describe('Accounts - core methods tests', () => {
           created_at: accounts_retrieve_product_list_response.payoff?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.payoff?.updated_at || ''
         },
-        payment_instrument: {
-          name: 'payment_instrument',
+        'payment_instrument.card': {
+          name: 'payment_instrument.card',
           status: 'restricted',
-          status_error: accounts_retrieve_product_list_response.payment_instrument?.status_error || null,
-          latest_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_successful_request_id || null,
+          status_error: accounts_retrieve_product_list_response['payment_instrument.card']?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response['payment_instrument.card']?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response['payment_instrument.card']?.latest_successful_request_id || null,
           is_subscribable: true,
-          created_at: accounts_retrieve_product_list_response.payment_instrument?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.payment_instrument?.updated_at || ''
+          created_at: accounts_retrieve_product_list_response['payment_instrument.card']?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response['payment_instrument.card']?.updated_at || ''
+        },
+        'payment_instrument.inbound_achwire_payment': {
+          name: 'payment_instrument.inbound_achwire_payment',
+          status: 'restricted',
+          status_error: accounts_retrieve_product_list_response['payment_instrument.inbound_achwire_payment']?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response['payment_instrument.inbound_achwire_payment']?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response['payment_instrument.inbound_achwire_payment']?.latest_successful_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response['payment_instrument.inbound_achwire_payment']?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response['payment_instrument.inbound_achwire_payment']?.updated_at || ''
+        },
+        'payment_instrument.network_token': {
+          name: 'payment_instrument.network_token',
+          status: 'restricted',
+          status_error: accounts_retrieve_product_list_response['payment_instrument.network_token']?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response['payment_instrument.network_token']?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response['payment_instrument.network_token']?.latest_successful_request_id || null,
+          is_subscribable: true,
+          created_at: accounts_retrieve_product_list_response['payment_instrument.network_token']?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response['payment_instrument.network_token']?.updated_at || ''
         }
       };
 
