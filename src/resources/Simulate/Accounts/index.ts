@@ -1,11 +1,14 @@
 import Resource from '../../../resource';
 import Configuration from '../../../configuration';
 import SimulateTransactions from './Transactions';
+import SimulateCardBrands from './CardBrands';
 
 export class SimulateAccountsSubResources {
   transactions: SimulateTransactions;
-  constructor(acc_id:string, config: Configuration) {
+  cardBrands: SimulateCardBrands;
+  constructor(acc_id: string, config: Configuration) {
     this.transactions = new SimulateTransactions(config.addPath(acc_id));
+    this.cardBrands = new SimulateCardBrands(config.addPath(acc_id));
   }
 };
 
@@ -25,3 +28,4 @@ export class SimulateAccounts extends Resource {
 };
 
 export default SimulateAccounts;
+export * from './CardBrands';

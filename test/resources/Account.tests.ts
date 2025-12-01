@@ -375,6 +375,35 @@ describe('Accounts - core methods tests', () => {
     });
   });
 
+  describe('simulate.accounts.cardBrands', () => {
+    it('should successfully simulate a card brand for an account.', async () => {
+      const simulate_card_brand_response = await client
+        .simulate
+        .accounts(test_credit_card_account.id)
+        .cardBrands
+        .create({ brand_id: 'pdt_15_brd_1' });
+
+      expect(simulate_card_brand_response.id).to.be.a('string');
+      expect(simulate_card_brand_response.account_id).to.equal(test_credit_card_account.id);
+      expect(simulate_card_brand_response.status).to.equal('completed');
+      expect(simulate_card_brand_response.source).to.equal('method');
+      expect(simulate_card_brand_response.error).to.be.null;
+      expect(simulate_card_brand_response.created_at).to.be.a('string');
+      expect(simulate_card_brand_response.updated_at).to.be.a('string');
+
+      const brand = simulate_card_brand_response.brands?.[0];
+      expect(brand).to.exist;
+      expect(brand.id).to.equal('pdt_15_brd_1');
+      expect(brand.card_product_id).to.equal('pdt_15');
+      expect(brand.description).to.equal('Chase Sapphire Reserve');
+      expect(brand.name).to.equal('Chase Sapphire Reserve');
+      expect(brand.issuer).to.equal('Chase');
+      expect(brand.network).to.equal('visa');
+      expect(brand.type).to.equal('specific');
+      expect(brand.url).to.equal('https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png');
+    });
+  });
+
   describe('accounts.payoffs', () => {
     it('should successfully create a payoff request for an account.', async () => {
       payoff_create_response = await client
