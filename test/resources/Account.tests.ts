@@ -971,9 +971,13 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully list updates for an account.', async () => {
-      const list_updates_response = await client.accounts(test_credit_card_account.id).updates.list();
-      
-      const update_to_check = list_updates_response.find(update => update.id === create_updates_response.id);
+      const getUpdateFromList = async () => {
+        const list_updates_response = await client.accounts(test_credit_card_account.id).updates.list();
+        const update = list_updates_response.find(u => u.id === create_updates_response.id);
+        return update;
+      };
+
+      const update_to_check = await awaitResults(getUpdateFromList);
 
       const expect_results: IAccountUpdate = {
           id: create_updates_response.id,
