@@ -44,6 +44,7 @@ describe('Accounts - core methods tests', () => {
   let create_txn_subscriptions_response: IResponse<IAccountSubscription>;
   let create_update_subscriptions_response: IResponse<IAccountSubscription>;
   let create_update_snapshot_subscriptions_response: IResponse<IAccountSubscription>;
+  let create_card_brand_subscriptions_response: IResponse<IAccountSubscription>;
   let create_updates_response: IResponse<IAccountUpdate>;
   let create_attributes_response: IResponse<IAccountAttributes>;
   let accounts_retrieve_product_list_response: IAccountProductListResponse;
@@ -377,8 +378,7 @@ describe('Accounts - core methods tests', () => {
 
   describe('simulate.accounts.cardBrands', () => {
     it('should successfully simulate a card brand for an account.', async () => {
-      // Create a card_brand subscription first
-      await client
+      create_card_brand_subscriptions_response = await client
         .accounts(test_credit_card_account.id)
         .subscriptions
         .create('card_brand');
@@ -755,6 +755,15 @@ describe('Accounts - core methods tests', () => {
           latest_request_id: null,
           created_at: subscriptions_response.update?.created_at || '',
           updated_at: subscriptions_response.update?.updated_at || ''
+        },
+        card_brand: {
+          id: create_card_brand_subscriptions_response.id,
+          name: 'card_brand',
+          status: 'active',
+          payload: null,
+          latest_request_id: subscriptions_response.card_brand?.latest_request_id || null,
+          created_at: subscriptions_response.card_brand?.created_at || '',
+          updated_at: subscriptions_response.card_brand?.updated_at || ''
         }
       };
 

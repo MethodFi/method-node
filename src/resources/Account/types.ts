@@ -401,6 +401,7 @@ export interface IAccountSubscriptionsResponse {
   transaction?: IAccountSubscription;
   update?: IAccountSubscription;
   'update.snapshot'?: IAccountSubscription;
+  card_brand?: IAccountSubscription;
 };
 
 export interface IAccountSubscriptionCreateOpts {
