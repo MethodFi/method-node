@@ -62,7 +62,7 @@ export default class Resource extends ExtensibleFunction {
   }
 
   private getDefaultUserAgent(): string {
-    return `Method-Node/v2.0.0`;
+    return `Method-Node/v2.0.1`;
   }
 
   private configureRequestInterceptors(): void {
