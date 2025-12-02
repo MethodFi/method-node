@@ -44,6 +44,7 @@ describe('Accounts - core methods tests', () => {
   let create_txn_subscriptions_response: IResponse<IAccountSubscription>;
   let create_update_subscriptions_response: IResponse<IAccountSubscription>;
   let create_update_snapshot_subscriptions_response: IResponse<IAccountSubscription>;
+  let create_card_brand_subscriptions_response: IResponse<IAccountSubscription>;
   let create_updates_response: IResponse<IAccountUpdate>;
   let create_attributes_response: IResponse<IAccountAttributes>;
   let accounts_retrieve_product_list_response: IAccountProductListResponse;
@@ -115,6 +116,9 @@ describe('Accounts - core methods tests', () => {
         latest_verification_session: accounts_create_ach_response.latest_verification_session,
         products: [ 'payment' ],
         restricted_products: [],
+        subscriptions: [],
+        available_subscriptions: [],
+        restricted_subscriptions: [],
         status: 'active',
         error: null,
         metadata: null,
@@ -154,8 +158,6 @@ describe('Accounts - core methods tests', () => {
         attribute: null,
         update: accounts_create_liability_response.update,
         card_brand: null,
-        payment_instrument: null,
-        payoff: null,
         products: accounts_create_liability_response.products,
         restricted_products: accounts_create_liability_response.restricted_products,
         subscriptions: accounts_create_liability_response.subscriptions,
@@ -164,6 +166,7 @@ describe('Accounts - core methods tests', () => {
         status: 'active',
         error: null,
         metadata: null,
+        payoff: null,
         created_at: accounts_create_liability_response.created_at,
         updated_at: accounts_create_liability_response.updated_at
       };
@@ -188,6 +191,9 @@ describe('Accounts - core methods tests', () => {
         latest_verification_session: accounts_create_ach_response.latest_verification_session,
         products: [ 'payment' ],
         restricted_products: [],
+        subscriptions: [],
+        available_subscriptions: [],
+        restricted_subscriptions: [],
         status: 'active',
         error: null,
         metadata: null,
@@ -358,6 +364,40 @@ describe('Accounts - core methods tests', () => {
       expect(result.updated_at).to.be.a('string');
       
       const brand = result.brands?.[0];
+      expect(brand).to.exist;
+      expect(brand.id).to.equal('pdt_15_brd_1');
+      expect(brand.card_product_id).to.equal('pdt_15');
+      expect(brand.description).to.equal('Chase Sapphire Reserve');
+      expect(brand.name).to.equal('Chase Sapphire Reserve');
+      expect(brand.issuer).to.equal('Chase');
+      expect(brand.network).to.equal('visa');
+      expect(brand.type).to.equal('specific');
+      expect(brand.url).to.equal('https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png');
+    });
+  });
+
+  describe('simulate.accounts.cardBrands', () => {
+    it('should successfully simulate a card brand for an account.', async () => {
+      create_card_brand_subscriptions_response = await client
+        .accounts(test_credit_card_account.id)
+        .subscriptions
+        .create('card_brand');
+
+      const simulate_card_brand_response = await client
+        .simulate
+        .accounts(test_credit_card_account.id)
+        .cardBrands
+        .create({ brand_id: 'pdt_15_brd_1' });
+
+      expect(simulate_card_brand_response.id).to.be.a('string');
+      expect(simulate_card_brand_response.account_id).to.equal(test_credit_card_account.id);
+      expect(simulate_card_brand_response.status).to.equal('completed');
+      expect(simulate_card_brand_response.source).to.equal('method');
+      expect(simulate_card_brand_response.error).to.be.null;
+      expect(simulate_card_brand_response.created_at).to.be.a('string');
+      expect(simulate_card_brand_response.updated_at).to.be.a('string');
+
+      const brand = simulate_card_brand_response.brands?.[0];
       expect(brand).to.exist;
       expect(brand.id).to.equal('pdt_15_brd_1');
       expect(brand.card_product_id).to.equal('pdt_15');
@@ -715,6 +755,15 @@ describe('Accounts - core methods tests', () => {
           latest_request_id: null,
           created_at: subscriptions_response.update?.created_at || '',
           updated_at: subscriptions_response.update?.updated_at || ''
+        },
+        card_brand: {
+          id: create_card_brand_subscriptions_response.id,
+          name: 'card_brand',
+          status: 'active',
+          payload: null,
+          latest_request_id: subscriptions_response.card_brand?.latest_request_id || null,
+          created_at: subscriptions_response.card_brand?.created_at || '',
+          updated_at: subscriptions_response.card_brand?.updated_at || ''
         }
       };
 
@@ -966,9 +1015,13 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully list updates for an account.', async () => {
-      const list_updates_response = await client.accounts(test_credit_card_account.id).updates.list();
-      
-      const update_to_check = list_updates_response.find(update => update.id === create_updates_response.id);
+      const getUpdateFromList = async () => {
+        const list_updates_response = await client.accounts(test_credit_card_account.id).updates.list();
+        const update = list_updates_response.find(u => u.id === create_updates_response.id);
+        return update;
+      };
+
+      const update_to_check = await awaitResults(getUpdateFromList);
 
       const expect_results: IAccountUpdate = {
           id: create_updates_response.id,
@@ -1141,15 +1194,35 @@ describe('Accounts - core methods tests', () => {
           created_at: accounts_retrieve_product_list_response.payoff?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.payoff?.updated_at || ''
         },
-        payment_instrument: {
-          name: 'payment_instrument',
+        'payment_instrument.card': {
+          name: 'payment_instrument.card',
           status: 'restricted',
-          status_error: accounts_retrieve_product_list_response.payment_instrument?.status_error || null,
-          latest_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_successful_request_id || null,
+          status_error: accounts_retrieve_product_list_response['payment_instrument.card']?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response['payment_instrument.card']?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response['payment_instrument.card']?.latest_successful_request_id || null,
           is_subscribable: true,
-          created_at: accounts_retrieve_product_list_response.payment_instrument?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.payment_instrument?.updated_at || ''
+          created_at: accounts_retrieve_product_list_response['payment_instrument.card']?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response['payment_instrument.card']?.updated_at || ''
+        },
+        'payment_instrument.inbound_achwire_payment': {
+          name: 'payment_instrument.inbound_achwire_payment',
+          status: 'restricted',
+          status_error: accounts_retrieve_product_list_response['payment_instrument.inbound_achwire_payment']?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response['payment_instrument.inbound_achwire_payment']?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response['payment_instrument.inbound_achwire_payment']?.latest_successful_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response['payment_instrument.inbound_achwire_payment']?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response['payment_instrument.inbound_achwire_payment']?.updated_at || ''
+        },
+        'payment_instrument.network_token': {
+          name: 'payment_instrument.network_token',
+          status: 'restricted',
+          status_error: accounts_retrieve_product_list_response['payment_instrument.network_token']?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response['payment_instrument.network_token']?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response['payment_instrument.network_token']?.latest_successful_request_id || null,
+          is_subscribable: true,
+          created_at: accounts_retrieve_product_list_response['payment_instrument.network_token']?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response['payment_instrument.network_token']?.updated_at || ''
         }
       };
 

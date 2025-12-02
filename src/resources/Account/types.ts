@@ -70,6 +70,9 @@ export interface IAccountProductListResponse {
   attribute?: IAccountProduct;
   transaction?: IAccountProduct;
   payment_instrument?: IAccountProduct;
+  'payment_instrument.card'?: IAccountProduct;
+  'payment_instrument.inbound_achwire_payment'?: IAccountProduct;
+  'payment_instrument.network_token'?: IAccountProduct;
 };
 
 export const AccountSubscriptionTypes = {
@@ -398,6 +401,7 @@ export interface IAccountSubscriptionsResponse {
   transaction?: IAccountSubscription;
   update?: IAccountSubscription;
   'update.snapshot'?: IAccountSubscription;
+  card_brand?: IAccountSubscription;
 };
 
 export interface IAccountSubscriptionCreateOpts {

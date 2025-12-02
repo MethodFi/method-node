@@ -62,14 +62,7 @@ export default class Resource extends ExtensibleFunction {
   }
 
   private getDefaultUserAgent(): string {
-    // @ts-ignore
-    return `Method-Node/v${
-      require(// @ts-ignore
-        process.env.NODE_ENV === 'TEST'
-          ? '../../package.json'
-          : '../package.json',
-      ).version
-    }`;
+    return `Method-Node/v2.0.1`;
   }
 
   private configureRequestInterceptors(): void {
