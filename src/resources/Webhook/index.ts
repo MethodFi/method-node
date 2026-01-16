@@ -64,3 +64,5 @@ export default class Webhook extends Resource {
     return super._delete<IResponse<{}>>(whk_id);
   }
 };
+
+export * from './types';

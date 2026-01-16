@@ -63,6 +63,7 @@ export interface IConfigurationOpts {
   onRequest?: TOnRequest;
   onResponse?: TOnResponse;
   axiosRetryConfig?: IAxiosRetryConfig;
+  baseURL?: string;
 };
 
 export default class Configuration {
@@ -76,7 +77,7 @@ export default class Configuration {
   constructor(opts: IConfigurationOpts) {
     Configuration._validateConfiguration(opts);
 
-    this.baseURL = `https://${opts.env}.methodfi.com`;
+    this.baseURL = opts.baseURL || `https://${opts.env}.methodfi.com`;
     this.apiKey = opts.apiKey;
     this.httpsAgent = opts.httpsAgent || null;
     this.onRequest = opts.onRequest || null;
