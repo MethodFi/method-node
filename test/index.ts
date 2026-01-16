@@ -1,5 +1,6 @@
 // @ts-nocheck
 require('dotenv').config();
+require('./resources/Configuration.tests');
 require('./resources/Account.tests');
 require('./resources/Element.tests');
 require('./resources/Entity.tests');
