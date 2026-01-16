@@ -16,6 +16,8 @@ import { Method, Environments } from 'method-node';
 const method = new Method({
   apiKey: '<API_KEY>',
   env: Environments.dev,
+  // Optional: override the base URL for local mocks or self-hosted gateways
+  baseURL: 'http://localhost:4010',
 });
 ```
 

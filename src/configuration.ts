@@ -59,6 +59,7 @@ export type IAxiosRetryConfig = {
 export interface IConfigurationOpts {
   apiKey: string;
   env: TEnvironments;
+  baseURL?: string;
   httpsAgent?: any;
   onRequest?: TOnRequest;
   onResponse?: TOnResponse;
@@ -76,7 +77,8 @@ export default class Configuration {
   constructor(opts: IConfigurationOpts) {
     Configuration._validateConfiguration(opts);
 
-    this.baseURL = `https://${opts.env}.methodfi.com`;
+    const baseURL = opts.baseURL ?? `https://${opts.env}.methodfi.com`;
+    this.baseURL = baseURL.replace(/\/+$/, '');
     this.apiKey = opts.apiKey;
     this.httpsAgent = opts.httpsAgent || null;
     this.onRequest = opts.onRequest || null;
@@ -94,5 +96,12 @@ export default class Configuration {
   private static _validateConfiguration(opts: IConfigurationOpts): void {
     if (!Environments[opts.env]) throw new Error(`Invalid env: ${opts.env}`);
     if (!opts.apiKey) throw new Error(`Invalid apiKey: ${opts.apiKey}`);
+    if (opts.baseURL) {
+      try {
+        new URL(opts.baseURL);
+      } catch (error) {
+        throw new Error(`Invalid baseURL: ${opts.baseURL}`);
+      }
+    }
   }
 };
