@@ -1,0 +1,5955 @@
+openapi: 3.0.3
+info:
+  title: Method API
+  version: '2025-07-04'
+  description: Method Financial API - Node SDK Generated OpenAPI Specification
+  contact:
+    name: Method Financial
+    url: https://methodfi.com
+    email: support@methodfi.com
+servers:
+  - url: https://production.methodfi.com
+    description: Production
+  - url: https://sandbox.methodfi.com
+    description: Sandbox
+  - url: https://dev.methodfi.com
+    description: Development
+tags:
+  - name: Entities
+    description: Entity management endpoints
+  - name: Entities - Connect
+    description: Entity connection endpoints
+  - name: Entities - Credit Scores
+    description: Entity credit score endpoints
+  - name: Entities - Identities
+    description: Entity identity endpoints
+  - name: Entities - Attributes
+    description: Entity attribute endpoints
+  - name: Entities - Vehicles
+    description: Entity vehicle endpoints
+  - name: Entities - Products
+    description: Entity product endpoints
+  - name: Entities - Subscriptions
+    description: Entity subscription endpoints
+  - name: Entities - Verification Sessions
+    description: Entity verification session endpoints
+  - name: Accounts
+    description: Account management endpoints
+  - name: Accounts - Balances
+    description: Account balance endpoints
+  - name: Accounts - CardBrands
+    description: Account card brand endpoints
+  - name: Accounts - Payoffs
+    description: Account payoff endpoints
+  - name: Accounts - Sensitives
+    description: Account sensitive data endpoints
+  - name: Accounts - Transactions
+    description: Account transaction endpoints
+  - name: Accounts - Updates
+    description: Account update endpoints
+  - name: Accounts - Attributess
+    description: Account attribute endpoints
+  - name: Accounts - PaymentInstruments
+    description: Account payment instrument endpoints
+  - name: Accounts - Subscriptions
+    description: Account subscription endpoints
+  - name: Accounts - Products
+    description: Account product endpoints
+  - name: Accounts - Verification Sessions
+    description: Account verification session endpoints
+  - name: Payments
+    description: Payment management endpoints
+  - name: Payments - Reversals
+    description: Payment reversal endpoints
+  - name: Webhooks
+    description: Webhook management endpoints
+  - name: Reports
+    description: Report management endpoints
+  - name: Merchants
+    description: Merchant lookup endpoints
+  - name: Events
+    description: Event retrieval endpoints
+  - name: Elements
+    description: Element token endpoints
+  - name: Opal
+    description: Opal token endpoints
+  - name: Simulate
+    description: Simulation endpoints for testing
+security:
+  - bearerAuth: []
+paths:
+  /entities:
+    get:
+      operationId: listEntities
+      summary: List all entities
+      description: List all entities. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entity'
+      parameters:
+        - name: from_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: to_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page_limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page_cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: expand
+          in: query
+          required: false
+          schema:
+            type: string
+    post:
+      operationId: createEntity
+      summary: Create a new entity
+      description: Create a new entity. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityCreateRequest'
+  /entities/{ent_id}:
+    get:
+      operationId: retrieveEntity
+      summary: Retrieve an entity
+      description: Retrieve an entity. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - connect
+                - credit_score
+                - attribute
+                - vehicle
+                - identity_latest_verification_session
+                - phone_latest_verification_session
+          description: Fields to expand in the response. Can specify multiple values.
+          style: form
+          explode: true
+    put:
+      operationId: updateEntity
+      summary: Update an entity
+      description: Update an entity. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityUpdateRequest'
+  /entities/{ent_id}/consent:
+    post:
+      operationId: withdrawEntityConsent
+      summary: Withdraw entity consent
+      description: Withdraw entity consent. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Entity'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityWithdrawConsentRequest'
+  /entities/{ent_id}/connect:
+    get:
+      operationId: listEntityConnect
+      summary: List entity connect records
+      description: List entity connect records. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Connect
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityConnect'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createEntityConnect
+      summary: Create entity connect
+      description: Create entity connect. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Connect
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityConnect'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityConnectCreateRequest'
+  /entities/{ent_id}/connect/{cxn_id}:
+    get:
+      operationId: retrieveEntityConnect
+      summary: Retrieve entity connect
+      description: Retrieve entity connect. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Connect
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityConnect'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: cxn_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /entities/{ent_id}/credit_scores:
+    get:
+      operationId: listEntityCreditScores
+      summary: List entity credit scores
+      description: List entity credit scores. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Credit Scores
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityCreditScores'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createEntityCreditScores
+      summary: Create entity credit scores request
+      description: Create entity credit scores request. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Credit Scores
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityCreditScores'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+  /entities/{ent_id}/credit_scores/{crs_id}:
+    get:
+      operationId: retrieveEntityCreditScores
+      summary: Retrieve entity credit scores
+      description: Retrieve entity credit scores. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Credit Scores
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityCreditScores'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: crs_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /entities/{ent_id}/identities:
+    get:
+      operationId: listEntityIdentities
+      summary: List entity identities
+      description: List entity identities. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Identities
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityIdentity'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createEntityIdentity
+      summary: Create entity identity request
+      description: Create entity identity request. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Identities
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityIdentity'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+  /entities/{ent_id}/identities/{idn_id}:
+    get:
+      operationId: retrieveEntityIdentity
+      summary: Retrieve entity identity
+      description: Retrieve entity identity. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Identities
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityIdentity'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idn_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /entities/{ent_id}/attributes:
+    get:
+      operationId: listEntityAttributes
+      summary: List entity attributes
+      description: List entity attributes. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Attributes
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityAttributes'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createEntityAttributes
+      summary: Create entity attributes request
+      description: Create entity attributes request. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Attributes
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityAttributes'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityAttributesCreateRequest'
+  /entities/{ent_id}/attributes/{atr_id}:
+    get:
+      operationId: retrieveEntityAttributes
+      summary: Retrieve entity attributes
+      description: Retrieve entity attributes. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Attributes
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityAttributes'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: atr_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /entities/{ent_id}/vehicles:
+    get:
+      operationId: listEntityVehicles
+      summary: List entity vehicles
+      description: List entity vehicles. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Vehicles
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityVehicles'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createEntityVehicles
+      summary: Create entity vehicles request
+      description: Create entity vehicles request. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Vehicles
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityVehicles'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+  /entities/{ent_id}/vehicles/{vhl_id}:
+    get:
+      operationId: retrieveEntityVehicles
+      summary: Retrieve entity vehicles
+      description: Retrieve entity vehicles. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Vehicles
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityVehicles'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: vhl_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /entities/{ent_id}/products:
+    get:
+      operationId: listEntityProducts
+      summary: List entity products
+      description: List entity products. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Products
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityProductListResponse'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /entities/{ent_id}/subscriptions:
+    get:
+      operationId: listEntitySubscriptions
+      summary: List entity subscriptions
+      description: List entity subscriptions. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Subscriptions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntitySubscription'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createEntitySubscription
+      summary: Create entity subscription
+      description: Create entity subscription. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Subscriptions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitySubscription'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntitySubscriptionCreateRequest'
+  /entities/{ent_id}/subscriptions/{sub_id}:
+    get:
+      operationId: retrieveEntitySubscription
+      summary: Retrieve entity subscription
+      description: Retrieve entity subscription. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Subscriptions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitySubscription'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: sub_id
+          in: path
+          required: true
+          schema:
+            type: string
+    delete:
+      operationId: deleteEntitySubscription
+      summary: Delete entity subscription
+      description: Delete entity subscription. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Subscriptions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitySubscription'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: sub_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /entities/{ent_id}/verification_sessions:
+    get:
+      operationId: listEntityVerificationSessions
+      summary: List entity verification sessions
+      description: List entity verification sessions. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Verification Sessions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityVerificationSession'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createEntityVerificationSession
+      summary: Create entity verification session
+      description: Create entity verification session. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Verification Sessions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityVerificationSession'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityVerificationSessionCreateRequest'
+  /entities/{ent_id}/verification_sessions/{evf_id}:
+    get:
+      operationId: retrieveEntityVerificationSession
+      summary: Retrieve entity verification session
+      description: Retrieve entity verification session. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Verification Sessions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityVerificationSession'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: evf_id
+          in: path
+          required: true
+          schema:
+            type: string
+    put:
+      operationId: updateEntityVerificationSession
+      summary: Update entity verification session
+      description: Update entity verification session. See https://docs.methodfi.com for more details.
+      tags:
+        - Entities - Verification Sessions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityVerificationSession'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: evf_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityVerificationSessionUpdateRequest'
+  /accounts:
+    get:
+      operationId: listAccounts
+      summary: List all accounts
+      description: List all accounts. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+      parameters:
+        - name: from_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: to_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page_limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page_cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: holder_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: expand
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - payment
+                - balance
+                - sensitive
+                - card_brand
+                - payoff
+                - update
+                - attribute
+                - transactions
+                - payment_instrument
+                - latest_verification_session
+          description: Fields to expand in the response. Can specify multiple values.
+          style: form
+          explode: true
+        - name: liability.mch_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: liability.type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: liability.ownership
+          in: query
+          required: false
+          schema:
+            type: string
+    post:
+      operationId: createAccount
+      summary: Create a new account
+      description: Create a new account. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreateRequest'
+  /accounts/{acc_id}:
+    get:
+      operationId: retrieveAccount
+      summary: Retrieve an account
+      description: Retrieve an account. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: expand
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - payment
+                - balance
+                - sensitive
+                - card_brand
+                - payoff
+                - update
+                - attribute
+                - transactions
+                - payment_instrument
+                - latest_verification_session
+          description: Fields to expand in the response. Can specify multiple values.
+          style: form
+          explode: true
+  /accounts/{acc_id}/consent:
+    post:
+      operationId: withdrawAccountConsent
+      summary: Withdraw account consent
+      description: Withdraw account consent. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountWithdrawConsentRequest'
+  /accounts/{acc_id}/balances:
+    get:
+      operationId: listAccountBalances
+      summary: List account balances
+      description: List account balances. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Balances
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountBalance'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createAccountBalance
+      summary: Create account balance
+      description: Create account balance. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Balances
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBalance'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+  /accounts/{acc_id}/balances/{balance_id}:
+    get:
+      operationId: retrieveAccountBalance
+      summary: Retrieve account balance
+      description: Retrieve account balance. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Balances
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBalance'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: balance_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/card_brands:
+    get:
+      operationId: listAccountCardBrands
+      summary: List account card_brands
+      description: List account card_brands. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - CardBrands
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountCardBrand'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createAccountCardBrand
+      summary: Create account card_brand
+      description: Create account card_brand. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - CardBrands
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountCardBrand'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+  /accounts/{acc_id}/card_brands/{card_brand_id}:
+    get:
+      operationId: retrieveAccountCardBrand
+      summary: Retrieve account card_brand
+      description: Retrieve account card_brand. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - CardBrands
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountCardBrand'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: card_brand_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/payoffs:
+    get:
+      operationId: listAccountPayoffs
+      summary: List account payoffs
+      description: List account payoffs. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Payoffs
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountPayoff'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createAccountPayoff
+      summary: Create account payoff
+      description: Create account payoff. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Payoffs
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPayoff'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+  /accounts/{acc_id}/payoffs/{payoff_id}:
+    get:
+      operationId: retrieveAccountPayoff
+      summary: Retrieve account payoff
+      description: Retrieve account payoff. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Payoffs
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPayoff'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: payoff_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/sensitive:
+    get:
+      operationId: listAccountSensitives
+      summary: List account sensitive
+      description: List account sensitive. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Sensitives
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountSensitive'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createAccountSensitive
+      summary: Create account sensitiv
+      description: Create account sensitiv. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Sensitives
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountSensitive'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountSensitiveCreateRequest'
+  /accounts/{acc_id}/sensitive/{sensitiv_id}:
+    get:
+      operationId: retrieveAccountSensitive
+      summary: Retrieve account sensitiv
+      description: Retrieve account sensitiv. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Sensitives
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountSensitive'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: sensitiv_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/transactions:
+    get:
+      operationId: listAccountTransactions
+      summary: List account transactions
+      description: List account transactions. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Transactions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountTransaction'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/transactions/{transaction_id}:
+    get:
+      operationId: retrieveAccountTransaction
+      summary: Retrieve account transaction
+      description: Retrieve account transaction. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Transactions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountTransaction'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: transaction_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/updates:
+    get:
+      operationId: listAccountUpdates
+      summary: List account updates
+      description: List account updates. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Updates
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountUpdate'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createAccountUpdate
+      summary: Create account update
+      description: Create account update. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Updates
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountUpdate'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+  /accounts/{acc_id}/updates/{update_id}:
+    get:
+      operationId: retrieveAccountUpdate
+      summary: Retrieve account update
+      description: Retrieve account update. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Updates
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountUpdate'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: update_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/attributes:
+    get:
+      operationId: listAccountAttributess
+      summary: List account attributes
+      description: List account attributes. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Attributess
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountAttributes'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createAccountAttributes
+      summary: Create account attribute
+      description: Create account attribute. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Attributess
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountAttributes'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+  /accounts/{acc_id}/attributes/{attribute_id}:
+    get:
+      operationId: retrieveAccountAttributes
+      summary: Retrieve account attribute
+      description: Retrieve account attribute. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Attributess
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountAttributes'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: attribute_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/payment_instruments:
+    get:
+      operationId: listAccountPaymentInstruments
+      summary: List account payment_instruments
+      description: List account payment_instruments. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - PaymentInstruments
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountPaymentInstrument'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createAccountPaymentInstrument
+      summary: Create account payment_instrument
+      description: Create account payment_instrument. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - PaymentInstruments
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPaymentInstrument'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountPaymentInstrumentCreateRequest'
+  /accounts/{acc_id}/payment_instruments/{payment_instrument_id}:
+    get:
+      operationId: retrieveAccountPaymentInstrument
+      summary: Retrieve account payment_instrument
+      description: Retrieve account payment_instrument. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - PaymentInstruments
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPaymentInstrument'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: payment_instrument_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/subscriptions:
+    get:
+      operationId: listAccountSubscriptions
+      summary: List account subscriptions
+      description: List account subscriptions. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Subscriptions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountSubscription'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createAccountSubscription
+      summary: Create account subscription
+      description: Create account subscription. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Subscriptions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountSubscription'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountSubscriptionCreateRequest'
+  /accounts/{acc_id}/subscriptions/{sub_id}:
+    get:
+      operationId: retrieveAccountSubscription
+      summary: Retrieve account subscription
+      description: Retrieve account subscription. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Subscriptions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountSubscription'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: sub_id
+          in: path
+          required: true
+          schema:
+            type: string
+    delete:
+      operationId: deleteAccountSubscription
+      summary: Delete account subscription
+      description: Delete account subscription. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Subscriptions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountSubscription'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: sub_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/products:
+    get:
+      operationId: listAccountProducts
+      summary: List account products
+      description: List account products. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Products
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountProduct'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /accounts/{acc_id}/verification_sessions:
+    get:
+      operationId: listAccountVerificationSessions
+      summary: List account verification sessions
+      description: List account verification sessions. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Verification Sessions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountVerificationSession'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+    post:
+      operationId: createAccountVerificationSession
+      summary: Create account verification session
+      description: Create account verification session. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Verification Sessions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountVerificationSession'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountVerificationSessionCreateRequest'
+  /accounts/{acc_id}/verification_sessions/{avf_id}:
+    get:
+      operationId: retrieveAccountVerificationSession
+      summary: Retrieve account verification session
+      description: Retrieve account verification session. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Verification Sessions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountVerificationSession'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: avf_id
+          in: path
+          required: true
+          schema:
+            type: string
+    put:
+      operationId: updateAccountVerificationSession
+      summary: Update account verification session
+      description: Update account verification session. See https://docs.methodfi.com for more details.
+      tags:
+        - Accounts - Verification Sessions
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountVerificationSession'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: avf_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountVerificationSessionUpdateRequest'
+  /payments:
+    get:
+      operationId: listPayments
+      summary: List all payments
+      description: List all payments. See https://docs.methodfi.com for more details.
+      tags:
+        - Payments
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+      parameters:
+        - name: from_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: to_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page_limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page_cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: source
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: destination
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: reversal_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: source_holder_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: destination_holder_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: acc_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: holder_id
+          in: query
+          required: false
+          schema:
+            type: string
+    post:
+      operationId: createPayment
+      summary: Create a new payment
+      description: Create a new payment. See https://docs.methodfi.com for more details.
+      tags:
+        - Payments
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreateRequest'
+  /payments/{pmt_id}:
+    get:
+      operationId: retrievePayment
+      summary: Retrieve a payment
+      description: Retrieve a payment. See https://docs.methodfi.com for more details.
+      tags:
+        - Payments
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+      parameters:
+        - name: pmt_id
+          in: path
+          required: true
+          schema:
+            type: string
+    delete:
+      operationId: deletePayment
+      summary: Cancel a payment
+      description: Cancel a payment. See https://docs.methodfi.com for more details.
+      tags:
+        - Payments
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+      parameters:
+        - name: pmt_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /payments/{pmt_id}/reversals:
+    get:
+      operationId: listPaymentReversals
+      summary: List payment reversals
+      description: List payment reversals. See https://docs.methodfi.com for more details.
+      tags:
+        - Payments - Reversals
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reversal'
+      parameters:
+        - name: pmt_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /payments/{pmt_id}/reversals/{rvs_id}:
+    get:
+      operationId: retrievePaymentReversal
+      summary: Retrieve payment reversal
+      description: Retrieve payment reversal. See https://docs.methodfi.com for more details.
+      tags:
+        - Payments - Reversals
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reversal'
+      parameters:
+        - name: pmt_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: rvs_id
+          in: path
+          required: true
+          schema:
+            type: string
+    put:
+      operationId: updatePaymentReversal
+      summary: Update payment reversal
+      description: Update payment reversal. See https://docs.methodfi.com for more details.
+      tags:
+        - Payments - Reversals
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Reversal'
+      parameters:
+        - name: pmt_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: rvs_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReversalUpdateRequest'
+  /webhooks:
+    get:
+      operationId: listWebhooks
+      summary: List all webhooks
+      description: List all webhooks. See https://docs.methodfi.com for more details.
+      tags:
+        - Webhooks
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Webhook'
+    post:
+      operationId: createWebhook
+      summary: Create a new webhook
+      description: Create a new webhook. See https://docs.methodfi.com for more details.
+      tags:
+        - Webhooks
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreateRequest'
+  /webhooks/{whk_id}:
+    get:
+      operationId: retrieveWebhook
+      summary: Retrieve a webhook
+      description: Retrieve a webhook. See https://docs.methodfi.com for more details.
+      tags:
+        - Webhooks
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+      parameters:
+        - name: whk_id
+          in: path
+          required: true
+          schema:
+            type: string
+    patch:
+      operationId: updateWebhook
+      summary: Update a webhook
+      description: Update a webhook. See https://docs.methodfi.com for more details.
+      tags:
+        - Webhooks
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+      parameters:
+        - name: whk_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdateRequest'
+    delete:
+      operationId: deleteWebhook
+      summary: Delete a webhook
+      description: Delete a webhook. See https://docs.methodfi.com for more details.
+      tags:
+        - Webhooks
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                type: object
+      parameters:
+        - name: whk_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /reports:
+    post:
+      operationId: createReport
+      summary: Create a new report
+      description: Create a new report. See https://docs.methodfi.com for more details.
+      tags:
+        - Reports
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportCreateRequest'
+  /reports/{rpt_id}:
+    get:
+      operationId: retrieveReport
+      summary: Retrieve a report
+      description: Retrieve a report. See https://docs.methodfi.com for more details.
+      tags:
+        - Reports
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+      parameters:
+        - name: rpt_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /reports/{rpt_id}/download:
+    get:
+      operationId: downloadReport
+      summary: Download a report
+      description: Download a report as CSV
+      tags:
+        - Reports
+      parameters:
+        - name: rpt_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Report CSV data
+          content:
+            text/csv:
+              schema:
+                type: string
+  /merchants:
+    get:
+      operationId: listMerchants
+      summary: List all merchants
+      description: List all merchants. See https://docs.methodfi.com for more details.
+      tags:
+        - Merchants
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Merchant'
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page_limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: creditor_name
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: provider_id.plaid
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: provider_id.mx
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: provider_id.finicity
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: provider_id.dpp
+          in: query
+          required: false
+          schema:
+            type: string
+  /merchants/{mch_id}:
+    get:
+      operationId: retrieveMerchant
+      summary: Retrieve a merchant
+      description: Retrieve a merchant. See https://docs.methodfi.com for more details.
+      tags:
+        - Merchants
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Merchant'
+      parameters:
+        - name: mch_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /events:
+    get:
+      operationId: listEvents
+      summary: List all events
+      description: List all events. See https://docs.methodfi.com for more details.
+      tags:
+        - Events
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+            pagination-page:
+              $ref: '#/components/headers/PaginationPage'
+            pagination-page-count:
+              $ref: '#/components/headers/PaginationPageCount'
+            pagination-page-limit:
+              $ref: '#/components/headers/PaginationPageLimit'
+            pagination-total-count:
+              $ref: '#/components/headers/PaginationTotalCount'
+            pagination-page-cursor-next:
+              $ref: '#/components/headers/PaginationPageCursorNext'
+            pagination-page-cursor-prev:
+              $ref: '#/components/headers/PaginationPageCursorPrev'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+      parameters:
+        - name: from_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: to_date
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page_limit
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: page_cursor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: resource_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: resource_type
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+  /events/{evt_id}:
+    get:
+      operationId: retrieveEvent
+      summary: Retrieve an event
+      description: Retrieve an event. See https://docs.methodfi.com for more details.
+      tags:
+        - Events
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+      parameters:
+        - name: evt_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /elements/token:
+    post:
+      operationId: createElementToken
+      summary: Create an element token
+      description: Create an element token. See https://docs.methodfi.com for more details.
+      tags:
+        - Elements
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ElementToken'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElementTokenCreateRequest'
+  /elements/token/{pk_elem_id}/results:
+    get:
+      operationId: retrieveElementResults
+      summary: Retrieve element results
+      description: Retrieve element results. See https://docs.methodfi.com for more details.
+      tags:
+        - Elements
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ElementResults'
+      parameters:
+        - name: pk_elem_id
+          in: path
+          required: true
+          schema:
+            type: string
+  /opal/token:
+    post:
+      operationId: createOpalToken
+      summary: Create an opal token
+      description: Create an opal token. See https://docs.methodfi.com for more details.
+      tags:
+        - Opal
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpalToken'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpalTokenCreateRequest'
+  /simulate/payments/{pmt_id}:
+    post:
+      operationId: simulatePaymentUpdate
+      summary: Simulate payment status update
+      description: Simulate payment status update. See https://docs.methodfi.com for more details.
+      tags:
+        - Simulate
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+      parameters:
+        - name: pmt_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulatePaymentUpdateRequest'
+  /simulate/accounts/{acc_id}/transactions:
+    post:
+      operationId: simulateAccountTransaction
+      summary: Simulate account transaction
+      description: Simulate account transaction. See https://docs.methodfi.com for more details.
+      tags:
+        - Simulate
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountTransaction'
+      parameters:
+        - name: acc_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+  /simulate/entities/{ent_id}/connect:
+    post:
+      operationId: simulateEntityConnect
+      summary: Simulate entity connect
+      description: Simulate entity connect. See https://docs.methodfi.com for more details.
+      tags:
+        - Simulate
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityConnect'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulateEntityConnectRequest'
+  /simulate/entities/{ent_id}/credit_scores/{crs_id}:
+    post:
+      operationId: simulateEntityCreditScores
+      summary: Simulate entity credit scores
+      description: Simulate entity credit scores. See https://docs.methodfi.com for more details.
+      tags:
+        - Simulate
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityCreditScores'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: crs_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+  /simulate/entities/{ent_id}/attributes/{atr_id}:
+    post:
+      operationId: simulateEntityAttributes
+      summary: Simulate entity attributes
+      description: Simulate entity attributes. See https://docs.methodfi.com for more details.
+      tags:
+        - Simulate
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityAttributes'
+      parameters:
+        - name: ent_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: atr_id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulateEntityAttributesRequest'
+  /simulate/events:
+    post:
+      operationId: simulateEvent
+      summary: Simulate an event
+      description: Simulate an event. See https://docs.methodfi.com for more details.
+      tags:
+        - Simulate
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            idem-request-id:
+              $ref: '#/components/headers/IdemRequestId'
+            idem-status:
+              $ref: '#/components/headers/IdemStatus'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: false
+          schema:
+            type: string
+          description: Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.
+        - name: Prefer
+          in: header
+          required: false
+          schema:
+            type: string
+            enum:
+              - respond-async
+              - respond-sync
+          description: Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.
+components:
+  schemas:
+    ResourceError:
+      type: object
+      properties:
+        type:
+          type: string
+        code:
+          type: integer
+        sub_type:
+          type: string
+        message:
+          type: string
+    ResourceStatus:
+      type: string
+      enum:
+        - completed
+        - in_progress
+        - pending
+        - failed
+    EntityType:
+      type: string
+      enum:
+        - individual
+        - corporation
+    EntityStatus:
+      type: string
+      enum:
+        - active
+        - incomplete
+        - disabled
+    EntityAddress:
+      type: object
+      properties:
+        line1:
+          type: string
+          nullable: true
+        line2:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        zip:
+          type: string
+          nullable: true
+    EntityIndividual:
+      type: object
+      properties:
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        dob:
+          type: string
+          nullable: true
+        ssn:
+          type: string
+          nullable: true
+        ssn_4:
+          type: string
+          nullable: true
+    EntityCorporationOwner:
+      type: object
+      properties:
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        dob:
+          type: string
+          nullable: true
+        address:
+          $ref: '#/components/schemas/EntityAddress'
+    EntityCorporation:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        dba:
+          type: string
+          nullable: true
+        ein:
+          type: string
+          nullable: true
+        owners:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityCorporationOwner'
+    Entity:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          allOf:
+            - $ref: '#/components/schemas/EntityType'
+          nullable: true
+        individual:
+          allOf:
+            - $ref: '#/components/schemas/EntityIndividual'
+          nullable: true
+        corporation:
+          allOf:
+            - $ref: '#/components/schemas/EntityCorporation'
+          nullable: true
+        address:
+          $ref: '#/components/schemas/EntityAddress'
+        status:
+          $ref: '#/components/schemas/EntityStatus'
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        metadata:
+          type: object
+          nullable: true
+        products:
+          type: array
+          items:
+            type: string
+        restricted_products:
+          type: array
+          items:
+            type: string
+        subscriptions:
+          type: array
+          items:
+            type: string
+        available_subscriptions:
+          type: array
+          items:
+            type: string
+        restricted_subscriptions:
+          type: array
+          items:
+            type: string
+        verification:
+          type: object
+          nullable: true
+        connect:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/EntityConnect'
+          nullable: true
+        credit_score:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/EntityCreditScores'
+          nullable: true
+        attribute:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/EntityAttributes'
+          nullable: true
+        vehicle:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/EntityVehicles'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - status
+        - created_at
+        - updated_at
+    EntityIndividualCreateRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - individual
+        individual:
+          $ref: '#/components/schemas/EntityIndividual'
+        address:
+          $ref: '#/components/schemas/EntityAddress'
+        metadata:
+          type: object
+          nullable: true
+      required:
+        - type
+        - individual
+    EntityCorporationCreateRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - corporation
+        corporation:
+          $ref: '#/components/schemas/EntityCorporation'
+        address:
+          $ref: '#/components/schemas/EntityAddress'
+        metadata:
+          type: object
+          nullable: true
+      required:
+        - type
+        - corporation
+    EntityCreateRequest:
+      oneOf:
+        - $ref: '#/components/schemas/EntityIndividualCreateRequest'
+        - $ref: '#/components/schemas/EntityCorporationCreateRequest'
+    EntityUpdateRequest:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/EntityAddress'
+        corporation:
+          $ref: '#/components/schemas/EntityCorporation'
+        individual:
+          $ref: '#/components/schemas/EntityIndividual'
+    EntityConnect:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ResourceStatus'
+        accounts:
+          type: array
+          items:
+            type: string
+          nullable: true
+        requested_products:
+          type: array
+          items:
+            type: string
+        requested_subscriptions:
+          type: array
+          items:
+            type: string
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - entity_id
+        - status
+        - created_at
+        - updated_at
+    EntityConnectCreateRequest:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: string
+        subscriptions:
+          type: array
+          items:
+            type: string
+    CreditScoreModel:
+      type: string
+      enum:
+        - vantage_4
+        - vantage_3
+    CreditReportBureau:
+      type: string
+      enum:
+        - experian
+        - equifax
+        - transunion
+    EntityCreditScoreFactor:
+      type: object
+      properties:
+        code:
+          type: string
+        description:
+          type: string
+    EntityCreditScoreItem:
+      type: object
+      properties:
+        score:
+          type: integer
+        source:
+          $ref: '#/components/schemas/CreditReportBureau'
+        model:
+          $ref: '#/components/schemas/CreditScoreModel'
+        factors:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityCreditScoreFactor'
+        created_at:
+          type: string
+          format: date-time
+    EntityCreditScores:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ResourceStatus'
+        scores:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityCreditScoreItem'
+          nullable: true
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - entity_id
+        - status
+        - created_at
+        - updated_at
+    EntityIdentityType:
+      type: object
+      properties:
+        first_name:
+          type: string
+          nullable: true
+        last_name:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        dob:
+          type: string
+          nullable: true
+        address:
+          type: object
+          nullable: true
+        ssn:
+          type: string
+          nullable: true
+    EntityIdentity:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ResourceStatus'
+        identities:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityIdentityType'
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - entity_id
+        - status
+        - identities
+        - created_at
+        - updated_at
+    CreditHealthAttributeRating:
+      type: string
+      enum:
+        - excellent
+        - good
+        - fair
+        - needs_work
+    CreditHealthAttribute:
+      type: object
+      properties:
+        value:
+          type: number
+        rating:
+          $ref: '#/components/schemas/CreditHealthAttributeRating'
+        metadata:
+          type: object
+          nullable: true
+    EntityAttributesType:
+      type: object
+      properties:
+        credit_health_credit_card_usage:
+          $ref: '#/components/schemas/CreditHealthAttribute'
+        credit_health_derogatory_marks:
+          $ref: '#/components/schemas/CreditHealthAttribute'
+        credit_health_hard_inquiries:
+          $ref: '#/components/schemas/CreditHealthAttribute'
+        credit_health_soft_inquiries:
+          $ref: '#/components/schemas/CreditHealthAttribute'
+        credit_health_total_accounts:
+          $ref: '#/components/schemas/CreditHealthAttribute'
+        credit_health_credit_age:
+          $ref: '#/components/schemas/CreditHealthAttribute'
+        credit_health_payment_history:
+          $ref: '#/components/schemas/CreditHealthAttribute'
+        credit_health_open_accounts:
+          $ref: '#/components/schemas/CreditHealthAttribute'
+        credit_health_entity_delinquent:
+          $ref: '#/components/schemas/CreditHealthAttribute'
+    EntityAttributes:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ResourceStatus'
+        attributes:
+          allOf:
+            - $ref: '#/components/schemas/EntityAttributesType'
+          nullable: true
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - entity_id
+        - status
+        - created_at
+        - updated_at
+    EntityAttributesCreateRequest:
+      type: object
+      properties:
+        attributes:
+          type: array
+          items:
+            type: string
+            enum:
+              - credit_health_credit_card_usage
+              - credit_health_derogatory_marks
+              - credit_health_hard_inquiries
+              - credit_health_soft_inquiries
+              - credit_health_total_accounts
+              - credit_health_credit_age
+              - credit_health_payment_history
+              - credit_health_open_accounts
+              - credit_health_entity_delinquent
+      required:
+        - attributes
+    EntityVehicleType:
+      type: object
+      properties:
+        vin:
+          type: string
+          nullable: true
+        year:
+          type: string
+          nullable: true
+        make:
+          type: string
+          nullable: true
+        model:
+          type: string
+          nullable: true
+        series:
+          type: string
+          nullable: true
+        major_color:
+          type: string
+          nullable: true
+        style:
+          type: string
+          nullable: true
+    EntityVehicles:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ResourceStatus'
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityVehicleType'
+          nullable: true
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - entity_id
+        - status
+        - created_at
+        - updated_at
+    EntityProductStatus:
+      type: string
+      enum:
+        - unavailable
+        - available
+        - restricted
+    EntityProduct:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          $ref: '#/components/schemas/EntityProductStatus'
+        status_error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        latest_request_id:
+          type: string
+          nullable: true
+        latest_successful_request_id:
+          type: string
+          nullable: true
+        is_subscribable:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    EntityProductListResponse:
+      type: object
+      properties:
+        connect:
+          $ref: '#/components/schemas/EntityProduct'
+        credit_score:
+          $ref: '#/components/schemas/EntityProduct'
+        identity:
+          $ref: '#/components/schemas/EntityProduct'
+        attribute:
+          $ref: '#/components/schemas/EntityProduct'
+        vehicle:
+          $ref: '#/components/schemas/EntityProduct'
+        manual_connect:
+          $ref: '#/components/schemas/EntityProduct'
+    EntitySubscriptionStatus:
+      type: string
+      enum:
+        - active
+        - inactive
+    EntitySubscription:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          $ref: '#/components/schemas/EntitySubscriptionStatus'
+        payload:
+          type: object
+          nullable: true
+        latest_request_id:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    EntitySubscriptionCreateRequest:
+      type: object
+      properties:
+        enroll:
+          type: string
+          enum:
+            - connect
+            - credit_score
+            - attribute
+        payload:
+          type: object
+          nullable: true
+      required:
+        - enroll
+    EntityVerificationSessionStatus:
+      type: string
+      enum:
+        - pending
+        - in_progress
+        - verified
+        - failed
+    EntityVerificationSessionType:
+      type: string
+      enum:
+        - phone
+        - identity
+    EntityVerificationSessionMethod:
+      type: string
+      enum:
+        - sms
+        - sna
+        - byo_sms
+        - byo_kyc
+        - kba
+        - element
+        - method_verified
+    EntityVerificationSession:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/EntityVerificationSessionStatus'
+        type:
+          $ref: '#/components/schemas/EntityVerificationSessionType'
+        method:
+          $ref: '#/components/schemas/EntityVerificationSessionMethod'
+        sms:
+          type: object
+          nullable: true
+        sna:
+          type: object
+          nullable: true
+        byo_sms:
+          type: object
+          nullable: true
+        byo_kyc:
+          type: object
+          nullable: true
+        kba:
+          type: object
+          nullable: true
+        element:
+          type: object
+          nullable: true
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - entity_id
+        - status
+        - type
+        - method
+        - created_at
+        - updated_at
+    EntityVerificationSessionCreateRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/EntityVerificationSessionType'
+        method:
+          $ref: '#/components/schemas/EntityVerificationSessionMethod'
+        sms:
+          type: object
+        sna:
+          type: object
+        byo_sms:
+          type: object
+        byo_kyc:
+          type: object
+        kba:
+          type: object
+      required:
+        - type
+        - method
+    EntityVerificationSessionUpdateRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/EntityVerificationSessionType'
+        method:
+          $ref: '#/components/schemas/EntityVerificationSessionMethod'
+        sms:
+          type: object
+        sna:
+          type: object
+        kba:
+          type: object
+      required:
+        - type
+        - method
+    EntityWithdrawConsentRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - withdraw
+        reason:
+          type: string
+          enum:
+            - entity_withdrew_consent
+          nullable: true
+      required:
+        - type
+    AccountType:
+      type: string
+      enum:
+        - ach
+        - liability
+    AccountStatus:
+      type: string
+      enum:
+        - disabled
+        - active
+        - closed
+    AccountLiabilityType:
+      type: string
+      enum:
+        - auto_loan
+        - bnpl
+        - credit_builder
+        - credit_card
+        - collection
+        - fintech
+        - insurance
+        - loan
+        - medical
+        - mortgage
+        - personal_loan
+        - student_loans
+        - utility
+    AccountOwnership:
+      type: string
+      enum:
+        - primary
+        - authorized
+        - joint
+        - unknown
+    AccountACH:
+      type: object
+      properties:
+        routing:
+          type: string
+        number:
+          type: string
+        type:
+          type: string
+          enum:
+            - savings
+            - checking
+      required:
+        - routing
+        - number
+        - type
+    AccountLiability:
+      type: object
+      properties:
+        mch_id:
+          type: string
+        mask:
+          type: string
+          nullable: true
+        ownership:
+          allOf:
+            - $ref: '#/components/schemas/AccountOwnership'
+          nullable: true
+        fingerprint:
+          type: string
+          nullable: true
+        type:
+          allOf:
+            - $ref: '#/components/schemas/AccountLiabilityType'
+          nullable: true
+        sub_type:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+        holder_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/AccountStatus'
+        type:
+          allOf:
+            - $ref: '#/components/schemas/AccountType'
+          nullable: true
+        ach:
+          allOf:
+            - $ref: '#/components/schemas/AccountACH'
+          nullable: true
+        liability:
+          allOf:
+            - $ref: '#/components/schemas/AccountLiability'
+          nullable: true
+        products:
+          type: array
+          items:
+            type: string
+        restricted_products:
+          type: array
+          items:
+            type: string
+        subscriptions:
+          type: array
+          items:
+            type: string
+        available_subscriptions:
+          type: array
+          items:
+            type: string
+        restricted_subscriptions:
+          type: array
+          items:
+            type: string
+        sensitive:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/AccountSensitive'
+          nullable: true
+        balance:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/AccountBalance'
+          nullable: true
+        card_brand:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/AccountCardBrand'
+          nullable: true
+        payoff:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/AccountPayoff'
+          nullable: true
+        transactions:
+          oneOf:
+            - type: string
+            - type: array
+              items:
+                $ref: '#/components/schemas/AccountTransaction'
+          nullable: true
+        update:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/AccountUpdate'
+          nullable: true
+        attribute:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/AccountAttributes'
+          nullable: true
+        payment_instrument:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/AccountPaymentInstrument'
+          nullable: true
+        latest_verification_session:
+          oneOf:
+            - type: string
+            - $ref: '#/components/schemas/AccountVerificationSession'
+          nullable: true
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+          nullable: true
+      required:
+        - id
+        - holder_id
+        - status
+        - products
+        - restricted_products
+        - created_at
+        - updated_at
+    AccountACHCreateRequest:
+      type: object
+      properties:
+        holder_id:
+          type: string
+        ach:
+          $ref: '#/components/schemas/AccountACH'
+        metadata:
+          type: object
+      required:
+        - holder_id
+        - ach
+    AccountLiabilityCreateRequest:
+      type: object
+      properties:
+        holder_id:
+          type: string
+        liability:
+          type: object
+          properties:
+            mch_id:
+              type: string
+            account_number:
+              type: string
+            number:
+              type: string
+          required:
+            - mch_id
+        metadata:
+          type: object
+      required:
+        - holder_id
+        - liability
+    AccountCreateRequest:
+      oneOf:
+        - $ref: '#/components/schemas/AccountACHCreateRequest'
+        - $ref: '#/components/schemas/AccountLiabilityCreateRequest'
+    AccountBalance:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ResourceStatus'
+        amount:
+          type: integer
+          nullable: true
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - account_id
+        - status
+        - created_at
+        - updated_at
+    AccountCardBrandInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        card_product_id:
+          type: string
+        description:
+          type: string
+        name:
+          type: string
+        issuer:
+          type: string
+        network:
+          type: string
+        type:
+          type: string
+          enum:
+            - specific
+            - generic
+            - in_review
+        url:
+          type: string
+    AccountCardBrand:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        brands:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountCardBrandInfo'
+        source:
+          type: string
+          enum:
+            - method
+            - network
+          nullable: true
+        status:
+          type: string
+          enum:
+            - completed
+            - in_progress
+            - failed
+        shared:
+          type: boolean
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - account_id
+        - brands
+        - status
+        - shared
+        - created_at
+        - updated_at
+    AccountPayoff:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ResourceStatus'
+        amount:
+          type: integer
+          nullable: true
+        term:
+          type: integer
+          nullable: true
+        per_diem_amount:
+          type: integer
+          nullable: true
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - account_id
+        - status
+        - created_at
+        - updated_at
+    AccountSensitiveCreditCard:
+      type: object
+      properties:
+        number:
+          type: string
+          nullable: true
+        billing_zip_code:
+          type: string
+          nullable: true
+        exp_month:
+          type: string
+          nullable: true
+        exp_year:
+          type: string
+          nullable: true
+        cvv:
+          type: string
+          nullable: true
+    AccountSensitiveLoan:
+      type: object
+      properties:
+        number:
+          type: string
+    AccountSensitive:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        type:
+          $ref: '#/components/schemas/AccountLiabilityType'
+        auto_loan:
+          $ref: '#/components/schemas/AccountSensitiveLoan'
+        credit_card:
+          $ref: '#/components/schemas/AccountSensitiveCreditCard'
+        mortgage:
+          $ref: '#/components/schemas/AccountSensitiveLoan'
+        personal_loan:
+          $ref: '#/components/schemas/AccountSensitiveLoan'
+        status:
+          type: string
+          enum:
+            - completed
+            - failed
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - account_id
+        - type
+        - status
+        - created_at
+        - updated_at
+    AccountSensitiveCreateRequest:
+      type: object
+      properties:
+        expand:
+          type: array
+          items:
+            type: string
+            enum:
+              - auto_loan.number
+              - mortgage.number
+              - personal_loan.number
+              - credit_card.number
+              - credit_card.billing_zip_code
+              - credit_card.exp_month
+              - credit_card.exp_year
+              - credit_card.cvv
+      required:
+        - expand
+    TransactionMerchant:
+      type: object
+      properties:
+        id:
+          type: string
+        logo:
+          type: string
+          nullable: true
+    AccountTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        descriptor:
+          type: string
+        amount:
+          type: integer
+        auth_amount:
+          type: integer
+        currency_code:
+          type: string
+        transaction_amount:
+          type: integer
+        transaction_auth_amount:
+          type: integer
+        transaction_currency_code:
+          type: string
+        merchant:
+          allOf:
+            - $ref: '#/components/schemas/TransactionMerchant'
+          nullable: true
+        merchant_category_code:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - posted
+            - voided
+        transacted_at:
+          type: string
+          format: date-time
+        posted_at:
+          type: string
+          format: date-time
+          nullable: true
+        voided_at:
+          type: string
+          format: date-time
+          nullable: true
+        original_txn_id:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - account_id
+        - descriptor
+        - amount
+        - status
+        - transacted_at
+        - created_at
+        - updated_at
+    AccountUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ResourceStatus'
+        account_id:
+          type: string
+        source:
+          type: string
+          enum:
+            - direct
+            - snapshot
+        type:
+          $ref: '#/components/schemas/AccountLiabilityType'
+        auto_loan:
+          type: object
+        credit_card:
+          type: object
+        collection:
+          type: object
+        mortgage:
+          type: object
+        personal_loan:
+          type: object
+        student_loans:
+          type: object
+        credit_builder:
+          type: object
+        loan:
+          type: object
+        insurance:
+          type: object
+        medical:
+          type: object
+        utility:
+          type: object
+        data_as_of:
+          type: string
+          nullable: true
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - status
+        - account_id
+        - source
+        - type
+        - created_at
+        - updated_at
+    AccountAttributes:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/ResourceStatus'
+        attributes:
+          type: object
+          nullable: true
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - account_id
+        - status
+        - created_at
+        - updated_at
+    AccountPaymentInstrument:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        type:
+          type: string
+          enum:
+            - card
+            - network_token
+        network_token:
+          type: object
+          nullable: true
+        card:
+          type: object
+          nullable: true
+        chargeable:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/ResourceStatus'
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - account_id
+        - type
+        - chargeable
+        - status
+        - created_at
+        - updated_at
+    AccountPaymentInstrumentCreateRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - card
+            - network_token
+      required:
+        - type
+    AccountVerificationSessionType:
+      type: string
+      enum:
+        - micro_deposits
+        - plaid
+        - mx
+        - teller
+        - standard
+        - instant
+        - pre_auth
+        - network
+    AccountVerificationSession:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - in_progress
+            - verified
+            - failed
+        type:
+          $ref: '#/components/schemas/AccountVerificationSessionType'
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        plaid:
+          type: object
+          nullable: true
+        mx:
+          type: object
+          nullable: true
+        teller:
+          type: object
+          nullable: true
+        micro_deposits:
+          type: object
+          nullable: true
+        trusted_provisioner:
+          type: object
+          nullable: true
+        auto_verify:
+          type: object
+          nullable: true
+        standard:
+          type: object
+          nullable: true
+        instant:
+          type: object
+          nullable: true
+        pre_auth:
+          type: object
+          nullable: true
+        network:
+          type: object
+          nullable: true
+        three_ds:
+          type: object
+          nullable: true
+        issuer:
+          type: object
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - account_id
+        - status
+        - type
+        - created_at
+        - updated_at
+    AccountVerificationSessionCreateRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/AccountVerificationSessionType'
+      required:
+        - type
+    AccountVerificationSessionUpdateRequest:
+      type: object
+      properties:
+        micro_deposits:
+          type: object
+        plaid:
+          type: object
+        mx:
+          type: object
+        teller:
+          type: object
+        standard:
+          type: object
+        instant:
+          type: object
+        pre_auth:
+          type: object
+        network:
+          type: object
+    AccountProduct:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+            - unavailable
+            - available
+            - restricted
+        status_error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        latest_request_id:
+          type: string
+          nullable: true
+        latest_successful_request_id:
+          type: string
+          nullable: true
+        is_subscribable:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    AccountSubscription:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - inactive
+        payload:
+          type: object
+          nullable: true
+        latest_request_id:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    AccountSubscriptionCreateRequest:
+      type: object
+      properties:
+        enroll:
+          type: string
+          enum:
+            - card_brand
+            - payment_instrument
+            - transaction
+            - update
+            - update.snapshot
+      required:
+        - enroll
+    AccountWithdrawConsentRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - withdraw
+        reason:
+          type: string
+          enum:
+            - holder_withdrew_consent
+          nullable: true
+      required:
+        - type
+    PaymentStatus:
+      type: string
+      enum:
+        - pending
+        - canceled
+        - processing
+        - failed
+        - sent
+        - posted
+        - reversed
+        - reversal_required
+        - reversal_processing
+        - settled
+        - cashed
+    PaymentFundStatus:
+      type: string
+      enum:
+        - hold
+        - pending
+        - requested
+        - clearing
+        - failed
+        - sent
+        - posted
+        - unknown
+    PaymentType:
+      type: string
+      enum:
+        - standard
+        - clearing
+    PaymentFee:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - total
+            - markup
+        amount:
+          type: integer
+      required:
+        - type
+        - amount
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+        reversal_id:
+          type: string
+          nullable: true
+        source_trace_id:
+          type: string
+          nullable: true
+        destination_trace_id:
+          type: string
+          nullable: true
+        source:
+          type: string
+        destination:
+          type: string
+        amount:
+          type: integer
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        fund_status:
+          $ref: '#/components/schemas/PaymentFundStatus'
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        metadata:
+          type: object
+          nullable: true
+        estimated_completion_date:
+          type: string
+          nullable: true
+        source_settlement_date:
+          type: string
+          nullable: true
+        destination_settlement_date:
+          type: string
+          nullable: true
+        source_status:
+          $ref: '#/components/schemas/PaymentStatus'
+        destination_status:
+          $ref: '#/components/schemas/PaymentStatus'
+        destination_payment_method:
+          type: string
+          enum:
+            - paper
+            - electronic
+          nullable: true
+        fee:
+          allOf:
+            - $ref: '#/components/schemas/PaymentFee'
+          nullable: true
+        type:
+          $ref: '#/components/schemas/PaymentType'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - source
+        - destination
+        - amount
+        - description
+        - status
+        - type
+        - created_at
+        - updated_at
+    PaymentCreateRequest:
+      type: object
+      properties:
+        amount:
+          type: integer
+        source:
+          type: string
+        destination:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+        fee:
+          $ref: '#/components/schemas/PaymentFee'
+        dry_run:
+          type: boolean
+      required:
+        - amount
+        - source
+        - destination
+        - description
+    ReversalStatus:
+      type: string
+      enum:
+        - pending_approval
+        - pending
+        - processing
+        - sent
+        - failed
+    ReversalDirection:
+      type: string
+      enum:
+        - debit
+        - credit
+    Reversal:
+      type: object
+      properties:
+        id:
+          type: string
+        pmt_id:
+          type: string
+        target_account:
+          type: string
+        trace_id:
+          type: string
+          nullable: true
+        direction:
+          $ref: '#/components/schemas/ReversalDirection'
+        description:
+          type: string
+        amount:
+          type: integer
+        status:
+          $ref: '#/components/schemas/ReversalStatus'
+        error:
+          allOf:
+            - $ref: '#/components/schemas/ResourceError'
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - pmt_id
+        - target_account
+        - direction
+        - description
+        - amount
+        - status
+        - created_at
+        - updated_at
+    ReversalUpdateRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ReversalStatus'
+        description:
+          type: string
+          nullable: true
+      required:
+        - status
+    WebhookType:
+      type: string
+      enum:
+        - payment.create
+        - payment.update
+        - account.create
+        - account.update
+        - entity.update
+        - entity.create
+        - account_verification.create
+        - account_verification.update
+        - payment_reversal.create
+        - payment_reversal.update
+        - connection.create
+        - connection.update
+        - transaction.create
+        - transaction.update
+        - report.create
+        - report.update
+        - product.create
+        - product.update
+        - subscription.create
+        - subscription.update
+        - credit_score.create
+        - credit_score.update
+        - payoff.create
+        - payoff.update
+        - entity_verification_session.create
+        - entity_verification_session.update
+        - connect.create
+        - connect.update
+        - connect.available
+        - balance.create
+        - balance.update
+        - identity.create
+        - identity.update
+        - account_verification_session.create
+        - account_verification_session.update
+        - card_brand.create
+        - card_brand.update
+        - card_brand.available
+        - sensitive.create
+        - sensitive.update
+        - update.create
+        - update.update
+        - attribute.create
+        - attribute.update
+        - account.opened
+        - account.closed
+        - credit_score.increased
+        - credit_score.decreased
+    WebhookStatus:
+      type: string
+      enum:
+        - active
+        - disabled
+        - deleted
+        - requires_attention
+    Webhook:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        expand_event:
+          type: boolean
+        error:
+          type: object
+          nullable: true
+        status:
+          type: string
+          nullable: true
+      required:
+        - id
+        - type
+        - url
+        - created_at
+        - updated_at
+        - expand_event
+    WebhookCreateRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        url:
+          type: string
+        auth_token:
+          type: string
+        hmac_secret:
+          type: string
+        metadata:
+          type: object
+        expand_event:
+          type: boolean
+      required:
+        - type
+        - url
+    WebhookUpdateRequest:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - active
+            - disabled
+      required:
+        - status
+    ReportType:
+      type: string
+      enum:
+        - payments.created.current
+        - payments.created.previous
+        - payments.updated.current
+        - payments.updated.previous
+        - payments.created.previous_day
+        - payments.failed.previous_day
+        - ach.pull.upcoming
+        - ach.pull.previous
+        - ach.pull.nightly
+        - ach.reversals.nightly
+        - entities.created.previous_day
+    ReportStatus:
+      type: string
+      enum:
+        - processing
+        - completed
+    Report:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/ReportType'
+        url:
+          type: string
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        metadata:
+          type: object
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - type
+        - url
+        - status
+        - created_at
+        - updated_at
+    ReportCreateRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ReportType'
+        metadata:
+          type: object
+      required:
+        - type
+    MerchantProviderIds:
+      type: object
+      properties:
+        plaid:
+          type: array
+          items:
+            type: string
+        mx:
+          type: array
+          items:
+            type: string
+        finicity:
+          type: array
+          items:
+            type: string
+        dpp:
+          type: array
+          items:
+            type: string
+    Merchant:
+      type: object
+      properties:
+        id:
+          type: string
+        parent_name:
+          type: string
+        name:
+          type: string
+        logo:
+          type: string
+        type:
+          $ref: '#/components/schemas/AccountLiabilityType'
+        provider_ids:
+          $ref: '#/components/schemas/MerchantProviderIds'
+        is_temp:
+          type: boolean
+        account_number_formats:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - parent_name
+        - name
+        - logo
+        - type
+        - provider_ids
+        - is_temp
+        - account_number_formats
+    EventResourceType:
+      type: string
+      enum:
+        - account
+        - credit_score
+        - attribute
+        - connect
+    EventDiff:
+      type: object
+      properties:
+        before:
+          type: object
+          nullable: true
+        after:
+          type: object
+          nullable: true
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/WebhookType'
+        resource_id:
+          type: string
+        resource_type:
+          $ref: '#/components/schemas/EventResourceType'
+        data:
+          type: object
+        diff:
+          $ref: '#/components/schemas/EventDiff'
+        updated_at:
+          type: string
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - type
+        - resource_id
+        - resource_type
+        - data
+        - diff
+        - updated_at
+        - created_at
+    ElementType:
+      type: string
+      enum:
+        - connect
+        - balance_transfer
+    ElementToken:
+      type: object
+      properties:
+        element_token:
+          type: string
+      required:
+        - element_token
+    ElementUserEvent:
+      type: object
+      properties:
+        type:
+          type: string
+        timestamp:
+          type: string
+        metadata:
+          type: object
+          nullable: true
+    ElementResults:
+      type: object
+      properties:
+        authenticated:
+          type: boolean
+        cxn_id:
+          type: string
+          nullable: true
+        accounts:
+          type: array
+          items:
+            type: string
+        entity_id:
+          type: string
+          nullable: true
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/ElementUserEvent'
+      required:
+        - authenticated
+        - accounts
+        - events
+    ElementTokenCreateRequest:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ElementType'
+        entity_id:
+          type: string
+        team_name:
+          type: string
+        team_logo:
+          type: string
+          nullable: true
+        team_icon:
+          type: string
+          nullable: true
+        connect:
+          type: object
+        balance_transfer:
+          type: object
+      required:
+        - type
+    OpalMode:
+      type: string
+      enum:
+        - identity_verification
+        - connect
+        - card_connect
+        - account_verification
+        - transactions
+    OpalToken:
+      type: object
+      properties:
+        token:
+          type: string
+        valid_until:
+          type: string
+        session_id:
+          type: string
+      required:
+        - token
+        - valid_until
+        - session_id
+    OpalTokenCreateRequest:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/OpalMode'
+        entity_id:
+          type: string
+        identity_verification:
+          type: object
+        connect:
+          type: object
+        card_connect:
+          type: object
+        account_verification:
+          type: object
+        transactions:
+          type: object
+      required:
+        - mode
+        - entity_id
+    SimulatePaymentUpdateRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        error_code:
+          type: integer
+          nullable: true
+      required:
+        - status
+    SimulateEntityConnectRequest:
+      type: object
+      properties:
+        behaviors:
+          type: array
+          items:
+            type: string
+            enum:
+              - new_credit_card_account
+              - new_auto_loan_account
+              - new_mortgage_account
+              - new_student_loan_account
+              - new_personal_loan_account
+      required:
+        - behaviors
+    SimulateEntityAttributesRequest:
+      type: object
+      properties:
+        behaviors:
+          type: array
+          items:
+            type: string
+            enum:
+              - new_soft_inquiry
+      required:
+        - behaviors
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  headers:
+    IdemRequestId:
+      description: Unique request identifier for tracking and debugging
+      schema:
+        type: string
+    IdemStatus:
+      description: Idempotency status indicating how the request was processed
+      schema:
+        type: string
+        enum:
+          - stored
+          - bypassed
+          - replayed
+    PaginationPage:
+      description: Current page number
+      schema:
+        type: integer
+    PaginationPageCount:
+      description: Total number of pages available
+      schema:
+        type: integer
+    PaginationPageLimit:
+      description: Number of items per page
+      schema:
+        type: integer
+    PaginationTotalCount:
+      description: Total number of items across all pages
+      schema:
+        type: integer
+    PaginationPageCursorNext:
+      description: Cursor for fetching the next page
+      schema:
+        type: string
+    PaginationPageCursorPrev:
+      description: Cursor for fetching the previous page
+      schema:
+        type: string
