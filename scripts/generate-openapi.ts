@@ -1776,7 +1776,7 @@ class OpenAPIGenerator {
         responseType: 'Entity',
         isList: true,
       }),
-      post: this.createOperation('createEntity', 'Create a new entity', ['Entities'], {
+      post: this.createOperation('createEntity', 'Create a new entity', ['Entities'], { httpMethod: 'post',
         requestBody: 'EntityCreateRequest',
         responseType: 'Entity',
       }),
@@ -1789,7 +1789,7 @@ class OpenAPIGenerator {
         queryParams: ['expand'],
         responseType: 'Entity',
       }),
-      put: this.createOperation('updateEntity', 'Update an entity', ['Entities'], {
+      put: this.createOperation('updateEntity', 'Update an entity', ['Entities'], { httpMethod: 'put',
         pathParams: ['ent_id'],
         requestBody: 'EntityUpdateRequest',
         responseType: 'Entity',
@@ -1798,7 +1798,7 @@ class OpenAPIGenerator {
 
     // /entities/{ent_id}/consent
     this.spec.paths['/entities/{ent_id}/consent'] = {
-      post: this.createOperation('withdrawEntityConsent', 'Withdraw entity consent', ['Entities'], {
+      post: this.createOperation('withdrawEntityConsent', 'Withdraw entity consent', ['Entities'], { httpMethod: 'post',
         pathParams: ['ent_id'],
         requestBody: 'EntityWithdrawConsentRequest',
         responseType: 'Entity',
@@ -1812,7 +1812,7 @@ class OpenAPIGenerator {
         responseType: 'EntityConnect',
         isList: true,
       }),
-      post: this.createOperation('createEntityConnect', 'Create entity connect', ['Entities - Connect'], {
+      post: this.createOperation('createEntityConnect', 'Create entity connect', ['Entities - Connect'], { httpMethod: 'post',
         pathParams: ['ent_id'],
         requestBody: 'EntityConnectCreateRequest',
         responseType: 'EntityConnect',
@@ -1834,7 +1834,7 @@ class OpenAPIGenerator {
         responseType: 'EntityCreditScores',
         isList: true,
       }),
-      post: this.createOperation('createEntityCreditScores', 'Create entity credit scores request', ['Entities - Credit Scores'], {
+      post: this.createOperation('createEntityCreditScores', 'Create entity credit scores request', ['Entities - Credit Scores'], { httpMethod: 'post',
         pathParams: ['ent_id'],
         responseType: 'EntityCreditScores',
       }),
@@ -1855,7 +1855,7 @@ class OpenAPIGenerator {
         responseType: 'EntityIdentity',
         isList: true,
       }),
-      post: this.createOperation('createEntityIdentity', 'Create entity identity request', ['Entities - Identities'], {
+      post: this.createOperation('createEntityIdentity', 'Create entity identity request', ['Entities - Identities'], { httpMethod: 'post',
         pathParams: ['ent_id'],
         responseType: 'EntityIdentity',
       }),
@@ -1876,7 +1876,7 @@ class OpenAPIGenerator {
         responseType: 'EntityAttributes',
         isList: true,
       }),
-      post: this.createOperation('createEntityAttributes', 'Create entity attributes request', ['Entities - Attributes'], {
+      post: this.createOperation('createEntityAttributes', 'Create entity attributes request', ['Entities - Attributes'], { httpMethod: 'post',
         pathParams: ['ent_id'],
         requestBody: 'EntityAttributesCreateRequest',
         responseType: 'EntityAttributes',
@@ -1898,7 +1898,7 @@ class OpenAPIGenerator {
         responseType: 'EntityVehicles',
         isList: true,
       }),
-      post: this.createOperation('createEntityVehicles', 'Create entity vehicles request', ['Entities - Vehicles'], {
+      post: this.createOperation('createEntityVehicles', 'Create entity vehicles request', ['Entities - Vehicles'], { httpMethod: 'post',
         pathParams: ['ent_id'],
         responseType: 'EntityVehicles',
       }),
@@ -1927,7 +1927,7 @@ class OpenAPIGenerator {
         responseType: 'EntitySubscription',
         isList: true,
       }),
-      post: this.createOperation('createEntitySubscription', 'Create entity subscription', ['Entities - Subscriptions'], {
+      post: this.createOperation('createEntitySubscription', 'Create entity subscription', ['Entities - Subscriptions'], { httpMethod: 'post',
         pathParams: ['ent_id'],
         requestBody: 'EntitySubscriptionCreateRequest',
         responseType: 'EntitySubscription',
@@ -1953,7 +1953,7 @@ class OpenAPIGenerator {
         responseType: 'EntityVerificationSession',
         isList: true,
       }),
-      post: this.createOperation('createEntityVerificationSession', 'Create entity verification session', ['Entities - Verification Sessions'], {
+      post: this.createOperation('createEntityVerificationSession', 'Create entity verification session', ['Entities - Verification Sessions'], { httpMethod: 'post',
         pathParams: ['ent_id'],
         requestBody: 'EntityVerificationSessionCreateRequest',
         responseType: 'EntityVerificationSession',
@@ -1966,7 +1966,7 @@ class OpenAPIGenerator {
         pathParams: ['ent_id', 'evf_id'],
         responseType: 'EntityVerificationSession',
       }),
-      put: this.createOperation('updateEntityVerificationSession', 'Update entity verification session', ['Entities - Verification Sessions'], {
+      put: this.createOperation('updateEntityVerificationSession', 'Update entity verification session', ['Entities - Verification Sessions'], { httpMethod: 'put',
         pathParams: ['ent_id', 'evf_id'],
         requestBody: 'EntityVerificationSessionUpdateRequest',
         responseType: 'EntityVerificationSession',
@@ -1982,7 +1982,7 @@ class OpenAPIGenerator {
         responseType: 'Account',
         isList: true,
       }),
-      post: this.createOperation('createAccount', 'Create a new account', ['Accounts'], {
+      post: this.createOperation('createAccount', 'Create a new account', ['Accounts'], { httpMethod: 'post',
         requestBody: 'AccountCreateRequest',
         responseType: 'Account',
       }),
@@ -1999,7 +1999,7 @@ class OpenAPIGenerator {
 
     // /accounts/{acc_id}/consent
     this.spec.paths['/accounts/{acc_id}/consent'] = {
-      post: this.createOperation('withdrawAccountConsent', 'Withdraw account consent', ['Accounts'], {
+      post: this.createOperation('withdrawAccountConsent', 'Withdraw account consent', ['Accounts'], { httpMethod: 'post',
         pathParams: ['acc_id'],
         requestBody: 'AccountWithdrawConsentRequest',
         responseType: 'Account',
@@ -2033,6 +2033,7 @@ class OpenAPIGenerator {
 
       if (subResource.hasCreate) {
         this.spec.paths[basePath].post = this.createOperation(`createAccount${subResource.name}`, `Create account ${subResource.path.slice(0, -1)}`, [tag], {
+          httpMethod: 'post',
           pathParams: ['acc_id'],
           requestBody: subResource.createRequest,
           responseType: subResource.schema,
@@ -2054,7 +2055,7 @@ class OpenAPIGenerator {
         responseType: 'AccountSubscription',
         isList: true,
       }),
-      post: this.createOperation('createAccountSubscription', 'Create account subscription', ['Accounts - Subscriptions'], {
+      post: this.createOperation('createAccountSubscription', 'Create account subscription', ['Accounts - Subscriptions'], { httpMethod: 'post',
         pathParams: ['acc_id'],
         requestBody: 'AccountSubscriptionCreateRequest',
         responseType: 'AccountSubscription',
@@ -2088,7 +2089,7 @@ class OpenAPIGenerator {
         responseType: 'AccountVerificationSession',
         isList: true,
       }),
-      post: this.createOperation('createAccountVerificationSession', 'Create account verification session', ['Accounts - Verification Sessions'], {
+      post: this.createOperation('createAccountVerificationSession', 'Create account verification session', ['Accounts - Verification Sessions'], { httpMethod: 'post',
         pathParams: ['acc_id'],
         requestBody: 'AccountVerificationSessionCreateRequest',
         responseType: 'AccountVerificationSession',
@@ -2100,7 +2101,7 @@ class OpenAPIGenerator {
         pathParams: ['acc_id', 'avf_id'],
         responseType: 'AccountVerificationSession',
       }),
-      put: this.createOperation('updateAccountVerificationSession', 'Update account verification session', ['Accounts - Verification Sessions'], {
+      put: this.createOperation('updateAccountVerificationSession', 'Update account verification session', ['Accounts - Verification Sessions'], { httpMethod: 'put',
         pathParams: ['acc_id', 'avf_id'],
         requestBody: 'AccountVerificationSessionUpdateRequest',
         responseType: 'AccountVerificationSession',
@@ -2116,7 +2117,7 @@ class OpenAPIGenerator {
         responseType: 'Payment',
         isList: true,
       }),
-      post: this.createOperation('createPayment', 'Create a new payment', ['Payments'], {
+      post: this.createOperation('createPayment', 'Create a new payment', ['Payments'], { httpMethod: 'post',
         requestBody: 'PaymentCreateRequest',
         responseType: 'Payment',
       }),
@@ -2149,7 +2150,7 @@ class OpenAPIGenerator {
         pathParams: ['pmt_id', 'rvs_id'],
         responseType: 'Reversal',
       }),
-      put: this.createOperation('updatePaymentReversal', 'Update payment reversal', ['Payments - Reversals'], {
+      put: this.createOperation('updatePaymentReversal', 'Update payment reversal', ['Payments - Reversals'], { httpMethod: 'put',
         pathParams: ['pmt_id', 'rvs_id'],
         requestBody: 'ReversalUpdateRequest',
         responseType: 'Reversal',
@@ -2164,7 +2165,7 @@ class OpenAPIGenerator {
         responseType: 'Webhook',
         isList: true,
       }),
-      post: this.createOperation('createWebhook', 'Create a new webhook', ['Webhooks'], {
+      post: this.createOperation('createWebhook', 'Create a new webhook', ['Webhooks'], { httpMethod: 'post',
         requestBody: 'WebhookCreateRequest',
         responseType: 'Webhook',
       }),
@@ -2176,7 +2177,7 @@ class OpenAPIGenerator {
         pathParams: ['whk_id'],
         responseType: 'Webhook',
       }),
-      patch: this.createOperation('updateWebhook', 'Update a webhook', ['Webhooks'], {
+      patch: this.createOperation('updateWebhook', 'Update a webhook', ['Webhooks'], { httpMethod: 'patch',
         pathParams: ['whk_id'],
         requestBody: 'WebhookUpdateRequest',
         responseType: 'Webhook',
@@ -2191,7 +2192,7 @@ class OpenAPIGenerator {
   private generateReportPaths(): void {
     // /reports
     this.spec.paths['/reports'] = {
-      post: this.createOperation('createReport', 'Create a new report', ['Reports'], {
+      post: this.createOperation('createReport', 'Create a new report', ['Reports'], { httpMethod: 'post',
         requestBody: 'ReportCreateRequest',
         responseType: 'Report',
       }),
@@ -2275,7 +2276,7 @@ class OpenAPIGenerator {
   private generateElementPaths(): void {
     // /elements/token
     this.spec.paths['/elements/token'] = {
-      post: this.createOperation('createElementToken', 'Create an element token', ['Elements'], {
+      post: this.createOperation('createElementToken', 'Create an element token', ['Elements'], { httpMethod: 'post',
         requestBody: 'ElementTokenCreateRequest',
         responseType: 'ElementToken',
       }),
@@ -2293,7 +2294,7 @@ class OpenAPIGenerator {
   private generateOpalPaths(): void {
     // /opal/token
     this.spec.paths['/opal/token'] = {
-      post: this.createOperation('createOpalToken', 'Create an opal token', ['Opal'], {
+      post: this.createOperation('createOpalToken', 'Create an opal token', ['Opal'], { httpMethod: 'post',
         requestBody: 'OpalTokenCreateRequest',
         responseType: 'OpalToken',
       }),
@@ -2303,7 +2304,7 @@ class OpenAPIGenerator {
   private generateSimulatePaths(): void {
     // /simulate/payments/{pmt_id}
     this.spec.paths['/simulate/payments/{pmt_id}'] = {
-      post: this.createOperation('simulatePaymentUpdate', 'Simulate payment status update', ['Simulate'], {
+      post: this.createOperation('simulatePaymentUpdate', 'Simulate payment status update', ['Simulate'], { httpMethod: 'post',
         pathParams: ['pmt_id'],
         requestBody: 'SimulatePaymentUpdateRequest',
         responseType: 'Payment',
@@ -2312,7 +2313,7 @@ class OpenAPIGenerator {
 
     // /simulate/accounts/{acc_id}/transactions
     this.spec.paths['/simulate/accounts/{acc_id}/transactions'] = {
-      post: this.createOperation('simulateAccountTransaction', 'Simulate account transaction', ['Simulate'], {
+      post: this.createOperation('simulateAccountTransaction', 'Simulate account transaction', ['Simulate'], { httpMethod: 'post',
         pathParams: ['acc_id'],
         responseType: 'AccountTransaction',
       }),
@@ -2320,7 +2321,7 @@ class OpenAPIGenerator {
 
     // /simulate/entities/{ent_id}/connect
     this.spec.paths['/simulate/entities/{ent_id}/connect'] = {
-      post: this.createOperation('simulateEntityConnect', 'Simulate entity connect', ['Simulate'], {
+      post: this.createOperation('simulateEntityConnect', 'Simulate entity connect', ['Simulate'], { httpMethod: 'post',
         pathParams: ['ent_id'],
         requestBody: 'SimulateEntityConnectRequest',
         responseType: 'EntityConnect',
@@ -2329,7 +2330,7 @@ class OpenAPIGenerator {
 
     // /simulate/entities/{ent_id}/credit_scores/{crs_id}
     this.spec.paths['/simulate/entities/{ent_id}/credit_scores/{crs_id}'] = {
-      post: this.createOperation('simulateEntityCreditScores', 'Simulate entity credit scores', ['Simulate'], {
+      post: this.createOperation('simulateEntityCreditScores', 'Simulate entity credit scores', ['Simulate'], { httpMethod: 'post',
         pathParams: ['ent_id', 'crs_id'],
         responseType: 'EntityCreditScores',
       }),
@@ -2337,7 +2338,7 @@ class OpenAPIGenerator {
 
     // /simulate/entities/{ent_id}/attributes/{atr_id}
     this.spec.paths['/simulate/entities/{ent_id}/attributes/{atr_id}'] = {
-      post: this.createOperation('simulateEntityAttributes', 'Simulate entity attributes', ['Simulate'], {
+      post: this.createOperation('simulateEntityAttributes', 'Simulate entity attributes', ['Simulate'], { httpMethod: 'post',
         pathParams: ['ent_id', 'atr_id'],
         requestBody: 'SimulateEntityAttributesRequest',
         responseType: 'EntityAttributes',
@@ -2346,7 +2347,7 @@ class OpenAPIGenerator {
 
     // /simulate/events
     this.spec.paths['/simulate/events'] = {
-      post: this.createOperation('simulateEvent', 'Simulate an event', ['Simulate'], {
+      post: this.createOperation('simulateEvent', 'Simulate an event', ['Simulate'], { httpMethod: 'post',
         responseType: 'Event',
       }),
     };
@@ -2363,6 +2364,7 @@ class OpenAPIGenerator {
       responseType: string;
       isList?: boolean;
       description?: string;
+      httpMethod?: 'get' | 'post' | 'put' | 'patch' | 'delete';
     }
   ): Operation {
     const operation: Operation = {
@@ -2408,6 +2410,18 @@ class OpenAPIGenerator {
           schema: { type: 'string' },
         });
       }
+    }
+
+    // Add Idempotency-Key header for write operations (POST, PUT, PATCH)
+    // This ensures idempotency support is exposed in generated clients
+    if (options.httpMethod && ['post', 'put', 'patch'].includes(options.httpMethod)) {
+      parameters.push({
+        name: 'Idempotency-Key',
+        in: 'header',
+        required: false,
+        schema: { type: 'string' },
+        description: 'Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.',
+      });
     }
 
     if (parameters.length > 0) {

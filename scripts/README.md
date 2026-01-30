@@ -21,7 +21,11 @@ npm run generate:openapi
 1. Parses all `types.ts` files in `src/resources/` to extract TypeScript interfaces
 2. Converts TypeScript types to OpenAPI schemas (handling nullables, arrays, enums, etc.)
 3. Generates path definitions for all API endpoints based on SDK resource structure
-4. Outputs both YAML and JSON versions of the specification
+4. Automatically adds `Idempotency-Key` header parameter to all POST, PUT, and PATCH operations
+5. Outputs both YAML and JSON versions of the specification
+
+**Idempotency Support:**
+The generator automatically includes the `Idempotency-Key` header parameter for all write operations (POST, PUT, PATCH). This ensures that generated clients expose idempotency as a first-class feature, preventing duplicate requests. The header is optional and follows the implementation in `src/resource.ts` where it's injected via request interceptors.
 
 ### validate-openapi.ts
 
