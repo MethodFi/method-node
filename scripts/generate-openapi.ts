@@ -34,6 +34,7 @@ interface OpenAPISpec {
   components: {
     schemas: { [name: string]: Schema };
     securitySchemes: { [name: string]: SecurityScheme };
+    headers?: { [name: string]: HeaderObject };
   };
 }
 
@@ -61,6 +62,8 @@ interface Parameter {
   required: boolean;
   schema: Schema;
   description?: string;
+  style?: string;
+  explode?: boolean;
 }
 
 interface RequestBody {
@@ -74,11 +77,18 @@ interface RequestBody {
 
 interface Response {
   description: string;
+  headers?: { [name: string]: HeaderObject };
   content?: {
     [contentType: string]: {
       schema: Schema;
     };
   };
+}
+
+interface HeaderObject {
+  $ref?: string;
+  description?: string;
+  schema?: Schema;
 }
 
 interface Schema {
@@ -311,6 +321,29 @@ class OpenAPIGenerator {
   private typeAliases: Map<string, string>;
   private generatedSchemas: Set<string> = new Set();
 
+  // Expand parameter enum values for different resource types
+  private readonly ENTITY_EXPAND_VALUES = [
+    'connect',
+    'credit_score',
+    'attribute',
+    'vehicle',
+    'identity_latest_verification_session',
+    'phone_latest_verification_session',
+  ];
+
+  private readonly ACCOUNT_EXPAND_VALUES = [
+    'payment',
+    'balance',
+    'sensitive',
+    'card_brand',
+    'payoff',
+    'update',
+    'attribute',
+    'transactions',
+    'payment_instrument',
+    'latest_verification_session',
+  ];
+
   constructor(
     interfaces: Map<string, ParsedInterface>,
     enums: Map<string, ParsedEnum>,
@@ -382,6 +415,43 @@ class OpenAPIGenerator {
             scheme: 'bearer',
           },
         },
+        headers: {
+          'IdemRequestId': {
+            description: 'Unique request identifier for tracking and debugging',
+            schema: { type: 'string' },
+          },
+          'IdemStatus': {
+            description: 'Idempotency status indicating how the request was processed',
+            schema: {
+              type: 'string',
+              enum: ['stored', 'bypassed', 'replayed'],
+            },
+          },
+          'PaginationPage': {
+            description: 'Current page number',
+            schema: { type: 'integer' },
+          },
+          'PaginationPageCount': {
+            description: 'Total number of pages available',
+            schema: { type: 'integer' },
+          },
+          'PaginationPageLimit': {
+            description: 'Number of items per page',
+            schema: { type: 'integer' },
+          },
+          'PaginationTotalCount': {
+            description: 'Total number of items across all pages',
+            schema: { type: 'integer' },
+          },
+          'PaginationPageCursorNext': {
+            description: 'Cursor for fetching the next page',
+            schema: { type: 'string' },
+          },
+          'PaginationPageCursorPrev': {
+            description: 'Cursor for fetching the previous page',
+            schema: { type: 'string' },
+          },
+        },
       },
     };
   }
@@ -397,6 +467,17 @@ class OpenAPIGenerator {
   // Helper to create a non-nullable reference
   private ref(ref: string): Schema {
     return { $ref: ref };
+  }
+
+  // Helper to determine expand enum values based on operation ID
+  private getExpandEnumValues(operationId: string): string[] | null {
+    if (operationId.includes('Entity') || operationId.includes('entity')) {
+      return this.ENTITY_EXPAND_VALUES;
+    }
+    if (operationId.includes('Account') || operationId.includes('account')) {
+      return this.ACCOUNT_EXPAND_VALUES;
+    }
+    return null;
   }
 
   generate(): OpenAPISpec {
@@ -2375,6 +2456,19 @@ class OpenAPIGenerator {
       responses: {
         '200': {
           description: 'Successful response',
+          headers: {
+            'idem-request-id': { $ref: '#/components/headers/IdemRequestId' },
+            'idem-status': { $ref: '#/components/headers/IdemStatus' },
+            // Add pagination headers only for list operations
+            ...(options.isList ? {
+              'pagination-page': { $ref: '#/components/headers/PaginationPage' },
+              'pagination-page-count': { $ref: '#/components/headers/PaginationPageCount' },
+              'pagination-page-limit': { $ref: '#/components/headers/PaginationPageLimit' },
+              'pagination-total-count': { $ref: '#/components/headers/PaginationTotalCount' },
+              'pagination-page-cursor-next': { $ref: '#/components/headers/PaginationPageCursorNext' },
+              'pagination-page-cursor-prev': { $ref: '#/components/headers/PaginationPageCursorPrev' },
+            } : {}),
+          },
           content: {
             'application/json': {
               schema: options.responseType === 'object'
@@ -2403,12 +2497,31 @@ class OpenAPIGenerator {
 
     if (options.queryParams) {
       for (const param of options.queryParams) {
-        parameters.push({
+        const paramDef: Parameter = {
           name: param,
           in: 'query',
           required: false,
           schema: { type: 'string' },
-        });
+        };
+
+        // Add enum values for expand parameter
+        if (param === 'expand') {
+          const expandValues = this.getExpandEnumValues(operationId);
+          if (expandValues) {
+            paramDef.schema = {
+              type: 'array',
+              items: {
+                type: 'string',
+                enum: expandValues,
+              },
+            };
+            paramDef.description = 'Fields to expand in the response. Can specify multiple values.';
+            paramDef.style = 'form';
+            paramDef.explode = true;
+          }
+        }
+
+        parameters.push(paramDef);
       }
     }
 
@@ -2421,6 +2534,21 @@ class OpenAPIGenerator {
         required: false,
         schema: { type: 'string' },
         description: 'Optional idempotency key to prevent duplicate requests. See https://docs.methodfi.com for more details.',
+      });
+    }
+
+    // Add Prefer header for POST operations to support async response patterns
+    // Only POST operations implement the prefer parameter in the SDK
+    if (options.httpMethod === 'post') {
+      parameters.push({
+        name: 'Prefer',
+        in: 'header',
+        required: false,
+        schema: {
+          type: 'string',
+          enum: ['respond-async', 'respond-sync'],
+        },
+        description: 'Control response behavior. Use "respond-async" for long-running operations to get immediate response with status=pending.',
       });
     }
 

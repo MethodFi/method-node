@@ -22,10 +22,34 @@ npm run generate:openapi
 2. Converts TypeScript types to OpenAPI schemas (handling nullables, arrays, enums, etc.)
 3. Generates path definitions for all API endpoints based on SDK resource structure
 4. Automatically adds `Idempotency-Key` header parameter to all POST, PUT, and PATCH operations
-5. Outputs both YAML and JSON versions of the specification
+5. Automatically adds `Prefer` header parameter to all POST operations for async response patterns
+6. Enhances `expand` query parameters with enum constraints for type-safe field expansion
+7. Documents response headers for all operations (idempotency tracking and pagination metadata)
+8. Outputs both YAML and JSON versions of the specification
 
 **Idempotency Support:**
 The generator automatically includes the `Idempotency-Key` header parameter for all write operations (POST, PUT, PATCH). This ensures that generated clients expose idempotency as a first-class feature, preventing duplicate requests. The header is optional and follows the implementation in `src/resource.ts` where it's injected via request interceptors.
+
+**Prefer Header Support:**
+The generator automatically includes the `Prefer` header parameter for POST operations. This enables clients to control response behavior for long-running operations:
+- `respond-async` - Returns immediately with status='pending', requires polling for completion
+- `respond-sync` - Waits for operation to complete before returning (default behavior)
+
+Used by: Entity Connect, Entity creation, Payment creation, Webhook creation.
+
+**Expand Parameter Enhancement:**
+The generator adds enum constraints to `expand` query parameters, providing type-safe options in generated clients:
+- Entity operations: Can expand `connect`, `credit_score`, `attribute`, `vehicle`, `identity_latest_verification_session`, `phone_latest_verification_session`
+- Account operations: Can expand all product types (`payment`, `balance`, `sensitive`, `card_brand`, `payoff`, `update`, `attribute`, `transactions`, `payment_instrument`) plus `latest_verification_session`
+
+This ensures generated clients provide autocomplete and validation for expand values.
+
+**Response Headers:**
+All operations document response headers in the OpenAPI spec:
+- `idem-request-id`, `idem-status` - For request tracking and idempotency debugging
+- `pagination-*` headers - For list operations, providing pagination metadata (`pagination-page`, `pagination-page-count`, `pagination-page-limit`, `pagination-total-count`, `pagination-page-cursor-next`, `pagination-page-cursor-prev`)
+
+Generated clients can access these headers to implement proper pagination and debugging.
 
 ### validate-openapi.ts
 
