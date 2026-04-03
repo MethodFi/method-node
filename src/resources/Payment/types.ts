@@ -58,6 +58,7 @@ export interface IPaymentFee {
 export interface IPayment {
   id: string;
   reversal_id: string | null;
+  reversal_account: string;
   source_trace_id: string | null;
   destination_trace_id: string | null;
   source: string;
@@ -88,6 +89,7 @@ export interface IPaymentCreateOpts {
   metadata?: {};
   fee?: IPaymentFee;
   dry_run?: boolean;
+  reversal_account?: string;
 };
 
 export interface IPaymentListOpts extends IResourceListOpts {
