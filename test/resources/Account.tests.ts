@@ -284,7 +284,7 @@ describe('Accounts - core methods tests', () => {
       const balance = account_balances[0];
       balance.id.should.be.eql(balances_create_response.id);
       balance.account_id.should.be.eql(test_credit_card_account.id);
-      balance.error.should.be.eql(null);
+      (balance.error === null).should.be.true;
     });
   });
 
@@ -428,7 +428,7 @@ describe('Accounts - core methods tests', () => {
       const payoff = payoffs[0];
       payoff.id.should.be.eql(payoff_create_response.id);
       payoff.account_id.should.be.eql(test_auto_loan_account.id);
-      payoff.error.should.be.eql(null);
+      (payoff.error === null).should.be.true;
     });
   });
 
