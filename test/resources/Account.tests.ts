@@ -145,7 +145,7 @@ describe('Accounts - core methods tests', () => {
       accounts_create_liability_response.type!.should.be.eql('liability');
       accounts_create_liability_response.liability!.mch_id.should.be.eql('mch_302086');
       accounts_create_liability_response.liability!.mask!.should.be.eql('8721');
-      accounts_create_liability_response.liability!.type.should.be.eql('credit_card');
+      accounts_create_liability_response.liability!.type!.should.be.eql('credit_card');
       accounts_create_liability_response.liability!.sub_type!.should.be.eql('flexible_spending');
       accounts_create_liability_response.status.should.be.eql('active');
       (accounts_create_liability_response.error === null).should.be.true;
