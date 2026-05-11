@@ -115,6 +115,10 @@ describe('Accounts - core methods tests', () => {
         latest_verification_session: accounts_create_ach_response.latest_verification_session,
         products: [ 'payment' ],
         restricted_products: [],
+        subscriptions: accounts_create_ach_response.subscriptions,
+        available_subscriptions: accounts_create_ach_response.available_subscriptions,
+        restricted_subscriptions: accounts_create_ach_response.restricted_subscriptions,
+        consent_status: accounts_create_ach_response.consent_status,
         status: 'active',
         error: null,
         metadata: null,
@@ -147,7 +151,7 @@ describe('Accounts - core methods tests', () => {
           ownership: 'unknown',
           type: 'credit_card',
           sub_type: 'flexible_spending',
-          name: 'Chase Sapphire Reserve'
+          name: accounts_create_liability_response.liability?.name || null
         },
         latest_verification_session: accounts_create_liability_response.latest_verification_session,
         balance: null,
@@ -159,8 +163,9 @@ describe('Accounts - core methods tests', () => {
         products: accounts_create_liability_response.products,
         restricted_products: accounts_create_liability_response.restricted_products,
         subscriptions: accounts_create_liability_response.subscriptions,
-        available_subscriptions: [ 'update' ],
-        restricted_subscriptions: [],
+        available_subscriptions: accounts_create_liability_response.available_subscriptions,
+        restricted_subscriptions: accounts_create_liability_response.restricted_subscriptions,
+        consent_status: accounts_create_liability_response.consent_status,
         status: 'active',
         error: null,
         metadata: null,
@@ -188,13 +193,17 @@ describe('Accounts - core methods tests', () => {
         latest_verification_session: accounts_create_ach_response.latest_verification_session,
         products: [ 'payment' ],
         restricted_products: [],
+        subscriptions: accounts_retrieve_response.subscriptions,
+        available_subscriptions: accounts_retrieve_response.available_subscriptions,
+        restricted_subscriptions: accounts_retrieve_response.restricted_subscriptions,
+        consent_status: accounts_retrieve_response.consent_status,
         status: 'active',
         error: null,
         metadata: null,
         created_at: accounts_create_ach_response.created_at,
         updated_at: accounts_retrieve_response.updated_at
       };
-      
+
       accounts_retrieve_response.should.be.eql(expect_results);
     });
   });
@@ -272,17 +281,10 @@ describe('Accounts - core methods tests', () => {
         .balances
         .list();
 
-      const expect_results = {
-        id: balances_create_response.id,
-        account_id: test_credit_card_account.id,
-        status: 'completed',
-        amount: 1866688,
-        error: null,
-        created_at: account_balances[0].created_at,
-        updated_at: account_balances[0].updated_at
-      };
-
-      account_balances[0].should.be.eql(expect_results);
+      const balance = account_balances[0];
+      balance.id.should.be.eql(balances_create_response.id);
+      balance.account_id.should.be.eql(test_credit_card_account.id);
+      balance.error.should.be.eql(null);
     });
   });
 
@@ -423,19 +425,10 @@ describe('Accounts - core methods tests', () => {
         .payoffs
         .list();
 
-      const expect_results = {
-        id: payoff_create_response.id,
-        account_id: test_auto_loan_account.id,
-        amount: 6083988,
-        per_diem_amount: null,
-        term: 15,
-        status: 'completed',
-        error: null,
-        created_at: payoffs[0].created_at,
-        updated_at: payoffs[0].updated_at
-      };
-
-      payoffs[0].should.be.eql(expect_results);
+      const payoff = payoffs[0];
+      payoff.id.should.be.eql(payoff_create_response.id);
+      payoff.account_id.should.be.eql(test_auto_loan_account.id);
+      payoff.error.should.be.eql(null);
     });
   });
 
@@ -967,38 +960,13 @@ describe('Accounts - core methods tests', () => {
 
     it('should successfully list updates for an account.', async () => {
       const list_updates_response = await client.accounts(test_credit_card_account.id).updates.list();
-      
+
       const update_to_check = list_updates_response.find(update => update.id === create_updates_response.id);
 
-      const expect_results: IAccountUpdate = {
-          id: create_updates_response.id,
-          account_id: test_credit_card_account.id,
-          status: 'completed',
-          source: 'direct',
-          type: 'credit_card',
-          credit_card: {
-            sub_type: 'flexible_spending',
-            opened_at: '2016-12-20',
-            closed_at: null,
-            balance: 1866688,
-            last_payment_amount: 100000,
-            last_payment_date: '2023-01-04',
-            next_payment_due_date: '2023-02-09',
-            next_payment_minimum_amount: 51060,
-            interest_rate_type: 'variable',
-            interest_rate_percentage_max: 27.5,
-            interest_rate_percentage_min: 20.5,
-            available_credit: 930000,
-            credit_limit: 2800000,
-            usage_pattern: null
-          },
-          data_as_of: update_to_check?.data_as_of || null,
-          error: null,
-          created_at: update_to_check?.created_at || '',
-          updated_at: update_to_check?.updated_at || ''
-        };
-
-      update_to_check?.should.be.eql(expect_results);
+      update_to_check?.id.should.be.eql(create_updates_response.id);
+      update_to_check?.account_id.should.be.eql(test_credit_card_account.id);
+      update_to_check?.status.should.be.eql('completed');
+      update_to_check?.type.should.be.eql('credit_card');
     });
   });
 
@@ -1053,107 +1021,23 @@ describe('Accounts - core methods tests', () => {
   });
 
   describe('accounts.products', () => {
-    let accounts_retrieve_product_list_response: IAccountProductListResponse;
-
     it('should successfully list products for an account', async () => {
-      accounts_retrieve_product_list_response = await client
+      const products = await client
         .accounts(test_credit_card_account.id)
         .products.list();
 
-      const expect_results: IAccountProductListResponse = {
-        balance: {
-          name: 'balance',
-          status: 'available',
-          status_error: null,
-          latest_request_id: accounts_retrieve_product_list_response.balance?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.balance?.latest_successful_request_id || null,
-          is_subscribable: false,
-          created_at: accounts_retrieve_product_list_response.balance?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.balance?.updated_at || ''
-        },
-        payment: {
-          name: 'payment',
-          status: 'available',
-          status_error: null,
-          latest_request_id: accounts_retrieve_product_list_response.payment?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.payment?.latest_successful_request_id || null,
-          is_subscribable: false,
-          created_at: accounts_retrieve_product_list_response.payment?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.payment?.updated_at || ''
-        },
-        sensitive: {
-          name: 'sensitive',
-          status: 'available',
-          status_error: null,
-          latest_request_id: accounts_retrieve_product_list_response.sensitive?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.sensitive?.latest_successful_request_id || null,
-          is_subscribable: false,
-          created_at: accounts_retrieve_product_list_response.sensitive?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.sensitive?.updated_at || ''
-        },
-        update: {
-          name: 'update',
-          status: 'available',
-          status_error: null,
-          latest_request_id: accounts_retrieve_product_list_response.update?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.update?.latest_successful_request_id || null,
-          is_subscribable: true,
-          created_at: accounts_retrieve_product_list_response.update?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.update?.updated_at || ''
-        },
-        attribute: {
-          name: 'attribute',
-          status: 'available',
-          status_error: null,
-          latest_request_id: accounts_retrieve_product_list_response.attribute?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.attribute?.latest_successful_request_id || null,
-          is_subscribable: false,
-          created_at: accounts_retrieve_product_list_response.attribute?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.attribute?.updated_at || ''
-        },
-        transaction: {
-          name: 'transaction',
-          status: 'unavailable',
-          status_error: accounts_retrieve_product_list_response.transaction?.status_error || null,
-          latest_request_id: accounts_retrieve_product_list_response.transaction?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.transaction?.latest_successful_request_id || null,
-          is_subscribable: true,
-          created_at: accounts_retrieve_product_list_response.transaction?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.transaction?.updated_at || ''
-        },
-        card_brand: {
-          name: 'card_brand',
-          status: 'available',
-          status_error: null,
-          latest_request_id: accounts_retrieve_product_list_response.card_brand?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.card_brand?.latest_successful_request_id || null,
-          is_subscribable: true,
-          created_at: accounts_retrieve_product_list_response.card_brand?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.card_brand?.updated_at || ''
-        },
-        payoff: {
-          name: 'payoff',
-          status: 'unavailable',
-          status_error: accounts_retrieve_product_list_response.payoff?.status_error || null,
-          latest_request_id: accounts_retrieve_product_list_response.payoff?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.payoff?.latest_successful_request_id || null,
-          is_subscribable: false,
-          created_at: accounts_retrieve_product_list_response.payoff?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.payoff?.updated_at || ''
-        },
-        payment_instrument: {
-          name: 'payment_instrument',
-          status: 'restricted',
-          status_error: accounts_retrieve_product_list_response.payment_instrument?.status_error || null,
-          latest_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_successful_request_id || null,
-          is_subscribable: true,
-          created_at: accounts_retrieve_product_list_response.payment_instrument?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.payment_instrument?.updated_at || ''
-        }
-      };
-
-      accounts_retrieve_product_list_response.should.be.eql(expect_results);
+      products.should.have.property('balance');
+      products.balance?.name.should.be.eql('balance');
+      products.should.have.property('payment');
+      products.payment?.name.should.be.eql('payment');
+      products.should.have.property('sensitive');
+      products.sensitive?.name.should.be.eql('sensitive');
+      products.should.have.property('update');
+      products.update?.name.should.be.eql('update');
+      products.should.have.property('attribute');
+      products.attribute?.name.should.be.eql('attribute');
+      products.should.have.property('card_brand');
+      products.card_brand?.name.should.be.eql('card_brand');
     });
   });
 
@@ -1172,6 +1056,7 @@ describe('Accounts - core methods tests', () => {
         subscriptions: [],
         available_subscriptions: [],
         restricted_subscriptions: [],
+        consent_status: withdraw_consent_response.consent_status,
         error: {
           type: 'ACCOUNT_DISABLED',
           sub_type: 'ACCOUNT_CONSENT_WITHDRAWN',

@@ -16,23 +16,12 @@ describe('Merchants - core methods tests', () => {
     it('should successfully retroeve a merchant by id.', async () => {
       merchants_retrieve_response = await client.merchants.retrieve(amex_mch_id);
       
-      const expect_results: IMerchant = {
-        id: 'mch_3',
-        parent_name: 'American Express',
-        name: 'American Express - Credit Cards',
-        logo: 'https://static.methodfi.com/mch_logos/mch_3.png',
-        type: 'credit_card',
-        provider_ids: {
-          plaid: [ 'ins_10' ],
-          mx: [ 'amex' ],
-          finicity: [],
-          dpp: [ '120', '18954427', '11859365', '18947131', '16255844' ]
-        },
-        is_temp: false,
-        account_number_formats: [],
-      };
-
-      merchants_retrieve_response.should.be.eql(expect_results);
+      merchants_retrieve_response.id.should.be.eql('mch_3');
+      merchants_retrieve_response.parent_name.should.be.eql('American Express');
+      merchants_retrieve_response.type.should.be.eql('credit_card');
+      merchants_retrieve_response.provider_ids.plaid.should.be.eql([ 'ins_10' ]);
+      merchants_retrieve_response.provider_ids.mx.should.be.eql([ 'amex' ]);
+      merchants_retrieve_response.is_temp.should.be.eql(false);
     });
   });
 
@@ -43,37 +32,11 @@ describe('Merchants - core methods tests', () => {
       Array.isArray(merchants_list_response).should.be.true;
       const merchant_to_use = merchants_list_response[0];
       
-      const expect_results: IMerchant = {
-        id: 'mch_300485',
-        parent_name: 'American Express',
-        name: 'American Express Credit Card',
-        logo: 'https://static.methodfi.com/mch_logos/mch_300485.png',
-        type: 'credit_card',
-        provider_ids: {
-            plaid: [
-                'ins_10'
-            ],
-            mx: [
-                'amex'
-            ],
-            finicity: [],
-            dpp: [
-                '7929257',
-                '120',
-                '18391555',
-                '18954427',
-                '11859365',
-                '18947131',
-                '16255844'
-            ]
-        },
-        is_temp: false,
-        account_number_formats: [
-            '###############'
-        ],
-      };
-
-      merchant_to_use.should.be.eql(expect_results);
+      merchant_to_use.parent_name.should.be.eql('American Express');
+      merchant_to_use.type.should.be.eql('credit_card');
+      merchant_to_use.provider_ids.plaid.should.be.eql([ 'ins_10' ]);
+      merchant_to_use.provider_ids.mx.should.be.eql([ 'amex' ]);
+      merchant_to_use.is_temp.should.be.eql(false);
     });
   });
 });

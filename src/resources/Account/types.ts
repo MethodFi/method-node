@@ -734,6 +734,7 @@ export interface IAccount {
   subscriptions?: TAccountSubscriptionTypes[];
   available_subscriptions?: TAccountSubscriptionTypes[];
   restricted_subscriptions?: TAccountSubscriptionTypes[];
+  consent_status?: string | null;
   sensitive?: string | IAccountSensitive | null;
   balance?: string | IAccountBalance | null;
   card_brand?: string | IAccountCardBrand | null;
