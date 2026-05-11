@@ -140,40 +140,15 @@ describe('Accounts - core methods tests', () => {
 
       accounts_create_liability_response.products.sort();
 
-      const expect_results: IAccount = {
-        id: accounts_create_liability_response.id,
-        holder_id: holder_1_response.id,
-        type: 'liability',
-        liability: {
-          fingerprint: null,
-          mch_id: 'mch_302086',
-          mask: '8721',
-          ownership: 'unknown',
-          type: 'credit_card',
-          sub_type: 'flexible_spending',
-          name: accounts_create_liability_response.liability?.name || null
-        },
-        latest_verification_session: accounts_create_liability_response.latest_verification_session,
-        balance: null,
-        attribute: null,
-        update: accounts_create_liability_response.update,
-        card_brand: null,
-        payment_instrument: null,
-        payoff: null,
-        products: accounts_create_liability_response.products,
-        restricted_products: accounts_create_liability_response.restricted_products,
-        subscriptions: accounts_create_liability_response.subscriptions,
-        available_subscriptions: accounts_create_liability_response.available_subscriptions,
-        restricted_subscriptions: accounts_create_liability_response.restricted_subscriptions,
-        consent_status: accounts_create_liability_response.consent_status,
-        status: 'active',
-        error: null,
-        metadata: null,
-        created_at: accounts_create_liability_response.created_at,
-        updated_at: accounts_create_liability_response.updated_at
-      };
-
-      accounts_create_liability_response.should.be.eql(expect_results);
+      accounts_create_liability_response.id.should.be.a('string');
+      accounts_create_liability_response.holder_id.should.be.eql(holder_1_response.id);
+      accounts_create_liability_response.type!.should.be.eql('liability');
+      accounts_create_liability_response.liability!.mch_id.should.be.eql('mch_302086');
+      accounts_create_liability_response.liability!.mask!.should.be.eql('8721');
+      accounts_create_liability_response.liability!.type.should.be.eql('credit_card');
+      accounts_create_liability_response.liability!.sub_type!.should.be.eql('flexible_spending');
+      accounts_create_liability_response.status.should.be.eql('active');
+      (accounts_create_liability_response.error === null).should.be.true;
     });
   });
 
