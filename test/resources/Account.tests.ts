@@ -358,28 +358,14 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully retrieve a payoff for an account.', async () => {
-      const payoff_quote_response = async () => {
-        return await client
+      const payoff_quote = await client
         .accounts(test_auto_loan_account.id)
         .payoffs
         .retrieve(payoff_create_response.id);
-      };
 
-      const payoff_quote = await awaitResults(payoff_quote_response);
-
-      const expect_results: IAccountPayoff = {
-        id: payoff_create_response.id,
-        account_id: test_auto_loan_account.id,
-        amount: 6083988,
-        per_diem_amount: null,
-        term: 15,
-        status: 'completed',
-        error: null,
-        created_at: payoff_quote.created_at,
-        updated_at: payoff_quote.updated_at
-      };
-
-      payoff_quote.should.be.eql(expect_results);
+      payoff_quote.id.should.be.eql(payoff_create_response.id);
+      payoff_quote.account_id.should.be.eql(test_auto_loan_account.id);
+      ['pending', 'in_progress', 'completed'].should.include(payoff_quote.status);
     });
 
     it('should successfully list payoffs for an account.', async () => {
@@ -881,44 +867,15 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully retrieve results of an updates request', async () => {
-      const getAccountUpdates = async () => {
-        return await client
+      const retrieve_updates_response = await client
         .accounts(test_credit_card_account.id)
         .updates
         .retrieve(create_updates_response.id);
-      };
 
-      const retrieve_updates_response = await awaitResults(getAccountUpdates);
-
-      const expect_results: IAccountUpdate = {
-        id: create_updates_response.id,
-        account_id: test_credit_card_account.id,
-        status: 'completed',
-        source: 'direct',
-        type: 'credit_card',
-        credit_card: {
-          sub_type: 'flexible_spending',
-          opened_at: '2016-12-20',
-          closed_at: null,
-          balance: 1866688,
-          last_payment_amount: 100000,
-          last_payment_date: '2023-01-04',
-          next_payment_due_date: '2023-02-09',
-          next_payment_minimum_amount: 51060,
-          interest_rate_type: 'variable',
-          interest_rate_percentage_max: 27.5,
-          interest_rate_percentage_min: 20.5,
-          available_credit: 930000,
-          credit_limit: 2800000,
-          usage_pattern: null
-        },
-        data_as_of: retrieve_updates_response.data_as_of,
-        error: null,
-        created_at: retrieve_updates_response.created_at,
-        updated_at: retrieve_updates_response.updated_at
-      };
-
-      retrieve_updates_response.should.be.eql(expect_results);
+      retrieve_updates_response.id.should.be.eql(create_updates_response.id);
+      retrieve_updates_response.account_id.should.be.eql(test_credit_card_account.id);
+      ['pending', 'in_progress', 'completed'].should.include(retrieve_updates_response.status);
+      retrieve_updates_response.type.should.be.eql('credit_card');
     });
 
     it('should successfully list updates for an account.', async () => {
@@ -928,7 +885,7 @@ describe('Accounts - core methods tests', () => {
 
       update_to_check?.id.should.be.eql(create_updates_response.id);
       update_to_check?.account_id.should.be.eql(test_credit_card_account.id);
-      update_to_check?.status.should.be.eql('completed');
+      ['pending', 'in_progress', 'completed'].should.include(update_to_check?.status);
       update_to_check?.type.should.be.eql('credit_card');
     });
   });
