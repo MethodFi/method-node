@@ -15,13 +15,25 @@ describe('Merchants - core methods tests', () => {
   describe('merchants.retrieve', () => {
     it('should successfully retroeve a merchant by id.', async () => {
       merchants_retrieve_response = await client.merchants.retrieve(amex_mch_id);
-      
-      merchants_retrieve_response.id.should.be.eql('mch_3');
-      merchants_retrieve_response.parent_name.should.be.eql('American Express');
-      merchants_retrieve_response.type.should.be.eql('credit_card');
-      merchants_retrieve_response.provider_ids.plaid.should.be.eql([ 'ins_10' ]);
-      merchants_retrieve_response.provider_ids.mx.should.be.eql([ 'amex' ]);
-      merchants_retrieve_response.is_temp.should.be.eql(false);
+
+      const expect_results: IMerchant = {
+        id: 'mch_3',
+        parent_name: 'American Express',
+        name: merchants_retrieve_response.name,
+        logo: 'https://static.methodfi.com/mch_logos/mch_3.png',
+        type: 'credit_card',
+        provider_ids: {
+          plaid: [ 'ins_10' ],
+          mx: [ 'amex' ],
+          finicity: [],
+          dpp: merchants_retrieve_response.provider_ids.dpp,
+          rpps: merchants_retrieve_response.provider_ids.rpps,
+        },
+        is_temp: false,
+        account_number_formats: [],
+      };
+
+      merchants_retrieve_response.should.be.eql(expect_results);
     });
   });
 
@@ -32,11 +44,28 @@ describe('Merchants - core methods tests', () => {
       Array.isArray(merchants_list_response).should.be.true;
       const merchant_to_use = merchants_list_response[0];
       
-      merchant_to_use.parent_name.should.be.eql('American Express');
-      merchant_to_use.type.should.be.eql('credit_card');
-      merchant_to_use.provider_ids.plaid.should.be.eql([ 'ins_10' ]);
-      merchant_to_use.provider_ids.mx.should.be.eql([ 'amex' ]);
-      merchant_to_use.is_temp.should.be.eql(false);
+      const expect_results: IMerchant = {
+        id: merchant_to_use.id,
+        parent_name: 'American Express',
+        name: merchant_to_use.name,
+        logo: merchant_to_use.logo,
+        type: 'credit_card',
+        provider_ids: {
+            plaid: [
+                'ins_10'
+            ],
+            mx: [
+                'amex'
+            ],
+            finicity: merchant_to_use.provider_ids.finicity,
+            dpp: merchant_to_use.provider_ids.dpp,
+            rpps: merchant_to_use.provider_ids.rpps,
+        },
+        is_temp: false,
+        account_number_formats: merchant_to_use.account_number_formats,
+      };
+
+      merchant_to_use.should.be.eql(expect_results);
     });
   });
 });

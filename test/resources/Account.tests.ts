@@ -140,15 +140,40 @@ describe('Accounts - core methods tests', () => {
 
       accounts_create_liability_response.products.sort();
 
-      accounts_create_liability_response.id.should.be.a('string');
-      accounts_create_liability_response.holder_id.should.be.eql(holder_1_response.id);
-      accounts_create_liability_response.type!.should.be.eql('liability');
-      accounts_create_liability_response.liability!.mch_id.should.be.eql('mch_302086');
-      accounts_create_liability_response.liability!.mask!.should.be.eql('8721');
-      accounts_create_liability_response.liability!.type!.should.be.eql('credit_card');
-      accounts_create_liability_response.liability!.sub_type!.should.be.eql('flexible_spending');
-      accounts_create_liability_response.status.should.be.eql('active');
-      (accounts_create_liability_response.error === null).should.be.true;
+      const expect_results: IAccount = {
+        id: accounts_create_liability_response.id,
+        holder_id: holder_1_response.id,
+        type: 'liability',
+        liability: {
+          fingerprint: null,
+          mch_id: 'mch_302086',
+          mask: '8721',
+          ownership: 'unknown',
+          type: 'credit_card',
+          sub_type: 'flexible_spending',
+          name: 'Chase Sapphire Reserve'
+        },
+        latest_verification_session: accounts_create_liability_response.latest_verification_session,
+        balance: null,
+        attribute: null,
+        update: accounts_create_liability_response.update,
+        card_brand: null,
+        payment_instrument: accounts_create_liability_response.payment_instrument,
+        payoff: null,
+        products: accounts_create_liability_response.products,
+        restricted_products: accounts_create_liability_response.restricted_products,
+        subscriptions: accounts_create_liability_response.subscriptions,
+        available_subscriptions: accounts_create_liability_response.available_subscriptions,
+        restricted_subscriptions: accounts_create_liability_response.restricted_subscriptions,
+        consent_status: accounts_create_liability_response.consent_status,
+        status: 'active',
+        error: null,
+        metadata: null,
+        created_at: accounts_create_liability_response.created_at,
+        updated_at: accounts_create_liability_response.updated_at
+      };
+
+      accounts_create_liability_response.should.be.eql(expect_results);
     });
   });
 
@@ -228,14 +253,26 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully retrieve the balance of an account.', async () => {
-      const account_balances = await client
-        .accounts(test_credit_card_account.id)
-        .balances
-        .retrieve(balances_create_response.id);
+      const account_balances_response = async () => {
+        return await client
+          .accounts(test_credit_card_account.id)
+          .balances
+          .retrieve(balances_create_response.id);
+      };
 
-      account_balances.id.should.be.eql(balances_create_response.id);
-      account_balances.account_id.should.be.eql(test_credit_card_account.id);
-      ['pending', 'in_progress', 'completed'].should.include(account_balances.status);
+      const account_balances = await awaitResults(account_balances_response);
+
+      const expect_results: IAccountBalance = {
+        id: balances_create_response.id,
+        account_id: test_credit_card_account.id,
+        status: 'completed',
+        amount: 1866688,
+        error: null,
+        created_at: balances_create_response.created_at,
+        updated_at: account_balances.updated_at
+      };
+
+      account_balances.should.be.eql(expect_results);
     });
 
     it('should successfully list balances for an account.', async () => {
@@ -244,10 +281,17 @@ describe('Accounts - core methods tests', () => {
         .balances
         .list();
 
-      const balance = account_balances[0];
-      balance.id.should.be.eql(balances_create_response.id);
-      balance.account_id.should.be.eql(test_credit_card_account.id);
-      (balance.error === null).should.be.true;
+      const expect_results = {
+        id: balances_create_response.id,
+        account_id: test_credit_card_account.id,
+        status: 'completed',
+        amount: 1866688,
+        error: null,
+        created_at: account_balances[0].created_at,
+        updated_at: account_balances[0].updated_at
+      };
+
+      account_balances[0].should.be.eql(expect_results);
     });
   });
 
@@ -358,14 +402,28 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully retrieve a payoff for an account.', async () => {
-      const payoff_quote = await client
+      const payoff_quote_response = async () => {
+        return await client
         .accounts(test_auto_loan_account.id)
         .payoffs
         .retrieve(payoff_create_response.id);
+      };
 
-      payoff_quote.id.should.be.eql(payoff_create_response.id);
-      payoff_quote.account_id.should.be.eql(test_auto_loan_account.id);
-      ['pending', 'in_progress', 'completed'].should.include(payoff_quote.status);
+      const payoff_quote = await awaitResults(payoff_quote_response);
+
+      const expect_results: IAccountPayoff = {
+        id: payoff_create_response.id,
+        account_id: test_auto_loan_account.id,
+        amount: 6083988,
+        per_diem_amount: null,
+        term: 15,
+        status: 'completed',
+        error: null,
+        created_at: payoff_quote.created_at,
+        updated_at: payoff_quote.updated_at
+      };
+
+      payoff_quote.should.be.eql(expect_results);
     });
 
     it('should successfully list payoffs for an account.', async () => {
@@ -374,10 +432,19 @@ describe('Accounts - core methods tests', () => {
         .payoffs
         .list();
 
-      const payoff = payoffs[0];
-      payoff.id.should.be.eql(payoff_create_response.id);
-      payoff.account_id.should.be.eql(test_auto_loan_account.id);
-      (payoff.error === null).should.be.true;
+      const expect_results = {
+        id: payoff_create_response.id,
+        account_id: test_auto_loan_account.id,
+        amount: 6083988,
+        per_diem_amount: null,
+        term: 15,
+        status: 'completed',
+        error: null,
+        created_at: payoffs[0].created_at,
+        updated_at: payoffs[0].updated_at
+      };
+
+      payoffs[0].should.be.eql(expect_results);
     });
   });
 
@@ -867,15 +934,44 @@ describe('Accounts - core methods tests', () => {
     });
 
     it('should successfully retrieve results of an updates request', async () => {
-      const retrieve_updates_response = await client
+      const getAccountUpdates = async () => {
+        return await client
         .accounts(test_credit_card_account.id)
         .updates
         .retrieve(create_updates_response.id);
+      };
 
-      retrieve_updates_response.id.should.be.eql(create_updates_response.id);
-      retrieve_updates_response.account_id.should.be.eql(test_credit_card_account.id);
-      ['pending', 'in_progress', 'completed'].should.include(retrieve_updates_response.status);
-      retrieve_updates_response.type.should.be.eql('credit_card');
+      const retrieve_updates_response = await awaitResults(getAccountUpdates);
+
+      const expect_results: IAccountUpdate = {
+        id: create_updates_response.id,
+        account_id: test_credit_card_account.id,
+        status: 'completed',
+        source: 'direct',
+        type: 'credit_card',
+        credit_card: {
+          sub_type: 'flexible_spending',
+          opened_at: '2016-12-20',
+          closed_at: null,
+          balance: 1866688,
+          last_payment_amount: 100000,
+          last_payment_date: '2023-01-04',
+          next_payment_due_date: '2023-02-09',
+          next_payment_minimum_amount: 51060,
+          interest_rate_type: 'variable',
+          interest_rate_percentage_max: 27.5,
+          interest_rate_percentage_min: 20.5,
+          available_credit: 930000,
+          credit_limit: 2800000,
+          usage_pattern: null
+        },
+        data_as_of: retrieve_updates_response.data_as_of,
+        error: null,
+        created_at: retrieve_updates_response.created_at,
+        updated_at: retrieve_updates_response.updated_at
+      };
+
+      retrieve_updates_response.should.be.eql(expect_results);
     });
 
     it('should successfully list updates for an account.', async () => {
@@ -883,10 +979,35 @@ describe('Accounts - core methods tests', () => {
 
       const update_to_check = list_updates_response.find(update => update.id === create_updates_response.id);
 
-      update_to_check?.id.should.be.eql(create_updates_response.id);
-      update_to_check?.account_id.should.be.eql(test_credit_card_account.id);
-      ['pending', 'in_progress', 'completed'].should.include(update_to_check?.status);
-      update_to_check?.type.should.be.eql('credit_card');
+      const expect_results: IAccountUpdate = {
+          id: create_updates_response.id,
+          account_id: test_credit_card_account.id,
+          status: 'completed',
+          source: 'direct',
+          type: 'credit_card',
+          credit_card: {
+            sub_type: 'flexible_spending',
+            opened_at: '2016-12-20',
+            closed_at: null,
+            balance: 1866688,
+            last_payment_amount: 100000,
+            last_payment_date: '2023-01-04',
+            next_payment_due_date: '2023-02-09',
+            next_payment_minimum_amount: 51060,
+            interest_rate_type: 'variable',
+            interest_rate_percentage_max: 27.5,
+            interest_rate_percentage_min: 20.5,
+            available_credit: 930000,
+            credit_limit: 2800000,
+            usage_pattern: null
+          },
+          data_as_of: update_to_check?.data_as_of || null,
+          error: null,
+          created_at: update_to_check?.created_at || '',
+          updated_at: update_to_check?.updated_at || ''
+        };
+
+      update_to_check?.should.be.eql(expect_results);
     });
   });
 
@@ -942,22 +1063,104 @@ describe('Accounts - core methods tests', () => {
 
   describe('accounts.products', () => {
     it('should successfully list products for an account', async () => {
-      const products = await client
+      accounts_retrieve_product_list_response = await client
         .accounts(test_credit_card_account.id)
         .products.list();
 
-      products.should.have.property('balance');
-      products.balance?.name.should.be.eql('balance');
-      products.should.have.property('payment');
-      products.payment?.name.should.be.eql('payment');
-      products.should.have.property('sensitive');
-      products.sensitive?.name.should.be.eql('sensitive');
-      products.should.have.property('update');
-      products.update?.name.should.be.eql('update');
-      products.should.have.property('attribute');
-      products.attribute?.name.should.be.eql('attribute');
-      products.should.have.property('card_brand');
-      products.card_brand?.name.should.be.eql('card_brand');
+      const expect_results: IAccountProductListResponse = {
+        balance: {
+          name: 'balance',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.balance?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.balance?.latest_successful_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.balance?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.balance?.updated_at || ''
+        },
+        payment: {
+          name: 'payment',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.payment?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.payment?.latest_successful_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.payment?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.payment?.updated_at || ''
+        },
+        sensitive: {
+          name: 'sensitive',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.sensitive?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.sensitive?.latest_successful_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.sensitive?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.sensitive?.updated_at || ''
+        },
+        update: {
+          name: 'update',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.update?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.update?.latest_successful_request_id || null,
+          is_subscribable: true,
+          created_at: accounts_retrieve_product_list_response.update?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.update?.updated_at || ''
+        },
+        attribute: {
+          name: 'attribute',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.attribute?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.attribute?.latest_successful_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.attribute?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.attribute?.updated_at || ''
+        },
+        transaction: {
+          name: 'transaction',
+          status: 'unavailable',
+          status_error: accounts_retrieve_product_list_response.transaction?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response.transaction?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.transaction?.latest_successful_request_id || null,
+          is_subscribable: true,
+          created_at: accounts_retrieve_product_list_response.transaction?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.transaction?.updated_at || ''
+        },
+        card_brand: {
+          name: 'card_brand',
+          status: 'available',
+          status_error: null,
+          latest_request_id: accounts_retrieve_product_list_response.card_brand?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.card_brand?.latest_successful_request_id || null,
+          is_subscribable: true,
+          created_at: accounts_retrieve_product_list_response.card_brand?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.card_brand?.updated_at || ''
+        },
+        payoff: {
+          name: 'payoff',
+          status: 'unavailable',
+          status_error: accounts_retrieve_product_list_response.payoff?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response.payoff?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.payoff?.latest_successful_request_id || null,
+          is_subscribable: false,
+          created_at: accounts_retrieve_product_list_response.payoff?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.payoff?.updated_at || ''
+        },
+        payment_instrument: {
+          name: 'payment_instrument',
+          status: accounts_retrieve_product_list_response.payment_instrument?.status || 'restricted',
+          status_error: accounts_retrieve_product_list_response.payment_instrument?.status_error || null,
+          latest_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_request_id || null,
+          latest_successful_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_successful_request_id || null,
+          is_subscribable: true,
+          created_at: accounts_retrieve_product_list_response.payment_instrument?.created_at || '',
+          updated_at: accounts_retrieve_product_list_response.payment_instrument?.updated_at || ''
+        }
+      };
+
+      accounts_retrieve_product_list_response.should.be.eql(expect_results);
     });
   });
 
