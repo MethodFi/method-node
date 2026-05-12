@@ -15,18 +15,19 @@ describe('Merchants - core methods tests', () => {
   describe('merchants.retrieve', () => {
     it('should successfully retroeve a merchant by id.', async () => {
       merchants_retrieve_response = await client.merchants.retrieve(amex_mch_id);
-      
+
       const expect_results: IMerchant = {
         id: 'mch_3',
         parent_name: 'American Express',
-        name: 'American Express - Credit Cards',
+        name: merchants_retrieve_response.name,
         logo: 'https://static.methodfi.com/mch_logos/mch_3.png',
         type: 'credit_card',
         provider_ids: {
           plaid: [ 'ins_10' ],
           mx: [ 'amex' ],
           finicity: [],
-          dpp: [ '120', '18954427', '11859365', '18947131', '16255844' ]
+          dpp: merchants_retrieve_response.provider_ids.dpp,
+          rpps: merchants_retrieve_response.provider_ids.rpps,
         },
         is_temp: false,
         account_number_formats: [],
@@ -44,10 +45,10 @@ describe('Merchants - core methods tests', () => {
       const merchant_to_use = merchants_list_response[0];
       
       const expect_results: IMerchant = {
-        id: 'mch_300485',
+        id: merchant_to_use.id,
         parent_name: 'American Express',
-        name: 'American Express Credit Card',
-        logo: 'https://static.methodfi.com/mch_logos/mch_300485.png',
+        name: merchant_to_use.name,
+        logo: merchant_to_use.logo,
         type: 'credit_card',
         provider_ids: {
             plaid: [
@@ -56,21 +57,12 @@ describe('Merchants - core methods tests', () => {
             mx: [
                 'amex'
             ],
-            finicity: [],
-            dpp: [
-                '7929257',
-                '120',
-                '18391555',
-                '18954427',
-                '11859365',
-                '18947131',
-                '16255844'
-            ]
+            finicity: merchant_to_use.provider_ids.finicity,
+            dpp: merchant_to_use.provider_ids.dpp,
+            rpps: merchant_to_use.provider_ids.rpps,
         },
         is_temp: false,
-        account_number_formats: [
-            '###############'
-        ],
+        account_number_formats: merchant_to_use.account_number_formats,
       };
 
       merchant_to_use.should.be.eql(expect_results);

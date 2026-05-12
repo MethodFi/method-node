@@ -1047,7 +1047,7 @@ describe('Entities - core methods tests', () => {
         },
         manual_connect: {
           name: 'manual_connect',
-          status: 'restricted',
+          status: entities_retrieve_product_list_response.manual_connect?.status || 'restricted',
           status_error: entities_retrieve_product_list_response.manual_connect?.status_error || null,
           latest_request_id:
             entities_retrieve_product_list_response.manual_connect

@@ -76,6 +76,9 @@ export interface IPayment {
   destination_payment_method?: TPaymentDestinationPaymentMethods | null;
   fee: IPaymentFee | null
   type: TPaymentTypes;
+  idempotency_key: string | null;
+  payment_instrument: string | null;
+  reversal_account: string | null;
   created_at: string;
   updated_at: string;
 };

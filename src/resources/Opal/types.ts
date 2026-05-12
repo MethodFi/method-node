@@ -21,6 +21,7 @@ const AccountFiltersAccountTypes = {
   mortgage: 'mortgage',
   personal_loan: 'personal_loan',
   student_loan: 'student_loan',
+  student_loans: 'student_loans',
 } as const;
 export type TAccountFiltersAccountTypes = keyof typeof AccountFiltersAccountTypes;
 
