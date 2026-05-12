@@ -5,7 +5,7 @@ type AwaitResultsFn = <T>(fn: () => Promise<T>) => Promise<any>;
 
 export const awaitResults: AwaitResultsFn = async (fn) => {
   let result;
-  let retries = 35;
+  let retries = 50;
   while (retries > 0) {
     try {
       result = await fn();

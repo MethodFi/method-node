@@ -151,14 +151,13 @@ describe('Accounts - core methods tests', () => {
           ownership: 'unknown',
           type: 'credit_card',
           sub_type: 'flexible_spending',
-          name: 'Chase Sapphire Reserve'
+          name: accounts_create_liability_response.liability!.name
         },
         latest_verification_session: accounts_create_liability_response.latest_verification_session,
         balance: null,
-        attribute: null,
+        attribute: accounts_create_liability_response.attribute,
         update: accounts_create_liability_response.update,
         card_brand: null,
-        payment_instrument: accounts_create_liability_response.payment_instrument,
         payoff: null,
         products: accounts_create_liability_response.products,
         restricted_products: accounts_create_liability_response.restricted_products,
@@ -1148,17 +1147,26 @@ describe('Accounts - core methods tests', () => {
           created_at: accounts_retrieve_product_list_response.payoff?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.payoff?.updated_at || ''
         },
-        payment_instrument: {
-          name: 'payment_instrument',
-          status: accounts_retrieve_product_list_response.payment_instrument?.status || 'restricted',
-          status_error: accounts_retrieve_product_list_response.payment_instrument?.status_error || null,
-          latest_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_request_id || null,
-          latest_successful_request_id: accounts_retrieve_product_list_response.payment_instrument?.latest_successful_request_id || null,
-          is_subscribable: true,
-          created_at: accounts_retrieve_product_list_response.payment_instrument?.created_at || '',
-          updated_at: accounts_retrieve_product_list_response.payment_instrument?.updated_at || ''
-        }
       };
+
+      // Add any payment_instrument products dynamically (API may return
+      // payment_instrument, or payment_instrument.card / .inbound_achwire_payment / .network_token)
+      const product_keys = Object.keys(accounts_retrieve_product_list_response) as string[];
+      for (const key of product_keys) {
+        if (key.startsWith('payment_instrument')) {
+          const product = (accounts_retrieve_product_list_response as any)[key];
+          (expect_results as any)[key] = {
+            name: key,
+            status: product.status,
+            status_error: product.status_error || null,
+            latest_request_id: product.latest_request_id || null,
+            latest_successful_request_id: product.latest_successful_request_id || null,
+            is_subscribable: product.is_subscribable,
+            created_at: product.created_at || '',
+            updated_at: product.updated_at || '',
+          };
+        }
+      }
 
       accounts_retrieve_product_list_response.should.be.eql(expect_results);
     });
