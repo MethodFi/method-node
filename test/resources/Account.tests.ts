@@ -436,8 +436,8 @@ describe('Accounts - core methods tests', () => {
       payoff.account_id.should.be.eql(test_auto_loan_account.id);
       ['pending', 'in_progress', 'completed'].should.include(payoff.status);
       if (payoff.status === 'completed') {
-        payoff.amount.should.be.eql(6083988);
-        payoff.term.should.be.eql(15);
+        payoff.amount!.should.be.eql(6083988);
+        payoff.term!.should.be.eql(15);
         (payoff.error === null).should.be.true;
       }
     });
@@ -969,12 +969,12 @@ describe('Accounts - core methods tests', () => {
       update_to_check?.source.should.be.eql('direct');
       update_to_check?.type.should.be.eql('credit_card');
       if (update_to_check?.status === 'completed') {
-        update_to_check.credit_card.sub_type.should.be.eql('flexible_spending');
-        update_to_check.credit_card.opened_at.should.be.eql('2016-12-20');
-        update_to_check.credit_card.balance.should.be.eql(1866688);
-        update_to_check.credit_card.last_payment_amount.should.be.eql(100000);
-        update_to_check.credit_card.credit_limit.should.be.eql(2800000);
-        (update_to_check.error === null).should.be.true;
+        update_to_check!.credit_card!.sub_type!.should.be.eql('flexible_spending');
+        update_to_check!.credit_card!.opened_at!.should.be.eql('2016-12-20');
+        update_to_check!.credit_card!.balance!.should.be.eql(1866688);
+        update_to_check!.credit_card!.last_payment_amount!.should.be.eql(100000);
+        update_to_check!.credit_card!.credit_limit!.should.be.eql(2800000);
+        (update_to_check!.error === null).should.be.true;
       }
     });
   });
