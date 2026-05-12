@@ -418,6 +418,7 @@ describe('Accounts - core methods tests', () => {
       ['pending', 'in_progress', 'completed'].should.include(payoff_quote.status);
       if (payoff_quote.status === 'completed') {
         payoff_quote.amount.should.be.eql(6083988);
+        (payoff_quote.per_diem_amount === null).should.be.true;
         payoff_quote.term.should.be.eql(15);
         (payoff_quote.error === null).should.be.true;
       }
@@ -435,6 +436,7 @@ describe('Accounts - core methods tests', () => {
       ['pending', 'in_progress', 'completed'].should.include(payoff.status);
       if (payoff.status === 'completed') {
         payoff.amount!.should.be.eql(6083988);
+        (payoff.per_diem_amount === null).should.be.true;
         payoff.term!.should.be.eql(15);
         (payoff.error === null).should.be.true;
       }
@@ -949,9 +951,19 @@ describe('Accounts - core methods tests', () => {
       if (retrieve_updates_response.status === 'completed') {
         retrieve_updates_response.credit_card.sub_type.should.be.eql('flexible_spending');
         retrieve_updates_response.credit_card.opened_at.should.be.eql('2016-12-20');
+        (retrieve_updates_response.credit_card.closed_at === null).should.be.true;
         retrieve_updates_response.credit_card.balance.should.be.eql(1866688);
         retrieve_updates_response.credit_card.last_payment_amount.should.be.eql(100000);
+        retrieve_updates_response.credit_card.last_payment_date.should.be.eql('2023-01-04');
+        retrieve_updates_response.credit_card.next_payment_due_date.should.be.eql('2023-02-09');
+        retrieve_updates_response.credit_card.next_payment_minimum_amount.should.be.eql(51060);
+        retrieve_updates_response.credit_card.interest_rate_type.should.be.eql('variable');
+        retrieve_updates_response.credit_card.interest_rate_percentage_max.should.be.eql(27.5);
+        retrieve_updates_response.credit_card.interest_rate_percentage_min.should.be.eql(20.5);
+        retrieve_updates_response.credit_card.available_credit.should.be.eql(930000);
         retrieve_updates_response.credit_card.credit_limit.should.be.eql(2800000);
+        (retrieve_updates_response.credit_card.usage_pattern === null).should.be.true;
+        retrieve_updates_response.data_as_of.should.be.a('string');
         (retrieve_updates_response.error === null).should.be.true;
       }
     });
@@ -969,9 +981,19 @@ describe('Accounts - core methods tests', () => {
       if (update_to_check?.status === 'completed') {
         update_to_check!.credit_card!.sub_type!.should.be.eql('flexible_spending');
         update_to_check!.credit_card!.opened_at!.should.be.eql('2016-12-20');
+        (update_to_check!.credit_card!.closed_at === null).should.be.true;
         update_to_check!.credit_card!.balance!.should.be.eql(1866688);
         update_to_check!.credit_card!.last_payment_amount!.should.be.eql(100000);
+        update_to_check!.credit_card!.last_payment_date!.should.be.eql('2023-01-04');
+        update_to_check!.credit_card!.next_payment_due_date!.should.be.eql('2023-02-09');
+        update_to_check!.credit_card!.next_payment_minimum_amount!.should.be.eql(51060);
+        update_to_check!.credit_card!.interest_rate_type!.should.be.eql('variable');
+        update_to_check!.credit_card!.interest_rate_percentage_max!.should.be.eql(27.5);
+        update_to_check!.credit_card!.interest_rate_percentage_min!.should.be.eql(20.5);
+        update_to_check!.credit_card!.available_credit!.should.be.eql(930000);
         update_to_check!.credit_card!.credit_limit!.should.be.eql(2800000);
+        (update_to_check!.credit_card!.usage_pattern === null).should.be.true;
+        update_to_check!.data_as_of!.should.be.a('string');
         (update_to_check!.error === null).should.be.true;
       }
     });
