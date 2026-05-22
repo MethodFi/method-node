@@ -48,7 +48,7 @@ export default class Resource extends ExtensibleFunction {
       headers: {
         Authorization: `Bearer ${config.apiKey}`,
         'User-Agent': this.getDefaultUserAgent(),
-        'method-version': '2025-07-04',
+        'method-version': '2026-03-30',
       },
       httpsAgent: config.httpsAgent,
     });

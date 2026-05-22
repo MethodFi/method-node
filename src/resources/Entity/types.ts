@@ -157,43 +157,125 @@ export interface IEntityCreditScores {
   updated_at: string,
 };
 
-export const CreditHealthAttributeRatings = {
-  excellent: 'excellent',
-  good: 'good',
-  fair: 'fair',
-  needs_work: 'needs_work',
-} as const;
-
-export type TCreditHealthAttributeRating = keyof typeof CreditHealthAttributeRatings;
-
-export interface ICreditHealthAttribute {
-  value: number;
-  rating: TCreditHealthAttributeRating;
-  metadata?: {} | null;
+export interface IEntityAttribute<T> {
+  value: T | null;
+  error: IResourceError | null;
 }
 
 export interface IEntityAttributesType {
-  credit_health_credit_card_usage: ICreditHealthAttribute;
-  credit_health_derogatory_marks: ICreditHealthAttribute;
-  credit_health_hard_inquiries: ICreditHealthAttribute;
-  credit_health_soft_inquiries: ICreditHealthAttribute;
-  credit_health_total_accounts: ICreditHealthAttribute;
-  credit_health_credit_age: ICreditHealthAttribute;
-  credit_health_payment_history: ICreditHealthAttribute;
-  credit_health_open_accounts: ICreditHealthAttribute;
-  credit_health_entity_delinquent: ICreditHealthAttribute;
+  revolving_credit_card_balance_total?: IEntityAttribute<number>;
+  credit_limit_total?: IEntityAttribute<number>;
+  credit_card_utilization?: IEntityAttribute<number>;
+  weighted_average_apr_credit_card?: IEntityAttribute<number>;
+  usage_pattern?: IEntityAttribute<string>;
+  next_payment_minimum_total_credit_cards?: IEntityAttribute<number>;
+  payment_to_minimum_ratio_avg_credit_cards?: IEntityAttribute<number>;
+  revolving_credit_card_balance_change_30d?: IEntityAttribute<number>;
+  revolving_credit_card_balance_change_60d?: IEntityAttribute<number>;
+  revolving_credit_card_balance_change_90d?: IEntityAttribute<number>;
+  revolving_credit_card_utilization_trend_30d?: IEntityAttribute<string>;
+  revolving_credit_card_utilization_trend_90d?: IEntityAttribute<string>;
+  revolving_credit_card_utilization_delta_30d?: IEntityAttribute<number>;
+  revolving_credit_card_utilization_delta_60d?: IEntityAttribute<number>;
+  revolving_credit_card_utilization_delta_90d?: IEntityAttribute<number>;
+  delinquency_flag_credit_cards?: IEntityAttribute<boolean>;
+  personal_loan_balance_total?: IEntityAttribute<number>;
+  personal_loan_amount_total?: IEntityAttribute<number>;
+  personal_loan_monthly_installments_estimate?: IEntityAttribute<number>;
+  personal_loan_utilization?: IEntityAttribute<number>;
+  weighted_average_apr_personal_loan?: IEntityAttribute<number>;
+  personal_loan_balance_change_30d?: IEntityAttribute<number>;
+  personal_loan_balance_change_60d?: IEntityAttribute<number>;
+  personal_loan_balance_change_90d?: IEntityAttribute<number>;
+  personal_loan_utilization_trend_30d?: IEntityAttribute<string>;
+  personal_loan_utilization_trend_90d?: IEntityAttribute<string>;
+  personal_loan_utilization_delta_30d?: IEntityAttribute<number>;
+  personal_loan_utilization_delta_60d?: IEntityAttribute<number>;
+  personal_loan_utilization_delta_90d?: IEntityAttribute<number>;
+  mortgage_balance_total?: IEntityAttribute<number>;
+  mortgage_loan_amount_total?: IEntityAttribute<number>;
+  weighted_average_apr_mortgage?: IEntityAttribute<number>;
+  mortgage_balance_change_30d?: IEntityAttribute<number>;
+  mortgage_balance_change_60d?: IEntityAttribute<number>;
+  mortgage_balance_change_90d?: IEntityAttribute<number>;
+  mortgage_utilization_trend_30d?: IEntityAttribute<string>;
+  mortgage_utilization_trend_90d?: IEntityAttribute<string>;
+  mortgage_utilization_delta_30d?: IEntityAttribute<number>;
+  mortgage_utilization_delta_60d?: IEntityAttribute<number>;
+  mortgage_utilization_delta_90d?: IEntityAttribute<number>;
+  overall_loan_amount_total?: IEntityAttribute<number>;
+  overall_utilization?: IEntityAttribute<number>;
+  overall_utilization_trend_30d?: IEntityAttribute<string>;
+  overall_utilization_trend_90d?: IEntityAttribute<string>;
+  overall_utilization_delta_30d?: IEntityAttribute<number>;
+  overall_utilization_delta_60d?: IEntityAttribute<number>;
+  overall_utilization_delta_90d?: IEntityAttribute<number>;
+  installment_balance_total?: IEntityAttribute<number>;
+  installment_balance_change_30d?: IEntityAttribute<number>;
+  installment_balance_change_60d?: IEntityAttribute<number>;
+  installment_balance_change_90d?: IEntityAttribute<number>;
+  other_balance_total?: IEntityAttribute<number>;
+  other_balance_change_30d?: IEntityAttribute<number>;
+  other_balance_change_60d?: IEntityAttribute<number>;
+  other_balance_change_90d?: IEntityAttribute<number>;
 }
 
 export const EntityAttributeNames = {
-  credit_health_credit_card_usage: 'credit_health_credit_card_usage',
-  credit_health_derogatory_marks: 'credit_health_derogatory_marks',
-  credit_health_hard_inquiries: 'credit_health_hard_inquiries',
-  credit_health_soft_inquiries: 'credit_health_soft_inquiries',
-  credit_health_total_accounts: 'credit_health_total_accounts',
-  credit_health_credit_age: 'credit_health_credit_age',
-  credit_health_payment_history: 'credit_health_payment_history',
-  credit_health_open_accounts: 'credit_health_open_accounts',
-  credit_health_entity_delinquent: 'credit_health_entity_delinquent',
+  revolving_credit_card_balance_total: 'revolving_credit_card_balance_total',
+  credit_limit_total: 'credit_limit_total',
+  credit_card_utilization: 'credit_card_utilization',
+  weighted_average_apr_credit_card: 'weighted_average_apr_credit_card',
+  usage_pattern: 'usage_pattern',
+  next_payment_minimum_total_credit_cards: 'next_payment_minimum_total_credit_cards',
+  payment_to_minimum_ratio_avg_credit_cards: 'payment_to_minimum_ratio_avg_credit_cards',
+  revolving_credit_card_balance_change_30d: 'revolving_credit_card_balance_change_30d',
+  revolving_credit_card_balance_change_60d: 'revolving_credit_card_balance_change_60d',
+  revolving_credit_card_balance_change_90d: 'revolving_credit_card_balance_change_90d',
+  revolving_credit_card_utilization_trend_30d: 'revolving_credit_card_utilization_trend_30d',
+  revolving_credit_card_utilization_trend_90d: 'revolving_credit_card_utilization_trend_90d',
+  revolving_credit_card_utilization_delta_30d: 'revolving_credit_card_utilization_delta_30d',
+  revolving_credit_card_utilization_delta_60d: 'revolving_credit_card_utilization_delta_60d',
+  revolving_credit_card_utilization_delta_90d: 'revolving_credit_card_utilization_delta_90d',
+  delinquency_flag_credit_cards: 'delinquency_flag_credit_cards',
+  personal_loan_balance_total: 'personal_loan_balance_total',
+  personal_loan_amount_total: 'personal_loan_amount_total',
+  personal_loan_monthly_installments_estimate: 'personal_loan_monthly_installments_estimate',
+  personal_loan_utilization: 'personal_loan_utilization',
+  weighted_average_apr_personal_loan: 'weighted_average_apr_personal_loan',
+  personal_loan_balance_change_30d: 'personal_loan_balance_change_30d',
+  personal_loan_balance_change_60d: 'personal_loan_balance_change_60d',
+  personal_loan_balance_change_90d: 'personal_loan_balance_change_90d',
+  personal_loan_utilization_trend_30d: 'personal_loan_utilization_trend_30d',
+  personal_loan_utilization_trend_90d: 'personal_loan_utilization_trend_90d',
+  personal_loan_utilization_delta_30d: 'personal_loan_utilization_delta_30d',
+  personal_loan_utilization_delta_60d: 'personal_loan_utilization_delta_60d',
+  personal_loan_utilization_delta_90d: 'personal_loan_utilization_delta_90d',
+  mortgage_balance_total: 'mortgage_balance_total',
+  mortgage_loan_amount_total: 'mortgage_loan_amount_total',
+  weighted_average_apr_mortgage: 'weighted_average_apr_mortgage',
+  mortgage_balance_change_30d: 'mortgage_balance_change_30d',
+  mortgage_balance_change_60d: 'mortgage_balance_change_60d',
+  mortgage_balance_change_90d: 'mortgage_balance_change_90d',
+  mortgage_utilization_trend_30d: 'mortgage_utilization_trend_30d',
+  mortgage_utilization_trend_90d: 'mortgage_utilization_trend_90d',
+  mortgage_utilization_delta_30d: 'mortgage_utilization_delta_30d',
+  mortgage_utilization_delta_60d: 'mortgage_utilization_delta_60d',
+  mortgage_utilization_delta_90d: 'mortgage_utilization_delta_90d',
+  overall_loan_amount_total: 'overall_loan_amount_total',
+  overall_utilization: 'overall_utilization',
+  overall_utilization_trend_30d: 'overall_utilization_trend_30d',
+  overall_utilization_trend_90d: 'overall_utilization_trend_90d',
+  overall_utilization_delta_30d: 'overall_utilization_delta_30d',
+  overall_utilization_delta_60d: 'overall_utilization_delta_60d',
+  overall_utilization_delta_90d: 'overall_utilization_delta_90d',
+  installment_balance_total: 'installment_balance_total',
+  installment_balance_change_30d: 'installment_balance_change_30d',
+  installment_balance_change_60d: 'installment_balance_change_60d',
+  installment_balance_change_90d: 'installment_balance_change_90d',
+  other_balance_total: 'other_balance_total',
+  other_balance_change_30d: 'other_balance_change_30d',
+  other_balance_change_60d: 'other_balance_change_60d',
+  other_balance_change_90d: 'other_balance_change_90d',
 } as const;
 
 export type TEntityAttributeNames = keyof typeof EntityAttributeNames;

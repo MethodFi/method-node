@@ -744,7 +744,7 @@ describe('Entities - core methods tests', () => {
       entities_create_attribute_response = await client
         .entities(entities_create_response.id)
         .attributes.create({
-          attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+          attributes: [EntityAttributeNames.credit_card_utilization]
         });
 
       const expect_results: IEntityAttributes = {
@@ -1115,7 +1115,7 @@ describe('Entities - core methods tests', () => {
           enroll: 'attribute',
           payload: {
             attributes: {
-              requested_attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+              requested_attributes: [EntityAttributeNames.credit_card_utilization]
             }
           }
         });
@@ -1126,7 +1126,7 @@ describe('Entities - core methods tests', () => {
         status: 'active',
         payload: {
           attributes: {
-            requested_attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+            requested_attributes: [EntityAttributeNames.credit_card_utilization]
           }
         },
         latest_request_id: entities_create_attributes_subscription_response.latest_request_id,
@@ -1192,7 +1192,7 @@ describe('Entities - core methods tests', () => {
           status: 'active',
           payload: {
             attributes: {
-              requested_attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+              requested_attributes: [EntityAttributeNames.credit_card_utilization]
             }
           },
           latest_request_id:

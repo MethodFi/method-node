@@ -643,27 +643,43 @@ export interface IAccountWithdrawConsentOpts {
 };
 
 export const AccountAttributeNames = {
+  type: 'type',
   usage_pattern: 'usage_pattern',
-  account_standing: 'account_standing',
-  delinquent_period: 'delinquent_period',
-  delinquent_outcome: 'delinquent_outcome',
-  delinquent_amount: 'delinquent_amount',
+  delinquency_flag: 'delinquency_flag',
   utilization: 'utilization',
-};
+  utilization_trend_30d: 'utilization_trend_30d',
+  utilization_trend_90d: 'utilization_trend_90d',
+  utilization_delta_30d: 'utilization_delta_30d',
+  utilization_delta_60d: 'utilization_delta_60d',
+  utilization_delta_90d: 'utilization_delta_90d',
+  monthly_installments_estimate: 'monthly_installments_estimate',
+} as const;
 
 export type TAccountAttributeNames = keyof typeof AccountAttributeNames;
 
-export type TAccountAttributes = {
-  [K in TAccountAttributeNames]: {
-    value: any | null;
-  }
-};
+export interface IAccountAttribute<T> {
+  value: T | null;
+  error: IResourceError | null;
+}
+
+export interface IAccountAttributesType {
+  type?: IAccountAttribute<string>;
+  usage_pattern?: IAccountAttribute<string>;
+  delinquency_flag?: IAccountAttribute<boolean>;
+  utilization?: IAccountAttribute<number>;
+  utilization_trend_30d?: IAccountAttribute<string>;
+  utilization_trend_90d?: IAccountAttribute<string>;
+  utilization_delta_30d?: IAccountAttribute<number>;
+  utilization_delta_60d?: IAccountAttribute<number>;
+  utilization_delta_90d?: IAccountAttribute<number>;
+  monthly_installments_estimate?: IAccountAttribute<number>;
+}
 
 export interface IAccountAttributes {
   id: string;
   account_id: string;
   status: TResourceStatus;
-  attributes: TAccountAttributes | null;
+  attributes: IAccountAttributesType | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
