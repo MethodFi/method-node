@@ -70,6 +70,9 @@ export interface IAccountProductListResponse {
   attribute?: IAccountProduct;
   transaction?: IAccountProduct;
   payment_instrument?: IAccountProduct;
+  'payment_instrument.card'?: IAccountProduct;
+  'payment_instrument.inbound_achwire_payment'?: IAccountProduct;
+  'payment_instrument.network_token'?: IAccountProduct;
 };
 
 export const AccountSubscriptionTypes = {
@@ -304,6 +307,9 @@ export interface IAccountCardBrand {
   account_id: string;
   brands: IAccountCardBrandInfo[];
   source: 'method' | 'network' | null;
+  issuer?: string | null;
+  last4?: string | null;
+  network?: string | null;
   status: 'completed' | 'in_progress' | 'failed';
   shared: boolean;
   error: IResourceError | null;
@@ -742,6 +748,7 @@ export interface IAccount {
   id: string;
   holder_id: string;
   status: TAccountStatuses;
+  consent_status?: string | null;
   type: TAccountTypes | null;
   ach?: IAccountACH | null;
   liability?: IAccountLiability | null;

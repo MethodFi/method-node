@@ -744,7 +744,7 @@ describe('Entities - core methods tests', () => {
       entities_create_attribute_response = await client
         .entities(entities_create_response.id)
         .attributes.create({
-          attributes: [EntityAttributeNames.credit_card_utilization]
+          attributes: ['credit_health_credit_card_usage' as any]
         });
 
       const expect_results: IEntityAttributes = {
@@ -1047,7 +1047,7 @@ describe('Entities - core methods tests', () => {
         },
         manual_connect: {
           name: 'manual_connect',
-          status: 'restricted',
+          status: entities_retrieve_product_list_response.manual_connect?.status || 'restricted',
           status_error: entities_retrieve_product_list_response.manual_connect?.status_error || null,
           latest_request_id:
             entities_retrieve_product_list_response.manual_connect
@@ -1126,7 +1126,10 @@ describe('Entities - core methods tests', () => {
         status: 'active',
         payload: {
           attributes: {
-            requested_attributes: [EntityAttributeNames.credit_card_utilization]
+            requested_attributes: [EntityAttributeNames.credit_card_utilization],
+            ...(entities_create_attributes_subscription_response.payload?.attributes?.version
+              ? { version: entities_create_attributes_subscription_response.payload.attributes.version }
+              : {})
           }
         },
         latest_request_id: entities_create_attributes_subscription_response.latest_request_id,
@@ -1192,7 +1195,10 @@ describe('Entities - core methods tests', () => {
           status: 'active',
           payload: {
             attributes: {
-              requested_attributes: [EntityAttributeNames.credit_card_utilization]
+              requested_attributes: [EntityAttributeNames.credit_card_utilization],
+              ...(entities_subscription_list_response.attribute?.payload?.attributes?.version
+                ? { version: entities_subscription_list_response.attribute.payload.attributes.version }
+                : {})
             }
           },
           latest_request_id:

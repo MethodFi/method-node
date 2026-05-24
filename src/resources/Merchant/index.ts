@@ -7,6 +7,7 @@ export interface IMerchantProviderIds {
   mx: string[];
   finicity: string[];
   dpp: string[];
+  rpps: string[];
 };
 
 export interface IMerchant {

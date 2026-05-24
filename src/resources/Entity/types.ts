@@ -218,6 +218,15 @@ export interface IEntityAttributesType {
   other_balance_change_30d?: IEntityAttribute<number>;
   other_balance_change_60d?: IEntityAttribute<number>;
   other_balance_change_90d?: IEntityAttribute<number>;
+  credit_health_credit_card_usage?: IEntityAttribute<number>;
+  credit_health_derogatory_marks?: IEntityAttribute<number>;
+  credit_health_hard_inquiries?: IEntityAttribute<number>;
+  credit_health_soft_inquiries?: IEntityAttribute<number>;
+  credit_health_total_accounts?: IEntityAttribute<number>;
+  credit_health_credit_age?: IEntityAttribute<number>;
+  credit_health_payment_history?: IEntityAttribute<number>;
+  credit_health_open_accounts?: IEntityAttribute<number>;
+  credit_health_entity_delinquent?: IEntityAttribute<boolean>;
 }
 
 export const EntityAttributeNames = {
@@ -276,6 +285,15 @@ export const EntityAttributeNames = {
   other_balance_change_30d: 'other_balance_change_30d',
   other_balance_change_60d: 'other_balance_change_60d',
   other_balance_change_90d: 'other_balance_change_90d',
+  credit_health_credit_card_usage: 'credit_health_credit_card_usage',
+  credit_health_derogatory_marks: 'credit_health_derogatory_marks',
+  credit_health_hard_inquiries: 'credit_health_hard_inquiries',
+  credit_health_soft_inquiries: 'credit_health_soft_inquiries',
+  credit_health_total_accounts: 'credit_health_total_accounts',
+  credit_health_credit_age: 'credit_health_credit_age',
+  credit_health_payment_history: 'credit_health_payment_history',
+  credit_health_open_accounts: 'credit_health_open_accounts',
+  credit_health_entity_delinquent: 'credit_health_entity_delinquent',
 } as const;
 
 export type TEntityAttributeNames = keyof typeof EntityAttributeNames;
@@ -381,6 +399,7 @@ export type TEntitySubscriptionStatuses = keyof typeof EntitySubscriptionStatuse
 export interface IEntitySubscriptionPayload {
   attributes?: {
     requested_attributes: TEntityAttributeNames[];
+    version?: string;
   } | null;
 };
 
