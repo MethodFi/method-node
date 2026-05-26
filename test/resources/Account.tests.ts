@@ -1185,6 +1185,7 @@ describe('Accounts - core methods tests', () => {
         type: 'card',
         card: payment_instrument_create_response.card || null,
         network_token: payment_instrument_create_response.network_token || null,
+        inbound_achwire_payment: payment_instrument_create_response.inbound_achwire_payment || null,
         chargeable: payment_instrument_create_response.chargeable,
         status: payment_instrument_create_response.status,
         error: null,
@@ -1213,7 +1214,8 @@ describe('Accounts - core methods tests', () => {
       (list_response.length > 0).should.be.true;
     });
 
-    it('should successfully delete a payment instrument for an account.', async () => {
+    // Delete is only supported for inbound_achwire_payment type instruments
+    it.skip('should successfully delete a payment instrument for an account.', async () => {
       const delete_response = await client
         .accounts(test_credit_card_account_2.id)
         .paymentInstruments

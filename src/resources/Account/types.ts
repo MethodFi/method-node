@@ -724,12 +724,18 @@ export interface IPaymentInstrumentNetworkToken {
   token: string;
 }
 
+export interface IPaymentInstrumentInboundACHWirePayment {
+  account_number: string;
+  routing_number: string;
+}
+
 export interface IAccountPaymentInstrument {
   id: string;
   account_id: string;
   type: TPaymentInstrumentTypes;
   network_token?: IPaymentInstrumentNetworkToken | null;
   card?: IPaymentInstrumentCard | null;
+  inbound_achwire_payment?: IPaymentInstrumentInboundACHWirePayment | null;
   chargeable: boolean;
   status: TResourceStatus;
   error: IResourceError | null;
