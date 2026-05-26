@@ -70,14 +70,22 @@ export interface IAccountProductListResponse {
   attribute?: IAccountProduct;
   transaction?: IAccountProduct;
   payment_instrument?: IAccountProduct;
+  'payment_instrument.card'?: IAccountProduct;
+  'payment_instrument.inbound_achwire_payment'?: IAccountProduct;
+  'payment_instrument.network_token'?: IAccountProduct;
 };
 
 export const AccountSubscriptionTypes = {
   card_brand: 'card_brand',
   payment_instrument: 'payment_instrument',
+  'payment_instrument.card': 'payment_instrument.card',
+  'payment_instrument.network_token': 'payment_instrument.network_token',
   transaction: 'transaction',
   update: 'update',
   update_snapshot: 'update.snapshot',
+  attribute: 'attribute',
+  connect: 'connect',
+  credit_score: 'credit_score',
 } as const;
 
 export type TAccountSubscriptionTypes = typeof AccountSubscriptionTypes[keyof typeof AccountSubscriptionTypes];
@@ -304,6 +312,9 @@ export interface IAccountCardBrand {
   account_id: string;
   brands: IAccountCardBrandInfo[];
   source: 'method' | 'network' | null;
+  issuer?: string | null;
+  last4?: string | null;
+  network?: string | null;
   status: 'completed' | 'in_progress' | 'failed';
   shared: boolean;
   error: IResourceError | null;
@@ -398,6 +409,13 @@ export interface IAccountSubscriptionsResponse {
   transaction?: IAccountSubscription;
   update?: IAccountSubscription;
   'update.snapshot'?: IAccountSubscription;
+  card_brand?: IAccountSubscription;
+  payment_instrument?: IAccountSubscription;
+  'payment_instrument.card'?: IAccountSubscription;
+  'payment_instrument.network_token'?: IAccountSubscription;
+  attribute?: IAccountSubscription;
+  connect?: IAccountSubscription;
+  credit_score?: IAccountSubscription;
 };
 
 export interface IAccountSubscriptionCreateOpts {
@@ -643,27 +661,43 @@ export interface IAccountWithdrawConsentOpts {
 };
 
 export const AccountAttributeNames = {
+  type: 'type',
   usage_pattern: 'usage_pattern',
-  account_standing: 'account_standing',
-  delinquent_period: 'delinquent_period',
-  delinquent_outcome: 'delinquent_outcome',
-  delinquent_amount: 'delinquent_amount',
+  delinquency_flag: 'delinquency_flag',
   utilization: 'utilization',
-};
+  utilization_trend_30d: 'utilization_trend_30d',
+  utilization_trend_90d: 'utilization_trend_90d',
+  utilization_delta_30d: 'utilization_delta_30d',
+  utilization_delta_60d: 'utilization_delta_60d',
+  utilization_delta_90d: 'utilization_delta_90d',
+  monthly_installments_estimate: 'monthly_installments_estimate',
+} as const;
 
 export type TAccountAttributeNames = keyof typeof AccountAttributeNames;
 
-export type TAccountAttributes = {
-  [K in TAccountAttributeNames]: {
-    value: any | null;
-  }
-};
+export interface IAccountAttribute<T> {
+  value: T | null;
+  error: IResourceError | null;
+}
+
+export interface IAccountAttributesType {
+  type?: IAccountAttribute<string>;
+  usage_pattern?: IAccountAttribute<string>;
+  delinquency_flag?: IAccountAttribute<boolean>;
+  utilization?: IAccountAttribute<number>;
+  utilization_trend_30d?: IAccountAttribute<string>;
+  utilization_trend_90d?: IAccountAttribute<string>;
+  utilization_delta_30d?: IAccountAttribute<number>;
+  utilization_delta_60d?: IAccountAttribute<number>;
+  utilization_delta_90d?: IAccountAttribute<number>;
+  monthly_installments_estimate?: IAccountAttribute<number>;
+}
 
 export interface IAccountAttributes {
   id: string;
   account_id: string;
   status: TResourceStatus;
-  attributes: TAccountAttributes | null;
+  attributes: IAccountAttributesType | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
@@ -690,12 +724,18 @@ export interface IPaymentInstrumentNetworkToken {
   token: string;
 }
 
+export interface IPaymentInstrumentInboundACHWirePayment {
+  account_number: string;
+  routing_number: string;
+}
+
 export interface IAccountPaymentInstrument {
   id: string;
   account_id: string;
   type: TPaymentInstrumentTypes;
   network_token?: IPaymentInstrumentNetworkToken | null;
   card?: IPaymentInstrumentCard | null;
+  inbound_achwire_payment?: IPaymentInstrumentInboundACHWirePayment | null;
   chargeable: boolean;
   status: TResourceStatus;
   error: IResourceError | null;
@@ -726,6 +766,7 @@ export interface IAccount {
   id: string;
   holder_id: string;
   status: TAccountStatuses;
+  consent_status?: string | null;
   type: TAccountTypes | null;
   ach?: IAccountACH | null;
   liability?: IAccountLiability | null;

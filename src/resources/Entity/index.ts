@@ -8,6 +8,7 @@ import EntityAttributes from './Attributes';
 import EntityVehicles from './Vehicles';
 import EntitySubscriptions from './Subscriptions';
 import EntityVerificationSession from './VerificationSessions';
+import EntityManualConnect from './ManualConnect';
 import type {
   IEntity,
   IEntityListOpts,
@@ -27,6 +28,7 @@ export class EntitySubResources {
   products: EntityProducts;
   subscriptions: EntitySubscriptions;
   verificationSessions: EntityVerificationSession;
+  manualConnect: EntityManualConnect;
 
   constructor(id: string, config: Configuration) {
     this.connect = new EntityConnect(config.addPath(id));
@@ -37,6 +39,7 @@ export class EntitySubResources {
     this.products = new EntityProducts(config.addPath(id));
     this.subscriptions = new EntitySubscriptions(config.addPath(id));
     this.verificationSessions = new EntityVerificationSession(config.addPath(id));
+    this.manualConnect = new EntityManualConnect(config.addPath(id));
   }
 };
 

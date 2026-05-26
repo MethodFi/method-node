@@ -26,7 +26,8 @@ describe('Merchants - core methods tests', () => {
           plaid: [ 'ins_10' ],
           mx: [ 'amex' ],
           finicity: [],
-          dpp: [ '120', '18954427', '11859365', '18947131', '16255844' ]
+          dpp: [ '120', '18954427', '11859365', '18947131', '16255844' ],
+          rpps: []
         },
         is_temp: false,
         account_number_formats: [],
@@ -65,7 +66,8 @@ describe('Merchants - core methods tests', () => {
                 '11859365',
                 '18947131',
                 '16255844'
-            ]
+            ],
+            rpps: []
         },
         is_temp: false,
         account_number_formats: [

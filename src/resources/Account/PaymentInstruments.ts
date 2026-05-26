@@ -40,4 +40,8 @@ export default class AccountPaymentInstruments extends Resource {
   async create(data: IPaymentInstrumentCreateOpts) {
     return super._create<IResponse<IAccountPaymentInstrument>, IPaymentInstrumentCreateOpts>(data);
   }
+
+  async delete(pmt_inst_id: string) {
+    return super._delete<IResponse<IAccountPaymentInstrument>>(pmt_inst_id);
+  }
 };

@@ -1047,7 +1047,7 @@ describe('Entities - core methods tests', () => {
         },
         manual_connect: {
           name: 'manual_connect',
-          status: 'restricted',
+          status: entities_retrieve_product_list_response.manual_connect?.status || 'restricted',
           status_error: entities_retrieve_product_list_response.manual_connect?.status_error || null,
           latest_request_id:
             entities_retrieve_product_list_response.manual_connect
@@ -1115,7 +1115,7 @@ describe('Entities - core methods tests', () => {
           enroll: 'attribute',
           payload: {
             attributes: {
-              requested_attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+              requested_attributes: [EntityAttributeNames.credit_card_utilization]
             }
           }
         });
@@ -1126,7 +1126,10 @@ describe('Entities - core methods tests', () => {
         status: 'active',
         payload: {
           attributes: {
-            requested_attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+            requested_attributes: [EntityAttributeNames.credit_card_utilization],
+            ...(entities_create_attributes_subscription_response.payload?.attributes?.version
+              ? { version: entities_create_attributes_subscription_response.payload.attributes.version }
+              : {})
           }
         },
         latest_request_id: entities_create_attributes_subscription_response.latest_request_id,
@@ -1192,7 +1195,10 @@ describe('Entities - core methods tests', () => {
           status: 'active',
           payload: {
             attributes: {
-              requested_attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+              requested_attributes: [EntityAttributeNames.credit_card_utilization],
+              ...(entities_subscription_list_response.attribute?.payload?.attributes?.version
+                ? { version: entities_subscription_list_response.attribute.payload.attributes.version }
+                : {})
             }
           },
           latest_request_id:
@@ -1250,6 +1256,60 @@ describe('Entities - core methods tests', () => {
       };
 
       entities_subscription_delete_response.should.be.eql(expect_results);
+    });
+  });
+
+  describe('entities.manual_connect', () => {
+    let manual_connect_create_response: IResponse<IEntityConnect>;
+
+    it('should successfully create a manual connect for an entity.', async () => {
+      manual_connect_create_response = await client
+        .entities(entities_create_response_async.id)
+        .manualConnect
+        .create({
+          bureau: 'equifax',
+          tradelines: [
+            {
+              type_code: null,
+              portfolio_type_code: null,
+              designator_code: null,
+              number: null,
+              creditor_name: null,
+              creditor_code: null,
+              balance: null,
+              highest_balance: null,
+              credit_limit: null,
+              term: null,
+              next_payment_minimum_amount: null,
+              last_payment_amount: null,
+              payment_history: null,
+              past_due_amount: null,
+              delinquency_charge_off_amount: null,
+              opened_at: null,
+              closed_at: null,
+              last_activity_date: null,
+              reported_date: null,
+              next_payment_due_date: null,
+              last_payment_date: null,
+              delinquency_first_start_date: null,
+              narrative_codes: null,
+            },
+          ],
+        });
+
+      manual_connect_create_response.id.should.be.a('string');
+      manual_connect_create_response.entity_id.should.equal(entities_create_response_async.id);
+    });
+
+    it('should successfully retrieve a manual connect for an entity.', async () => {
+      const retrieve_response = await client
+        .entities(entities_create_response_async.id)
+        .manualConnect
+        .retrieve(manual_connect_create_response.id);
+
+      // Note: the retrieve endpoint returns the MongoDB _id as `id`, not the mcxn_* prefixed ID
+      retrieve_response.id.should.be.a('string');
+      retrieve_response.entity_id.should.equal(entities_create_response_async.id);
     });
   });
 

@@ -5,6 +5,8 @@ export const EventResourceTypes = {
   account: 'account',
   credit_score: 'credit_score',
   attribute: 'attribute',
+  entity_attribute: 'entity_attribute',
+  account_attribute: 'account_attribute',
   connect: 'connect',
 } as const;
 

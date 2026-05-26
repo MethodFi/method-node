@@ -11,6 +11,10 @@ import Webhook from './resources/Webhook';
 import HealthCheck, { IPingResponse } from './resources/HealthCheck';
 import Simulate from './resources/Simulate';
 import Opal from './resources/Opal';
+import ForwardingRequest from './resources/ForwardingRequest';
+import Secret from './resources/Secret';
+import Team from './resources/Team';
+import { ManagedAccount } from './resources/ManagedAccount';
 
 export class Method {
   accounts: Account;
@@ -25,6 +29,10 @@ export class Method {
   healthcheck: HealthCheck;
   simulate: Simulate;
   opal: Opal;
+  forwardingRequests: ForwardingRequest;
+  secrets: Secret;
+  teams: Team;
+  managedAccounts: ManagedAccount;
 
   constructor(opts: IConfigurationOpts) {
     const config = new Configuration(opts);
@@ -42,6 +50,10 @@ export class Method {
     this.healthcheck = new HealthCheck(config);
     this.simulate = new Simulate(config);
     this.opal = new Opal(config);
+    this.forwardingRequests = new ForwardingRequest(config);
+    this.secrets = new Secret(config);
+    this.teams = new Team(config);
+    this.managedAccounts = new ManagedAccount(config);
   }
 
   public async ping(): Promise<IResponse<IPingResponse>> {
