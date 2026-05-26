@@ -19,3 +19,7 @@ export * from './resources/Report';
 export * from './resources/Simulate';
 export * from './resources/Webhook';
 export * from './resources/Opal';
+export * from './resources/ForwardingRequest';
+export * from './resources/Secret';
+export * from './resources/Team';
+export * from './resources/ManagedAccount';

@@ -13,6 +13,8 @@ export const ReportTypes = {
   ach_pull_nightly: 'ach.pull.nightly',
   ach_reversals_nightly: 'ach.reversals.nightly',
   entities_created_previous_day: 'entities.created.previous_day',
+  ach_debit_daily: 'ach.debit.daily',
+  reserve_fbo_balance_created_previous_day: 'reserve_fbo_balance.created.previous_day',
 } as const;
 
 export type TReportTypes = typeof ReportTypes[keyof typeof ReportTypes];

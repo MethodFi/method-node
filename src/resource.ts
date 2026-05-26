@@ -13,6 +13,9 @@ import { SimulateEntitiesSubResources } from './resources/Simulate/Entities';
 import { SimulateCreditScoresInstance } from './resources/Simulate/Entities/CreditScores';
 import { SimulateConnectInstance } from './resources/Simulate/Entities/Connect';
 import { SimulateAttributesInstance } from './resources/Simulate/Entities/Attributes';
+import { SimulateVerificationSessionInstance } from './resources/Simulate/Accounts/VerificationSessions';
+import { SimulatePaymentInstrumentInstance } from './resources/Simulate/PaymentInstruments';
+import { ManagedAccountSubResources } from './resources/ManagedAccount';
 
 type TSubResources =
   | AccountSubResources
@@ -22,7 +25,10 @@ type TSubResources =
   | SimulateEntitiesSubResources
   | SimulateCreditScoresInstance
   | SimulateConnectInstance
-  | SimulateAttributesInstance;
+  | SimulateAttributesInstance
+  | SimulateVerificationSessionInstance
+  | SimulatePaymentInstrumentInstance
+  | ManagedAccountSubResources;
 
 export interface IRequestConfig {
   idempotency_key?: string;

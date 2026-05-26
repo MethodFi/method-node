@@ -16,6 +16,7 @@ import type {
   IEntityVehicles,
 } from '../../src/resources/Entity';
 import { EntityAttributeNames } from '../../src/resources/Entity/types';
+import type { IManualConnectCreateOpts } from '../../src/resources/Entity/ManualConnect';
 import type { IAccount } from '../../src/resources/Account';
 import { IResponse } from '../../src/configuration';
 
@@ -1256,6 +1257,59 @@ describe('Entities - core methods tests', () => {
       };
 
       entities_subscription_delete_response.should.be.eql(expect_results);
+    });
+  });
+
+  describe('entities.manual_connect', () => {
+    let manual_connect_create_response: IResponse<IEntityConnect>;
+
+    it('should successfully create a manual connect for an entity.', async () => {
+      manual_connect_create_response = await client
+        .entities(entities_create_response_async.id)
+        .manualConnect
+        .create({
+          bureau: 'equifax',
+          tradelines: [
+            {
+              type_code: null,
+              portfolio_type_code: null,
+              designator_code: null,
+              number: null,
+              creditor_name: null,
+              creditor_code: null,
+              balance: null,
+              highest_balance: null,
+              credit_limit: null,
+              term: null,
+              next_payment_minimum_amount: null,
+              last_payment_amount: null,
+              payment_history: null,
+              past_due_amount: null,
+              delinquency_charge_off_amount: null,
+              opened_at: null,
+              closed_at: null,
+              last_activity_date: null,
+              reported_date: null,
+              next_payment_due_date: null,
+              last_payment_date: null,
+              delinquency_first_start_date: null,
+              narrative_codes: null,
+            },
+          ],
+        });
+
+      manual_connect_create_response.id.should.be.a('string');
+      manual_connect_create_response.entity_id.should.equal(entities_create_response_async.id);
+    });
+
+    it('should successfully retrieve a manual connect for an entity.', async () => {
+      const retrieve_response = await client
+        .entities(entities_create_response_async.id)
+        .manualConnect
+        .retrieve(manual_connect_create_response.id);
+
+      retrieve_response.id.should.equal(manual_connect_create_response.id);
+      retrieve_response.entity_id.should.equal(entities_create_response_async.id);
     });
   });
 

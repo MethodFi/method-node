@@ -1,6 +1,7 @@
 import Resource from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import { IPayment, TPaymentStatuses } from '../Payment';
+import SimulatePaymentInstruments from './PaymentInstruments';
 
 export interface ISimulatePaymentsUpdateOpts {
   status: TPaymentStatuses;
@@ -8,8 +9,11 @@ export interface ISimulatePaymentsUpdateOpts {
 };
 
 export default class SimulatePayments extends Resource {
+  paymentInstruments: SimulatePaymentInstruments;
+
   constructor(config: Configuration) {
     super(config.addPath('payments'));
+    this.paymentInstruments = new SimulatePaymentInstruments(this.config);
   }
 
   /**

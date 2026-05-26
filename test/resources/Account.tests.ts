@@ -1170,6 +1170,59 @@ describe('Accounts - core methods tests', () => {
     });
   });
 
+  describe('accounts.payment_instruments', () => {
+    let payment_instrument_create_response: IResponse<IAccountPaymentInstrument>;
+
+    it('should successfully create a payment instrument for an account.', async () => {
+      payment_instrument_create_response = await client
+        .accounts(test_credit_card_account_2.id)
+        .paymentInstruments
+        .create({ type: 'card' });
+
+      const expect_results: IAccountPaymentInstrument = {
+        id: payment_instrument_create_response.id,
+        account_id: test_credit_card_account_2.id,
+        type: 'card',
+        card: payment_instrument_create_response.card || null,
+        network_token: payment_instrument_create_response.network_token || null,
+        chargeable: payment_instrument_create_response.chargeable,
+        status: payment_instrument_create_response.status,
+        error: null,
+        created_at: payment_instrument_create_response.created_at,
+        updated_at: payment_instrument_create_response.updated_at,
+      };
+
+      payment_instrument_create_response.should.be.eql(expect_results);
+    });
+
+    it('should successfully retrieve a payment instrument for an account.', async () => {
+      const retrieve_response = await client
+        .accounts(test_credit_card_account_2.id)
+        .paymentInstruments
+        .retrieve(payment_instrument_create_response.id);
+
+      retrieve_response.id.should.equal(payment_instrument_create_response.id);
+    });
+
+    it('should successfully list payment instruments for an account.', async () => {
+      const list_response = await client
+        .accounts(test_credit_card_account_2.id)
+        .paymentInstruments
+        .list();
+
+      (list_response.length > 0).should.be.true;
+    });
+
+    it('should successfully delete a payment instrument for an account.', async () => {
+      const delete_response = await client
+        .accounts(test_credit_card_account_2.id)
+        .paymentInstruments
+        .delete(payment_instrument_create_response.id);
+
+      (delete_response !== null).should.be.true;
+    });
+  });
+
   describe('accounts.withdrawConsent', () => {
     it('should successfully withdraw consent from an account.', async () => {
       const withdraw_consent_response = await client.accounts.withdrawConsent(test_credit_card_account.id);

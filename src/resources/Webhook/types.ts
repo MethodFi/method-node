@@ -170,6 +170,21 @@ export const WebhookTypes = {
   entity_attribute_other_balance_change_60d_decreased: 'entity_attribute.other_balance_change_60d.decreased',
   entity_attribute_other_balance_change_90d_increased: 'entity_attribute.other_balance_change_90d.increased',
   entity_attribute_other_balance_change_90d_decreased: 'entity_attribute.other_balance_change_90d.decreased',
+  manual_connect_create: 'manual_connect.create',
+  manual_connect_update: 'manual_connect.update',
+  payment_instrument_create: 'payment_instrument.create',
+  payment_instrument_update: 'payment_instrument.update',
+  method_jwk_create: 'method_jwk.create',
+  method_jwk_update: 'method_jwk.update',
+  credit_score_available: 'credit_score.available',
+  account_number_update: 'account.number.update',
+  account_balance_increased: 'account.balance_increased',
+  account_balance_decreased: 'account.balance_decreased',
+  account_credit_limit_increased: 'account.credit_limit_increased',
+  account_credit_limit_decreased: 'account.credit_limit_decreased',
+  entity_new_accounts_pending_consent: 'entity.new_accounts_pending_consent',
+  entity_vehicle_create: 'entity_vehicle.create',
+  entity_vehicle_update: 'entity_vehicle.update',
 } as const;
 
 export type TWebhookTypes = typeof WebhookTypes[keyof typeof WebhookTypes];
@@ -194,7 +209,7 @@ export interface IWebhook {
   updated_at: string;
   expand_event: boolean;
   error: object | null;
-  status: string | null;
+  status: TWebhookStatus | null;
 };
 
 export interface IWebhookCreateOpts {

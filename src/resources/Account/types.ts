@@ -78,9 +78,14 @@ export interface IAccountProductListResponse {
 export const AccountSubscriptionTypes = {
   card_brand: 'card_brand',
   payment_instrument: 'payment_instrument',
+  'payment_instrument.card': 'payment_instrument.card',
+  'payment_instrument.network_token': 'payment_instrument.network_token',
   transaction: 'transaction',
   update: 'update',
   update_snapshot: 'update.snapshot',
+  attribute: 'attribute',
+  connect: 'connect',
+  credit_score: 'credit_score',
 } as const;
 
 export type TAccountSubscriptionTypes = typeof AccountSubscriptionTypes[keyof typeof AccountSubscriptionTypes];
@@ -404,6 +409,13 @@ export interface IAccountSubscriptionsResponse {
   transaction?: IAccountSubscription;
   update?: IAccountSubscription;
   'update.snapshot'?: IAccountSubscription;
+  card_brand?: IAccountSubscription;
+  payment_instrument?: IAccountSubscription;
+  'payment_instrument.card'?: IAccountSubscription;
+  'payment_instrument.network_token'?: IAccountSubscription;
+  attribute?: IAccountSubscription;
+  connect?: IAccountSubscription;
+  credit_score?: IAccountSubscription;
 };
 
 export interface IAccountSubscriptionCreateOpts {
