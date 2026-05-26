@@ -8,7 +8,7 @@ export class SimulateAccountsSubResources {
   transactions: SimulateTransactions;
   cardBrands: SimulateCardBrands;
   verificationSessions: SimulateVerificationSessions;
-  constructor(acc_id:string, config: Configuration) {
+  constructor(acc_id: string, config: Configuration) {
     this.transactions = new SimulateTransactions(config.addPath(acc_id));
     this.cardBrands = new SimulateCardBrands(config.addPath(acc_id));
     this.verificationSessions = new SimulateVerificationSessions(config.addPath(acc_id));
