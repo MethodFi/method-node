@@ -744,7 +744,7 @@ describe('Entities - core methods tests', () => {
       entities_create_attribute_response = await client
         .entities(entities_create_response.id)
         .attributes.create({
-          attributes: ['credit_health_credit_card_usage' as any]
+          attributes: [EntityAttributeNames.credit_health_credit_card_usage]
         });
 
       const expect_results: IEntityAttributes = {
@@ -1047,7 +1047,7 @@ describe('Entities - core methods tests', () => {
         },
         manual_connect: {
           name: 'manual_connect',
-          status: entities_retrieve_product_list_response.manual_connect?.status || 'restricted',
+          status: 'restricted',
           status_error: entities_retrieve_product_list_response.manual_connect?.status_error || null,
           latest_request_id:
             entities_retrieve_product_list_response.manual_connect
