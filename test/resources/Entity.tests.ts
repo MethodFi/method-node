@@ -16,7 +16,6 @@ import type {
   IEntityVehicles,
 } from '../../src/resources/Entity';
 import { EntityAttributeNames } from '../../src/resources/Entity/types';
-import type { IManualConnectCreateOpts } from '../../src/resources/Entity/ManualConnect';
 import type { IAccount } from '../../src/resources/Account';
 import { IResponse } from '../../src/configuration';
 
