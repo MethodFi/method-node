@@ -1,7 +1,7 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import type { IManagedAccount, IManagedAccountTransaction } from '../../src/resources/ManagedAccount';
+import type { IManagedAccount } from '../../src/resources/ManagedAccount';
 import { IResponse } from '../../src/configuration';
 
 should();
