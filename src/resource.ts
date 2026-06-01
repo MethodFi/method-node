@@ -16,11 +16,13 @@ import { SimulateAttributesInstance } from './resources/Simulate/Entities/Attrib
 import { SimulateVerificationSessionInstance } from './resources/Simulate/Accounts/VerificationSessions';
 import { SimulatePaymentInstrumentInstance } from './resources/Simulate/PaymentInstruments';
 import { ManagedAccountSubResources } from './resources/ManagedAccount';
+import { ReportScheduleSubResources } from './resources/ReportSchedule';
 
 type TSubResources =
   | AccountSubResources
   | PaymentSubResources
   | EntitySubResources
+  | ReportScheduleSubResources
   | SimulateAccountsSubResources
   | SimulateEntitiesSubResources
   | SimulateCreditScoresInstance
@@ -305,6 +307,12 @@ export default class Resource extends ExtensibleFunction {
 
   protected async _delete<Response>(id: string): Promise<Response> {
     return (await this.client.delete(`/${id}`)).data.data;
+  }
+
+  protected async _deleteWithParams<Response, Params = {}>(
+    params: Params,
+  ): Promise<Response> {
+    return (await this.client.delete('', { params })).data.data;
   }
 
   protected async _deleteWithSubPath<Response>(
