@@ -6,4 +6,5 @@ export { ElementTypes } from './src/resources/Element';
 export { EntityTypes, EntityStatuses } from './src/resources/Entity';
 export { PaymentFundStatuses, PaymentStatuses } from './src/resources/Payment';
 export { ReportTypes, ReportStatuses } from './src/resources/Report';
+export { ReportScheduleStatuses, ReportScheduleDeliveryMethodTypes } from './src/resources/ReportSchedule';
 export { WebhookTypes } from './src/resources/Webhook';

@@ -7,6 +7,7 @@ import Event from './resources/Event';
 import Merchant from './resources/Merchant';
 import Payment from './resources/Payment';
 import Report from './resources/Report';
+import ReportSchedule from './resources/ReportSchedule';
 import Webhook from './resources/Webhook';
 import HealthCheck, { IPingResponse } from './resources/HealthCheck';
 import Simulate from './resources/Simulate';
@@ -25,6 +26,7 @@ export class Method {
   merchants: Merchant;
   payments: Payment;
   reports: Report;
+  reportSchedules: ReportSchedule;
   webhooks: Webhook;
   healthcheck: HealthCheck;
   simulate: Simulate;
@@ -46,6 +48,7 @@ export class Method {
     this.merchants = new Merchant(config);
     this.payments = new Payment(config);
     this.reports = new Report(config);
+    this.reportSchedules = new ReportSchedule(config);
     this.webhooks = new Webhook(config);
     this.healthcheck = new HealthCheck(config);
     this.simulate = new Simulate(config);
