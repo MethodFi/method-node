@@ -79,6 +79,7 @@ export interface IPayment {
   source_status: TPaymentStatuses;
   destination_status: TPaymentStatuses;
   destination_payment_method?: TPaymentDestinationPaymentMethods | null;
+  destination_posted_date?: string | null;
   fee: IPaymentFee | null;
   idempotency_key?: string | null;
   payment_instrument?: string | null;

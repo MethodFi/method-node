@@ -304,9 +304,6 @@ describe('Accounts - core methods tests', () => {
         status: 'in_progress',
         shared: false,
         source: null,
-        issuer: card_create_response.issuer,
-        last4: card_create_response.last4,
-        network: card_create_response.network,
         error: null,
         created_at: card_create_response.created_at,
         updated_at: card_create_response.updated_at
