@@ -12,6 +12,7 @@ export default class ElementToken extends Resource {
   }
 
   /**
+   * @deprecated
    * Creates token to be used with Element
    * https://docs.methodfi.com/reference/elements/tokens
    *
@@ -24,6 +25,7 @@ export default class ElementToken extends Resource {
   }
 
   /**
+   * @deprecated
    * Retrieve the results of an Element session.
    * https://docs.methodfi.com/reference/elements/results
    *

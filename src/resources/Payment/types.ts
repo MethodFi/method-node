@@ -25,6 +25,11 @@ export const PaymentFundStatuses = {
   sent: 'sent',
   posted: 'posted',
   unknown: 'unknown',
+  transmitting: 'transmitting',
+  transmitted: 'transmitted',
+  pending_consolidation: 'pending_consolidation',
+  pending_clearing: 'pending_clearing',
+  cashed: 'cashed',
 } as const;
 
 export type TPaymentFundStatuses = keyof typeof PaymentFundStatuses;
