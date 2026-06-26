@@ -17,19 +17,18 @@ export const PaymentStatuses = {
 export type TPaymentStatuses = keyof typeof PaymentStatuses;
 
 export const PaymentFundStatuses = {
-  hold: 'hold',
   pending: 'pending',
-  requested: 'requested',
-  clearing: 'clearing',
-  failed: 'failed',
-  sent: 'sent',
-  posted: 'posted',
-  unknown: 'unknown',
+  pending_consolidation: 'pending_consolidation',
   transmitting: 'transmitting',
   transmitted: 'transmitted',
-  pending_consolidation: 'pending_consolidation',
+  requested: 'requested',
+  clearing: 'clearing',
   pending_clearing: 'pending_clearing',
-  cashed: 'cashed',
+  hold: 'hold',
+  sent: 'sent',
+  posted: 'posted',
+  failed: 'failed',
+  unknown: 'unknown',
 } as const;
 
 export type TPaymentFundStatuses = keyof typeof PaymentFundStatuses;
