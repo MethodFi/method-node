@@ -15,6 +15,8 @@ import type {
 export const AccountTypes = {
   ach: 'ach',
   liability: 'liability',
+  clearing: 'clearing',
+  debit_card: 'debit_card',
 } as const;
 
 export type TAccountTypes = keyof typeof AccountTypes;
@@ -23,9 +25,19 @@ export const AccountStatuses = {
   disabled: 'disabled',
   active: 'active',
   closed: 'closed',
+  processing: 'processing',
+  pending_exchange: 'pending_exchange',
 } as const;
 
 export type TAccountStatuses = keyof typeof AccountStatuses;
+
+export const AccountConsentStatuses = {
+  pending: 'pending',
+  withdrawn: 'withdrawn',
+  approved: 'approved',
+} as const;
+
+export type TAccountConsentStatuses = keyof typeof AccountConsentStatuses;
 
 export const AccountProducts = {
   payment: 'payment',
@@ -766,7 +778,7 @@ export interface IAccount {
   id: string;
   holder_id: string;
   status: TAccountStatuses;
-  consent_status?: string | null;
+  consent_status?: TAccountConsentStatuses | null;
   type: TAccountTypes | null;
   ach?: IAccountACH | null;
   liability?: IAccountLiability | null;

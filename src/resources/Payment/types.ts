@@ -25,6 +25,11 @@ export const PaymentFundStatuses = {
   sent: 'sent',
   posted: 'posted',
   unknown: 'unknown',
+  transmitting: 'transmitting',
+  transmitted: 'transmitted',
+  pending_consolidation: 'pending_consolidation',
+  pending_clearing: 'pending_clearing',
+  cashed: 'cashed',
 } as const;
 
 export type TPaymentFundStatuses = keyof typeof PaymentFundStatuses;
@@ -74,6 +79,7 @@ export interface IPayment {
   source_status: TPaymentStatuses;
   destination_status: TPaymentStatuses;
   destination_payment_method?: TPaymentDestinationPaymentMethods | null;
+  destination_posted_date?: string | null;
   fee: IPaymentFee | null;
   idempotency_key?: string | null;
   payment_instrument?: string | null;

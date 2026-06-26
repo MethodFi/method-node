@@ -16,6 +16,11 @@ export type TCreditReportBureaus = keyof typeof CreditReportBureaus;
 export const EntityTypes = {
   individual: 'individual',
   corporation: 'corporation',
+  c_corporation: 'c_corporation',
+  s_corporation: 's_corporation',
+  llc: 'llc',
+  partnership: 'partnership',
+  sole_proprietorship: 'sole_proprietorship',
 } as const;
 
 export type TEntityTypes = keyof typeof EntityTypes;
