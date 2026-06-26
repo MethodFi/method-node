@@ -304,9 +304,6 @@ describe('Accounts - core methods tests', () => {
         status: 'in_progress',
         shared: false,
         source: null,
-        issuer: card_create_response.issuer,
-        last4: card_create_response.last4,
-        network: card_create_response.network,
         error: null,
         created_at: card_create_response.created_at,
         updated_at: card_create_response.updated_at
@@ -1100,7 +1097,7 @@ describe('Accounts - core methods tests', () => {
           status_error: null,
           latest_request_id: accounts_retrieve_product_list_response.attribute?.latest_request_id || null,
           latest_successful_request_id: accounts_retrieve_product_list_response.attribute?.latest_successful_request_id || null,
-          is_subscribable: false,
+          is_subscribable: true,
           created_at: accounts_retrieve_product_list_response.attribute?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.attribute?.updated_at || ''
         },

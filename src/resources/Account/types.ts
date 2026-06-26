@@ -27,6 +27,14 @@ export const AccountStatuses = {
 
 export type TAccountStatuses = keyof typeof AccountStatuses;
 
+export const AccountConsentStatuses = {
+  pending: 'pending',
+  withdrawn: 'withdrawn',
+  approved: 'approved',
+} as const;
+
+export type TAccountConsentStatuses = keyof typeof AccountConsentStatuses;
+
 export const AccountProducts = {
   payment: 'payment',
   balance: 'balance',
@@ -766,7 +774,7 @@ export interface IAccount {
   id: string;
   holder_id: string;
   status: TAccountStatuses;
-  consent_status?: string | null;
+  consent_status?: TAccountConsentStatuses | null;
   type: TAccountTypes | null;
   ach?: IAccountACH | null;
   liability?: IAccountLiability | null;
