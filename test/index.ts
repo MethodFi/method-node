@@ -11,3 +11,4 @@ require('./resources/HealthCheck.tests');
 require('./resources/Metadata.tests');
 require('./resources/Event.tests');
 require('./resources/Opal.tests');
+require('./resources/RequestConfig.tests');

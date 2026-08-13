@@ -44,6 +44,6 @@ export default class EntityManualConnect extends Resource {
   }
 
   async create(opts: IManualConnectCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IResponse<IEntityConnect>, IManualConnectCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IEntityConnect>, IManualConnectCreateOpts>(opts, undefined, requestConfig);
   }
 };

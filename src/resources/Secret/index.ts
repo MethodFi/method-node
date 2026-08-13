@@ -35,7 +35,7 @@ export default class Secret extends Resource {
   }
 
   async create(opts: ISecretCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IResponse<ISecret>, ISecretCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<ISecret>, ISecretCreateOpts>(opts, undefined, requestConfig);
   }
 
   async delete(sec_id: string) {

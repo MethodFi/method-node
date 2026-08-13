@@ -62,7 +62,7 @@ export class Payment extends Resource {
    */
 
   async create(opts: IPaymentCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IResponse<IPayment>, IPaymentCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IPayment>, IPaymentCreateOpts>(opts, undefined, requestConfig);
   }
 
   /**

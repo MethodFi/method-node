@@ -52,7 +52,7 @@ export default class EntitySubscriptions extends Resource {
         enroll: opts as TEntitySubscriptionNames,
       };
     }
-    return super._create<IResponse<IEntitySubscription>, IEntitySubscriptionCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IEntitySubscription>, IEntitySubscriptionCreateOpts>(opts, undefined, requestConfig);
   }
 
   /**
