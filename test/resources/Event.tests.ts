@@ -54,7 +54,7 @@ describe('Events - core methods tests', () => {
     });
 
     attribute_response = await client.entities(entity_response.id).attributes.create({
-      attributes: [EntityAttributeNames.credit_health_credit_card_usage],
+      requested_attributes: [EntityAttributeNames.credit_card_utilization],
     });
 
     credit_score_response = await client.entities(entity_response.id).creditScores.create();

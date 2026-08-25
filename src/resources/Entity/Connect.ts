@@ -1,6 +1,6 @@
 import Resource, { IResourceListOpts, IRequestConfig } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
-import type { IEntityConnect } from './types';
+import type { IEntityConnect, TEntityConnectArtifactTypes } from './types';
 
 export const AccountExpandableFields = {
   sensitive: 'sensitive',
@@ -45,6 +45,7 @@ export type AccountSubscription = typeof AccountSubscriptionsEligibleForAutomati
 export interface IConnectCreateOpts {
   products?: AccountProduct[];
   subscriptions?: AccountSubscription[];
+  artifacts?: TEntityConnectArtifactTypes[];
 }
 
 

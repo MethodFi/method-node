@@ -148,7 +148,8 @@ describe('Accounts - core methods tests', () => {
           ownership: 'unknown',
           type: 'credit_card',
           sub_type: 'flexible_spending',
-          name: accounts_create_liability_response.liability?.name || null
+          name: accounts_create_liability_response.liability?.name || null,
+          network: null,
         },
         latest_verification_session: accounts_create_liability_response.latest_verification_session,
         balance: null,
@@ -304,9 +305,6 @@ describe('Accounts - core methods tests', () => {
         status: 'in_progress',
         shared: false,
         source: null,
-        issuer: card_create_response.issuer,
-        last4: card_create_response.last4,
-        network: card_create_response.network,
         error: null,
         created_at: card_create_response.created_at,
         updated_at: card_create_response.updated_at
@@ -343,8 +341,10 @@ describe('Accounts - core methods tests', () => {
       expect(brand.name).to.equal('Chase Sapphire Reserve');
       expect(brand.issuer).to.equal('Chase');
       expect(brand.network).to.equal('visa');
+      expect(brand.network_tier).to.equal('infinite');
       expect(brand.type).to.equal('specific');
       expect(brand.url).to.equal('https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png');
+      expect(brand).to.have.property('details');
     });
 
     it('should successfully list card brands for an account.', async () => {
@@ -371,8 +371,10 @@ describe('Accounts - core methods tests', () => {
       expect(brand.name).to.equal('Chase Sapphire Reserve');
       expect(brand.issuer).to.equal('Chase');
       expect(brand.network).to.equal('visa');
+      expect(brand.network_tier).to.equal('infinite');
       expect(brand.type).to.equal('specific');
       expect(brand.url).to.equal('https://static.methodfi.com/card_brands/1b7ccaba6535cb837f802d968add4700.png');
+      expect(brand).to.have.property('details');
     });
   });
 
@@ -1100,7 +1102,7 @@ describe('Accounts - core methods tests', () => {
           status_error: null,
           latest_request_id: accounts_retrieve_product_list_response.attribute?.latest_request_id || null,
           latest_successful_request_id: accounts_retrieve_product_list_response.attribute?.latest_successful_request_id || null,
-          is_subscribable: false,
+          is_subscribable: true,
           created_at: accounts_retrieve_product_list_response.attribute?.created_at || '',
           updated_at: accounts_retrieve_product_list_response.attribute?.updated_at || ''
         },

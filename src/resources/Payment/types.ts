@@ -71,6 +71,7 @@ export interface IPayment {
   estimated_completion_date: string | null;
   source_settlement_date: string | null;
   destination_settlement_date: string | null;
+  destination_posted_date: string | null;
   source_status: TPaymentStatuses;
   destination_status: TPaymentStatuses;
   destination_payment_method?: TPaymentDestinationPaymentMethods | null;

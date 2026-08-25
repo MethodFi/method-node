@@ -289,6 +289,7 @@ export interface IAccountLiability {
   type: TAccountLiabilityTypes | null;
   sub_type: TAccountLiabilitySubTypes | null;
   name: string | null;
+  network: string | null;
 };
 
 export interface IAccountACH {
@@ -312,9 +313,6 @@ export interface IAccountCardBrand {
   account_id: string;
   brands: IAccountCardBrandInfo[];
   source: 'method' | 'network' | null;
-  issuer?: string | null;
-  last4?: string | null;
-  network?: string | null;
   status: 'completed' | 'in_progress' | 'failed';
   shared: boolean;
   error: IResourceError | null;
@@ -322,15 +320,61 @@ export interface IAccountCardBrand {
   updated_at: string;
 }
 
+export interface IAccountCardBrandRewardCategory {
+  category: string | null;
+  category_presentable: string | null;
+  rate: number | null;
+  unit: string | null;
+  cap: string | null;
+}
+
+export interface IAccountCardBrandRewards {
+  type: string | null;
+  program: string | null;
+  categories: IAccountCardBrandRewardCategory[];
+}
+
+export interface IAccountCardBrandQualifyingPeriod {
+  value: number;
+  unit: string;
+  relative_to: string;
+}
+
+export interface IAccountCardBrandPromotion {
+  type: string | null;
+  title: string | null;
+  description: string | null;
+  value: number | null;
+  unit: string | null;
+  spend_requirement: number | null;
+  qualifying_period: IAccountCardBrandQualifyingPeriod | null;
+  expiration: string | null;
+}
+
+export interface IAccountCardBrandDetails {
+  card_category: string | null;
+  purchase_apr_min: number | null;
+  purchase_apr_max: number | null;
+  cash_advance_apr_min: number | null;
+  cash_advance_apr_max: number | null;
+  annual_fee: number | null;
+  late_payment_fee: number | null;
+  rewards: IAccountCardBrandRewards;
+  promotions: IAccountCardBrandPromotion[];
+  data_as_of: string | null;
+}
+
 export interface IAccountCardBrandInfo {
   id: string;
-  card_product_id: string;
-  description: string;
+  card_product_id?: string | null;
+  description?: string;
   name: string;
-  issuer: string;
+  issuer?: string | null;
   network: string;
-  type: 'specific' | 'generic' | 'in_review';
+  network_tier?: string;
+  type?: 'specific' | 'generic' | 'in_review' | null;
   url: string;
+  details: IAccountCardBrandDetails | null;
 }
 
 export interface IAccountPayoff {

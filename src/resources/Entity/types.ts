@@ -115,6 +115,27 @@ export interface IEntityVerification {
   phone?: IEntityVerificationPhone;
 };
 
+export const EntityConnectArtifactTypes = {
+  raw_credit_report: 'raw_credit_report',
+  credit_report_pdf: 'credit_report_pdf',
+} as const;
+
+export type TEntityConnectArtifactTypes = typeof EntityConnectArtifactTypes[keyof typeof EntityConnectArtifactTypes];
+
+export const EntityConnectFileBureaus = {
+  equifax: 'equifax',
+  transunion: 'transunion',
+} as const;
+
+export type TEntityConnectFileBureaus = typeof EntityConnectFileBureaus[keyof typeof EntityConnectFileBureaus];
+
+export interface IEntityConnectFile {
+  id: string;
+  type: TEntityConnectArtifactTypes;
+  bureau: TEntityConnectFileBureaus;
+  mime_type: string;
+};
+
 export interface IEntityConnect {
   id: string;
   entity_id: string;
@@ -122,6 +143,7 @@ export interface IEntityConnect {
   accounts: string[] | null;
   requested_products: TAccountProducts[];
   requested_subscriptions: TAccountSubscriptionTypes[];
+  files: IEntityConnectFile[];
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
@@ -160,35 +182,62 @@ export interface IEntityCreditScores {
 export interface IEntityAttribute<T> {
   value: T | null;
   error: IResourceError | null;
+  metadata: Record<string, unknown> | null;
+}
+
+export interface ICreditHealthAttribute<T> {
+  value: T | null;
+  rating: string;
+  metadata?: Record<string, unknown> | null;
 }
 
 export interface IEntityAttributesType {
   revolving_credit_card_balance_total?: IEntityAttribute<number>;
   credit_limit_total?: IEntityAttribute<number>;
   credit_card_utilization?: IEntityAttribute<number>;
+  available_credit_limit_total?: IEntityAttribute<number>;
+  available_credit_total?: IEntityAttribute<number>;
   weighted_average_apr_credit_card?: IEntityAttribute<number>;
   usage_pattern?: IEntityAttribute<string>;
+  utilization?: IEntityAttribute<number>;
+  purchasing_power?: IEntityAttribute<number>;
+  healthy_cards_count?: IEntityAttribute<number>;
+  dormant_cards_count?: IEntityAttribute<number>;
+  delinquent_cards_count?: IEntityAttribute<number>;
+  net_active_cards_count?: IEntityAttribute<number>;
+  utilization_velocity_4_week?: IEntityAttribute<string>;
+  utilization_velocity_8_week?: IEntityAttribute<string>;
+  utilization_velocity_12_week?: IEntityAttribute<string>;
   next_payment_minimum_total_credit_cards?: IEntityAttribute<number>;
   payment_to_minimum_ratio_avg_credit_cards?: IEntityAttribute<number>;
   revolving_credit_card_balance_change_30d?: IEntityAttribute<number>;
   revolving_credit_card_balance_change_60d?: IEntityAttribute<number>;
   revolving_credit_card_balance_change_90d?: IEntityAttribute<number>;
-  revolving_credit_card_utilization_trend_30d?: IEntityAttribute<string>;
-  revolving_credit_card_utilization_trend_90d?: IEntityAttribute<string>;
+  revolving_credit_card_utilization_trend_30d?: IEntityAttribute<number>;
+  revolving_credit_card_utilization_trend_90d?: IEntityAttribute<number>;
   revolving_credit_card_utilization_delta_30d?: IEntityAttribute<number>;
   revolving_credit_card_utilization_delta_60d?: IEntityAttribute<number>;
   revolving_credit_card_utilization_delta_90d?: IEntityAttribute<number>;
-  delinquency_flag_credit_cards?: IEntityAttribute<boolean>;
+  delinquency_flag_credit_cards?: IEntityAttribute<string>;
+  any_delinquent_flag?: IEntityAttribute<boolean>;
+  serious_delinquent_flag?: IEntityAttribute<boolean>;
+  delinquency_recently_cured_flag?: IEntityAttribute<boolean>;
+  delinquency_worst_dpd_bucket?: IEntityAttribute<string>;
+  delinquency_accounts_count?: IEntityAttribute<number>;
+  delinquent_balance_total?: IEntityAttribute<number>;
+  delinquency_progression_flag?: IEntityAttribute<boolean>;
+  delinquent_outcome?: IEntityAttribute<string>;
   personal_loan_balance_total?: IEntityAttribute<number>;
   personal_loan_amount_total?: IEntityAttribute<number>;
+  available_loan_amount_personal_loans?: IEntityAttribute<number>;
   personal_loan_monthly_installments_estimate?: IEntityAttribute<number>;
   personal_loan_utilization?: IEntityAttribute<number>;
   weighted_average_apr_personal_loan?: IEntityAttribute<number>;
   personal_loan_balance_change_30d?: IEntityAttribute<number>;
   personal_loan_balance_change_60d?: IEntityAttribute<number>;
   personal_loan_balance_change_90d?: IEntityAttribute<number>;
-  personal_loan_utilization_trend_30d?: IEntityAttribute<string>;
-  personal_loan_utilization_trend_90d?: IEntityAttribute<string>;
+  personal_loan_utilization_trend_30d?: IEntityAttribute<number>;
+  personal_loan_utilization_trend_90d?: IEntityAttribute<number>;
   personal_loan_utilization_delta_30d?: IEntityAttribute<number>;
   personal_loan_utilization_delta_60d?: IEntityAttribute<number>;
   personal_loan_utilization_delta_90d?: IEntityAttribute<number>;
@@ -198,15 +247,17 @@ export interface IEntityAttributesType {
   mortgage_balance_change_30d?: IEntityAttribute<number>;
   mortgage_balance_change_60d?: IEntityAttribute<number>;
   mortgage_balance_change_90d?: IEntityAttribute<number>;
-  mortgage_utilization_trend_30d?: IEntityAttribute<string>;
-  mortgage_utilization_trend_90d?: IEntityAttribute<string>;
+  mortgage_utilization_trend_30d?: IEntityAttribute<number>;
+  mortgage_utilization_trend_90d?: IEntityAttribute<number>;
   mortgage_utilization_delta_30d?: IEntityAttribute<number>;
   mortgage_utilization_delta_60d?: IEntityAttribute<number>;
   mortgage_utilization_delta_90d?: IEntityAttribute<number>;
+  heloc_balance_total?: IEntityAttribute<number>;
+  heloc_utilization?: IEntityAttribute<number>;
   overall_loan_amount_total?: IEntityAttribute<number>;
   overall_utilization?: IEntityAttribute<number>;
-  overall_utilization_trend_30d?: IEntityAttribute<string>;
-  overall_utilization_trend_90d?: IEntityAttribute<string>;
+  overall_utilization_trend_30d?: IEntityAttribute<number>;
+  overall_utilization_trend_90d?: IEntityAttribute<number>;
   overall_utilization_delta_30d?: IEntityAttribute<number>;
   overall_utilization_delta_60d?: IEntityAttribute<number>;
   overall_utilization_delta_90d?: IEntityAttribute<number>;
@@ -218,23 +269,54 @@ export interface IEntityAttributesType {
   other_balance_change_30d?: IEntityAttribute<number>;
   other_balance_change_60d?: IEntityAttribute<number>;
   other_balance_change_90d?: IEntityAttribute<number>;
-  credit_health_credit_card_usage?: IEntityAttribute<number>;
-  credit_health_derogatory_marks?: IEntityAttribute<number>;
-  credit_health_hard_inquiries?: IEntityAttribute<number>;
-  credit_health_soft_inquiries?: IEntityAttribute<number>;
-  credit_health_total_accounts?: IEntityAttribute<number>;
-  credit_health_credit_age?: IEntityAttribute<number>;
-  credit_health_payment_history?: IEntityAttribute<number>;
-  credit_health_open_accounts?: IEntityAttribute<number>;
-  credit_health_entity_delinquent?: IEntityAttribute<boolean>;
+  enrolled_in_direct_pay_previously?: IEntityAttribute<boolean>;
+  last_direct_pay_date?: IEntityAttribute<string>;
+  last_direct_pay_amount?: IEntityAttribute<number>;
+  number_of_direct_pay_in_12_months?: IEntityAttribute<number>;
+  credit_health_credit_card_usage?: ICreditHealthAttribute<number>;
+  credit_health_derogatory_marks?: ICreditHealthAttribute<number>;
+  credit_health_hard_inquiries?: ICreditHealthAttribute<number>;
+  credit_health_soft_inquiries?: ICreditHealthAttribute<number>;
+  credit_health_total_accounts?: ICreditHealthAttribute<number>;
+  credit_health_credit_age?: ICreditHealthAttribute<number>;
+  credit_health_payment_history?: ICreditHealthAttribute<number>;
+  credit_health_open_accounts?: ICreditHealthAttribute<number>;
+  credit_health_entity_delinquent?: ICreditHealthAttribute<number>;
 }
+
+// These v1 attributes can still appear on historical responses, but the v2
+// 2026-03-30 create validators do not accept them as requested_attributes.
+export const LegacyEntityAttributeNames = {
+  credit_health_credit_card_usage: 'credit_health_credit_card_usage',
+  credit_health_derogatory_marks: 'credit_health_derogatory_marks',
+  credit_health_hard_inquiries: 'credit_health_hard_inquiries',
+  credit_health_soft_inquiries: 'credit_health_soft_inquiries',
+  credit_health_total_accounts: 'credit_health_total_accounts',
+  credit_health_credit_age: 'credit_health_credit_age',
+  credit_health_payment_history: 'credit_health_payment_history',
+  credit_health_open_accounts: 'credit_health_open_accounts',
+  credit_health_entity_delinquent: 'credit_health_entity_delinquent',
+} as const;
+
+export type TLegacyEntityAttributeNames = typeof LegacyEntityAttributeNames[keyof typeof LegacyEntityAttributeNames];
 
 export const EntityAttributeNames = {
   revolving_credit_card_balance_total: 'revolving_credit_card_balance_total',
   credit_limit_total: 'credit_limit_total',
   credit_card_utilization: 'credit_card_utilization',
+  available_credit_limit_total: 'available_credit_limit_total',
+  available_credit_total: 'available_credit_total',
   weighted_average_apr_credit_card: 'weighted_average_apr_credit_card',
   usage_pattern: 'usage_pattern',
+  utilization: 'utilization',
+  purchasing_power: 'purchasing_power',
+  healthy_cards_count: 'healthy_cards_count',
+  dormant_cards_count: 'dormant_cards_count',
+  delinquent_cards_count: 'delinquent_cards_count',
+  net_active_cards_count: 'net_active_cards_count',
+  utilization_velocity_4_week: 'utilization_velocity_4_week',
+  utilization_velocity_8_week: 'utilization_velocity_8_week',
+  utilization_velocity_12_week: 'utilization_velocity_12_week',
   next_payment_minimum_total_credit_cards: 'next_payment_minimum_total_credit_cards',
   payment_to_minimum_ratio_avg_credit_cards: 'payment_to_minimum_ratio_avg_credit_cards',
   revolving_credit_card_balance_change_30d: 'revolving_credit_card_balance_change_30d',
@@ -246,8 +328,17 @@ export const EntityAttributeNames = {
   revolving_credit_card_utilization_delta_60d: 'revolving_credit_card_utilization_delta_60d',
   revolving_credit_card_utilization_delta_90d: 'revolving_credit_card_utilization_delta_90d',
   delinquency_flag_credit_cards: 'delinquency_flag_credit_cards',
+  any_delinquent_flag: 'any_delinquent_flag',
+  serious_delinquent_flag: 'serious_delinquent_flag',
+  delinquency_recently_cured_flag: 'delinquency_recently_cured_flag',
+  delinquency_worst_dpd_bucket: 'delinquency_worst_dpd_bucket',
+  delinquency_accounts_count: 'delinquency_accounts_count',
+  delinquent_balance_total: 'delinquent_balance_total',
+  delinquency_progression_flag: 'delinquency_progression_flag',
+  delinquent_outcome: 'delinquent_outcome',
   personal_loan_balance_total: 'personal_loan_balance_total',
   personal_loan_amount_total: 'personal_loan_amount_total',
+  available_loan_amount_personal_loans: 'available_loan_amount_personal_loans',
   personal_loan_monthly_installments_estimate: 'personal_loan_monthly_installments_estimate',
   personal_loan_utilization: 'personal_loan_utilization',
   weighted_average_apr_personal_loan: 'weighted_average_apr_personal_loan',
@@ -270,6 +361,8 @@ export const EntityAttributeNames = {
   mortgage_utilization_delta_30d: 'mortgage_utilization_delta_30d',
   mortgage_utilization_delta_60d: 'mortgage_utilization_delta_60d',
   mortgage_utilization_delta_90d: 'mortgage_utilization_delta_90d',
+  heloc_balance_total: 'heloc_balance_total',
+  heloc_utilization: 'heloc_utilization',
   overall_loan_amount_total: 'overall_loan_amount_total',
   overall_utilization: 'overall_utilization',
   overall_utilization_trend_30d: 'overall_utilization_trend_30d',
@@ -285,21 +378,26 @@ export const EntityAttributeNames = {
   other_balance_change_30d: 'other_balance_change_30d',
   other_balance_change_60d: 'other_balance_change_60d',
   other_balance_change_90d: 'other_balance_change_90d',
-  credit_health_credit_card_usage: 'credit_health_credit_card_usage',
-  credit_health_derogatory_marks: 'credit_health_derogatory_marks',
-  credit_health_hard_inquiries: 'credit_health_hard_inquiries',
-  credit_health_soft_inquiries: 'credit_health_soft_inquiries',
-  credit_health_total_accounts: 'credit_health_total_accounts',
-  credit_health_credit_age: 'credit_health_credit_age',
-  credit_health_payment_history: 'credit_health_payment_history',
-  credit_health_open_accounts: 'credit_health_open_accounts',
-  credit_health_entity_delinquent: 'credit_health_entity_delinquent',
+  enrolled_in_direct_pay_previously: 'enrolled_in_direct_pay_previously',
+  last_direct_pay_date: 'last_direct_pay_date',
+  last_direct_pay_amount: 'last_direct_pay_amount',
+  number_of_direct_pay_in_12_months: 'number_of_direct_pay_in_12_months',
+  ...LegacyEntityAttributeNames,
 } as const;
 
-export type TEntityAttributeNames = keyof typeof EntityAttributeNames;
+export type TEntityAttributeNames = typeof EntityAttributeNames[keyof typeof EntityAttributeNames];
+export type TEntityRequestableAttributeNames = Exclude<TEntityAttributeNames, TLegacyEntityAttributeNames>;
+
+export const EntityAttributeBundles = {
+  portfolio_intelligence: 'portfolio_intelligence',
+  wallet_intelligence: 'wallet_intelligence',
+} as const;
+
+export type TEntityAttributeBundles = typeof EntityAttributeBundles[keyof typeof EntityAttributeBundles];
 
 export interface IEntityAttributesCreateOpts {
-  attributes: TEntityAttributeNames[];
+  requested_attributes?: TEntityRequestableAttributeNames[];
+  bundles?: TEntityAttributeBundles[];
 }
 
 export interface IEntityAttributes {
@@ -398,9 +496,24 @@ export type TEntitySubscriptionStatuses = keyof typeof EntitySubscriptionStatuse
 
 export interface IEntitySubscriptionPayload {
   attributes?: {
-    requested_attributes: TEntityAttributeNames[];
-    version?: string;
+    requested_attributes?: TEntityRequestableAttributeNames[];
+    bundles?: TEntityAttributeBundles[];
+    version?: 'v1' | 'v2';
   } | null;
+};
+
+export type TEntityAttributeRequestScope =
+  | {
+    requested_attributes: TEntityRequestableAttributeNames[];
+    bundles?: TEntityAttributeBundles[];
+  }
+  | {
+    requested_attributes?: TEntityRequestableAttributeNames[];
+    bundles: TEntityAttributeBundles[];
+  };
+
+export interface IEntitySubscriptionCreatePayload {
+  attributes?: TEntityAttributeRequestScope;
 };
 
 export interface IEntitySubscription {
@@ -421,7 +534,7 @@ export interface IEntitySubscriptionResponse {
 
 export interface IEntitySubscriptionCreateOpts {
   enroll: TEntitySubscriptionNames;
-  payload?: IEntitySubscriptionPayload;
+  payload?: IEntitySubscriptionCreatePayload;
 };
 
 export const EntityVerificationSessionStatuses = {

@@ -491,6 +491,7 @@ describe('Entities - core methods tests', () => {
         accounts: entities_account_ids,
         requested_products: [],
         requested_subscriptions: [],
+        files: [],
         error: null,
         created_at: entities_connect_create_response.created_at,
         updated_at: entities_connect_create_response.updated_at,
@@ -513,6 +514,7 @@ describe('Entities - core methods tests', () => {
         accounts: entities_account_ids,
         requested_products: [],
         requested_subscriptions: [],
+        files: [],
         error: null,
         created_at: entities_connect_create_response.created_at,
         updated_at: entities_connect_create_response.updated_at,
@@ -535,6 +537,7 @@ describe('Entities - core methods tests', () => {
         accounts: entities_account_ids,
         requested_products: [],
         requested_subscriptions: [],
+        files: [],
         error: null,
         created_at: entities_connect_create_response.created_at,
         updated_at: entities_connect_create_response.updated_at,
@@ -562,6 +565,7 @@ describe('Entities - core methods tests', () => {
         accounts: null,
         requested_products: ['card_brand'],
         requested_subscriptions: ['update'],
+        files: [],
         error: null,
         created_at: entities_connect_create_response_async.created_at,
         updated_at: entities_connect_create_response_async.updated_at,
@@ -589,6 +593,7 @@ describe('Entities - core methods tests', () => {
         accounts: entities_connect_results_response_async.accounts,
         requested_products: ['card_brand'],
         requested_subscriptions: ['update'],
+        files: [],
         error: null,
         created_at: entities_connect_results_response_async.created_at,
         updated_at: entities_connect_results_response_async.updated_at,
@@ -744,7 +749,7 @@ describe('Entities - core methods tests', () => {
       entities_create_attribute_response = await client
         .entities(entities_create_response.id)
         .attributes.create({
-          attributes: [EntityAttributeNames.credit_health_credit_card_usage]
+          requested_attributes: [EntityAttributeNames.credit_card_utilization]
         });
 
       const expect_results: IEntityAttributes = {
