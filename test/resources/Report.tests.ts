@@ -1,18 +1,24 @@
 import { should } from 'chai';
 import { describe } from 'mocha';
 import { client } from '../config';
-import { ReportTypes } from '../../src/resources/Report';
+import { ReportRetrieveTypes, ReportTypes } from '../../src/resources/Report';
 import type { IReport, IReportCreateOpts } from '../../src/resources/Report';
 import { IResponse } from '../../src/configuration';
 
 should();
 
 type Assert<T extends true> = T;
+type CreateTypesAreReadable = Assert<
+  IReportCreateOpts['type'] extends IReport['type'] ? true : false
+>;
+type ReportTypesAreCreatable = Assert<
+  typeof ReportTypes[keyof typeof ReportTypes] extends IReportCreateOpts['type'] ? true : false
+>;
 type AchDebitDailyIsReadable = Assert<
-  typeof ReportTypes.ach_debit_daily extends IReport['type'] ? true : false
+  typeof ReportRetrieveTypes.ach_debit_daily extends IReport['type'] ? true : false
 >;
 type AchDebitDailyIsNotCreatable = Assert<
-  typeof ReportTypes.ach_debit_daily extends IReportCreateOpts['type'] ? false : true
+  typeof ReportRetrieveTypes.ach_debit_daily extends IReportCreateOpts['type'] ? false : true
 >;
 
 //TODO: Add tests for each report type
