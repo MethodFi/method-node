@@ -24,6 +24,10 @@ export interface IExpandableOpts {
 
 export interface IConnectListOpts extends IResourceListOpts, IExpandableOpts {}
 
+export interface IConnectRetrieveOpts extends IExpandableOpts {
+  include_raw_report?: boolean;
+}
+
 export const AccountProductsEligibleForAutomaticExecution = [
   'attribute',
   'balance',
@@ -42,12 +46,21 @@ export const AccountSubscriptionsEligibleForAutomaticExecution = [
 export type AccountProduct = typeof AccountProductsEligibleForAutomaticExecution[number];
 export type AccountSubscription = typeof AccountSubscriptionsEligibleForAutomaticExecution[number];
 
-export interface IConnectCreateOpts {
+interface IConnectCreateOptsBase {
   products?: AccountProduct[];
   subscriptions?: AccountSubscription[];
-  artifacts?: TEntityConnectArtifactTypes[];
-  bureau?: TEntityConnectFileBureaus;
+  include_raw_report?: boolean;
 }
+
+export type IConnectCreateOpts =
+  | (IConnectCreateOptsBase & {
+    artifacts: TEntityConnectArtifactTypes[];
+    bureau: TEntityConnectFileBureaus;
+  })
+  | (IConnectCreateOptsBase & {
+    artifacts?: never;
+    bureau?: TEntityConnectFileBureaus;
+  });
 
 
 export default class EntityConnect extends Resource {
@@ -63,7 +76,7 @@ export default class EntityConnect extends Resource {
    * @returns Returns a Connect object.
    */
 
-  async retrieve(cxn_id: string, opts: IExpandableOpts = {}) {
+  async retrieve(cxn_id: string, opts: IConnectRetrieveOpts = {}) {
     return super._getWithSubPathAndParams<IResponse<IEntityConnect>>(cxn_id, opts);
   }
 

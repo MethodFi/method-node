@@ -46,7 +46,7 @@ export default class AccountSubscriptions extends Resource {
    */
 
   async create(opts: IAccountSubscriptionCreateOpts | TAccountSubscriptionTypes) {
-    const data: IAccountSubscriptionCreateOpts = typeof opts === 'string' ? { enroll: opts } : opts;
+    const data = (typeof opts === 'string' ? { enroll: opts } : opts) as IAccountSubscriptionCreateOpts;
 
     return super._create<IResponse<IAccountSubscription>, IAccountSubscriptionCreateOpts>(data);
   }

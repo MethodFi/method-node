@@ -77,18 +77,23 @@ export interface IAccountProductListResponse {
 
 export const AccountSubscriptionTypes = {
   card_brand: 'card_brand',
-  payment_instrument: 'payment_instrument',
   'payment_instrument.card': 'payment_instrument.card',
   'payment_instrument.network_token': 'payment_instrument.network_token',
   transaction: 'transaction',
   update: 'update',
   update_snapshot: 'update.snapshot',
   attribute: 'attribute',
-  connect: 'connect',
-  credit_score: 'credit_score',
 } as const;
 
 export type TAccountSubscriptionTypes = typeof AccountSubscriptionTypes[keyof typeof AccountSubscriptionTypes];
+
+export const DeprecatedAccountSubscriptionTypes = {
+  payment_instrument: 'payment_instrument',
+} as const;
+
+export type TDeprecatedAccountSubscriptionTypes = typeof DeprecatedAccountSubscriptionTypes[keyof typeof DeprecatedAccountSubscriptionTypes];
+
+export type TAccountSubscriptionNames = TAccountSubscriptionTypes | TDeprecatedAccountSubscriptionTypes;
 
 export const AccountOwnership = {
   primary: 'primary',
@@ -423,38 +428,38 @@ export const CardBrandQualifyingPeriodReferences = {
 export type TCardBrandQualifyingPeriodReferences = typeof CardBrandQualifyingPeriodReferences[keyof typeof CardBrandQualifyingPeriodReferences];
 
 export interface IAccountCardBrandRewardCategory {
-  category: TCardBrandRewardCategoryGroups | null;
+  category: string | null;
   category_presentable: string | null;
   rate: number | null;
-  unit: TCardBrandEarnRateUnits | null;
+  unit: string | null;
   cap: string | null;
 }
 
 export interface IAccountCardBrandRewards {
-  type: TCardBrandRewardsTypes | null;
+  type: string | null;
   program: string | null;
   categories: IAccountCardBrandRewardCategory[];
 }
 
 export interface IAccountCardBrandQualifyingPeriod {
   value: number;
-  unit: TCardBrandQualifyingPeriodUnits;
-  relative_to: TCardBrandQualifyingPeriodReferences;
+  unit: string;
+  relative_to: string;
 }
 
 export interface IAccountCardBrandPromotion {
-  type: TCardBrandPromotionTypes | null;
+  type: string | null;
   title: string | null;
   description: string | null;
   value: number | null;
-  unit: TCardBrandPromotionValueUnits | null;
+  unit: string | null;
   spend_requirement: number | null;
   qualifying_period: IAccountCardBrandQualifyingPeriod | null;
   expiration: string | null;
 }
 
 export interface IAccountCardBrandDetails {
-  card_category: TCardBrandCardCategories | null;
+  card_category: string | null;
   purchase_apr_min: number | null;
   purchase_apr_max: number | null;
   cash_advance_apr_min: number | null;
@@ -473,7 +478,7 @@ export interface IAccountCardBrandInfo {
   name: string;
   issuer?: string | null;
   network: string;
-  network_tier?: TCardBrandNetworkTiers;
+  network_tier?: string;
   type?: TCardBrandTypes | null;
   url: string;
   details: IAccountCardBrandDetails | null;
@@ -543,7 +548,7 @@ export type TAccountSubscriptionStatuses = keyof typeof AccountSubscriptionStatu
 
 export interface IAccountSubscription {
   id: string;
-  name: TAccountSubscriptionTypes;
+  name: TAccountSubscriptionNames;
   status: TAccountSubscriptionStatuses;
   payload: IAccountSubscriptionPayload | null;
   latest_request_id: string | null;
@@ -560,18 +565,20 @@ export interface IAccountSubscriptionsResponse {
   'payment_instrument.card'?: IAccountSubscription;
   'payment_instrument.network_token'?: IAccountSubscription;
   attribute?: IAccountSubscription;
-  connect?: IAccountSubscription;
-  credit_score?: IAccountSubscription;
 };
 
 export interface IAccountSubscriptionPayload {
   attributes?: TAccountAttributeRequestScope;
 };
 
-export interface IAccountSubscriptionCreateOpts {
-  enroll: TAccountSubscriptionTypes;
-  payload?: IAccountSubscriptionPayload;
-};
+export type IAccountSubscriptionCreateOpts =
+  | {
+    enroll: typeof AccountSubscriptionTypes.attribute;
+    payload?: IAccountSubscriptionPayload;
+  }
+  | {
+    enroll: Exclude<TAccountSubscriptionTypes, typeof AccountSubscriptionTypes.attribute>;
+  };
 
 export interface IAccountUpdate {
   id: string;
@@ -872,8 +879,8 @@ export type TAccountRequestableAttributeNames = Exclude<TAccountAttributeNames, 
 
 export interface IAccountAttribute<T> {
   value: T | null;
-  error: IResourceError | null;
-  metadata: Record<string, unknown> | null;
+  error?: IResourceError | null;
+  metadata?: Record<string, unknown> | null;
 }
 
 export interface IAccountAttributesType {
@@ -1013,9 +1020,9 @@ export interface IAccount {
   liability?: IAccountLiability | null;
   products: TAccountProducts[];
   restricted_products: TAccountProducts[];
-  subscriptions?: TAccountSubscriptionTypes[];
-  available_subscriptions?: TAccountSubscriptionTypes[];
-  restricted_subscriptions?: TAccountSubscriptionTypes[];
+  subscriptions?: TAccountSubscriptionNames[];
+  available_subscriptions?: TAccountSubscriptionNames[];
+  restricted_subscriptions?: TAccountSubscriptionNames[];
   sensitive?: string | IAccountSensitive | null;
   balance?: string | IAccountBalance | null;
   card_brand?: string | IAccountCardBrand | null;

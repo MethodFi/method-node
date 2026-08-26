@@ -144,6 +144,7 @@ export interface IEntityConnect {
   requested_products: TAccountProducts[];
   requested_subscriptions: TAccountSubscriptionTypes[];
   files: IEntityConnectFile[];
+  credit_reports?: Record<string, unknown> | null;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
@@ -496,7 +497,7 @@ export type TEntitySubscriptionStatuses = keyof typeof EntitySubscriptionStatuse
 
 export interface IEntitySubscriptionPayload {
   attributes?: {
-    requested_attributes?: TEntityRequestableAttributeNames[];
+    requested_attributes?: TEntityAttributeNames[];
     bundles?: TEntityAttributeBundles[];
     version?: 'v1' | 'v2';
   } | null;
