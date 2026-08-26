@@ -20,7 +20,6 @@ describe('Payment public response statuses', () => {
 
     Object.keys(PaymentStatuses).sort().should.be.eql([
       'canceled',
-      'cashed',
       'failed',
       'pending',
       'posted',
@@ -35,7 +34,6 @@ describe('Payment public response statuses', () => {
     Object.keys(PaymentDirectionStatuses).sort().should.be.eql([
       'canceled',
       'cashed',
-      'error',
       'pending',
       'posted',
       'processing',
