@@ -34,7 +34,6 @@ export default class AccountAttributes extends Resource {
    * Creates a new Attributes request to retrieve the Account’s attributes.
    * https://docs.methodfi.com/reference/accounts/attributes/create
    *
-   * @param opts Attributes or bundles to request. Omit to request the full set.
    * @returns Returns an Account’s Attributes object.
    */
 

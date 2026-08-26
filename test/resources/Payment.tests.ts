@@ -3,10 +3,57 @@ import { describe } from 'mocha';
 import { client } from '../config';
 import type { IEntity } from '../../src/resources/Entity';
 import type { IAccount } from '../../src/resources/Account';
+import {
+  PaymentDirectionStatuses,
+  PaymentFundStatuses,
+  PaymentStatuses,
+} from '../../src/resources/Payment';
 import type { IPayment } from '../../src/resources/Payment';
 import { IResponse } from '../../src/configuration';
+import { PaymentDirectionStatuses as RootPaymentDirectionStatuses } from '../../index';
 
 should();
+
+describe('Payment public response statuses', () => {
+  it('should expose only statuses serialized by Octo for each public field', () => {
+    RootPaymentDirectionStatuses.should.equal(PaymentDirectionStatuses);
+
+    Object.keys(PaymentStatuses).sort().should.be.eql([
+      'canceled',
+      'cashed',
+      'failed',
+      'pending',
+      'posted',
+      'processing',
+      'reversal_processing',
+      'reversal_required',
+      'reversed',
+      'sent',
+      'settled',
+    ].sort());
+
+    Object.keys(PaymentDirectionStatuses).sort().should.be.eql([
+      'canceled',
+      'cashed',
+      'error',
+      'pending',
+      'posted',
+      'processing',
+      'returned',
+      'sent',
+    ].sort());
+
+    Object.keys(PaymentFundStatuses).sort().should.be.eql([
+      'clearing',
+      'failed',
+      'pending',
+      'posted',
+      'requested',
+      'sent',
+      'unknown',
+    ].sort());
+  });
+});
 
 describe('Payments - core methods tests', () => {
   let holder_1_response: IResponse<IEntity>;

@@ -41,7 +41,6 @@ export default class AccountSubscriptions extends Resource {
    *
    * Note: Subscription requests are processed individually, meaning the success or failure of one subscription does not affect others. The response object will detail any errors encountered.
    *
-   * @param opts A Subscription name, or an IAccountSubscriptionCreateOpts object.
    * @returns Returns a map of Subscription name to Subscription object.
    */
 

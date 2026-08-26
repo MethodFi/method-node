@@ -34,7 +34,6 @@ export default class EntityAttributes extends Resource {
    * Creates a new Attributes request to retrieve the Entity’s attributes.
    * https://docs.methodfi.com/reference/entities/attributes/create
    *
-   * @param opts Attributes or bundles to request. Omit to request the full set.
    * @returns Returns an Entity’s Attributes object.
    */
 

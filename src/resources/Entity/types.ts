@@ -3,7 +3,7 @@ import type {
   TResourceStatus,
   IResourceListOpts,
 } from '../../resource';
-import { TAccountProducts, TAccountSubscriptionTypes } from '../Account';
+import type { IAccount, TAccountProducts, TAccountSubscriptionTypes } from '../Account';
 
 export const CreditReportBureaus = {
   experian: 'experian',
@@ -140,7 +140,7 @@ export interface IEntityConnect {
   id: string;
   entity_id: string;
   status: TResourceStatus;
-  accounts: string[] | null;
+  accounts: (string | IAccount)[] | null;
   requested_products: TAccountProducts[];
   requested_subscriptions: TAccountSubscriptionTypes[];
   files: IEntityConnectFile[];
@@ -285,8 +285,6 @@ export interface IEntityAttributesType {
   credit_health_entity_delinquent?: ICreditHealthAttribute<number>;
 }
 
-// These v1 attributes can still appear on historical responses, but the v2
-// 2026-03-30 create validators do not accept them as requested_attributes.
 export const LegacyEntityAttributeNames = {
   credit_health_credit_card_usage: 'credit_health_credit_card_usage',
   credit_health_derogatory_marks: 'credit_health_derogatory_marks',

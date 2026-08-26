@@ -4,6 +4,8 @@ import { client } from '../config';
 import { awaitResults } from '../utils';
 import type { IEntity, IEntityConnect } from '../../src/resources/Entity';
 import {
+  AccountAttributeNames,
+  LegacyAccountAttributeNames,
   type IAccount,
   type IAccountBalance,
   type IAccountCardBrand,
@@ -23,6 +25,23 @@ import {
 import { IResponse } from '../../src/configuration';
 
 should();
+
+describe('Account public attribute names', () => {
+  it('should expose legacy response-only attribute names', () => {
+    Object.keys(LegacyAccountAttributeNames).sort().should.be.eql([
+      'account_standing',
+      'debt_settlement',
+      'delinquent_amount',
+      'delinquent_period',
+      'interest_estimate_max',
+      'interest_estimate_min',
+    ].sort());
+
+    Object.values(LegacyAccountAttributeNames).forEach((name) => {
+      AccountAttributeNames.should.have.property(name, name);
+    });
+  });
+});
 
 describe('Accounts - core methods tests', () => {
   let holder_1_response: IResponse<IEntity>;
