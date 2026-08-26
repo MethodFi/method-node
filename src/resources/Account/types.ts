@@ -320,39 +320,141 @@ export interface IAccountCardBrand {
   updated_at: string;
 }
 
+export const CardBrandNetworkTiers = {
+  standard: 'standard',
+  unknown: 'unknown',
+  platinum: 'platinum',
+  signature: 'signature',
+  infinite: 'infinite',
+  business: 'business',
+  signature_business: 'signature business',
+  world: 'world',
+  world_elite: 'world elite',
+  world_elite_business: 'world elite business',
+} as const;
+
+export type TCardBrandNetworkTiers = typeof CardBrandNetworkTiers[keyof typeof CardBrandNetworkTiers];
+
+export const CardBrandTypes = {
+  generic: 'generic',
+  specific: 'specific',
+  merged: 'merged',
+  in_review: 'in_review',
+} as const;
+
+export type TCardBrandTypes = typeof CardBrandTypes[keyof typeof CardBrandTypes];
+
+export const CardBrandCardCategories = {
+  travel: 'travel',
+  cash_back: 'cash_back',
+  store: 'store',
+  credit_builder: 'credit_builder',
+  basic: 'basic',
+  dining: 'dining',
+} as const;
+
+export type TCardBrandCardCategories = typeof CardBrandCardCategories[keyof typeof CardBrandCardCategories];
+
+export const CardBrandRewardsTypes = {
+  cash_back: 'cash_back',
+  points: 'points',
+  miles: 'miles',
+  discount: 'discount',
+  none: 'none',
+} as const;
+
+export type TCardBrandRewardsTypes = typeof CardBrandRewardsTypes[keyof typeof CardBrandRewardsTypes];
+
+export const CardBrandRewardCategoryGroups = {
+  travel: 'travel',
+  dining: 'dining',
+  groceries: 'groceries',
+  gas: 'gas',
+  streaming: 'streaming',
+  store: 'store',
+  base_rate: 'base_rate',
+  other: 'other',
+} as const;
+
+export type TCardBrandRewardCategoryGroups = typeof CardBrandRewardCategoryGroups[keyof typeof CardBrandRewardCategoryGroups];
+
+export const CardBrandEarnRateUnits = {
+  percent: 'percent',
+  points_per_dollar: 'points_per_dollar',
+  miles_per_dollar: 'miles_per_dollar',
+} as const;
+
+export type TCardBrandEarnRateUnits = typeof CardBrandEarnRateUnits[keyof typeof CardBrandEarnRateUnits];
+
+export const CardBrandPromotionTypes = {
+  sign_up_bonus: 'sign_up_bonus',
+  intro_apr: 'intro_apr',
+  partner_promo: 'partner_promo',
+  statement_credit: 'statement_credit',
+  referral_bonus: 'referral_bonus',
+  deferred_interest: 'deferred_interest',
+  co_brand_promo: 'co_brand_promo',
+  bonus_rewards: 'bonus_rewards',
+  other: 'other',
+} as const;
+
+export type TCardBrandPromotionTypes = typeof CardBrandPromotionTypes[keyof typeof CardBrandPromotionTypes];
+
+export const CardBrandPromotionValueUnits = {
+  points: 'points',
+  miles: 'miles',
+  percent: 'percent',
+  cents: 'cents',
+} as const;
+
+export type TCardBrandPromotionValueUnits = typeof CardBrandPromotionValueUnits[keyof typeof CardBrandPromotionValueUnits];
+
+export const CardBrandQualifyingPeriodUnits = {
+  months: 'months',
+  days: 'days',
+} as const;
+
+export type TCardBrandQualifyingPeriodUnits = typeof CardBrandQualifyingPeriodUnits[keyof typeof CardBrandQualifyingPeriodUnits];
+
+export const CardBrandQualifyingPeriodReferences = {
+  account_opening: 'account_opening',
+} as const;
+
+export type TCardBrandQualifyingPeriodReferences = typeof CardBrandQualifyingPeriodReferences[keyof typeof CardBrandQualifyingPeriodReferences];
+
 export interface IAccountCardBrandRewardCategory {
-  category: string | null;
+  category: TCardBrandRewardCategoryGroups | null;
   category_presentable: string | null;
   rate: number | null;
-  unit: string | null;
+  unit: TCardBrandEarnRateUnits | null;
   cap: string | null;
 }
 
 export interface IAccountCardBrandRewards {
-  type: string | null;
+  type: TCardBrandRewardsTypes | null;
   program: string | null;
   categories: IAccountCardBrandRewardCategory[];
 }
 
 export interface IAccountCardBrandQualifyingPeriod {
   value: number;
-  unit: string;
-  relative_to: string;
+  unit: TCardBrandQualifyingPeriodUnits;
+  relative_to: TCardBrandQualifyingPeriodReferences;
 }
 
 export interface IAccountCardBrandPromotion {
-  type: string | null;
+  type: TCardBrandPromotionTypes | null;
   title: string | null;
   description: string | null;
   value: number | null;
-  unit: string | null;
+  unit: TCardBrandPromotionValueUnits | null;
   spend_requirement: number | null;
   qualifying_period: IAccountCardBrandQualifyingPeriod | null;
   expiration: string | null;
 }
 
 export interface IAccountCardBrandDetails {
-  card_category: string | null;
+  card_category: TCardBrandCardCategories | null;
   purchase_apr_min: number | null;
   purchase_apr_max: number | null;
   cash_advance_apr_min: number | null;
@@ -371,8 +473,8 @@ export interface IAccountCardBrandInfo {
   name: string;
   issuer?: string | null;
   network: string;
-  network_tier?: string;
-  type?: 'specific' | 'generic' | 'in_review' | null;
+  network_tier?: TCardBrandNetworkTiers;
+  type?: TCardBrandTypes | null;
   url: string;
   details: IAccountCardBrandDetails | null;
 }
@@ -443,7 +545,7 @@ export interface IAccountSubscription {
   id: string;
   name: TAccountSubscriptionTypes;
   status: TAccountSubscriptionStatuses;
-  payload: any | null;
+  payload: IAccountSubscriptionPayload | null;
   latest_request_id: string | null;
   created_at: string;
   updated_at: string;
@@ -462,8 +564,13 @@ export interface IAccountSubscriptionsResponse {
   credit_score?: IAccountSubscription;
 };
 
+export interface IAccountSubscriptionPayload {
+  attributes?: TAccountAttributeRequestScope;
+};
+
 export interface IAccountSubscriptionCreateOpts {
   enroll: TAccountSubscriptionTypes;
+  payload?: IAccountSubscriptionPayload;
 };
 
 export interface IAccountUpdate {
@@ -704,8 +811,20 @@ export interface IAccountWithdrawConsentOpts {
   reason: 'holder_withdrew_consent' | null;
 };
 
-export const AccountAttributeNames = {
+export const AccountAttributeBundles = {
+  wallet_intelligence: 'wallet_intelligence',
+  statement: 'statement',
+} as const;
+
+export type TAccountAttributeBundles = typeof AccountAttributeBundles[keyof typeof AccountAttributeBundles];
+
+export const StaticAccountAttributeNames = {
   type: 'type',
+} as const;
+
+export type TStaticAccountAttributeNames = typeof StaticAccountAttributeNames[keyof typeof StaticAccountAttributeNames];
+
+export const AccountAttributeNames = {
   usage_pattern: 'usage_pattern',
   delinquency_flag: 'delinquency_flag',
   utilization: 'utilization',
@@ -715,27 +834,105 @@ export const AccountAttributeNames = {
   utilization_delta_60d: 'utilization_delta_60d',
   utilization_delta_90d: 'utilization_delta_90d',
   monthly_installments_estimate: 'monthly_installments_estimate',
+  heloc_utilization: 'heloc_utilization',
+  available_credit_limit: 'available_credit_limit',
+  available_loan_amount: 'available_loan_amount',
+  any_delinquent_flag: 'any_delinquent_flag',
+  serious_delinquent_flag: 'serious_delinquent_flag',
+  delinquency_recently_cured_flag: 'delinquency_recently_cured_flag',
+  delinquency_worst_dpd_bucket: 'delinquency_worst_dpd_bucket',
+  delinquency_progression_flag: 'delinquency_progression_flag',
+  delinquent_outcome: 'delinquent_outcome',
+  next_payment_due_date: 'next_payment_due_date',
+  next_payment_minimum_amount: 'next_payment_minimum_amount',
+  estimated_apr: 'estimated_apr',
+  utilization_bucket: 'utilization_bucket',
+  purchasing_power: 'purchasing_power',
+  account_age: 'account_age',
+  utilization_velocity_4_week: 'utilization_velocity_4_week',
+  utilization_velocity_8_week: 'utilization_velocity_8_week',
+  utilization_velocity_12_week: 'utilization_velocity_12_week',
+  weeks_since_last_activity: 'weeks_since_last_activity',
+  recent_balance_spike_flag: 'recent_balance_spike_flag',
+  spend_concentration_4_week: 'spend_concentration_4_week',
+  spend_concentration_8_week: 'spend_concentration_8_week',
+  spend_concentration_12_week: 'spend_concentration_12_week',
+  current_wallet_rank: 'current_wallet_rank',
+  brand_category: 'brand_category',
+  brand_tier: 'brand_tier',
+  enrolled_in_direct_pay_previously: 'enrolled_in_direct_pay_previously',
+  last_direct_pay_date: 'last_direct_pay_date',
+  last_direct_pay_amount: 'last_direct_pay_amount',
+  number_of_direct_pay_in_12_months: 'number_of_direct_pay_in_12_months',
+  ...StaticAccountAttributeNames,
 } as const;
 
-export type TAccountAttributeNames = keyof typeof AccountAttributeNames;
+export type TAccountAttributeNames = typeof AccountAttributeNames[keyof typeof AccountAttributeNames];
+export type TAccountRequestableAttributeNames = Exclude<TAccountAttributeNames, TStaticAccountAttributeNames>;
 
 export interface IAccountAttribute<T> {
   value: T | null;
   error: IResourceError | null;
+  metadata: Record<string, unknown> | null;
 }
 
 export interface IAccountAttributesType {
   type?: IAccountAttribute<string>;
   usage_pattern?: IAccountAttribute<string>;
-  delinquency_flag?: IAccountAttribute<boolean>;
+  delinquency_flag?: IAccountAttribute<string>;
   utilization?: IAccountAttribute<number>;
-  utilization_trend_30d?: IAccountAttribute<string>;
-  utilization_trend_90d?: IAccountAttribute<string>;
+  utilization_trend_30d?: IAccountAttribute<number>;
+  utilization_trend_90d?: IAccountAttribute<number>;
   utilization_delta_30d?: IAccountAttribute<number>;
   utilization_delta_60d?: IAccountAttribute<number>;
   utilization_delta_90d?: IAccountAttribute<number>;
   monthly_installments_estimate?: IAccountAttribute<number>;
+  heloc_utilization?: IAccountAttribute<number>;
+  available_credit_limit?: IAccountAttribute<number>;
+  available_loan_amount?: IAccountAttribute<number>;
+  any_delinquent_flag?: IAccountAttribute<boolean>;
+  serious_delinquent_flag?: IAccountAttribute<boolean>;
+  delinquency_recently_cured_flag?: IAccountAttribute<boolean>;
+  delinquency_worst_dpd_bucket?: IAccountAttribute<string>;
+  delinquency_progression_flag?: IAccountAttribute<boolean>;
+  delinquent_outcome?: IAccountAttribute<string>;
+  next_payment_due_date?: IAccountAttribute<string>;
+  next_payment_minimum_amount?: IAccountAttribute<number>;
+  estimated_apr?: IAccountAttribute<number>;
+  utilization_bucket?: IAccountAttribute<string>;
+  purchasing_power?: IAccountAttribute<number>;
+  account_age?: IAccountAttribute<number>;
+  utilization_velocity_4_week?: IAccountAttribute<string>;
+  utilization_velocity_8_week?: IAccountAttribute<string>;
+  utilization_velocity_12_week?: IAccountAttribute<string>;
+  weeks_since_last_activity?: IAccountAttribute<string>;
+  recent_balance_spike_flag?: IAccountAttribute<boolean>;
+  spend_concentration_4_week?: IAccountAttribute<number>;
+  spend_concentration_8_week?: IAccountAttribute<number>;
+  spend_concentration_12_week?: IAccountAttribute<number>;
+  current_wallet_rank?: IAccountAttribute<number>;
+  brand_category?: IAccountAttribute<string>;
+  brand_tier?: IAccountAttribute<string>;
+  enrolled_in_direct_pay_previously?: IAccountAttribute<boolean>;
+  last_direct_pay_date?: IAccountAttribute<string>;
+  last_direct_pay_amount?: IAccountAttribute<number>;
+  number_of_direct_pay_in_12_months?: IAccountAttribute<number>;
 }
+
+export interface IAccountAttributesCreateOpts {
+  requested_attributes?: TAccountRequestableAttributeNames[];
+  bundles?: TAccountAttributeBundles[];
+}
+
+export type TAccountAttributeRequestScope =
+  | {
+    requested_attributes: TAccountRequestableAttributeNames[];
+    bundles?: TAccountAttributeBundles[];
+  }
+  | {
+    requested_attributes?: TAccountRequestableAttributeNames[];
+    bundles: TAccountAttributeBundles[];
+  };
 
 export interface IAccountAttributes {
   id: string;

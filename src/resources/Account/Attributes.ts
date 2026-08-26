@@ -1,6 +1,6 @@
 import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
-import type { IAccountAttributes } from './types';
+import type { IAccountAttributes, IAccountAttributesCreateOpts } from './types';
 
 export default class AccountAttributes extends Resource {
   constructor(config: Configuration) {
@@ -34,10 +34,11 @@ export default class AccountAttributes extends Resource {
    * Creates a new Attributes request to retrieve the Account’s attributes.
    * https://docs.methodfi.com/reference/accounts/attributes/create
    *
+   * @param opts Attributes or bundles to request. Omit to request the full set.
    * @returns Returns an Account’s Attributes object.
    */
 
-  async create() {
-    return super._create<IResponse<IAccountAttributes>, {}>({});
+  async create(opts: IAccountAttributesCreateOpts = {}) {
+    return super._create<IResponse<IAccountAttributes>, IAccountAttributesCreateOpts>(opts);
   }
 };
