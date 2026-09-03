@@ -1,6 +1,6 @@
 import Resource, { IResourceListOpts } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
-import type { IAccountAttributes } from './types';
+import type { IAccountAttributes, IAccountAttributesCreateOpts } from './types';
 
 export default class AccountAttributes extends Resource {
   constructor(config: Configuration) {
@@ -37,7 +37,7 @@ export default class AccountAttributes extends Resource {
    * @returns Returns an Account’s Attributes object.
    */
 
-  async create() {
-    return super._create<IResponse<IAccountAttributes>, {}>({});
+  async create(opts: IAccountAttributesCreateOpts = {}) {
+    return super._create<IResponse<IAccountAttributes>, IAccountAttributesCreateOpts>(opts);
   }
 };
