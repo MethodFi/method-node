@@ -41,14 +41,13 @@ export default class AccountSubscriptions extends Resource {
    *
    * Note: Subscription requests are processed individually, meaning the success or failure of one subscription does not affect others. The response object will detail any errors encountered.
    *
-   * @param data IAccountSubscriptionCreateOpts
    * @returns Returns a map of Subscription name to Subscription object.
    */
 
-  async create(sub_name: TAccountSubscriptionTypes) {
-    return super._create<IResponse<IAccountSubscription>, IAccountSubscriptionCreateOpts>(
-      { enroll: sub_name },
-    );
+  async create(opts: IAccountSubscriptionCreateOpts | TAccountSubscriptionTypes) {
+    const data = (typeof opts === 'string' ? { enroll: opts } : opts) as IAccountSubscriptionCreateOpts;
+
+    return super._create<IResponse<IAccountSubscription>, IAccountSubscriptionCreateOpts>(data);
   }
 
   /**

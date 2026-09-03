@@ -77,18 +77,23 @@ export interface IAccountProductListResponse {
 
 export const AccountSubscriptionTypes = {
   card_brand: 'card_brand',
-  payment_instrument: 'payment_instrument',
   'payment_instrument.card': 'payment_instrument.card',
   'payment_instrument.network_token': 'payment_instrument.network_token',
   transaction: 'transaction',
   update: 'update',
   update_snapshot: 'update.snapshot',
   attribute: 'attribute',
-  connect: 'connect',
-  credit_score: 'credit_score',
 } as const;
 
 export type TAccountSubscriptionTypes = typeof AccountSubscriptionTypes[keyof typeof AccountSubscriptionTypes];
+
+export const DeprecatedAccountSubscriptionTypes = {
+  payment_instrument: 'payment_instrument',
+} as const;
+
+export type TDeprecatedAccountSubscriptionTypes = typeof DeprecatedAccountSubscriptionTypes[keyof typeof DeprecatedAccountSubscriptionTypes];
+
+export type TAccountSubscriptionNames = TAccountSubscriptionTypes | TDeprecatedAccountSubscriptionTypes;
 
 export const AccountOwnership = {
   primary: 'primary',
@@ -211,6 +216,7 @@ export interface IAccountLiabilityBase {
   next_payment_due_date: string | null;
   next_payment_minimum_amount: number | null;
   opened_at?: string | null;
+  past_due_status?: boolean | null;
 };
 
 export interface IAccountLiabilityLoanBase extends IAccountLiabilityBase {
@@ -289,6 +295,7 @@ export interface IAccountLiability {
   type: TAccountLiabilityTypes | null;
   sub_type: TAccountLiabilitySubTypes | null;
   name: string | null;
+  network: string | null;
 };
 
 export interface IAccountACH {
@@ -312,25 +319,68 @@ export interface IAccountCardBrand {
   account_id: string;
   brands: IAccountCardBrandInfo[];
   source: 'method' | 'network' | null;
-  issuer?: string | null;
-  last4?: string | null;
-  network?: string | null;
-  status: 'completed' | 'in_progress' | 'failed';
+  status: 'completed' | 'pending' | 'in_progress' | 'failed';
   shared: boolean;
   error: IResourceError | null;
   created_at: string;
   updated_at: string;
 }
 
+export interface IAccountCardBrandRewardCategory {
+  category: string | null;
+  category_presentable: string | null;
+  rate: number | null;
+  unit: string | null;
+  cap: string | null;
+}
+
+export interface IAccountCardBrandRewards {
+  type: string | null;
+  program: string | null;
+  categories: IAccountCardBrandRewardCategory[];
+}
+
+export interface IAccountCardBrandQualifyingPeriod {
+  value: number;
+  unit: string;
+  relative_to: string;
+}
+
+export interface IAccountCardBrandPromotion {
+  type: string | null;
+  title: string | null;
+  description: string | null;
+  value: number | null;
+  unit: string | null;
+  spend_requirement: number | null;
+  qualifying_period: IAccountCardBrandQualifyingPeriod | null;
+  expiration: string | null;
+}
+
+export interface IAccountCardBrandDetails {
+  card_category: string | null;
+  purchase_apr_min: number | null;
+  purchase_apr_max: number | null;
+  cash_advance_apr_min: number | null;
+  cash_advance_apr_max: number | null;
+  annual_fee: number | null;
+  late_payment_fee: number | null;
+  rewards: IAccountCardBrandRewards;
+  promotions: IAccountCardBrandPromotion[];
+  data_as_of: string | null;
+}
+
 export interface IAccountCardBrandInfo {
   id: string;
-  card_product_id: string;
-  description: string;
+  card_product_id?: string | null;
+  description?: string;
   name: string;
-  issuer: string;
+  issuer?: string | null;
   network: string;
-  type: 'specific' | 'generic' | 'in_review';
+  network_tier?: string;
+  type?: string | null;
   url: string;
+  details: IAccountCardBrandDetails | null;
 }
 
 export interface IAccountPayoff {
@@ -397,9 +447,9 @@ export type TAccountSubscriptionStatuses = keyof typeof AccountSubscriptionStatu
 
 export interface IAccountSubscription {
   id: string;
-  name: TAccountSubscriptionTypes;
+  name: TAccountSubscriptionNames;
   status: TAccountSubscriptionStatuses;
-  payload: any | null;
+  payload: IAccountSubscriptionPayload | null;
   latest_request_id: string | null;
   created_at: string;
   updated_at: string;
@@ -414,13 +464,20 @@ export interface IAccountSubscriptionsResponse {
   'payment_instrument.card'?: IAccountSubscription;
   'payment_instrument.network_token'?: IAccountSubscription;
   attribute?: IAccountSubscription;
-  connect?: IAccountSubscription;
-  credit_score?: IAccountSubscription;
 };
 
-export interface IAccountSubscriptionCreateOpts {
-  enroll: TAccountSubscriptionTypes;
+export interface IAccountSubscriptionPayload {
+  attributes?: TAccountAttributeRequestScope;
 };
+
+export type IAccountSubscriptionCreateOpts =
+  | {
+    enroll: typeof AccountSubscriptionTypes.attribute;
+    payload?: IAccountSubscriptionPayload;
+  }
+  | {
+    enroll: Exclude<TAccountSubscriptionTypes, typeof AccountSubscriptionTypes.attribute>;
+  };
 
 export interface IAccountUpdate {
   id: string;
@@ -660,8 +717,31 @@ export interface IAccountWithdrawConsentOpts {
   reason: 'holder_withdrew_consent' | null;
 };
 
-export const AccountAttributeNames = {
+export const AccountAttributeBundles = {
+  wallet_intelligence: 'wallet_intelligence',
+  statement: 'statement',
+} as const;
+
+export type TAccountAttributeBundles = typeof AccountAttributeBundles[keyof typeof AccountAttributeBundles];
+
+export const StaticAccountAttributeNames = {
   type: 'type',
+} as const;
+
+export type TStaticAccountAttributeNames = typeof StaticAccountAttributeNames[keyof typeof StaticAccountAttributeNames];
+
+export const LegacyAccountAttributeNames = {
+  debt_settlement: 'debt_settlement',
+  interest_estimate_min: 'interest_estimate_min',
+  interest_estimate_max: 'interest_estimate_max',
+  account_standing: 'account_standing',
+  delinquent_period: 'delinquent_period',
+  delinquent_amount: 'delinquent_amount',
+} as const;
+
+export type TLegacyAccountAttributeNames = typeof LegacyAccountAttributeNames[keyof typeof LegacyAccountAttributeNames];
+
+export const AccountAttributeNames = {
   usage_pattern: 'usage_pattern',
   delinquency_flag: 'delinquency_flag',
   utilization: 'utilization',
@@ -671,27 +751,115 @@ export const AccountAttributeNames = {
   utilization_delta_60d: 'utilization_delta_60d',
   utilization_delta_90d: 'utilization_delta_90d',
   monthly_installments_estimate: 'monthly_installments_estimate',
+  heloc_utilization: 'heloc_utilization',
+  available_credit_limit: 'available_credit_limit',
+  available_loan_amount: 'available_loan_amount',
+  any_delinquent_flag: 'any_delinquent_flag',
+  serious_delinquent_flag: 'serious_delinquent_flag',
+  delinquency_recently_cured_flag: 'delinquency_recently_cured_flag',
+  delinquency_worst_dpd_bucket: 'delinquency_worst_dpd_bucket',
+  delinquency_progression_flag: 'delinquency_progression_flag',
+  delinquent_outcome: 'delinquent_outcome',
+  next_payment_due_date: 'next_payment_due_date',
+  next_payment_minimum_amount: 'next_payment_minimum_amount',
+  estimated_apr: 'estimated_apr',
+  utilization_bucket: 'utilization_bucket',
+  purchasing_power: 'purchasing_power',
+  account_age: 'account_age',
+  utilization_velocity_4_week: 'utilization_velocity_4_week',
+  utilization_velocity_8_week: 'utilization_velocity_8_week',
+  utilization_velocity_12_week: 'utilization_velocity_12_week',
+  weeks_since_last_activity: 'weeks_since_last_activity',
+  recent_balance_spike_flag: 'recent_balance_spike_flag',
+  spend_concentration_4_week: 'spend_concentration_4_week',
+  spend_concentration_8_week: 'spend_concentration_8_week',
+  spend_concentration_12_week: 'spend_concentration_12_week',
+  current_wallet_rank: 'current_wallet_rank',
+  brand_category: 'brand_category',
+  brand_tier: 'brand_tier',
+  enrolled_in_direct_pay_previously: 'enrolled_in_direct_pay_previously',
+  last_direct_pay_date: 'last_direct_pay_date',
+  last_direct_pay_amount: 'last_direct_pay_amount',
+  number_of_direct_pay_in_12_months: 'number_of_direct_pay_in_12_months',
+  ...LegacyAccountAttributeNames,
+  ...StaticAccountAttributeNames,
 } as const;
 
-export type TAccountAttributeNames = keyof typeof AccountAttributeNames;
+export type TAccountAttributeNames = typeof AccountAttributeNames[keyof typeof AccountAttributeNames];
+export type TAccountRequestableAttributeNames = Exclude<
+  TAccountAttributeNames,
+  TStaticAccountAttributeNames | TLegacyAccountAttributeNames
+>;
 
 export interface IAccountAttribute<T> {
   value: T | null;
-  error: IResourceError | null;
+  error?: IResourceError | null;
+  metadata?: Record<string, unknown> | null;
 }
 
 export interface IAccountAttributesType {
   type?: IAccountAttribute<string>;
   usage_pattern?: IAccountAttribute<string>;
-  delinquency_flag?: IAccountAttribute<boolean>;
+  delinquency_flag?: IAccountAttribute<string>;
   utilization?: IAccountAttribute<number>;
-  utilization_trend_30d?: IAccountAttribute<string>;
-  utilization_trend_90d?: IAccountAttribute<string>;
+  utilization_trend_30d?: IAccountAttribute<number>;
+  utilization_trend_90d?: IAccountAttribute<number>;
   utilization_delta_30d?: IAccountAttribute<number>;
   utilization_delta_60d?: IAccountAttribute<number>;
   utilization_delta_90d?: IAccountAttribute<number>;
   monthly_installments_estimate?: IAccountAttribute<number>;
+  heloc_utilization?: IAccountAttribute<number>;
+  available_credit_limit?: IAccountAttribute<number>;
+  available_loan_amount?: IAccountAttribute<number>;
+  any_delinquent_flag?: IAccountAttribute<boolean>;
+  serious_delinquent_flag?: IAccountAttribute<boolean>;
+  delinquency_recently_cured_flag?: IAccountAttribute<boolean>;
+  delinquency_worst_dpd_bucket?: IAccountAttribute<string>;
+  delinquency_progression_flag?: IAccountAttribute<boolean>;
+  delinquent_outcome?: IAccountAttribute<string>;
+  next_payment_due_date?: IAccountAttribute<string>;
+  next_payment_minimum_amount?: IAccountAttribute<number>;
+  estimated_apr?: IAccountAttribute<number>;
+  utilization_bucket?: IAccountAttribute<string>;
+  purchasing_power?: IAccountAttribute<number>;
+  account_age?: IAccountAttribute<number>;
+  utilization_velocity_4_week?: IAccountAttribute<string>;
+  utilization_velocity_8_week?: IAccountAttribute<string>;
+  utilization_velocity_12_week?: IAccountAttribute<string>;
+  weeks_since_last_activity?: IAccountAttribute<string>;
+  recent_balance_spike_flag?: IAccountAttribute<boolean>;
+  spend_concentration_4_week?: IAccountAttribute<number>;
+  spend_concentration_8_week?: IAccountAttribute<number>;
+  spend_concentration_12_week?: IAccountAttribute<number>;
+  current_wallet_rank?: IAccountAttribute<number>;
+  brand_category?: IAccountAttribute<string>;
+  brand_tier?: IAccountAttribute<string>;
+  enrolled_in_direct_pay_previously?: IAccountAttribute<boolean>;
+  last_direct_pay_date?: IAccountAttribute<string>;
+  last_direct_pay_amount?: IAccountAttribute<number>;
+  number_of_direct_pay_in_12_months?: IAccountAttribute<number>;
+  debt_settlement?: IAccountAttribute<string>;
+  interest_estimate_min?: IAccountAttribute<number>;
+  interest_estimate_max?: IAccountAttribute<number>;
+  account_standing?: IAccountAttribute<string>;
+  delinquent_period?: IAccountAttribute<string>;
+  delinquent_amount?: IAccountAttribute<number>;
 }
+
+export interface IAccountAttributesCreateOpts {
+  requested_attributes?: TAccountRequestableAttributeNames[];
+  bundles?: TAccountAttributeBundles[];
+}
+
+export type TAccountAttributeRequestScope =
+  | {
+    requested_attributes: TAccountRequestableAttributeNames[];
+    bundles?: TAccountAttributeBundles[];
+  }
+  | {
+    requested_attributes?: TAccountRequestableAttributeNames[];
+    bundles: TAccountAttributeBundles[];
+  };
 
 export interface IAccountAttributes {
   id: string;
@@ -772,9 +940,9 @@ export interface IAccount {
   liability?: IAccountLiability | null;
   products: TAccountProducts[];
   restricted_products: TAccountProducts[];
-  subscriptions?: TAccountSubscriptionTypes[];
-  available_subscriptions?: TAccountSubscriptionTypes[];
-  restricted_subscriptions?: TAccountSubscriptionTypes[];
+  subscriptions?: TAccountSubscriptionNames[];
+  available_subscriptions?: TAccountSubscriptionNames[];
+  restricted_subscriptions?: TAccountSubscriptionNames[];
   sensitive?: string | IAccountSensitive | null;
   balance?: string | IAccountBalance | null;
   card_brand?: string | IAccountCardBrand | null;

@@ -37,7 +37,7 @@ export default class EntityAttributes extends Resource {
    * @returns Returns an Entity’s Attributes object.
    */
 
-  async create(opts: IEntityAttributesCreateOpts) {
+  async create(opts: IEntityAttributesCreateOpts = {}) {
     return super._create<IResponse<IEntityAttributes>, IEntityAttributesCreateOpts>(opts);
   }
 };

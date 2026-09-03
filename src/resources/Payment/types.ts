@@ -11,13 +11,23 @@ export const PaymentStatuses = {
   reversal_required: 'reversal_required',
   reversal_processing: 'reversal_processing',
   settled: 'settled',
-  cashed: 'cashed',
 } as const;
 
 export type TPaymentStatuses = keyof typeof PaymentStatuses;
 
+export const PaymentDirectionStatuses = {
+  pending: 'pending',
+  canceled: 'canceled',
+  processing: 'processing',
+  sent: 'sent',
+  posted: 'posted',
+  cashed: 'cashed',
+  returned: 'returned',
+} as const;
+
+export type TPaymentDirectionStatuses = keyof typeof PaymentDirectionStatuses;
+
 export const PaymentFundStatuses = {
-  hold: 'hold',
   pending: 'pending',
   requested: 'requested',
   clearing: 'clearing',
@@ -38,7 +48,6 @@ export type TPaymentTypes = keyof typeof PaymentTypes;
 
 export const PaymentFeeTypes = {
   total: 'total',
-  markup: 'markup',
 } as const;
 
 export type TPaymentFeeTypes = keyof typeof PaymentFeeTypes;
@@ -63,7 +72,7 @@ export interface IPayment {
   source: string;
   destination: string;
   amount: number;
-  description: string;
+  description: string | null;
   status: TPaymentStatuses;
   fund_status?: TPaymentFundStatuses;
   error: IResourceError | null;
@@ -71,13 +80,14 @@ export interface IPayment {
   estimated_completion_date: string | null;
   source_settlement_date: string | null;
   destination_settlement_date: string | null;
-  source_status: TPaymentStatuses;
-  destination_status: TPaymentStatuses;
-  destination_payment_method?: TPaymentDestinationPaymentMethods | null;
+  destination_posted_date: string | null;
+  source_status: TPaymentDirectionStatuses | null;
+  destination_status: TPaymentDirectionStatuses | null;
+  destination_payment_method?: TPaymentDestinationPaymentMethods;
   fee: IPaymentFee | null;
-  idempotency_key?: string | null;
-  payment_instrument?: string | null;
-  reversal_account?: string | null;
+  idempotency_key: string | null;
+  payment_instrument: string | null;
+  reversal_account: string | null;
   type: TPaymentTypes;
   created_at: string;
   updated_at: string;
