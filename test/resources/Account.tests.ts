@@ -175,6 +175,7 @@ describe('Accounts - core methods tests', () => {
         attribute: null,
         update: accounts_create_liability_response.update,
         card_brand: null,
+        payment_instrument: null,
         payoff: null,
         products: accounts_create_liability_response.products,
         restricted_products: accounts_create_liability_response.restricted_products,
@@ -941,6 +942,7 @@ describe('Accounts - core methods tests', () => {
           interest_rate_percentage_min: null,
           available_credit: null,
           credit_limit: null,
+          past_due_status: null,
           usage_pattern: null
         },
         data_as_of: null,
@@ -983,6 +985,7 @@ describe('Accounts - core methods tests', () => {
           interest_rate_percentage_min: 20.5,
           available_credit: 930000,
           credit_limit: 2800000,
+          past_due_status: retrieve_updates_response.credit_card?.past_due_status ?? null,
           usage_pattern: null
         },
         data_as_of: retrieve_updates_response.data_as_of,

@@ -216,6 +216,7 @@ export interface IAccountLiabilityBase {
   next_payment_due_date: string | null;
   next_payment_minimum_amount: number | null;
   opened_at?: string | null;
+  past_due_status?: boolean | null;
 };
 
 export interface IAccountLiabilityLoanBase extends IAccountLiabilityBase {
