@@ -24,9 +24,7 @@ export interface IExpandableOpts {
 
 export interface IConnectListOpts extends IResourceListOpts, IExpandableOpts {}
 
-export interface IConnectRetrieveOpts extends IExpandableOpts {
-  include_raw_report?: boolean;
-}
+export type IConnectRetrieveOpts = IExpandableOpts;
 
 export const AccountProductsEligibleForAutomaticExecution = [
   'attribute',
@@ -49,7 +47,6 @@ export type AccountSubscription = typeof AccountSubscriptionsEligibleForAutomati
 interface IConnectCreateOptsBase {
   products?: AccountProduct[];
   subscriptions?: AccountSubscription[];
-  include_raw_report?: boolean;
 }
 
 export type IConnectCreateOpts =
