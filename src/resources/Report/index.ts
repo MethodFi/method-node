@@ -13,11 +13,17 @@ export const ReportTypes = {
   ach_pull_nightly: 'ach.pull.nightly',
   ach_reversals_nightly: 'ach.reversals.nightly',
   entities_created_previous_day: 'entities.created.previous_day',
-  ach_debit_daily: 'ach.debit.daily',
   reserve_fbo_balance_created_previous_day: 'reserve_fbo_balance.created.previous_day',
 } as const;
 
 export type TReportTypes = typeof ReportTypes[keyof typeof ReportTypes];
+
+export const ReportRetrieveTypes = {
+  ...ReportTypes,
+  ach_debit_daily: 'ach.debit.daily',
+} as const;
+
+export type TReportRetrieveTypes = typeof ReportRetrieveTypes[keyof typeof ReportRetrieveTypes];
 
 export const ReportStatuses = {
   processing: 'processing',
@@ -28,7 +34,7 @@ export type TReportStatuses = keyof typeof ReportStatuses;
 
 export interface IReport {
   id: string;
-  type: TReportTypes;
+  type: TReportRetrieveTypes;
   url: string;
   status: TReportStatuses;
   metadata: {} | null;
