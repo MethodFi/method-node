@@ -100,6 +100,7 @@ export class Entity extends Resource {
   ) {
     return super._create<IResponse<IEntity>, IIndividualCreateOpts | ICorporationCreateOpts>(
       opts,
+      undefined,
       requestConfig,
     );
   }

@@ -61,6 +61,6 @@ export default class ForwardingRequest extends Resource {
   }
 
   async create(opts: IForwardingRequestCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IResponse<IForwardingRequest>, IForwardingRequestCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IForwardingRequest>, IForwardingRequestCreateOpts>(opts, undefined, requestConfig);
   }
 };

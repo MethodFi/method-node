@@ -74,7 +74,7 @@ export default class Report extends Resource {
    */
 
   async create(opts: IReportCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IResponse<IReport>, IReportCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IReport>, IReportCreateOpts>(opts, undefined, requestConfig);
   }
 
   /**

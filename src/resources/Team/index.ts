@@ -71,7 +71,7 @@ export class TeamPublicKeys extends Resource {
   }
 
   async create(opts: IMLEPublicKeyCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IResponse<IMLEPublicKey>, IMLEPublicKeyCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IMLEPublicKey>, IMLEPublicKeyCreateOpts>(opts, undefined, requestConfig);
   }
 
   async delete(key_id: string) {
@@ -92,7 +92,7 @@ export default class Team extends Resource {
   }
 
   async create(opts: ITeamCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IResponse<ITeam>, ITeamCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<ITeam>, ITeamCreateOpts>(opts, undefined, requestConfig);
   }
 
   async updateEncryptionKey(opts: ITeamEncryptionKeyOpts, requestConfig?: IRequestConfig) {

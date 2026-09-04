@@ -100,7 +100,7 @@ export class Account extends Resource {
    */
 
   async create(data: IACHCreateOpts | ILiabilityCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IResponse<IAccount>, IACHCreateOpts | ILiabilityCreateOpts>(data, requestConfig);
+    return super._create<IResponse<IAccount>, IACHCreateOpts | ILiabilityCreateOpts>(data, undefined, requestConfig);
   }
 
 

@@ -38,7 +38,7 @@ export default class Webhook extends Resource {
    */
 
   async create(opts: IWebhookCreateOpts, requestConfig?: IRequestConfig) {
-    return super._create<IResponse<IWebhook>, IWebhookCreateOpts>(opts, requestConfig);
+    return super._create<IResponse<IWebhook>, IWebhookCreateOpts>(opts, undefined, requestConfig);
   }
 
   /**
