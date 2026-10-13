@@ -21,4 +21,12 @@ export default class OpalToken extends Resource {
   async create(opts: IOpalTokenCreateOpts) {
     return super._create<IResponse<IOpalToken>, IOpalTokenCreateOpts>(opts);
   }
+
+  async retrieve(pk_opal_tkn_id: string) {
+    return super._getWithId<IResponse<IOpalToken>>(pk_opal_tkn_id);
+  }
+
+  async deactivate(pk_opal_tkn_id: string) {
+    return super._delete<IResponse<IOpalToken>>(pk_opal_tkn_id);
+  }
 };
