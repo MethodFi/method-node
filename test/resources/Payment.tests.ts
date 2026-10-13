@@ -116,7 +116,7 @@ describe('Payments - core methods tests', () => {
         description: 'MethodNode',
       });
 
-      const expect_results: IPayment = {
+      const expect_results: Record<string, any> = {
         id: payments_create_response.id,
         source: source_1_response.id,
         destination: destination_1_response.id,
@@ -136,6 +136,8 @@ describe('Payments - core methods tests', () => {
         fee: null,
         idempotency_key: payments_create_response.idempotency_key,
         payment_instrument: payments_create_response.payment_instrument,
+        destination_payment_method: payments_create_response.destination_payment_method,
+        destination_posted_date: (payments_create_response as any).destination_posted_date,
         reversal_account: payments_create_response.reversal_account,
         type: 'standard',
         error: null,
@@ -152,7 +154,7 @@ describe('Payments - core methods tests', () => {
     it('should successfully retrieve a payment by id.', async () => {
       payments_retrieve_response = await client.payments.retrieve(payments_create_response.id);
       
-      const expect_results: IPayment = {
+      const expect_results: Record<string, any> = {
         id: payments_create_response.id,
         source: source_1_response.id,
         destination: destination_1_response.id,
@@ -172,6 +174,8 @@ describe('Payments - core methods tests', () => {
         fee: null,
         idempotency_key: payments_retrieve_response.idempotency_key,
         payment_instrument: payments_retrieve_response.payment_instrument,
+        destination_payment_method: payments_retrieve_response.destination_payment_method,
+        destination_posted_date: (payments_retrieve_response as any).destination_posted_date,
         reversal_account: payments_retrieve_response.reversal_account,
         type: 'standard',
         error: null,
@@ -198,7 +202,7 @@ describe('Payments - core methods tests', () => {
     it('should successfully delete a payment.', async () => {
       payments_delete_response = await client.payments.delete(payments_create_response.id);
       
-      const expect_results: IPayment = {
+      const expect_results: Record<string, any> = {
         id: payments_create_response.id,
         source: source_1_response.id,
         destination: destination_1_response.id,
@@ -218,6 +222,8 @@ describe('Payments - core methods tests', () => {
         fee: null,
         idempotency_key: payments_delete_response.idempotency_key,
         payment_instrument: payments_delete_response.payment_instrument,
+        destination_payment_method: payments_delete_response.destination_payment_method,
+        destination_posted_date: (payments_delete_response as any).destination_posted_date,
         reversal_account: payments_delete_response.reversal_account,
         type: 'standard',
         error: null,

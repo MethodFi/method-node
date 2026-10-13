@@ -3,6 +3,7 @@ import Configuration from '../../configuration';
 import Token from './Token';
 
 export default class Element extends Resource {
+  /** @deprecated */
   token: Token;
 
   constructor(config: Configuration) {
