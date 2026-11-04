@@ -1,6 +1,8 @@
 import Resource, { IRequestConfig } from '../../resource';
 import Configuration, { IResponse } from '../../configuration';
 import type { IWebhook, IWebhookCreateOpts, IWebhookUpdateOpts } from './types';
+import { constructWebhookEvent } from './verify';
+import type { IWebhookEvent, IWebhookVerifyOpts } from './verify';
 
 export default class Webhook extends Resource {
   constructor(config: Configuration) {
@@ -63,6 +65,21 @@ export default class Webhook extends Resource {
   async delete(whk_id: string) {
     return super._delete<IResponse<{}>>(whk_id);
   }
+
+  /**
+   * Verifies an incoming webhook request (Authorization header and/or HMAC signature, plus
+   * timestamp freshness) and returns the parsed event. Does not make an API call.
+   *
+   * @param opts IWebhookVerifyOpts: the raw body, the request headers and the webhook's hmac_secret and/or auth_token
+   * @returns The parsed event, its delivery id (for deduplication) and timestamp.
+   * @throws MethodWebhookVerificationError if the request cannot be verified.
+   * @see https://docs.methodfi.com/reference/webhooks/overview#authentication
+   */
+
+  constructEvent(opts: IWebhookVerifyOpts): IWebhookEvent {
+    return constructWebhookEvent(opts);
+  }
 };
 
 export * from './types';
+export * from './verify';
