@@ -955,6 +955,39 @@ const webhook = await method.webhooks.delete('whk_cSGjA6d9N8y8R');
 const webhooks = await method.webhooks.list();
 ```
 
+#### Verify a Webhook Request
+
+`constructEvent` checks the `Authorization` header (when you pass `auth_token`), the `method-webhook-signature` HMAC (when you pass `hmac_secret`) and that `method-webhook-timestamp` is within 5 minutes, then returns the parsed event. It does not call the API. Pass the raw request body: the signature is computed over the exact bytes Method sent.
+
+```jsx
+import express from 'express';
+import { Method, MethodWebhookVerificationError } from 'method-node';
+
+const method = new Method({ apiKey: process.env.METHOD_API_KEY, env: 'production' });
+const app = express();
+
+app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  let event;
+  try {
+    event = method.webhooks.constructEvent({
+      payload: req.body, // Buffer with the raw body
+      headers: req.headers,
+      hmac_secret: process.env.METHOD_WEBHOOK_HMAC_SECRET,
+      auth_token: process.env.METHOD_WEBHOOK_AUTH_TOKEN,
+    });
+  } catch (error) {
+    if (error instanceof MethodWebhookVerificationError) return res.status(401).send(error.code);
+    throw error;
+  }
+
+  res.sendStatus(200);
+  // event.payload: { webhook_id, id, type, op, path, event, refs }
+  // event.delivery_id: the method-webhook-delivery-id header, stable across retries; use it to deduplicate.
+});
+```
+
+`headers` can be Node's `req.headers`, a plain object, or a Fetch API `Headers` object (Next.js route handlers, Cloudflare Workers, Hono). Set `tolerance_seconds` to change the 5 minute window, or `0` to skip it. `constructWebhookEvent` and `computeWebhookSignature` are also exported for use without a client.
+
 ## Reports
 
 Reports provide a filtered snapshot view of a specific resource. Method provides a fixed set of filters (Report Types) which include the following:

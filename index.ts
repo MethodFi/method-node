@@ -11,3 +11,10 @@ export {
   ReportStatuses,
 } from './src/resources/Report';
 export { WebhookTypes } from './src/resources/Webhook';
+export {
+  constructWebhookEvent,
+  computeWebhookSignature,
+  MethodWebhookVerificationError,
+  WebhookVerificationErrorCodes,
+} from './src/resources/Webhook/verify';
+export type { IWebhookEvent, IWebhookEventPayload, IWebhookVerifyOpts } from './src/resources/Webhook/verify';
